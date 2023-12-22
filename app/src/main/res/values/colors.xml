@@ -7,4 +7,40 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Grey scale -->
+    <color name="grey_950">#191E28</color>
+    <color name="grey_900">#333C4A</color>
+    <color name="grey_850">#3E4754</color>
+    <color name="grey_800">#4E5867</color>
+    <color name="grey_700">#6B7582</color>
+    <color name="grey_600">#AEB7C0</color>
+    <color name="grey_500">#CBD3DA</color>
+    <color name="grey_400">#D9DFE4</color>
+    <color name="grey_200">#E7EBEF</color>
+    <color name="grey_100">#F1F3F5</color>
+    <color name="grey_50">#F5F7F9</color>
+    <color name="grey_white">#FEFEFE</color>
+
+    <!-- Primary -->
+    <color name="primary_400">#4C64E9</color>
+    <color name="primary_300">#5973FE</color>
+    <color name="primary_200">#92A3FE</color>
+    <color name="primary_100">#EEF0F7</color>
+
+    <!-- Sub -->
+    <color name="sub_400">#06AC7E</color>
+    <color name="sub_300">#03C48D</color>
+    <color name="sub_200">#5BD8B5</color>
+    <color name="sub_100">#DDF6EF</color>
+
+    <!-- Error1 -->
+    <color name="error_400">#EE3254</color>
+    <color name="error_300">#FB4E6D</color>
+    <color name="error_200">#FEC4CE</color>
+    <color name="error_100">#FEECEF</color>
+
+    <!-- Else -->
+    <color name="transparent">#00000000</color>
+
 </resources>
