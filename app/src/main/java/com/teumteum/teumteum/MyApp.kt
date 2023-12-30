@@ -3,7 +3,6 @@ package com.teumteum.teumteum
 import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.teumteum.teumteum.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -17,6 +16,7 @@ class MyApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        setUpFlipper()
         appContext = applicationContext
     }
 
