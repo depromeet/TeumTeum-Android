@@ -14,6 +14,6 @@ import javax.inject.Singleton
 object ServiceModule {
     @Singleton
     @Provides
-    fun provideSampleService(@RetrofitModule.TeumTeum teumteumRetrofit: Retrofit) =
+    fun provideSampleService(teumteumRetrofit: Retrofit) =
         teumteumRetrofit.create(SampleService::class.java)
 }
