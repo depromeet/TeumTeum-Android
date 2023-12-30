@@ -8,19 +8,19 @@ plugins {
 android {
     buildTypes {
         debug {
-//            buildConfigField(
-//                "String",
-//                "BASE_URL",
-//                gradleLocalProperties(rootDir).getProperty("test.base.url"),
-//            )
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                gradleLocalProperties(rootDir).getProperty("base.url"),
+            )
         }
 
         release {
-//            buildConfigField(
-//                "String",
-//                "BASE_URL",
-//                gradleLocalProperties(rootDir).getProperty("base.url"),
-//            )
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                gradleLocalProperties(rootDir).getProperty("base.url"),
+            )
         }
     }
 
