@@ -8,18 +8,104 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/c_ffffff">
 
-        <TextView
-            style="@style/ta.headline.1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HomeFragment"
-            android:textColor="@color/grey_950"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
+        <View
+            android:id="@+id/vConcerned"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintDimensionRatio="154:120"
+            app:layout_constraintEnd_toStartOf="@id/vWork"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+        <View
+            android:id="@+id/vWork"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintDimensionRatio="154:120"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vConcerned"
+            app:layout_constraintTop_toTopOf="@id/vConcerned" />
+
+        <View
+            android:id="@+id/vStudy"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintDimensionRatio="154:120"
+            app:layout_constraintEnd_toStartOf="@id/vProject"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vConcerned" />
+
+        <View
+            android:id="@+id/vProject"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintDimensionRatio="154:120"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vStudy"
+            app:layout_constraintTop_toTopOf="@id/vStudy" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:dividerColor="@color/grey_50"
+            app:layout_constraintDimensionRatio="360:12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/vStudy" />
+
+        <TextView
+            android:id="@+id/tvRecommendMeet"
+            style="@style/ta.headline.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="판교 추천 모임"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dv" />
+
+        <TextView
+            android:id="@+id/tvRecommendMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="더보기"
+            android:textColor="@color/primary_200"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvRecommendMeet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvRecommendMeet" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecommendMeet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecommendMeet" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
