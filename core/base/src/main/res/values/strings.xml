@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <string name="set">설정</string>
+    <string name="cancel">닫기</string>
+</resources>
