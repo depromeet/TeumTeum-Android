@@ -38,6 +38,12 @@ jobs:
       - name: Create Local Properties
         run: touch local.properties
 
+      - name: Access Local Properties
+        env:
+          base_url: ${{ secrets.BASE_URL }}
+        run: |
+          echo base.url=\"$base_url\" >> local.properties
+
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
 

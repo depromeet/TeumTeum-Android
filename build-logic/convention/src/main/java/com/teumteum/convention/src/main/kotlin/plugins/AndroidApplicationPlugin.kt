@@ -2,6 +2,7 @@ package plugins
 
 import Constants
 import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.teumteum.convention.src.main.kotlin.ext.androidTestImplementation
 import com.teumteum.convention.src.main.kotlin.ext.getBundle
 import com.teumteum.convention.src.main.kotlin.ext.getLibrary
@@ -49,49 +50,19 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
                 buildTypes {
                     debug {
-//                        buildConfigField(
-//                            "String",
-//                            "BASE_URL",
-//                            gradleLocalProperties(rootDir).getProperty("test.base.url"),
-//                        )
-//
-//                        buildConfigField(
-//                            "String",
-//                            "NATIVE_APP_KEY",
-//                            gradleLocalProperties(rootDir).getProperty("test.native.app.key"),
-//                        )
-//
-//                        buildConfigField(
-//                            "String",
-//                            "AMPLITUDE_API_KEY",
-//                            gradleLocalProperties(rootDir).getProperty("amplitude.api.test.key"),
-//                        )
-//
-//                        manifestPlaceholders["NATIVE_APP_KEY"] =
-//                            gradleLocalProperties(rootDir).getProperty("testNativeAppKey")
-//                    }
-//
-//                    release {
-//                        buildConfigField(
-//                            "String",
-//                            "BASE_URL",
-//                            gradleLocalProperties(rootDir).getProperty("base.url"),
-//                        )
-//
-//                        buildConfigField(
-//                            "String",
-//                            "NATIVE_APP_KEY",
-//                            gradleLocalProperties(rootDir).getProperty("native.app.key"),
-//                        )
-//
-//                        buildConfigField(
-//                            "String",
-//                            "AMPLITUDE_API_KEY",
-//                            gradleLocalProperties(rootDir).getProperty("amplitude.api.key"),
-//                        )
-//
-//                        manifestPlaceholders["NATIVE_APP_KEY"] =
-//                            gradleLocalProperties(rootDir).getProperty("nativeAppKey")
+                        buildConfigField(
+                            "String",
+                            "BASE_URL",
+                            gradleLocalProperties(rootDir).getProperty("base.url"),
+                        )
+                    }
+
+                    release {
+                        buildConfigField(
+                            "String",
+                            "BASE_URL",
+                            gradleLocalProperties(rootDir).getProperty("base.url"),
+                        )
 
                         isMinifyEnabled = false
                         proguardFiles(
