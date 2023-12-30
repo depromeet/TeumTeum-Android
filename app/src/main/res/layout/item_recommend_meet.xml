@@ -9,7 +9,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/c_ffffff"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp">
 
         <TextView
             android:id="@+id/tvCategory"
@@ -30,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/radius_0_grey_50"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/tvCategory"
             app:layout_constraintTop_toBottomOf="@id/tvCategory"
@@ -38,15 +40,24 @@
 
         <TextView
             android:id="@+id/tvDate"
-            style="@style/ta.headline.6"
+            style="@style/ta.caption.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/radius_0_grey_50"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@id/tvCategory"
-            app:layout_constraintTop_toBottomOf="@id/tvCategory"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/grey_600"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
             tools:text="11월 10일 오후 7:00" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey_50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="60:60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
