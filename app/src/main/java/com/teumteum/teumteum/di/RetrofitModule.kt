@@ -2,6 +2,7 @@ package com.teumteum.teumteum.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.teumteum.teumteum.BuildConfig.BASE_URL
+import com.teumteum.teumteum.addFlipperNetworkPlugin
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +40,7 @@ object RetrofitModule {
         loggingInterceptor: Interceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .addFlipperNetworkPlugin()
         .build()
 
     @Provides

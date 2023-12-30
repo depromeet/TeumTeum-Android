@@ -61,7 +61,7 @@ espressoVersion = "3.3.0"
 androidTestVersion = "1.1.2"
 
 ## Flipper
-flipperVersion = "0.187.0"
+flipperVersion = "0.236.0"
 soloaderVersion = "0.10.5"
 leakCanaryVersion = "2.11"
 
