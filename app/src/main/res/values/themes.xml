@@ -5,7 +5,7 @@
 
     <!--TextAppearance -->
     <style name="ta.headline.1" parent="">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:lineHeight">36sp</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:includeFontPadding">false</item>
@@ -13,6 +13,14 @@
     </style>
 
     <style name="ta.headline.2" parent="">
+        <item name="android:textSize">28sp</item>
+        <item name="android:lineHeight">36sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+    </style>
+
+    <style name="ta.headline.3" parent="">
         <item name="android:textSize">24sp</item>
         <item name="android:lineHeight">32sp</item>
         <item name="android:letterSpacing">0</item>
@@ -20,7 +28,7 @@
         <item name="android:fontFamily">@font/pretendard_bold</item>
     </style>
 
-    <style name="ta.headline.3" parent="">
+    <style name="ta.headline.4" parent="">
         <item name="android:textSize">20sp</item>
         <item name="android:lineHeight">28sp</item>
         <item name="android:letterSpacing">0</item>
@@ -28,7 +36,7 @@
         <item name="android:fontFamily">@font/pretendard_bold</item>
     </style>
 
-    <style name="ta.headline.4" parent="">
+    <style name="ta.headline.5" parent="">
         <item name="android:textSize">18sp</item>
         <item name="android:lineHeight">24sp</item>
         <item name="android:letterSpacing">0</item>
@@ -36,7 +44,7 @@
         <item name="android:fontFamily">@font/pretendard_bold</item>
     </style>
 
-    <style name="ta.headline.5" parent="">
+    <style name="ta.headline.6" parent="">
         <item name="android:textSize">16sp</item>
         <item name="android:lineHeight">22sp</item>
         <item name="android:letterSpacing">0</item>
@@ -44,7 +52,7 @@
         <item name="android:fontFamily">@font/pretendard_semibold</item>
     </style>
 
-    <style name="ta.headline.6" parent="">
+    <style name="ta.headline.7" parent="">
         <item name="android:textSize">16sp</item>
         <item name="android:lineHeight">22sp</item>
         <item name="android:letterSpacing">0</item>
