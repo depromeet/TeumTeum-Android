@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.home
 
+import android.content.ContentValues
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,35 +9,39 @@ import com.teumteum.domain.repository.SampleRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    val sampleRepository: SampleRepository,
-) : ViewModel() {
+class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository) :
+    ViewModel() {
 
-    private var _sampleState = MutableLiveData<UiState>(UiState.Empty)
-    val sampleState: LiveData<UiState>
-        get() = _sampleState
+    val recommendMeets = MutableLiveData<List<RecommendMeetEntity>?>()
+
+    private var _recommendMeetState = MutableLiveData<UiState>(UiState.Empty)
+    val recommendMeetState: LiveData<UiState>
+        get() = _recommendMeetState
 
 
-    fun getSample() {
+    fun getRecommendMeet() {
         viewModelScope.launch {
             runCatching {
-                _sampleState.value = UiState.Loading
-                sampleRepository.getSample()
+                _recommendMeetState.value = UiState.Loading
+                homeRepository.getRecommendMeet()
             }.onSuccess {
-                //it.body()
-
-                _sampleState.value = UiState.Success
+//                if (it != null) {
+//                    recommendMeets.value = it
+//                } else {
+//                    recommendMeets.value = null
+//                }
+                _recommendMeetState.value = UiState.Success
             }.onFailure {
-                _sampleState.value = UiState.Failure
+//                Timber.e(it)
+                _recommendMeetState.value = UiState.Failure
             }
         }
     }
-
 }
-
 
 
 

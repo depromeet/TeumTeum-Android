@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,18 +9,205 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/c_ffffff">
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
+        <View
+            android:id="@+id/vConcerned"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintEnd_toStartOf="@id/vWork"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
 
         <TextView
-            style="@style/ta.headline.1"
+            android:id="@+id/tvConcernedTitle"
+            style="@style/ta.headline.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HomeFragment"
-            android:textColor="@color/grey_950"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="20dp"
+            android:text="@string/home_share_concern_title"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tvConcernedSub"
+            app:layout_constraintStart_toStartOf="@id/vConcerned"
+            app:layout_constraintTop_toTopOf="@id/vConcerned"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvConcernedSub"
+            style="@style/ta.body.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/home_share_concern_sub"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/vConcerned"
+            app:layout_constraintStart_toStartOf="@id/tvConcernedTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvConcernedTitle" />
+
+        <View
+            android:id="@+id/vWork"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vConcerned"
+            app:layout_constraintTop_toTopOf="@id/vConcerned" />
+
+        <TextView
+            android:id="@+id/tvWorkTitle"
+            style="@style/ta.headline.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/home_work_title"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tvWorkSub"
+            app:layout_constraintStart_toStartOf="@id/vWork"
+            app:layout_constraintTop_toTopOf="@id/vWork"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvWorkSub"
+            style="@style/ta.body.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/home_work_sub"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/vWork"
+            app:layout_constraintStart_toStartOf="@id/tvWorkTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvWorkTitle" />
+
+        <View
+            android:id="@+id/vStudy"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintEnd_toStartOf="@id/vProject"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vConcerned" />
+
+        <TextView
+            android:id="@+id/tvStudyTitle"
+            style="@style/ta.headline.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/home_study_title"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tvStudySub"
+            app:layout_constraintStart_toStartOf="@id/vStudy"
+            app:layout_constraintTop_toTopOf="@id/vStudy"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvStudySub"
+            style="@style/ta.body.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/home_study_sub"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/vStudy"
+            app:layout_constraintStart_toStartOf="@id/tvStudyTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvStudyTitle" />
+
+        <View
+            android:id="@+id/vProject"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/radius_16_grey_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vStudy"
+            app:layout_constraintTop_toTopOf="@id/vStudy" />
+
+        <TextView
+            android:id="@+id/tvProjectTitle"
+            style="@style/ta.headline.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/home_project_title"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tvProjectSub"
+            app:layout_constraintStart_toStartOf="@id/vProject"
+            app:layout_constraintTop_toTopOf="@id/vProject"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvProjectSub"
+            style="@style/ta.body.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/home_project_sub"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/vProject"
+            app:layout_constraintStart_toStartOf="@id/tvProjectTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvProjectTitle" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dv"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginTop="20dp"
+            app:dividerColor="@color/grey_50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/vStudy" />
+
+        <TextView
+            android:text="@string/home_recommend_meet_title"
+            android:id="@+id/tvRecommendMeet"
+            style="@style/ta.headline.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dv"
+            tools:text="판교 추천 모임" />
+
+        <TextView
+            android:id="@+id/tvRecommendMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="2dp"
+            android:text="@string/more"
+            android:textColor="@color/primary_200"
+            app:layout_constraintBottom_toTopOf="@id/rvRecommendMeet"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecommendMeet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecommendMeet"
+            tools:listitem="@layout/item_recommend_meet" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
