@@ -1,7 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.TeumTeum" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.TeumTeum" parent="android:Theme.Material.NoActionBar">
+        <!-- TEXT -->
+        <!-- headline -->
+        <item name="color_text_headline_primary">@color/text_headline_primary</item>
+        <item name="color_text_headline_secondary">@color/text_headline_secondary</item>
+        <item name="color_text_headline_teritary">@color/text_headline_teritary</item>
+
+        <!-- body -->
+        <item name="color_text_body_primary">@color/text_body_primary</item>
+        <item name="color_text_body_secondary">@color/text_body_secondary</item>
+        <item name="color_text_body_teritary">@color/text_body_teritary</item>
+        <item name="color_text_body_quaternary">@color/text_body_quaternary</item>
+        <item name="color_text_body_quinary">@color/text_body_quinary</item>
+
+        <!-- caption -->
+        <item name="color_text_caption_primary_default">@color/text_caption_primary_default</item>
+        <item name="color_text_caption_primary_error">@color/text_caption_primary_error</item>
+        <item name="color_text_caption_secondary_default">@color/text_caption_secondary_default</item>
+        <item name="color_text_caption_teritary_default">@color/text_caption_teritary_default</item>
+        <item name="color_text_caption_quaternary_default">@color/text_caption_quaternary_default</item>
+
+        <!-- button -->
+        <item name="color_text_button_primary_default">@color/text_button_primary_default</item>
+        <item name="color_text_button_primary_press">@color/text_button_primary_press</item>
+        <item name="color_text_button_primary_disabled">@color/text_button_primary_disabled</item>
+        <item name="color_text_button_secondary_default">@color/text_button_secondary_default</item>
+        <item name="color_text_button_alternative">@color/text_button_alternative</item>
+
+        <!-- BACKGROUND, ELEVATION -->
+        <!-- background -->
+        <item name="color_background">@color/background</item>
+
+        <!-- elevation -->
+        <item name="color_elevation_level01">@color/elevation_level01</item>
+        <item name="color_elevation_level02">@color/elevation_level02</item>
+        <item name="color_elevation_alternative">@color/elevation_alternative</item>
+
+        <!-- BUTTON -->
+        <item name="color_button_active">@color/button_active</item>
+        <item name="color_button_pressed">@color/button_pressed</item>
+        <item name="color_button_disabled">@color/button_disabled</item>
+        <item name="color_button_default01">@color/button_default01</item>
+        <item name="color_button_default02">@color/button_default02</item>
+        <item name="color_button_alternative">@color/button_alternative</item>
+
+        <!-- DIVIDER -->
+        <item name="color_divider_level01">@color/divider_level01</item>
+        <item name="color_divider_level02">@color/divider_level02</item>
+        <item name="color_divider_level03">@color/divider_level03</item>
+
+        <!-- OUTLINE -->
+        <item name="color_outline_level01_default">@color/outline_level01_default</item>
+        <item name="color_outline_level01_active">@color/outline_level01_active</item>
+        <item name="color_outline_level01_error">@color/outline_level01_error</item>
+        <item name="color_outline_level02">@color/outline_level02</item>
+        <item name="color_outline_level03">@color/outline_level03</item>
+        <item name="color_outline_level04_active">@color/outline_level04_active</item>
+        <item name="color_outline_level04_disabled">@color/outline_level04_disabled</item>
+
+        <!-- ICON -->
+        <item name="color_icon_level01">@color/icon_level01</item>
+        <item name="color_icon_level02_active">@color/icon_level02_active</item>
+        <item name="color_icon_level02_disabled">@color/icon_level02_disabled</item>
+        <item name="color_icon_level02_alternative">@color/icon_level02_alternative</item>
+        <item name="color_icon_level03">@color/icon_level03</item>
+        <item name="color_icon_level04">@color/icon_level04</item>
+
+        <!-- GRAPHIC -->
+        <item name="color_graphic_pink">@color/graphic_pink</item>
+        <item name="color_graphic_green">@color/graphic_green</item>
+        <item name="color_graphic_yellow">@color/graphic_yellow</item>
+        <item name="color_graphic_red">@color/graphic_red</item>
+        <item name="color_graphic_yelloworange">@color/graphic_yelloworange</item>
+        <item name="color_graphic_mint">@color/graphic_mint</item>
+        <item name="color_graphic_skyblue">@color/graphic_skyblue</item>
+        <item name="color_graphic_bluegrey">@color/graphic_bluegrey</item>
+        <item name="color_graphic_deepblue">@color/graphic_deepblue</item>
+        <item name="color_graphic_tmtm_mintblue">@color/graphic_tmtm_mintblue</item>
+        <item name="color_graphic_tmtm_purple">@color/graphic_tmtm_purple</item>
+        <item name="color_graphic_tmtm_lightpurple">@color/graphic_tmtm_lightpurple</item>
+        <item name="color_graphic_kakao">@color/graphic_kakao</item>
+        <item name="color_graphic_naver">@color/graphic_naver</item>
+    </style>
 
     <!--TextAppearance -->
     <style name="ta.headline.1" parent="">

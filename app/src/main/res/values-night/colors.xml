@@ -44,8 +44,7 @@
     <color name="elevation_alternative">@color/tmtm_blue_400</color>
 
     <!-- BUTTON -->
-    <color name="button_active01">@color/tmtm_blue_400</color>
-    <color name="button_active02">@color/tmtm_blue_200</color>
+    <color name="button_active">@color/tmtm_blue_400</color>
     <color name="button_pressed">@color/tmtm_blue_500</color>
     <color name="button_disabled">@color/grey_850</color>
     <color name="button_default01">@color/grey_900</color>
