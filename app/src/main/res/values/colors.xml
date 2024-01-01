@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 
     <!-- Grey scale -->
     <color name="grey_black">#111111</color>
@@ -62,7 +69,7 @@
     <color name="mintblue_400">#68C8FE</color>
     <color name="mintblue_200">#5DECFF</color>
     <color name="purple_400">#8E59FF</color>
-    <color name="purple_200">#9B6CFF</color>
+<!--    <color name="purple_200">#9B6CFF</color>-->
     <color name="lightpurple_400">#9E86FF</color>
     <color name="lightpurple_200">#AF9BFF</color>
 
@@ -73,7 +80,7 @@
     <!-- headline -->
     <color name="text_headline_primary">@color/grey_900</color>
     <color name="text_headline_secondary">@color/grey_800</color>
-    <color name="text_headline_teritary">#@color/grey_550</color>
+    <color name="text_headline_teritary">@color/grey_550</color>
 
     <!-- body -->
     <color name="text_body_primary">@color/grey_700</color>

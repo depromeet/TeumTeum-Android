@@ -7,11 +7,13 @@
     <color name="tmtm_blue_200">#96D7FF</color>
     <color name="tmtm_blue_100">#D2F0FF</color>
 
+    <color name="purple_200">#9B6CFF</color>
+
     <!-- TEXT -->
     <!-- headline -->
     <color name="text_headline_primary">@color/grey_50</color>
     <color name="text_headline_secondary">@color/grey_200</color>
-    <color name="text_headline_teritary">#@color/grey_500</color>
+    <color name="text_headline_teritary">@color/grey_500</color>
 
     <!-- body -->
     <color name="text_body_primary">@color/grey_50</color>
