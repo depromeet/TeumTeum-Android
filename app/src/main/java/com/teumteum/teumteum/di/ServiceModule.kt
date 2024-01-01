@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.di
 
 
+import com.teumteum.data.service.HomeService
 import com.teumteum.data.service.SampleService
 import dagger.Module
 import dagger.Provides
@@ -16,4 +17,9 @@ object ServiceModule {
     @Provides
     fun provideSampleService(teumteumRetrofit: Retrofit) =
         teumteumRetrofit.create(SampleService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideHomeService(teumteumRetrofit: Retrofit) =
+        teumteumRetrofit.create(HomeService::class.java)
 }

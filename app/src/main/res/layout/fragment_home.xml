@@ -194,7 +194,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="2dp"
             android:text="@string/more"
-            android:textColor="@color/primary_200"
+            android:textColor="@color/tmtm_blue_400"
             app:layout_constraintBottom_toTopOf="@id/rvRecommendMeet"
             app:layout_constraintEnd_toEndOf="parent" />
 

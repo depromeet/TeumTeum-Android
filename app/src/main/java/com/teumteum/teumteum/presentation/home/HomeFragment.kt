@@ -8,8 +8,9 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment :
     BindingFragment<FragmentHomeBinding>(R.layout.fragment_home), AppBarLayout {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
