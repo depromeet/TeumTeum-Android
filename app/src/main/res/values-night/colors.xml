@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tmtm blue (dark) -->
+    <color name="tmtm_blue_500">#0FA4FF</color>
+    <color name="tmtm_blue_400">#36B2FF</color>
+    <color name="tmtm_blue_300">#65C4FF</color>
+    <color name="tmtm_blue_200">#96D7FF</color>
+    <color name="tmtm_blue_100">#D2F0FF</color>
+
+    <!-- TEXT -->
+    <!-- headline -->
+    <color name="text_headline_primary">@color/grey_50</color>
+    <color name="text_headline_secondary">@color/grey_200</color>
+    <color name="text_headline_teritary">#@color/grey_500</color>
+
+    <!-- body -->
+    <color name="text_body_primary">@color/grey_50</color>
+    <color name="text_body_secondary">@color/grey_300</color>
+    <color name="text_body_teritary">@color/grey_400</color>
+    <color name="text_body_quaternary">@color/grey_500</color>
+    <color name="text_body_quinary">@color/grey_700</color>
+
+    <!-- caption -->
+    <color name="text_caption_primary_default">@color/grey_500</color>
+    <color name="text_caption_primary_error">@color/error_300</color>
+    <color name="text_caption_secondary_default">@color/grey_200</color>
+    <color name="text_caption_teritary_default">@color/grey_500</color>
+    <color name="text_caption_quaternary_default">@color/grey_700</color>
+
+    <!-- button -->
+    <color name="text_button_primary_default">@color/grey_white</color>
+    <color name="text_button_primary_press">@color/tmtm_blue_200</color>
+    <color name="text_button_primary_disabled">@color/grey_700</color>
+    <color name="text_button_secondary_default">@color/tmtm_blue_400</color>
+    <color name="text_button_alternative">@color/grey_white</color>
+
+    <!-- BACKGROUND, ELEVATION -->
+    <!-- background -->
+    <color name="background">@color/grey_black</color>
+
+    <!-- elevation -->
+    <color name="elevation_level01">@color/grey_900</color>
+    <color name="elevation_level02">@color/grey_800</color>
+    <color name="elevation_alternative">@color/tmtm_blue_400</color>
+
+    <!-- BUTTON -->
+    <color name="button_active01">@color/tmtm_blue_400</color>
+    <color name="button_active02">@color/tmtm_blue_200</color>
+    <color name="button_pressed">@color/tmtm_blue_500</color>
+    <color name="button_disabled">@color/grey_850</color>
+    <color name="button_default01">@color/grey_900</color>
+    <color name="button_default02">@color/grey_50</color>
+    <color name="button_alternative">@color/grey_600</color>
+
+    <!-- DIVIDER -->
+    <color name="divider_level01">@color/grey_950</color>
+    <color name="divider_level02">@color/grey_900</color>
+    <color name="divider_level03">@color/grey_800</color>
+
+    <!-- OUTLINE -->
+    <color name="outline_level01_default">@color/grey_900</color>
+    <color name="outline_level01_active">@color/tmtm_blue_400</color>
+    <color name="outline_level01_error">@color/error_300</color>
+    <color name="outline_level02">@color/grey_850</color>
+    <color name="outline_level03">@color/grey_800</color>
+    <color name="outline_level04_active">@color/grey_50</color>
+    <color name="outline_level04_disabled">@color/grey_800</color>
+
+    <!-- ICON -->
+    <color name="icon_level01">@color/grey_50</color>
+    <color name="icon_level02_active">@color/tmtm_blue_400</color>
+    <color name="icon_level02_disabled">@color/grey_800</color>
+    <color name="icon_level02_alternative">@color/error_300</color>
+    <color name="icon_level03">@color/grey_500</color>
+    <color name="icon_level04">@color/grey_700</color>
+
+    <!-- GRAPHIC -->
+    <color name="graphic_pink">@color/pink_200</color>
+    <color name="graphic_green">@color/green_200</color>
+    <color name="graphic_yellow">@color/yellow_200</color>
+    <color name="graphic_red">@color/red_200</color>
+    <color name="graphic_yelloworange">@color/yelloworange_200</color>
+    <color name="graphic_mint">@color/mint_200</color>
+    <color name="graphic_skyblue">@color/skyblue_200</color>
+    <color name="graphic_bluegrey">@color/bluegrey_200</color>
+    <color name="graphic_deepblue">@color/deepblue_200</color>
+    <color name="graphic_tmtm_mintblue">@color/mintblue_200</color>
+    <color name="graphic_tmtm_purple">@color/purple_200</color>
+    <color name="graphic_tmtm_lightpurple">@color/lightpurple_200</color>
+    <color name="graphic_kakao">#FEE500</color>
+    <color name="graphic_naver">#04C75B</color>
+
+</resources>
