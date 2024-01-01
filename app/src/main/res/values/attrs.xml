@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TEXT -->
+    <!-- headline -->
+    <attr name="color_text_headline_primary" format="reference|color" />
+    <attr name="color_text_headline_secondary" format="reference|color" />
+    <attr name="color_text_headline_teritary" format="reference|color" />
+
+    <!-- body -->
+    <attr name="color_text_body_primary" format="reference|color" />
+    <attr name="color_text_body_secondary" format="reference|color" />
+    <attr name="color_text_body_teritary" format="reference|color" />
+    <attr name="color_text_body_quaternary" format="reference|color" />
+    <attr name="color_text_body_quinary" format="reference|color" />
+
+    <!-- caption -->
+    <attr name="color_text_caption_primary_default" format="reference|color" />
+    <attr name="color_text_caption_primary_error" format="reference|color" />
+    <attr name="color_text_caption_secondary_default" format="reference|color" />
+    <attr name="color_text_caption_teritary_default" format="reference|color" />
+    <attr name="color_text_caption_quaternary_default" format="reference|color" />
+
+    <!-- button -->
+    <attr name="color_text_button_primary_default" format="reference|color" />
+    <attr name="color_text_button_primary_press" format="reference|color" />
+    <attr name="color_text_button_primary_disabled" format="reference|color" />
+    <attr name="color_text_button_secondary_default" format="reference|color" />
+    <attr name="color_text_button_alternative" format="reference|color" />
+
+    <!-- BACKGROUND, ELEVATION -->
+    <!-- background -->
+    <attr name="color_background" format="reference|color" />
+
+    <!-- elevation -->
+    <attr name="color_elevation_level01" format="reference|color" />
+    <attr name="color_elevation_level02" format="reference|color" />
+    <attr name="color_elevation_alternative" format="reference|color" />
+
+    <!-- BUTTON -->
+    <attr name="color_button_active" format="reference|color" />
+    <attr name="color_button_pressed" format="reference|color" />
+    <attr name="color_button_disabled" format="reference|color" />
+    <attr name="color_button_default01" format="reference|color" />
+    <attr name="color_button_default02" format="reference|color" />
+    <attr name="color_button_alternative" format="reference|color" />
+
+    <!-- DIVIDER -->
+    <attr name="color_divider_level01" format="reference|color" />
+    <attr name="color_divider_level02" format="reference|color" />
+    <attr name="color_divider_level03" format="reference|color" />
+
+    <!-- OUTLINE -->
+    <attr name="color_outline_level01_default" format="reference|color" />
+    <attr name="color_outline_level01_active" format="reference|color" />
+    <attr name="color_outline_level01_error" format="reference|color" />
+    <attr name="color_outline_level02" format="reference|color" />
+    <attr name="color_outline_level03" format="reference|color" />
+    <attr name="color_outline_level04_active" format="reference|color" />
+    <attr name="color_outline_level04_disabled" format="reference|color" />
+
+    <!-- ICON -->
+    <attr name="color_icon_level01" format="reference|color" />
+    <attr name="color_icon_level02_active" format="reference|color" />
+    <attr name="color_icon_level02_disabled" format="reference|color" />
+    <attr name="color_icon_level02_alternative" format="reference|color" />
+    <attr name="color_icon_level03" format="reference|color" />
+    <attr name="color_icon_level04" format="reference|color" />
+
+    <!-- GRAPHIC -->
+    <attr name="color_graphic_pink" format="reference|color" />
+    <attr name="color_graphic_green" format="reference|color" />
+    <attr name="color_graphic_yellow" format="reference|color" />
+    <attr name="color_graphic_red" format="reference|color" />
+    <attr name="color_graphic_yelloworange" format="reference|color" />
+    <attr name="color_graphic_mint" format="reference|color" />
+    <attr name="color_graphic_skyblue" format="reference|color" />
+    <attr name="color_graphic_bluegrey" format="reference|color" />
+    <attr name="color_graphic_deepblue" format="reference|color" />
+    <attr name="color_graphic_tmtm_mintblue" format="reference|color" />
+    <attr name="color_graphic_tmtm_purple" format="reference|color" />
+    <attr name="color_graphic_tmtm_lightpurple" format="reference|color" />
+    <attr name="color_graphic_kakao" format="reference|color" />
+    <attr name="color_graphic_naver" format="reference|color" />
+
+</resources>
