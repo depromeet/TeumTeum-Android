@@ -1,15 +1,14 @@
 package com.teumteum.teumteum.presentation.home
 
-import android.content.ContentValues
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teumteum.domain.repository.SampleRepository
+import com.teumteum.domain.entity.RecommendMeetEntity
+import com.teumteum.domain.repository.HomeRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
