@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/grey_900"
+        app:cardCornerRadius="12dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCardFront"
+            android:layout_width="280dp"
+            android:layout_height="400dp">
+
+            <TextView
+                android:id="@+id/tvName"
+                style="@style/ta.headline.1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="40dp"
+                android:text="디프만"
+                android:textColor="@color/grey_50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="디프만" />
+
+            <TextView
+                android:id="@+id/tvCompany"
+                style="@style/ta.headline.6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="\@직장,학교명"
+                android:textColor="@color/grey_400"
+                app:layout_constraintEnd_toEndOf="@id/tvName"
+                app:layout_constraintStart_toStartOf="@id/tvName"
+                app:layout_constraintTop_toBottomOf="@id/tvName"
+                tools:text="\@직장,학교명" />
+
+            <TextView
+                android:id="@+id/tvJob"
+                style="@style/ta.headline.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="직무명"
+                android:textColor="@color/grey_50"
+                app:layout_constraintEnd_toEndOf="@id/tvCompany"
+                app:layout_constraintStart_toStartOf="@id/tvCompany"
+                app:layout_constraintTop_toBottomOf="@id/tvCompany"
+                tools:text="직무명" />
+
+            <TextView
+                android:id="@+id/tvLevel"
+                style="@style/ta.body.3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_rect4_grey_800"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="lv.3층"
+                android:textColor="@color/grey_300"
+                app:layout_constraintStart_toStartOf="@id/tvJob"
+                app:layout_constraintTop_toBottomOf="@id/tvJob"
+                tools:text="lv.3층" />
+
+            <TextView
+                android:id="@+id/tvArea"
+                style="@style/ta.body.3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택 지역에 사는"
+                android:textColor="@color/grey_400"
+                app:layout_constraintBottom_toTopOf="@id/tvMbti"
+                app:layout_constraintStart_toStartOf="@id/tvMbti"
+                tools:text="선택 지역에 사는" />
+
+            <TextView
+                android:id="@+id/tvMbti"
+                style="@style/ta.headline.4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="MBTI"
+                android:textColor="@color/grey_50"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tvLevel"
+                tools:text="MBTI" />
+
+            <ImageView
+                android:id="@+id/tvCharacter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_card_penguin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@drawable/ic_card_penguin" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
