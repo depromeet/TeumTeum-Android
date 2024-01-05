@@ -10,7 +10,7 @@
 
     <inset >
         <shape android:shape="rectangle">
-            <solid android:color="@color/icon_level02_active" />
+            <solid android:color="@color/icon_level02_disabled" />
             <size android:width="8dp" android:height="8dp" />
         </shape>
     </inset>
