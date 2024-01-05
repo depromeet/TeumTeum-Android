@@ -80,7 +80,7 @@
     <!-- headline -->
     <color name="text_headline_primary">@color/grey_900</color>
     <color name="text_headline_secondary">@color/grey_800</color>
-    <color name="text_headline_teritary">@color/grey_550</color>
+    <color name="text_headline_teritary">@color/grey_500</color>
 
     <!-- body -->
     <color name="text_body_primary">@color/grey_700</color>
