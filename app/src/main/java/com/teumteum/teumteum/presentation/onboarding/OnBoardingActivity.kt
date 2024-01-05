@@ -33,7 +33,10 @@ class OnBoardingActivity
     private fun initViewPager() {
         onBoardingViewPagerAdapter.submitList(viewpagerList)
         binding.vp.adapter = onBoardingViewPagerAdapter
-        TabLayoutMediator(binding.tl, binding.vp) { _, _ -> }.attach()
+        binding.tl.clearOnTabSelectedListeners()
+        TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
+            tab.view.isClickable = false
+        }.attach()
     }
 
 }
