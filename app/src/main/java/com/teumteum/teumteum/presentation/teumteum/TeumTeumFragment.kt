@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
@@ -91,20 +92,26 @@ class TeumTeumFragment :
             val x = event.values[0] // X축 데이터
             val y = event.values[1] // Y축 데이터
 
-            val layoutParams = binding.vDynamic.layoutParams as ConstraintLayout.LayoutParams
+            // 뷰들의 초기 위치 설정
+            val initialBiasX = 0.5f
+            val initialBiasY = 0.5f
 
-            // 센서 값에 따라 horizontalBias와 verticalBias를 조정
-            // 단, 값은 0.0과 1.0 사이에 있어야 함
-            val newHorizontalBias = Math.max(0f, Math.min(1f, layoutParams.horizontalBias - x * 0.01f))
-            val newVerticalBias = Math.max(0f, Math.min(1f, layoutParams.verticalBias + y * 0.01f))
+            // 센서 데이터에 적용되는 계수를 조정
+            val movementScale = 0.05f // 움직임의 범위를 조정하는 계수
 
-            layoutParams.horizontalBias = newHorizontalBias
-            layoutParams.verticalBias = newVerticalBias
-            binding.vDynamic.layoutParams = layoutParams
+            // 각 뷰의 위치를 순차적으로 조정
+            updateStackedViewPosition(binding.vDynamic1, x, y, initialBiasX, initialBiasY, movementScale+0.08f)
+            updateStackedViewPosition(binding.vDynamic2, x, y, initialBiasX + 0.14f, initialBiasY + 0.35f, movementScale+0.1f)
+            updateStackedViewPosition(binding.vDynamic3, x, y, initialBiasX + 0.28f, initialBiasY + 0.2f, movementScale+0.2f)
         }
-        // 자이로스코프 센서 로직 추가 가능
     }
 
+    private fun updateStackedViewPosition(view: View, x: Float, y: Float, biasX: Float, biasY: Float, scale: Float) {
+        val layoutParams = view.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.horizontalBias = Math.max(0f, Math.min(1f, biasX - x * scale))
+        layoutParams.verticalBias = Math.max(0f, Math.min(1f, biasY + y * scale))
+        view.layoutParams = layoutParams
+    }
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
 }
