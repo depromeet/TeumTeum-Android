@@ -11,7 +11,7 @@ class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
