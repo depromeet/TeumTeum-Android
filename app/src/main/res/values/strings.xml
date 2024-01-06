@@ -13,4 +13,13 @@
     <string name="home_project_title">사이드 프로젝트</string>
     <string name="home_project_sub">사이드 프로젝트\n팀을 구해보세요</string>
     <string name="home_recommend_meet_title">판교 추천 모임</string>
+
+    <string name="onboarding_btn_start">시작하기</string>
+    <string name="onboarding_tv_namecard_title">나를 대표하는\n소개서를 만들어보세요</string>
+    <string name="onboarding_tv_namecard_subtitle">틈틈의 소개서 만들기 기능으로\n나를 대표하는 카드를 만들어보세요</string>
+    <string name="onboarding_tv_meet_title">퇴근, 하교 후 자투리 시간에\nIT 갓생러들과 함께 만나요!</string>
+    <string name="onboarding_tv_meet_subtitle">시간과 시간 사이\n여러분의 시간을 틈틈으로 채워보세요</string>
+    <string name="onboarding_tv_networking_title">틈틈의 인증 시스템들로\n안전한 네트워킹을 즐겨보세요</string>
+    <string name="onboarding_tv_networking_subtitle">회사/학교 인증, 지인 인증, 리뷰 등으로\n안전한 네트워킹을 즐겨보세요</string>
+
 </resources>
