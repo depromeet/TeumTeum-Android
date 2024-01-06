@@ -168,6 +168,7 @@ compose-lottie = { group = "com.airbnb.android", name = "lottie-compose", versio
 jUnit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 androidTest = { group = "androidx.test.ext", name = "junit", version.ref = "androidTestVersion" }
 espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoVersion" }
+androidx-ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version = "1.5.4" }
 
 # 사용될 플러그인
 [plugins]

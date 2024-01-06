@@ -46,6 +46,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     buildConfig = true
                     viewBinding = true
                     dataBinding = true
+                    compose = true
                 }
 
                 buildTypes {
@@ -106,6 +107,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 // okhttp
                 implementation(platform(libs.getLibrary("okhttp-Bom")))
                 implementation(libs.getBundle("okhttp"))
+
+                implementation(libs.getBundle("compose"))
 
 //                // kakao
 //                implementation(libs.getBundle("kakao"))
