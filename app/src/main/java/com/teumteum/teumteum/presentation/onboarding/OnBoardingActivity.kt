@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.onboarding
 
 import android.os.Bundle
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
 import com.teumteum.domain.entity.ViewPagerEntity
@@ -33,6 +34,7 @@ class OnBoardingActivity
     private fun initViewPager() {
         onBoardingViewPagerAdapter.submitList(viewpagerList)
         binding.vp.adapter = onBoardingViewPagerAdapter
+        binding.vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         binding.tl.clearOnTabSelectedListeners()
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
             tab.view.isClickable = false

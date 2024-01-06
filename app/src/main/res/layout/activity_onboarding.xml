@@ -12,12 +12,16 @@
         android:theme="@style/Theme.TeumTeum"
         >
 
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="108dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            app:layout_constraintBottom_toTopOf="@id/tl"
             />
 
         <com.google.android.material.tabs.TabLayout
@@ -29,6 +33,7 @@
             app:tabIndicatorGravity="center"
             android:clickable="false"
             android:contextClickable="false"
+
             app:tabGravity="center"
             app:tabMaxWidth="20dp"
             app:tabIndicatorHeight="0dp"
