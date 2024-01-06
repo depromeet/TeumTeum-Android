@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.TeumTeum" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.TeumTeum" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/background</item>
         <!-- TEXT -->
         <!-- headline -->
         <item name="color_text_headline_primary">@color/text_headline_primary</item>
