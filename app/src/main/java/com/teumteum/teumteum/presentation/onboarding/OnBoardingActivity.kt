@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.component.appbar.AppBarLayout
+import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.domain.entity.ViewPagerEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
@@ -12,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OnBoardingActivity
-    : BindingActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding) {
+    : BindingActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding), AppBarLayout {
 
     private val onBoardingViewPagerAdapter = OnBoardingViewPagerAdapter()
 
@@ -21,8 +23,16 @@ class OnBoardingActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initAppBarLayout()
         initViewPagerItem()
         initViewPager()
+    }
+
+    override val appBarBinding: LayoutCommonAppbarBinding
+        get() = binding.appBar
+
+    override fun initAppBarLayout() {
+        setAppBarHeight(48)
     }
 
     private fun initViewPagerItem() {
