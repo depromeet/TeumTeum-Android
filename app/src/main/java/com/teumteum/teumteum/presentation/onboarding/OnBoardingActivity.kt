@@ -6,7 +6,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.domain.entity.ViewPagerEntity
+import com.teumteum.domain.entity.CommonViewPagerEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.onboarding.adapter.OnBoardingViewPagerAdapter
@@ -18,7 +18,7 @@ class OnBoardingActivity
 
     private val onBoardingViewPagerAdapter = OnBoardingViewPagerAdapter()
 
-    private val viewpagerList = ArrayList<ViewPagerEntity>()
+    private val viewpagerList = ArrayList<CommonViewPagerEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +36,20 @@ class OnBoardingActivity
     }
 
     private fun initViewPagerItem() {
-        viewpagerList.add(ViewPagerEntity(getString(R.string.onboarding_tv_namecard_title), getString(R.string.onboarding_tv_namecard_subtitle), 0))
-        viewpagerList.add(ViewPagerEntity(getString(R.string.onboarding_tv_meet_title), getString(R.string.onboarding_tv_meet_subtitle), 0))
-        viewpagerList.add(ViewPagerEntity(getString(R.string.onboarding_tv_networking_title), getString(R.string.onboarding_tv_networking_subtitle), 0))
+        with(viewpagerList) {
+            add(CommonViewPagerEntity(getString(R.string.onboarding_tv_namecard_title), getString(R.string.onboarding_tv_namecard_subtitle), 0))
+            add(CommonViewPagerEntity(getString(R.string.onboarding_tv_meet_title), getString(R.string.onboarding_tv_meet_subtitle), 0))
+            add(CommonViewPagerEntity(getString(R.string.onboarding_tv_networking_title), getString(R.string.onboarding_tv_networking_subtitle), 0))
+        }
     }
 
     private fun initViewPager() {
         onBoardingViewPagerAdapter.submitList(viewpagerList)
-        binding.vp.adapter = onBoardingViewPagerAdapter
-        binding.vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        binding.tl.clearOnTabSelectedListeners()
+        with(binding) {
+            vp.adapter = onBoardingViewPagerAdapter
+            vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+            tl.clearOnTabSelectedListeners()
+        }
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
             tab.view.isClickable = false
         }.attach()

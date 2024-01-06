@@ -5,41 +5,42 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.teumteum.domain.entity.ViewPagerEntity
+import com.teumteum.domain.entity.CommonViewPagerEntity
 import com.teumteum.teumteum.databinding.ItemOnboardingViewpagerBinding
 
-class OnBoardingViewPagerAdapter: ListAdapter<ViewPagerEntity, OnBoardingViewPagerAdapter.ItemViewHolder>(ItemListDiffCallback) {
+class OnBoardingViewPagerAdapter: ListAdapter<CommonViewPagerEntity, OnBoardingViewPagerAdapter.ItemViewHolder>(ItemListDiffCallback) {
     private lateinit var binding: ItemOnboardingViewpagerBinding
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): OnBoardingViewPagerAdapter.ItemViewHolder {
+    ): ItemViewHolder {
         binding = ItemOnboardingViewpagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: OnBoardingViewPagerAdapter.ItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class ItemViewHolder(private val binding: ItemOnboardingViewpagerBinding)
+    class ItemViewHolder(private val binding: ItemOnboardingViewpagerBinding)
         : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ViewPagerEntity) {
-            binding.tvTitle.text = item.title
-            binding.tvSubtitle.text = item.subtitle
-//            binding.rectError.setImageResource()
+        fun bind(item: CommonViewPagerEntity) {
+            with(binding) {
+                tvTitle.text = item.title
+                tvSubtitle.text = item.subtitle
+            }
         }
     }
 
-    object ItemListDiffCallback : DiffUtil.ItemCallback<ViewPagerEntity>() {
-        override fun areItemsTheSame(oldItem: ViewPagerEntity, newItem: ViewPagerEntity): Boolean {
+    object ItemListDiffCallback : DiffUtil.ItemCallback<CommonViewPagerEntity>() {
+        override fun areItemsTheSame(oldItem: CommonViewPagerEntity, newItem: CommonViewPagerEntity): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ViewPagerEntity,
-            newItem: ViewPagerEntity
+            oldItem: CommonViewPagerEntity,
+            newItem: CommonViewPagerEntity
         ): Boolean {
             return oldItem.title == newItem.title
         }
