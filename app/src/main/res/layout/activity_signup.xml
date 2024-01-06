@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:theme="@style/Theme.TeumTeum"
+        >
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/seekbar_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:progress="30"
+            android:layout_marginStart="-20dp"
+            android:layout_marginEnd="-20dp"
+            android:thumb="@null"
+            android:max="100"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            app:layout_constraintTop_toBottomOf="@id/seekBar"
+            />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="?attr/color_divider_level02"
+            app:layout_constraintBottom_toTopOf="@id/btn_next"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/sel_button_cta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:enabled="true"
+            android:text="@string/onboarding_btn_start"
+            android:textAppearance="@style/ta.headline.6"
+            android:textColor="@color/color_text_button_primary_selector"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
