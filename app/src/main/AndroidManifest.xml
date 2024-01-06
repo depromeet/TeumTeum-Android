@@ -20,6 +20,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".presentation.teumteum.shake.view.ShakeActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -28,7 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.group.GroupListActivity"
+        <activity
+            android:name=".presentation.group.GroupListActivity"
             android:exported="false" />
     </application>
 
