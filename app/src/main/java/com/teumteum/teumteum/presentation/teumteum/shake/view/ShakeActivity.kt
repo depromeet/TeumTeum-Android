@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
@@ -20,6 +21,7 @@ import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityShakeBinding
 import com.teumteum.teumteum.presentation.teumteum.shake.model.UserInterest
+import com.teumteum.teumteum.presentation.teumteum.shake.model.UserInterestInfo
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +46,14 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        addUserInterestView(12)
+        // UserInterest 객체를 위한 정보를 정의한 리스트
+        val userInterests = listOf(
+            UserInterestInfo("텍스트1", Color.BLUE),
+            UserInterestInfo("텍스트2", Color.RED),
+            // 나머지 객체들에 대한 정보
+        )
+
+        addUserInterestView(userInterests)
     }
 
     override fun initAppBarLayout() {
@@ -114,7 +123,7 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
-    private fun addUserInterestView(numberOfInterests: Int) {
+    private fun addUserInterestView(userInterests: List<UserInterestInfo>) {
         val shakeView = ShakeView(this)
 
         // 뷰의 폭과 높이를 dp 단위로 지정 (여기서는 100dp x 100dp)
@@ -122,36 +131,24 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         val viewHeight = TransformUtils.dpToPx(80f) // dp를 픽셀로 변환
 
         // 지정된 수만큼 UserInterest 객체들을 생성하고 ShakeView에 추가
-        for (i in 1..numberOfInterests) {
-            // UserInterest의 위치를 무작위로 설정 (화면 경계 내에서)
-            val x = Random.nextFloat() * (getScreenWidth() - viewWidth)
-            val y = Random.nextFloat() * (getScreenHeight() - viewHeight)
+        userInterests.forEach { info ->
+            val viewWidth = TransformUtils.dpToPx(80f)
+            val viewHeight = TransformUtils.dpToPx(80f)
+            val moveSensitivity = Random.nextFloat()*2f
 
-            // UserInterest의 색상을 무작위로 설정
-            val color = Color.argb(
-                255,
-                Random.nextInt(256),
-                Random.nextInt(256),
-                Random.nextInt(256)
-            )
 
-            // UserInterest의 움직임 민감도를 설정 (여기서는 무작위 값 사용)
-            val moveSensitivity = Random.nextFloat() * 2f
-
-            // UserInterest 객체 생성 및 추가
             val userInterest = UserInterest(
-                x,
-                y,
-                viewWidth,
-                viewHeight,
-                color,
-                moveSensitivity,
-                "디자인"
+                x = Random.nextFloat() * (getScreenWidth() - viewWidth),
+                y = Random.nextFloat() * (getScreenHeight() - viewHeight),
+                width = viewWidth,
+                height = viewHeight,
+                color = info.color, // 지정된 색상 사용,
+                moveSensitivity = moveSensitivity,
+                text = info.text // 지정된 텍스트 사용
             )
             shakeView.addUserInterest(userInterest)
         }
 
-        // 생성된 ShakeView를 shakeViews 리스트에 추가
         shakeViews.add(shakeView)
 
         // ShakeView의 레이아웃 파라미터 설정 (MATCH_PARENT를 사용하여 전체 화면을 차지하도록 설정)
