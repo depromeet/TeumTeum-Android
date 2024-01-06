@@ -38,7 +38,8 @@ data class ColorPalette_Light(
     val color_text_button_secondary_default: Color = Color(0xFF44AEF),
     val color_text_button_alternative: Color = Color(0xFF212121),
 
-
+    val Gray950: Color = Color(0xFF191919),
+    val Gray900: Color = Color(0xFF212121),
     val Gray700: Color = Color(0xFF444444),
     val Gray550: Color = Color(0xFF6E6E6E),
     val Gray500: Color = Color(0xFF828282),
