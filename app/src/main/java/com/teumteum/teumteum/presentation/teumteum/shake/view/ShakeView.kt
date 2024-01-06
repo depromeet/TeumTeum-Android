@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.teumteum.shake.view
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -51,22 +52,34 @@ class ShakeView(
 
     fun updateViewPositions(x: Float, y: Float) {
         views.forEach { userInterest ->
-            // 기존 로직
-            val deltaX = x * userInterest.moveSensitivity
-            val deltaY = y * userInterest.moveSensitivity
+            // 목표 위치 계산
+            var targetX = userInterest.x + x * userInterest.moveSensitivity
+            var targetY = userInterest.y + y * userInterest.moveSensitivity
 
-            userInterest.x += deltaX
-            userInterest.y += deltaY
+            // 화면 경계를 고려하여 목표 위치 조정
+            targetX = max(0f, min(targetX, width.toFloat() - userInterest.width))
+            targetY = max(0f, min(targetY, height.toFloat() - userInterest.height))
 
-            // 화면 경계 내에 뷰를 유지
-            userInterest.x =
-                max(0f, min(userInterest.x, context.getScreenWidth() - userInterest.width))
-            // userInterest.height를 더해 하단 경계 계산
-            userInterest.y =
-                max(0f, min(userInterest.y, context.getScreenHeight() - userInterest.height))
+            // X 좌표 애니메이션
+            ValueAnimator.ofFloat(userInterest.x, targetX).apply {
+                duration = 100 // 애니메이션 지속 시간
+                addUpdateListener { animation ->
+                    userInterest.x = animation.animatedValue as Float
+                    invalidate()
+                }
+                start()
+            }
+
+            // Y 좌표 애니메이션
+            ValueAnimator.ofFloat(userInterest.y, targetY).apply {
+                duration = 100 // 애니메이션 지속 시간
+                addUpdateListener { animation ->
+                    userInterest.y = animation.animatedValue as Float
+                    invalidate()
+                }
+                start()
+            }
         }
-
-        invalidate()
     }
 
 // Add collision detection and other necessary methods here

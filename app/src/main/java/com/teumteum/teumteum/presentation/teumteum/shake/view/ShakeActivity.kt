@@ -48,9 +48,16 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
         // UserInterest 객체를 위한 정보를 정의한 리스트
         val userInterests = listOf(
-            UserInterestInfo("텍스트1", Color.BLUE),
-            UserInterestInfo("텍스트2", Color.RED),
-            // 나머지 객체들에 대한 정보
+            UserInterestInfo("디자인", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
+            UserInterestInfo("IT", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)),
+            UserInterestInfo("경제", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)),
+            UserInterestInfo("재테크", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
+            UserInterestInfo("퍼스널 브랜딩", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
+            UserInterestInfo("마음 수련", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
+            UserInterestInfo("네트워킹", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)),
+            UserInterestInfo("네트워킹", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)),
+            UserInterestInfo("고민 나누기", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)),
+            UserInterestInfo("IT", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)),
         )
 
         addUserInterestView(userInterests)
@@ -95,7 +102,7 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationPattern = LongArray(8) { if (it == 0) 0L else 1L }
-            val amplitudes = IntArray(8) { 190 }
+            val amplitudes = IntArray(8) { 200 }
 
             val vibrationEffect = VibrationEffect.createWaveform(vibrationPattern, amplitudes, -1)
             vibrator.vibrate(vibrationEffect)
@@ -126,15 +133,11 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     private fun addUserInterestView(userInterests: List<UserInterestInfo>) {
         val shakeView = ShakeView(this)
 
-        // 뷰의 폭과 높이를 dp 단위로 지정 (여기서는 100dp x 100dp)
-        val viewWidth = TransformUtils.dpToPx(80f)  // dp를 픽셀로 변환
-        val viewHeight = TransformUtils.dpToPx(80f) // dp를 픽셀로 변환
-
         // 지정된 수만큼 UserInterest 객체들을 생성하고 ShakeView에 추가
         userInterests.forEach { info ->
             val viewWidth = TransformUtils.dpToPx(80f)
             val viewHeight = TransformUtils.dpToPx(80f)
-            val moveSensitivity = Random.nextFloat()*2f
+            val moveSensitivity = Random.nextFloat()*100f //애니메이션 duration과 moveSensitivity 밸런싱으로 부드러움 조절
 
 
             val userInterest = UserInterest(
