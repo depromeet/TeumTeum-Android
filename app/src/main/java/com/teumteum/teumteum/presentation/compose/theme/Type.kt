@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.compose.theme
 
 
 
+import androidx.compose.material.Typography
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -20,6 +21,15 @@ val Pretendard = FontFamily(
     Font(font.pretendard_regular, FontWeight.Normal, FontStyle.Normal),
     Font(font.pretendard_light, FontWeight.Light, FontStyle.Normal),
     Font(font.pretendard_extralight, FontWeight.ExtraLight, FontStyle.Normal),
+)
+
+// Set of Material typography styles to start with
+val Typography = Typography(
+    body1 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    )
 )
 
 data class Type(

@@ -7,6 +7,9 @@ coroutinesAndroidVersion = "1.7.1"
 kotlinDateTimeVersion = "0.4.0"
 gsonVersion = "2.10.1"
 
+## Compose material3
+material3="1.1.1"
+
 ## AndroidX
 coreKtxVersion = "1.10.1"
 appCompatVersion = "1.6.1"
@@ -104,6 +107,9 @@ androidx-navigationUi = { group = "androidx.navigation", name = "navigation-ui-k
 androidx-navigationDynamic = { group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version.ref = "navigationVersion" }
 billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billingVersion" }
 
+# Compose-material3
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref="material3" }
+material3-window = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref="material3" }
 materialDesign = { group = "com.google.android.material", name = "material", version.ref = "materialDesignVersion" }
 
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
@@ -214,7 +220,10 @@ compose = [
     "compose-lifecycle",
     "compose-paging",
     "compose-coil",
-    "compose-lottie"
+    "compose-lottie",
+    "material3",
+    "material3-window",
+    "materialDesign"
 ]
 
 #kakao = [
