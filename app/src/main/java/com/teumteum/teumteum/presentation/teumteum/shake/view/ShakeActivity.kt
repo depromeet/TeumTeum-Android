@@ -13,6 +13,9 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.component.appbar.AppBarLayout
+import com.teumteum.base.component.appbar.AppBarMenu
+import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityShakeBinding
@@ -23,39 +26,47 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_shake),
+class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_shake), AppBarLayout,
     SensorEventListener {
 
     private lateinit var shakeDetector: ShakeDetector
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
-    private var gyroscope: Sensor? = null
     private val shakeViews = mutableListOf<ShakeView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initAppBarLayout()
+
         shakeDetector = ShakeDetector(this, ::triggerVibration, ::stopVibration)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
 
         addUserInterestView(12)
     }
+
+    override fun initAppBarLayout() {
+        setAppBarHeight(48)
+
+        addMenuToLeft(
+            AppBarMenu.IconStyle(
+                resourceId = R.drawable.ic_arrow_left_l,
+                useRippleEffect = false,
+                clickEvent = null
+            )
+        )
+    }
+
+    override val appBarBinding: LayoutCommonAppbarBinding
+        get() = binding.appBar
 
     override fun onResume() {
         super.onResume()
         shakeDetector.resume()
 
         accelerometer?.let {
-            sensorManager.registerListener(
-                this,
-                it,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        }
-        gyroscope?.let {
             sensorManager.registerListener(
                 this,
                 it,
@@ -103,9 +114,6 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
-    // triggerVibration, stopVibration, onSensorChanged, onAccuracyChanged 메서드는 동일하게 유지
-
-    // addUserInterestView 메서드는 동일하게 유지하지만, binding 객체를 통해 레이아웃에 접근
     private fun addUserInterestView(numberOfInterests: Int) {
         val shakeView = ShakeView(this)
 
@@ -137,7 +145,8 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
                 viewWidth,
                 viewHeight,
                 color,
-                moveSensitivity
+                moveSensitivity,
+                "디자인"
             )
             shakeView.addUserInterest(userInterest)
         }

@@ -6,5 +6,6 @@ data class UserInterest(
     val width: Int,
     val height: Int,
     val color: Int,
-    val moveSensitivity: Float
+    val moveSensitivity: Float,
+    var text: String
 )

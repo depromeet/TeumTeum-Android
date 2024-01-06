@@ -2,16 +2,19 @@ package com.teumteum.teumteum.presentation.teumteum.shake.view
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.teumteum.shake.model.UserInterest
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
+import timber.log.Timber
 import java.lang.Float.max
 import java.lang.Float.min
 
@@ -20,24 +23,24 @@ class ShakeView(
     attrs: AttributeSet? = null,
 ) : View(context, attrs) {
     private val paint = Paint()
+
     private val views = mutableListOf<UserInterest>()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Draw each view with rounded corners
         views.forEach { view ->
+            // 도형 그리기
             paint.color = view.color
-            // 반지름(radius) 값 정의
-            val radius = TransformUtils.dpToPx(4f).toFloat() // 이 값을 변경하여 둥근 모서리의 크기를 조절할 수 있습니다.
-            canvas.drawRoundRect(
-                view.x,
-                view.y,
-                view.x + view.width,
-                view.y + view.height,
-                radius,
-                radius,
-                paint
-            )
+            val radius = TransformUtils.dpToPx(4f).toFloat()
+            canvas.drawRoundRect(view.x, view.y, view.x + view.width, view.y + view.height, radius, radius, paint)
+
+            // 텍스트 그리기
+            paint.color = Color.BLACK // 텍스트 색상
+            paint.textSize = TransformUtils.dpToPx(16f).toFloat() // 텍스트 크기
+            paint.textAlign = Paint.Align.CENTER // 텍스트 정렬
+            val textX = view.x + view.width / 2
+            val textY = view.y + view.height / 2 - (paint.descent() + paint.ascent()) / 2
+            canvas.drawText(view.text, textX, textY, paint)
         }
     }
 
