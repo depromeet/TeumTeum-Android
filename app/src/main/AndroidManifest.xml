@@ -36,6 +36,8 @@
             android:exported="false" />
         <activity android:name=".presentation.signup.terms.TermsActivity"
             android:exported="false" />
+        <activity android:name=".presentation.signup.intro.CardIntroActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

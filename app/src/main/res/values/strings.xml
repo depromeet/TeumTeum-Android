@@ -32,5 +32,8 @@
     <string name="signup_tv_terms_agree_2">개인정보 처리방침</string>
     <string name="signup_tv_terms_mandatory">(필수)</string>
     <string name="signup_btn_start">시작하기</string>
+    <string name="signup_tv_card_intro_title">나만의 소개서를 만들어 봐요</string>
+    <string name="signup_tv_card_intro_subtitle">모임에 참여할 때 나를 더 쉽게 소개할 수 있어요</string>
+    <string name="signup_tv_move_card">좌우로 움직여 앞/뒷면을 확인해 보세요</string>
 
 </resources>
