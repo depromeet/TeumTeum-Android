@@ -10,6 +10,10 @@ android {
         compose = true
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.6"
+    }
+
     namespace = "com.teumteum.base"
 }
 

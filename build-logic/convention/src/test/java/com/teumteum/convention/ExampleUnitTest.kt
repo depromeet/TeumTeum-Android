@@ -1,8 +1,8 @@
 package com.teumteum.convention
 
-import org.junit.Test
+import org.gradle.internal.impldep.org.testng.Assert.assertEquals
+import org.gradle.internal.impldep.org.testng.annotations.Test
 
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

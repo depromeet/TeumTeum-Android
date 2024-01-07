@@ -2,27 +2,15 @@ package com.teumteum.teumteum.presentation.moim
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.modifier.modifierLocalMapOf
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
-import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
@@ -39,6 +27,7 @@ fun MoimCreateName() {
         CreateMoimTitle(string = "모임 이름을 작성해 주세요")
         TmMarginVerticalSpacer(size = 28)
         CreateNameContent()
+        Spacer(modifier = Modifier.weight(1f))
 
         TeumDivider()
         MoimCreateBtn(text = "다음")

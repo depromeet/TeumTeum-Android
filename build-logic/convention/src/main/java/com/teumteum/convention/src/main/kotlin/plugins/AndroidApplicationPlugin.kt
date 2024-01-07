@@ -4,6 +4,7 @@ import Constants
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.teumteum.convention.src.main.kotlin.ext.androidTestImplementation
+import com.teumteum.convention.src.main.kotlin.ext.debugImplementation
 import com.teumteum.convention.src.main.kotlin.ext.getBundle
 import com.teumteum.convention.src.main.kotlin.ext.getLibrary
 import com.teumteum.convention.src.main.kotlin.ext.getVersionCatalog
@@ -102,6 +103,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
                 // test
                 testImplementation(libs.getLibrary("jUnit"))
+                debugImplementation(libs.getLibrary("ui-tooling-compose"))
                 androidTestImplementation(libs.getLibrary("androidTest"))
                 androidTestImplementation(libs.getLibrary("espresso"))
 

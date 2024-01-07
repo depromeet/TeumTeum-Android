@@ -107,7 +107,7 @@ data class Type(
         fontFamily = Pretendard,
         fontWeight = FontWeight(400),
         fontSize =  12.sp,
-        lineHeight = 18.sp,
+        lineHeight = 20.sp,
     ),
 
     val Caption1: TextStyle = TextStyle(
