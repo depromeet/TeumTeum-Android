@@ -19,11 +19,6 @@ internal fun ApplicationExtension.configureDefault() {
 
     kotlinOptions {
         jvmTarget = Constants.jvmVersion
-        freeCompilerArgs += listOf(
-            "-Xallow-jvm-ir-dependencies",
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=1.8.20",
-        )
 
     }
 }
