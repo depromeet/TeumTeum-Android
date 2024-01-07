@@ -33,7 +33,6 @@ val Typography = Typography(
 )
 
 data class Type(
-
     val SubTitle1:  TextStyle = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight(600),
