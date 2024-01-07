@@ -77,6 +77,12 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     sourceCompatibility = JavaVersion.VERSION_17
                     targetCompatibility = JavaVersion.VERSION_17
                 }
+
+                composeOptions {
+                    kotlinCompilerExtensionVersion = "1.4.6"
+                }
+
+
             }
 
             val libs = extensions.getVersionCatalog()

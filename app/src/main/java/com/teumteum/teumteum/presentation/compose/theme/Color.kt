@@ -12,7 +12,6 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 data class ColorPalette_Light(
-    val Gray950: Color = Color(0xFF191919),
     //headline
     val color_text_headline_primary: Color = Color(0xFF212121), //gray900
     val color_text_headline_secondary: Color = Color(0xFF333333), //gray800

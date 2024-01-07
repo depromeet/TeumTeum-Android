@@ -2,7 +2,6 @@ plugins {
     id("teumteum.android.application")
     id("teumteum.android.androidHilt")
 }
-
 dependencies {
     implementation(project(":core:base"))
     implementation(project(":core:data"))
