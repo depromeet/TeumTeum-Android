@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.compose.theme
+package com.teumteum.base.component.compose.theme
 
 import android.app.Activity
 import android.os.Build

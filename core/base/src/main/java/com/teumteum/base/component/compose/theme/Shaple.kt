@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.compose.theme
+package com.teumteum.base.component.compose.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

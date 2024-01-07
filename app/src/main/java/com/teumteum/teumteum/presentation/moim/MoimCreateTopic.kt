@@ -28,9 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.compose.theme.TmTypo
-import com.teumteum.teumteum.presentation.compose.theme.TmtmColorPalette
+import com.teumteum.base.component.compose.theme.TmTypo
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
 fun MoimCreateTopic() {
@@ -47,7 +48,7 @@ fun MoimCreateTopic() {
         Spacer(modifier = Modifier.weight(1f))
         TeumDivider()
         MoimCreateBtn(text = "다음")
-        Spacer(modifier = Modifier.height(24.dp))
+        TmMarginVerticalSpacer(size = 24)
     }
 }
 
@@ -110,7 +111,7 @@ fun CreateTopicContent() {
                 isSelected = isSelected,
                 onItemSelected = { selectedTopicIndex.value = index }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            TmMarginVerticalSpacer(size = 12)
         }
     }
 }
@@ -145,7 +146,7 @@ fun CreateTopicItem(
                 verticalArrangement = Arrangement.Top
             ) {
                 Text(text = title, style = TmTypo.current.HeadLine6, color = TmtmColorPalette.current.Gray900)
-                Spacer(modifier = Modifier.height(8.dp))
+                TmMarginVerticalSpacer(size = 8)
                 Text(text = subTitle, style = TmTypo.current.Body2, color = TmtmColorPalette.current.Gray550)
             }
 

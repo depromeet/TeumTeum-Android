@@ -7,6 +7,7 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
     }
 
     namespace = "com.teumteum.base"
@@ -18,4 +19,5 @@ dependencies {
     implementation(libs.androidx.appCompat)
     implementation(libs.materialDesign)
     implementation(libs.androidx.constraintLayout)
+    implementation(libs.bundles.compose)
 }

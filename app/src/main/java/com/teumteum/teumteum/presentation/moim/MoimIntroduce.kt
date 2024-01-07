@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
@@ -19,9 +20,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.compose.theme.TmTypo
-import com.teumteum.teumteum.presentation.compose.theme.TmtmColorPalette
+import com.teumteum.base.component.compose.theme.TmTypo
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
 fun MoimIntroduce() {
@@ -36,15 +38,29 @@ fun MoimIntroduce() {
         CreateMoimTitle(string="모임을 소개해 주세요")
         TeumDivider()
         MoimCreateBtn(text = "다음")
-        Spacer(modifier = Modifier.height(28.dp))
-        MoimIntroField()
-        Spacer(modifier = Modifier.height(24.dp))
+        TmMarginVerticalSpacer(size = 28)
+        MoimInputField()
+        TmMarginVerticalSpacer(size = 24)
 
     }
 }
 
 @Composable
-fun MoimIntroField() {
+fun MoimIntroColumn() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Top,
+    ) {
+        MoimInputField()
+
+    }
+}
+
+@Composable
+fun MoimInputField() {
     var text by remember { mutableStateOf("") }
 
     OutlinedTextField(

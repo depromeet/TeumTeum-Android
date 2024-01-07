@@ -21,9 +21,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.compose.theme.TmTypo
-import com.teumteum.teumteum.presentation.compose.theme.TmtmColorPalette
+import com.teumteum.base.component.compose.theme.TmTypo
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
 fun MoimCreateName() {
@@ -36,11 +37,12 @@ fun MoimCreateName() {
         verticalArrangement = Arrangement.Top,
     ) {
         CreateMoimTitle(string = "모임 이름을 작성해 주세요")
-        Spacer(Modifier.height(28.dp))
+        TmMarginVerticalSpacer(size = 28)
         CreateNameContent()
+
         TeumDivider()
         MoimCreateBtn(text = "다음")
-        Spacer(modifier = Modifier.height(24.dp))
+        TmMarginVerticalSpacer(size = 24)
     }
 }
 
@@ -52,7 +54,7 @@ fun CreateNameContent() {
         .padding(horizontal = 20.dp)
     ) {
         Text(text = "모임 이름", style= TmTypo.current.Body2, color= TmtmColorPalette.current.color_text_body_quaternary)
-        Spacer(modifier = Modifier.height(8.dp))
+        TmMarginVerticalSpacer(size = 8)
         CreateTextField(placeHolder = "모임 이름을 작성해주세요")
     }
 

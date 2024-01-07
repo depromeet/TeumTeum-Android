@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.compose.theme
+package com.teumteum.base.component.compose.theme
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
