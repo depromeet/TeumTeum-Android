@@ -2,7 +2,9 @@ package com.teumteum.teumteum.presentation.teumteum.shake.view
 
 import ShakeDetector
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -11,6 +13,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.teumteum.base.BindingActivity
@@ -36,6 +40,9 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     private var accelerometer: Sensor? = null
     private val shakeViews = mutableListOf<ShakeView>()
 
+    private lateinit var blurView: View
+    private var isBlurAnimationStarted = false // Flag to track if blur animation started
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,19 +55,86 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
         // UserInterest 객체를 위한 정보를 정의한 리스트
         val userInterests = listOf(
-            UserInterestInfo("디자인", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("IT", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)),
-            UserInterestInfo("경제", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)),
-            UserInterestInfo("재테크", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("퍼스널 브랜딩", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("마음 수련", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("네트워킹", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)),
-            UserInterestInfo("네트워킹", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)),
-            UserInterestInfo("고민 나누기", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)),
-            UserInterestInfo("IT", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)),
+            UserInterestInfo(
+                "디자인",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)
+            ),
+            UserInterestInfo(
+                "IT",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)
+            ),
+            UserInterestInfo(
+                "경제",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)
+            ),
+            UserInterestInfo(
+                "재테크",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)
+            ),
+            UserInterestInfo(
+                "퍼스널 브랜딩",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)
+            ),
+            UserInterestInfo(
+                "마음 수련",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)
+            ),
+            UserInterestInfo(
+                "네트워킹",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)
+            ),
+            UserInterestInfo(
+                "네트워킹",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)
+            ),
+            UserInterestInfo(
+                "고민 나누기",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)
+            ),
+            UserInterestInfo(
+                "IT",
+                ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)
+            ),
         )
 
         addUserInterestView(userInterests)
+
+        initBlur()
+    }
+
+    private fun initBlur() {
+        blurView = View(this).apply {
+            // Set a semi-transparent background color
+            background = ColorDrawable(Color.parseColor("#800000FF")) // Adjust the alpha value (80) for desired transparency
+        }
+
+        // Set layout parameters and add to your layout
+        val layoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.MATCH_PARENT
+        )
+        blurView.layoutParams = layoutParams
+        binding.cl.addView(blurView)
+        blurView.bringToFront()
+    }
+
+    private fun startBlurAnimation() {
+        // Get the height of the screen
+        val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+
+        // Start from off-screen (bottom)
+        blurView.translationY = screenHeight.toFloat()
+
+        // Animate only the position (translationY)
+        blurView.animate()
+            .translationY(0f) // Move to original position
+            .setDuration(3000)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
+    }
+
+    private fun resetBlurEffect() {
+        blurView.alpha = 0f
     }
 
     override fun initAppBarLayout() {
@@ -125,6 +199,10 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
             shakeViews.forEach { userInterestView ->
                 userInterestView.updateViewPositions(x, y)
             }
+            if (!isBlurAnimationStarted) {
+                startBlurAnimation()
+                isBlurAnimationStarted = true // Set the flag to true after first animation
+            }
         }
     }
 
@@ -137,7 +215,8 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         userInterests.forEach { info ->
             val viewWidth = TransformUtils.dpToPx(80f)
             val viewHeight = TransformUtils.dpToPx(80f)
-            val moveSensitivity = Random.nextFloat()*100f //애니메이션 duration과 moveSensitivity 밸런싱으로 부드러움 조절
+            val moveSensitivity =
+                Random.nextFloat() * 100f //애니메이션 duration과 moveSensitivity 밸런싱으로 부드러움 조절
 
 
             val userInterest = UserInterest(
