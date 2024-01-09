@@ -13,4 +13,10 @@
     <string name="home_project_title">사이드 프로젝트</string>
     <string name="home_project_sub">사이드 프로젝트\n팀을 구해보세요</string>
     <string name="home_recommend_meet_title">판교 추천 모임</string>
+    <string name="front_card_mbti">MBTI</string>
+    <string name="front_card_area">선택 지역에 사는</string>
+    <string name="front_card_level">lv.3층</string>
+    <string name="front_card_job">직무명</string>
+    <string name="front_card_company">\@직장,학교명</string>
+    <string name="front_card_name">디프만</string>
 </resources>
