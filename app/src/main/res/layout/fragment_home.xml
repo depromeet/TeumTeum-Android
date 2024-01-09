@@ -209,5 +209,17 @@
             app:layout_constraintTop_toBottomOf="@id/tvRecommendMeet"
             tools:listitem="@layout/item_recommend_meet" />
 
+        <ImageView
+            android:id="@+id/floatingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="36dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/home_floating_btn"
+            android:src="@drawable/ic_floating_btn"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

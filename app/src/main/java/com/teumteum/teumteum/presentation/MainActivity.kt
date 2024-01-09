@@ -1,7 +1,9 @@
 package com.teumteum.teumteum.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.commit
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import com.teumteum.base.BindingActivity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
@@ -31,6 +33,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             replaceFragment(it.itemId)
             true
         }
+    }
+
+    fun hideBottomNavi() {
+        binding.btmNavi.visibility = View.GONE
+    }
+
+    fun showBottomNavi() {
+        binding.btmNavi.visibility = View.VISIBLE
     }
 
     private fun replaceFragment(menuItemId: Int) {

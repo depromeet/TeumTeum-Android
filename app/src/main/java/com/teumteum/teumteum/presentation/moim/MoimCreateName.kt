@@ -8,35 +8,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.R
 
 @Composable
-fun MoimCreateName() {
+fun MoimCreateName(viewModel: MoimViewModel) {
+    val title by viewModel.title.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
             .background(color = TmtmColorPalette.current.GreyWhite),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
-        CreateMoimTitle(string = "모임 이름을 작성해 주세요")
+        CreateMoimTitle(string = stringResource(id = R.string.moim_name_title))
         TmMarginVerticalSpacer(size = 28)
-        CreateNameContent()
+        CreateNameContent(viewModel)
         Spacer(modifier = Modifier.weight(1f))
-
         TeumDivider()
-        MoimCreateBtn(text = "다음")
+        MoimCreateBtn(text= stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = title.length in 2..32)
         TmMarginVerticalSpacer(size = 24)
     }
 }
 
 @Composable
-fun CreateNameContent() {
+fun CreateNameContent(viewModel: MoimViewModel) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -44,14 +46,14 @@ fun CreateNameContent() {
     ) {
         Text(text = "모임 이름", style= TmTypo.current.Body2, color= TmtmColorPalette.current.color_text_body_quaternary)
         TmMarginVerticalSpacer(size = 8)
-        CreateTextField(placeHolder = "모임 이름을 작성해주세요")
+        MoimNameTextField(viewModel =  viewModel, placeHolder = stringResource(id = R.string.moim_name_title))
     }
 
 }
 
 @Composable
-fun CreateTextField(placeHolder: String) {
-    var text by remember { mutableStateOf("") }
+fun MoimNameTextField(viewModel: MoimViewModel, placeHolder: String) {
+    val text by viewModel.title.collectAsState()
     val maxChar = 32
 
     OutlinedTextField(
@@ -62,7 +64,7 @@ fun CreateTextField(placeHolder: String) {
         placeholder = { Text(text =placeHolder, style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary)},
         onValueChange = { newText ->
             if (newText.length <= maxChar) {
-                text = newText
+                viewModel.updateTitle(newText)
             }
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -79,5 +81,5 @@ fun CreateTextField(placeHolder: String) {
 @Preview
 @Composable
 fun preview2() {
-    MoimCreateName()
+    MoimDateTime()
 }

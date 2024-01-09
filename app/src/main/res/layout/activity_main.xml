@@ -25,6 +25,7 @@
             android:id="@+id/btm_navi"
             android:layout_width="0dp"
             android:layout_height="57dp"
+            android:visibility="visible"
             android:background="@color/grey_white"
             app:itemBackground="@color/transparent"
             app:itemIconTint="@color/selector_bottom_menu"
