@@ -27,4 +27,7 @@
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
 
+    <string name="group_search_hint">검색어를 입력해 주세요</string>
+    <string name="group_search_recommend_keyword">추천 검색어</string>
+
 </resources>
