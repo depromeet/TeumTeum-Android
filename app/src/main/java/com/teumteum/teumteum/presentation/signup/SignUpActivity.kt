@@ -1,12 +1,17 @@
 package com.teumteum.teumteum.presentation.signup
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
+import com.teumteum.teumteum.presentation.home.HomeFragment
+import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +22,7 @@ class SignUpActivity
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
+        setStartingFragment()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -32,6 +38,16 @@ class SignUpActivity
                 clickEvent = null
             )
         )
+    }
+
+    private fun setStartingFragment() {
+        navigateTo<CharacterFragment>()
+    }
+
+    private inline fun <reified T : Fragment> navigateTo() {
+        supportFragmentManager.commit {
+            replace<T>(binding.fcv.id, T::class.java.canonicalName)
+        }
     }
 
     companion object {
