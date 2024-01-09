@@ -36,4 +36,7 @@
     <string name="signup_tv_card_intro_subtitle">모임에 참여할 때 나를 더 쉽게 소개할 수 있어요</string>
     <string name="signup_tv_move_card">좌우로 움직여 앞/뒷면을 확인해 보세요</string>
 
+    <string name="signup_tv_character_title">프만님을 대표할 수 있는\n티미 캐릭터를 골라주세요</string>
+    <string name="signup_btn_next">다음</string>
+
 </resources>
