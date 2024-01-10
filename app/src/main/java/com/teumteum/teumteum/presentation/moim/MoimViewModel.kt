@@ -145,7 +145,8 @@ class MoimViewModel @Inject constructor(
                 ScreenState.Introduce -> ScreenState.DateTime
                 ScreenState.DateTime -> ScreenState.Address
                 ScreenState.Address -> ScreenState.People
-                else -> ScreenState.Create
+                ScreenState.People -> ScreenState.Create
+                else -> ScreenState.Webview
             }
         goToNextStep()
         Log.d("currentStep", _currentStep.value.toString())
@@ -158,7 +159,8 @@ class MoimViewModel @Inject constructor(
                 ScreenState.Address -> ScreenState.DateTime
                 ScreenState.DateTime -> ScreenState.Introduce
                 ScreenState.Introduce -> ScreenState.Name
-                else -> ScreenState.Topic
+                ScreenState.Name -> ScreenState.Topic
+                else -> ScreenState.Address
             }
         goToPreviousStep()
     }
@@ -196,5 +198,5 @@ enum class TopicType(val value: String, val title: String ,val subTitle: String)
 }
 
 enum class ScreenState {
-    Topic, Name, Introduce, DateTime, Address, People, Create
+    Topic, Name, Introduce, DateTime, Address, People, Create, Webview
 }

@@ -1,6 +1,8 @@
 package com.teumteum.teumteum.presentation.moim
 
+import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +13,6 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
@@ -88,7 +90,7 @@ fun MoimAddress2Column() {
 @Composable
 fun MoimAddressInputField(
     placeHolder:String,
-    isTimeField: Boolean = false
+    context: Context = LocalContext.current
 ) {
     var text by remember { mutableStateOf("") }
 
@@ -96,7 +98,10 @@ fun MoimAddressInputField(
         value = text,
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable {
+
+            },
         placeholder = { Text(text =placeHolder, style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary)},
         onValueChange = { newText ->
             text = newText

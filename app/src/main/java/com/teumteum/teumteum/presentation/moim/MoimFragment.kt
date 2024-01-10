@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.material.Snackbar
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
@@ -14,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
+import com.teumteum.teumteum.di.NetworkStatus
 import java.util.concurrent.TimeUnit
 
 
@@ -55,6 +58,14 @@ class MoimFragment :
         ObjectAnimator.ofInt(binding.progressBar, "progress", targetProgress)
             .setDuration(500)
             .start()
+    }
+
+    private fun goToWebFragment() {
+        val status = NetworkStatus.getConnectivityStatus(requireContext())
+        if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI)  {
+        } else {
+            Toast.makeText(context, "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
+        }
     }
     companion object {
 
