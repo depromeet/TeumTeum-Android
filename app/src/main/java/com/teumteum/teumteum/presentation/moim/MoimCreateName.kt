@@ -77,9 +77,3 @@ fun MoimNameTextField(viewModel: MoimViewModel, placeHolder: String) {
         ),
     )
 }
-
-@Preview
-@Composable
-fun preview2() {
-    MoimDateTime()
-}

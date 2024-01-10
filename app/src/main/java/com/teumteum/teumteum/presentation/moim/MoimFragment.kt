@@ -35,8 +35,9 @@ class MoimFragment :
                 ScreenState.Topic -> MoimCreateTopic(viewModel)
                 ScreenState.Name -> MoimCreateName(viewModel)
                 ScreenState.Introduce -> MoimIntroduce(viewModel)
-                ScreenState.DateTime -> MoimDateTime()
-                ScreenState.Address -> MoimAddress()
+                ScreenState.DateTime -> MoimDateTime(viewModel)
+                ScreenState.Address -> MoimAddress(viewModel)
+                ScreenState.People -> MoimPeople(viewModel)
                 else -> {}
             }
         }

@@ -42,6 +42,7 @@
 
     <string name="moim_address_title">모임 일정을 정해주세요</string>
     <string name="moim_address_label1">도로명 주소</string>
+    <string name="moim_address_label2">상세 주소</string>
     <string name="moim_address_placeholdler1">도로명 주소를 입력해 주세요</string>
     <string name="moim_address_placeholder2">상세 주소를 입력해 주세요</string>
 
@@ -49,4 +50,5 @@
     <string name="moim_peoople_system">안전한 모임을 위해 최소 3명 이상 최대 6명 참여자가 필요해요</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

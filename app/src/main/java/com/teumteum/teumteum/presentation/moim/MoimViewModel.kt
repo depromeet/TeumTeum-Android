@@ -9,6 +9,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.Year
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +41,16 @@ class MoimViewModel @Inject constructor(
     private val _imageUri = MutableStateFlow<List<Uri>>(emptyList())
     val imageUri: StateFlow<List<Uri>> = _imageUri.asStateFlow()
 
+    private val _date = MutableStateFlow("")
+    val date : StateFlow<String> = _date.asStateFlow()
+
+    private val _time = MutableStateFlow("")
+    val time : StateFlow<String> = _time.asStateFlow()
+
+    private val _people = MutableStateFlow(2)
+    val people: StateFlow<Int> = _people.asStateFlow()
+
+
     fun updateTopic(topicType: TopicType) {
         _topic.value = topicType
     }
@@ -46,6 +63,31 @@ class MoimViewModel @Inject constructor(
         _introduction.value = introduce
     }
 
+    fun updateDate(input: String) {
+        if (input.length == 4) {
+            _date.value = formatDateAndDay(input)
+        }
+    }
+
+    fun updateTime(input: String): String {
+        val formattedTime = formatTime(input)
+        _time.value = formattedTime
+        return formattedTime
+    }
+
+
+    fun upPeople() {
+        if(_people.value < 6) {
+            _people.value +=1
+        }
+    }
+
+    fun downPeople() {
+        if(_people.value > 1) {
+            _people.value -=1
+        }
+    }
+
     fun addImages(uris: List<Uri>, context: Context) {
         val currentList = _imageUri.value.toMutableList()
         for (uri in uris) {
@@ -56,6 +98,45 @@ class MoimViewModel @Inject constructor(
         }
         _imageUri.value = currentList.take(5)
     }
+
+
+    fun formatTime(input: String): String {
+        return try {
+            val parsedTime = LocalTime.parse(input, DateTimeFormatter.ofPattern("HHmm"))
+            parsedTime.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()))
+        } catch (e: Exception) {
+            input // 실패시 원본 입력 반환
+        }
+    }
+
+    fun formatDateAndDay(input: String): String {
+        return try {
+            val currentYear = Year.now().value
+            val parsedDate = LocalDate.parse("$currentYear$input", DateTimeFormatter.ofPattern("yyyyMMdd"))
+            val formattedDate = parsedDate.format(DateTimeFormatter.ofPattern("MM월 dd일"))
+            val dayOfWeek = parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
+            "$formattedDate $dayOfWeek"
+        } catch (e: Exception) {
+            input // 실패시 원본 입력 반환
+        }
+    }
+
+    fun dateTimeToServer(): Pair<String, String>? {
+        return try {
+            // 날짜 format - "yyyy-MM-dd"
+            val localDate = LocalDate.parse(date.value, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            val formattedDate = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+
+            // 시간 format - "HH:mm:ss"
+            val localTime = LocalTime.parse(time.value, DateTimeFormatter.ofPattern("HH:mm"))
+            val formattedTime = localTime.format(DateTimeFormatter.ISO_LOCAL_TIME)
+
+            Pair(formattedDate, formattedTime)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     fun goToNextScreen() {
         _screenState.value =
             when(_screenState.value) {
@@ -63,6 +144,7 @@ class MoimViewModel @Inject constructor(
                 ScreenState.Name -> ScreenState.Introduce
                 ScreenState.Introduce -> ScreenState.DateTime
                 ScreenState.DateTime -> ScreenState.Address
+                ScreenState.Address -> ScreenState.People
                 else -> ScreenState.Create
             }
         goToNextStep()

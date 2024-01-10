@@ -48,6 +48,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 @Composable
 fun MoimIntroduce(viewModel: MoimViewModel) {
     val introduce by viewModel.introduction.collectAsState()
+    val photo by viewModel.imageUri.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +67,7 @@ fun MoimIntroduce(viewModel: MoimViewModel) {
         MoimPhotoColumn(viewModel)
         Spacer(modifier = Modifier.weight(1f))
         TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty())
+        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
     }
 }
 

@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -33,7 +37,9 @@ import java.util.Locale
 
 
 @Composable
-fun MoimDateTime() {
+fun MoimDateTime(viewModel: MoimViewModel) {
+    val time by viewModel.time.collectAsState()
+    val date by viewModel.date.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,18 +49,21 @@ fun MoimDateTime() {
     ) {
         CreateMoimTitle(string = stringResource(id = R.string.moim_datetime_title))
         TmMarginVerticalSpacer(size = 28)
-        MoimDateColumn()
+        MoimDateColumn(viewModel)
         TmMarginVerticalSpacer(size = 20)
-        MoimTimeColumn()
+        MoimTimeColumn(viewModel)
         Spacer(modifier = Modifier.weight(1f))
         TeumDivider()
-//        MoimCreateBtn(text = "다음")
+        MoimCreateBtn(
+            text = stringResource(id = R.string.moim_next_btn),
+            viewModel = viewModel,
+            isEnabled = time.isNotEmpty() && date.isNotEmpty())
         TmMarginVerticalSpacer(size = 24)
     }
 }
 
 @Composable
-fun MoimDateColumn() {
+fun MoimDateColumn(viewModel: MoimViewModel) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -62,13 +71,16 @@ fun MoimDateColumn() {
     ) {
         Text(text = stringResource(id = R.string.moim_datetime_label1), style= TmTypo.current.Body2, color= TmtmColorPalette.current.color_text_body_quaternary)
         TmMarginVerticalSpacer(size = 8)
-        MoimDateInputField(placeHolder = stringResource(id = R.string.moim_datetime_placeholder1))
+        MoimDateInputField(
+            placeHolder = stringResource(id = R.string.moim_datetime_placeholder1),
+            viewModel = viewModel
+        )
 
     }
 }
 
 @Composable
-fun MoimTimeColumn() {
+fun MoimTimeColumn(viewModel: MoimViewModel) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -80,25 +92,47 @@ fun MoimTimeColumn() {
             color = TmtmColorPalette.current.color_text_body_quaternary
         )
         TmMarginVerticalSpacer(size = 8)
-        MoimDateInputField(placeHolder = stringResource(id = R.string.moim_datetime_placeholder2))
+        MoimDateInputField(
+            placeHolder = stringResource(id = R.string.moim_datetime_placeholder2),
+            viewModel = viewModel,
+            isTimeField = true
+        )
     }
 }
 
 @Composable
-fun MoimDateInputField(placeHolder:String) {
+fun MoimDateInputField(
+    placeHolder:String,
+    viewModel: MoimViewModel,
+    isTimeField: Boolean = false
+) {
     var text by remember { mutableStateOf("") }
-    var dayOfWeek by remember { mutableStateOf<String?>(null) }
+    val time by viewModel.time.collectAsState()
+    val date by viewModel.date.collectAsState()
+
+    LaunchedEffect(isTimeField, time, date) {
+        text = if (isTimeField) time else date
+    }
 
     OutlinedTextField(
         value = text,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),
         placeholder = { Text(text =placeHolder, style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary)},
         onValueChange = { newText ->
             text = newText
-            dayOfWeek = formatDate(newText)
-                        },
+            if (newText.length == 4) {
+                if (isTimeField) {
+                    viewModel.updateTime(newText)
+                } else {
+                    viewModel.updateDate(newText)
+                }
+            }
+        },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = TmtmColorPalette.current.color_text_body_primary,
             focusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
@@ -108,25 +142,4 @@ fun MoimDateInputField(placeHolder:String) {
             backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
         ),
     )
-    if (dayOfWeek != null) {
-        Text(text = "$text $dayOfWeek", style=TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_primary)
-    }
-}
-
-fun formatTime(input: String): String? {
-    return try {
-        val localTime = LocalTime.parse(input, DateTimeFormatter.ofPattern("HHmm"))
-        localTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
-    } catch (e: Exception) {
-        null
-    }
-}
-
-fun formatDate(input: String): String? {
-    return try {
-        val parsedDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("MM월 dd일"))
-        parsedDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
-    } catch (e: Exception) {
-        null
-    }
 }
