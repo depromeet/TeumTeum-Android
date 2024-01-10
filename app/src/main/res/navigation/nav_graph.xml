@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/fragment_home">
 
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/fragment_home"
         android:name="com.teumteum.teumteum.presentation.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
 
         <action
             android:id="@+id/action_homeFragment_to_moimFragment"
-            app:destination="@id/moimFragment" />
+            app:destination="@id/fragment_moim" />
 
         <action
-            android:id="@+id/action_homeFragment_to_MyPageFragment"
-            app:destination="@id/myPageFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_homeFragment_to_fragment_my_page"
+            app:destination="@id/fragment_my_page" />
 
         <action
-            android:id="@+id/action_homeFragment_to_teumteumFragment"
-            app:destination="@id/teumTeumFragment"
-            app:popUpTo="@id/homeFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_homeFragment_to_fragment_teum_teum"
+            app:destination="@id/fragment_teum_teum" />
 
     </fragment>
 
 
     <fragment
-        android:id="@+id/moimFragment"
+        android:id="@+id/fragment_moim"
         android:name="com.teumteum.teumteum.presentation.moim.MoimFragment"
-        android:label="MoimFragment" >
+        android:label="MoimFragment"
+        tools:layout="@layout/fragment_moim">
         <action
             android:id="@+id/action_moimFragment_to_webViewFragment"
-            app:destination="@id/webviewFragment" />
+            app:destination="@id/fragment_web_view" />
 
         <action
             android:id="@+id/action_moimFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-
+            app:destination="@id/fragment_home" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/webviewFragment"
+        android:id="@+id/fragment_web_view"
         android:name="com.teumteum.teumteum.WebviewFragment"
         android:label="WebviewFragment">
         <action
             android:id="@+id/action_webViewFragment_to_moimFragment"
-            app:destination="@id/moimFragment" />
+            app:destination="@id/fragment_moim" />
     </fragment>
 
     <fragment
-        android:id="@+id/teumTeumFragment"
+        android:id="@+id/fragment_teum_teum"
         android:name="com.teumteum.teumteum.presentation.teumteum.TeumTeumFragment"
-        android:label="TeumTeumFragment" />
+        android:label="TeumTeumFragment"
+        tools:layout="@layout/fragment_teum_teum"/>
 
 
     <fragment
-        android:id="@+id/myPageFragment"
+        android:id="@+id/fragment_my_page"
         android:name="com.teumteum.teumteum.presentation.mypage.MyPageFragment"
-        android:label="MyPageFragment" />
+        android:label="MyPageFragment"
+        tools:layout="@layout/fragment_my_page"/>
 
 </navigation>

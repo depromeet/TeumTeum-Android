@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.teumteum.base.BindingActivity
 import com.teumteum.teumteum.R
