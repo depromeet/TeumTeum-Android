@@ -4,6 +4,7 @@ import Constants
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.teumteum.convention.src.main.kotlin.ext.androidTestImplementation
+import com.teumteum.convention.src.main.kotlin.ext.debugImplementation
 import com.teumteum.convention.src.main.kotlin.ext.getBundle
 import com.teumteum.convention.src.main.kotlin.ext.getLibrary
 import com.teumteum.convention.src.main.kotlin.ext.getVersionCatalog
@@ -46,6 +47,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     buildConfig = true
                     viewBinding = true
                     dataBinding = true
+                    compose = true
                 }
 
                 buildTypes {
@@ -76,6 +78,12 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     sourceCompatibility = JavaVersion.VERSION_17
                     targetCompatibility = JavaVersion.VERSION_17
                 }
+
+                composeOptions {
+                    kotlinCompilerExtensionVersion = "1.4.6"
+                }
+
+
             }
 
             val libs = extensions.getVersionCatalog()
@@ -95,6 +103,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
                 // test
                 testImplementation(libs.getLibrary("jUnit"))
+                debugImplementation(libs.getLibrary("ui-tooling-compose"))
                 androidTestImplementation(libs.getLibrary("androidTest"))
                 androidTestImplementation(libs.getLibrary("espresso"))
 
@@ -106,6 +115,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 // okhttp
                 implementation(platform(libs.getLibrary("okhttp-Bom")))
                 implementation(libs.getBundle("okhttp"))
+
+                implementation(libs.getBundle("compose"))
 
 //                // kakao
 //                implementation(libs.getBundle("kakao"))
