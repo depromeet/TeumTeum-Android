@@ -8,7 +8,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityCardIntroBinding
-import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.presentation.signup.SignUpActivity
 
 class CardIntroActivity
     : BindingActivity<ActivityCardIntroBinding>(R.layout.activity_card_intro), AppBarLayout {
@@ -36,7 +36,14 @@ class CardIntroActivity
     }
 
     private fun initView() {
-        startActivity(Intent(this@CardIntroActivity, SignInActivity::class.java))
+        with (binding) {
+            btnStart.setOnClickListener {
+                startActivity(Intent(this@CardIntroActivity, SignUpActivity::class.java))
+            }
+            getLeftMenuChildAt(0).setOnClickListener {
+                finish()
+            }
+        }
     }
 
     companion object {
