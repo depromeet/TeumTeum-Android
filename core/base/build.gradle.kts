@@ -7,6 +7,11 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.6"
     }
 
     namespace = "com.teumteum.base"
@@ -18,4 +23,5 @@ dependencies {
     implementation(libs.androidx.appCompat)
     implementation(libs.materialDesign)
     implementation(libs.androidx.constraintLayout)
+    implementation(libs.bundles.compose)
 }

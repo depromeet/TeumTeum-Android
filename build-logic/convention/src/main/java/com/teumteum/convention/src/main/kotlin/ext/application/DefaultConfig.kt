@@ -16,8 +16,10 @@ internal fun ApplicationExtension.configureDefault() {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
     kotlinOptions {
         jvmTarget = Constants.jvmVersion
+
     }
 }
 

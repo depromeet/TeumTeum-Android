@@ -7,6 +7,18 @@ coroutinesAndroidVersion = "1.7.1"
 kotlinDateTimeVersion = "0.4.0"
 gsonVersion = "2.10.1"
 
+## Compose material3
+material3="1.1.1"
+coilCompose = "2.2.2"
+lottieCompose = "5.2.0"
+constraintVersion= "1.0.1"
+hiltComposeVersion= "1.0.0"
+composePagingVersion="1.0.0-alpha18"
+mdcVersion="1.1.16"
+composeAppcompatVersion="0.28.0"
+composeLifecycleVersion="2.3.1"
+uiPreviewCompose ="1.2.1"
+
 ## AndroidX
 coreKtxVersion = "1.10.1"
 appCompatVersion = "1.6.1"
@@ -87,7 +99,7 @@ kotlin-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", 
 # AndroidX
 androidx-coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 androidx-appCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompatVersion" }
-androidx-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintLayoutVersion" }
+androidx-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintVersion" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "appStartUpVersion" }
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtxVersion" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtxVersion" }
@@ -104,6 +116,9 @@ androidx-navigationUi = { group = "androidx.navigation", name = "navigation-ui-k
 androidx-navigationDynamic = { group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version.ref = "navigationVersion" }
 billing = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billingVersion" }
 
+# Compose-material3
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref="material3" }
+material3-window = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref="material3" }
 materialDesign = { group = "com.google.android.material", name = "material", version.ref = "materialDesignVersion" }
 
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
@@ -152,22 +167,27 @@ compose-activity = { group = "androidx.activity", name = "activity-compose", ver
 compose-material = { group = "androidx.compose.material", name = "material", version.ref = "composeVersion" }
 compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeVersion" }
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "composeVersion" }
-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "composeVersion" }
+compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiPreviewCompose" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "composeVersion" }
 compose-material-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "composeVersion" }
 compose-material-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeVersion" }
-compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "composeVersion" }
-compose-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "composeVersion" }
-compose-hilt= { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "composeVersion" }
-compose-paging = { group = "androidx.paging", name = "paging-compose", version.ref = "composeVersion" }
-compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "composeVersion" }
-compose-lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieVersion" }
+compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintVersion" }
+compose-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "composeLifecycleVersion" }
+compose-hilt= { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltComposeVersion" }
+compose-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "pagingVersion" }
+compose-paging-2 = {group = "androidx.paging", name = "paging-compose", version.ref="composePagingVersion"}
+compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+compose-lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+compose-mdc= {group = "com.google.android.material", name="compose-theme-adapter", version.ref="mdcVersion"}
+compose-appcompat = { group="com.google.accompanist", name="accompanist-appcompat-theme", version.ref="composeAppcompatVersion"}
 
 
 ## Test
 jUnit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 androidTest = { group = "androidx.test.ext", name = "junit", version.ref = "androidTestVersion" }
 espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoVersion" }
+androidx-ui-text-android = { group = "androidx.compose.ui", name = "ui-text-android", version = "1.5.4" }
+ui-tooling-compose = {group = "androidx.compose.ui", name="ui-tooling", version.ref="uiPreviewCompose"}
 
 # 사용될 플러그인
 [plugins]
@@ -212,8 +232,14 @@ compose = [
     "compose-hilt",
     "compose-lifecycle",
     "compose-paging",
+    "compose-paging-2",
     "compose-coil",
-    "compose-lottie"
+    "compose-lottie",
+    "material3",
+    "material3-window",
+    "materialDesign",
+    "compose-appcompat",
+    "compose-mdc"
 ]
 
 #kakao = [

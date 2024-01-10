@@ -12,7 +12,7 @@ class ShakeDetector(
 ) : SensorEventListener {
     private var sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-    private var accelerometer: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    private var accelerometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     private var lastUpdate: Long = 0
     private var lastMovementTime: Long = System.currentTimeMillis()
     private var lastX: Float = 0.0f
