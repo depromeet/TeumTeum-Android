@@ -44,7 +44,12 @@ class SignUpActivity
         navigateTo<CharacterFragment>()
     }
 
+    fun activateNextButton() {
+        binding.btnNext.isEnabled = true
+    }
+
     private inline fun <reified T : Fragment> navigateTo() {
+        binding.btnNext.isEnabled = false
         supportFragmentManager.commit {
             replace<T>(binding.fcv.id, T::class.java.canonicalName)
         }
