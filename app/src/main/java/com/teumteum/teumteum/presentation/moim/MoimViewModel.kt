@@ -146,7 +146,7 @@ class MoimViewModel @Inject constructor(
                 ScreenState.DateTime -> ScreenState.Address
                 ScreenState.Address -> ScreenState.People
                 ScreenState.People -> ScreenState.Create
-                else -> ScreenState.Webview
+                else -> _screenState.value
             }
         goToNextStep()
         Log.d("currentStep", _currentStep.value.toString())
@@ -160,9 +160,13 @@ class MoimViewModel @Inject constructor(
                 ScreenState.DateTime -> ScreenState.Introduce
                 ScreenState.Introduce -> ScreenState.Name
                 ScreenState.Name -> ScreenState.Topic
-                else -> ScreenState.Address
+                else -> _screenState.value
             }
         goToPreviousStep()
+    }
+
+    fun goBackToHomeScreen() {
+
     }
 
     fun goToNextStep() {

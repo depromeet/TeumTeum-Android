@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
@@ -52,10 +53,7 @@ class HomeFragment :
     }
 
     private fun navigateToMoimFragment() {
-        (activity as? MainActivity)?.hideBottomNavi()
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fl_main, MoimFragment())
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(R.id.action_homeFragment_to_moimFragment)
     }
+
 }

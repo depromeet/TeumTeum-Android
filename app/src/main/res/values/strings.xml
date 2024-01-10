@@ -36,6 +36,12 @@
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
 
+    <string name="moim_datetime_title">모임 일정을 정해주세요</string>
+    <string name="moim_datetime_label1">날짜</string>
+    <string name="moim_datetime_label2">시간</string>
+    <string name="moim_datetime_placeholder1">00월 00일</string>
+    <string name="moim_datetime_placeholder2">오후 00시</string>
+
     <string name="moim_address_title">모임 일정을 정해주세요</string>
     <string name="moim_address_label1">도로명 주소</string>
     <string name="moim_address_label2">상세 주소</string>

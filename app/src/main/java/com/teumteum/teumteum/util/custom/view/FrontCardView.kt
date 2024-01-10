@@ -57,7 +57,7 @@ class FrontCardView : CardView {
             ColorStateList.valueOf(
                 ContextCompat.getColor(
                     context,
-                    R.color.grey_900
+                    com.teumteum.base.R.color.grey_900
                 )
             )
         )
@@ -69,15 +69,15 @@ class FrontCardView : CardView {
      * 커스텀뷰의 속성 값을 xml에 입력한 값으로 초기화
      */
     private fun applyXmlAttributes(context: Context, attrs: AttributeSet?) {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.CardFrontView, 0, 0).apply {
+        context.theme.obtainStyledAttributes(attrs, com.teumteum.base.R.styleable.CardFrontView, 0, 0).apply {
             try {
-                frontCard.name = getString(R.styleable.CardFrontView_name) ?: ""
-                frontCard.company = getString(R.styleable.CardFrontView_company) ?: ""
-                frontCard.job = getString(R.styleable.CardFrontView_job) ?: ""
-                frontCard.level = getString(R.styleable.CardFrontView_level) ?: ""
-                frontCard.area = getString(R.styleable.CardFrontView_area) ?: ""
-                frontCard.mbti = getString(R.styleable.CardFrontView_mbti) ?: ""
-                frontCard.characterResId = getResourceId(R.styleable.CardFrontView_image, 0)
+                frontCard.name = getString(com.teumteum.base.R.styleable.CardFrontView_name) ?: ""
+                frontCard.company = getString(com.teumteum.base.R.styleable.CardFrontView_company) ?: ""
+                frontCard.job = getString(com.teumteum.base.R.styleable.CardFrontView_job) ?: ""
+                frontCard.level = getString(com.teumteum.base.R.styleable.CardFrontView_level) ?: ""
+                frontCard.area = getString(com.teumteum.base.R.styleable.CardFrontView_area) ?: ""
+                frontCard.mbti = getString(com.teumteum.base.R.styleable.CardFrontView_mbti) ?: ""
+                frontCard.characterResId = getResourceId(com.teumteum.base.R.styleable.CardFrontView_image, 0)
             } finally {
                 recycle()
             }
@@ -117,9 +117,9 @@ class FrontCardView : CardView {
             context,
             id = tvName,
             text = context.getString(R.string.front_card_name),
-            textColor = R.color.grey_50,
+            textColor = com.teumteum.base.R.color.grey_50,
             textSizeSp = 30f,
-            fontFamily = R.font.pretendard_bold,
+            fontFamily = com.teumteum.base.R.font.pretendard_bold,
             lineHeightDp = 36,
             topToTopOf = matchParent,
             startToStartOf = matchParent,
@@ -130,9 +130,9 @@ class FrontCardView : CardView {
             context,
             id = tvCompany,
             text = context.getString(R.string.front_card_company),
-            textColor = R.color.grey_400,
+            textColor = com.teumteum.base.R.color.grey_400,
             textSizeSp = 16f,
-            fontFamily = R.font.pretendard_semibold,
+            fontFamily = com.teumteum.base.R.font.pretendard_semibold,
             lineHeightDp = 22,
             startToStartOf = tvName,
             marginTop = 20,
@@ -142,9 +142,9 @@ class FrontCardView : CardView {
             context,
             id = tvJob,
             text = context.getString(R.string.front_card_job),
-            textColor = R.color.grey_50,
+            textColor = com.teumteum.base.R.color.grey_50,
             textSizeSp = 18f,
-            fontFamily = R.font.pretendard_bold,
+            fontFamily = com.teumteum.base.R.font.pretendard_bold,
             lineHeightDp = 24,
             startToStartOf = tvName,
             marginTop = 6,
@@ -154,9 +154,9 @@ class FrontCardView : CardView {
             context,
             id = tvLevel,
             text = context.getString(R.string.front_card_level),
-            textColor = R.color.grey_300,
+            textColor = com.teumteum.base.R.color.grey_300,
             textSizeSp = 12f,
-            fontFamily = R.font.pretendard_regular,
+            fontFamily = com.teumteum.base.R.font.pretendard_regular,
             lineHeightDp = 18,
             marginTop = 6,
             paddingStart = 8,
@@ -171,9 +171,9 @@ class FrontCardView : CardView {
             context,
             id = tvArea,
             text = context.getString(R.string.front_card_area),
-            textColor = R.color.grey_400,
+            textColor = com.teumteum.base.R.color.grey_400,
             textSizeSp = 12f,
-            fontFamily = R.font.pretendard_regular,
+            fontFamily = com.teumteum.base.R.font.pretendard_regular,
             lineHeightDp = 18,
             marginTop = 6,
             startToStartOf = tvName,
@@ -183,9 +183,9 @@ class FrontCardView : CardView {
             context,
             id = tvMbti,
             text = context.getString(R.string.front_card_mbti),
-            textColor = R.color.grey_50,
+            textColor = com.teumteum.base.R.color.grey_50,
             textSizeSp = 20f,
-            fontFamily = R.font.pretendard_bold,
+            fontFamily = com.teumteum.base.R.font.pretendard_bold,
             lineHeightDp = 28,
             marginBottom = 32,
             startToStartOf = tvName,
@@ -202,7 +202,7 @@ class FrontCardView : CardView {
         context: Context,
         id: Int,
         text: String? = "",
-        textColor: Int = R.color.grey_50,
+        textColor: Int = com.teumteum.base.R.color.grey_50,
         textSizeSp: Float,
         fontFamily: Int,
         lineHeightDp: Int,

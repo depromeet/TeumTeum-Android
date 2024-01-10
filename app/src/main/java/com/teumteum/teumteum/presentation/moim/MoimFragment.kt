@@ -1,28 +1,30 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.animation.ObjectAnimator
-import android.database.Observable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.compose.material.Snackbar
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.di.NetworkStatus
-import java.util.concurrent.TimeUnit
-
+import com.teumteum.teumteum.presentation.MainActivity
 
 class MoimFragment :
     BindingFragment<FragmentMoimBinding>(R.layout.fragment_moim) {
     private val viewModel: MoimViewModel by viewModels()
+
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).hideBottomNavi()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,7 +51,11 @@ class MoimFragment :
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            viewModel.goPreviousScreen()
+            if (viewModel.screenState.value == ScreenState.Topic) {
+                findNavController().navigate(R.id.action_moimFragment_to_homeFragment)
+            } else {
+                viewModel.goPreviousScreen()
+            }
         }
     }
 
