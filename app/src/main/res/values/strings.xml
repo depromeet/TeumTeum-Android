@@ -27,4 +27,10 @@
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
 
+    <string name="front_card_mbti">MBTI</string>
+    <string name="front_card_area">선택 지역에 사는</string>
+    <string name="front_card_level">lv.3층</string>
+    <string name="front_card_job">직무명</string>
+    <string name="front_card_company">\@직장,학교명</string>
+    <string name="front_card_name">디프만</string>
 </resources>
