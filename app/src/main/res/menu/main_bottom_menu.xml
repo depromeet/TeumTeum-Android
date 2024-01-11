@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/bottom_menu_home"
+        android:id="@+id/fragment_home"
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_menu_home"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/bottom_menu_teum_teum"
+        android:id="@+id/fragment_teum_teum"
         android:enabled="true"
         android:icon="@drawable/ic_teum_teum"
         android:title="@string/bottom_menu_teum_teum"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/bottom_menu_my_page"
+        android:id="@+id/fragment_my_page"
         android:enabled="true"
         android:icon="@drawable/ic_my_page"
         android:title="@string/bottom_menu_my_page"

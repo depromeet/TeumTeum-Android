@@ -7,15 +7,21 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            style="@style/ta.headline.1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TeumTeumFragment"
-            android:textColor="@color/grey_950"
+        <com.teumteum.teumteum.util.custom.view.FrontCardView
+            android:id="@+id/cv_character"
+            android:layout_width="280dp"
+            android:layout_height="400dp"
+            app:name="김우남"
+            app:company="디프만"
+            app:job="안드로이드 개발"
+            app:level="lv.1층"
+            app:area="서울 광진구"
+            app:mbti="ESTP"
+            app:image="@drawable/ic_card_penguin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -2,12 +2,15 @@ package com.teumteum.teumteum.presentation.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
+import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.moim.MoimFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +19,7 @@ class HomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAppBarLayout()
+        binding.floatingBtn.setOnClickListener { navigateToMoimFragment() }
     }
 
     companion object {
@@ -38,7 +42,7 @@ class HomeFragment :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_search,
                 useRippleEffect = false,
-                clickEvent = null
+                clickEvent = {  }
             ),
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_alarm_active,
@@ -47,4 +51,9 @@ class HomeFragment :
             )
         )
     }
+
+    private fun navigateToMoimFragment() {
+        findNavController().navigate(R.id.action_homeFragment_to_moimFragment)
+    }
+
 }

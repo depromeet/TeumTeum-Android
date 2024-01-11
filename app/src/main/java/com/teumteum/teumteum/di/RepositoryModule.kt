@@ -1,11 +1,14 @@
 package com.teumteum.teumteum.di
 
+import com.teumteum.data.repository.GroupRepositoryImpl
 import com.teumteum.data.repository.HomeRepositoryImpl
 import com.teumteum.data.repository.SampleRepositoryImpl
+import com.teumteum.domain.repository.GroupRepository
 import com.teumteum.domain.repository.HomeRepository
 import com.teumteum.domain.repository.SampleRepository
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -21,4 +24,8 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindHomeRepository(homeRepositoryImpl: HomeRepositoryImpl): HomeRepository
+
+    @Singleton
+    @Binds
+    fun provideGroupRepository(groupRepositoryImpl: GroupRepositoryImpl): GroupRepository
 }

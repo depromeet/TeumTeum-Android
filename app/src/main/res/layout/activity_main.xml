@@ -12,12 +12,15 @@
         android:layout_height="match_parent"
         tools:context=".presentation.MainActivity">
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fl_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toTopOf="@id/btm_navi"
             app:layout_constraintEnd_toEndOf="parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +28,7 @@
             android:id="@+id/btm_navi"
             android:layout_width="0dp"
             android:layout_height="57dp"
+            android:visibility="visible"
             android:background="@color/grey_white"
             app:itemBackground="@color/transparent"
             app:itemIconTint="@color/selector_bottom_menu"
