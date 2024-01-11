@@ -1,7 +1,7 @@
 package com.teumteum.domain.repository
 
-import com.teumteum.domain.entity.Group
+import com.teumteum.domain.entity.Meeting
 
 interface GroupRepository {
-    suspend fun getSearchGroup(keyword: String): Result<List<Group>>
+    suspend fun getSearchGroup(page: Int, keyword: String): Result<List<Meeting>>
 }

@@ -1,6 +1,6 @@
 package com.teumteum.data.model.response
 
-import com.teumteum.domain.entity.Group
+import com.teumteum.domain.entity.Meeting
 
 data class ResponseGroup(
     val data: ResponseGroupData,
@@ -10,8 +10,8 @@ data class ResponseGroup(
         val meetings: List<ResponseMeeting>
     ) {
         data class ResponseMeeting(
-            val hostId: Int,
-            val id: Int,
+            val hostId: Long,
+            val id: Long,
             val introduction: String,
             val meetingArea: ResponseMeetingArea,
             val numberOfRecruits: Int,
@@ -26,6 +26,10 @@ data class ResponseGroup(
                 val street: String,
                 val zipCode: String
             )
+
+            fun toMeeting(): Meeting {
+                return Meeting(id, hostId, topic, title, introduction, photoUrls, promiseDateTime)
+            }
         }
     }
 }
