@@ -1,6 +1,7 @@
 plugins {
     id("teumteum.android.application")
     id("teumteum.android.androidHilt")
+    alias(libs.plugins.androidKotlin)
 }
 dependencies {
     implementation(project(":core:base"))

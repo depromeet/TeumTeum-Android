@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.moim
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,58 +22,52 @@ import androidx.compose.material.Divider
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
-fun MoimCreateTopic() {
+fun MoimCreateTopic(viewModel: MoimViewModel) {
+    val topicIndex = remember { mutableStateOf(-1) }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
             .background(color = TmtmColorPalette.current.GreyWhite),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
-        CreateMoimTitle(string = "어떤 주제로 모임을 만들까요?")
-        CreateTopicContent()
+        CreateMoimTitle(string = stringResource(id = R.string.moim_topic_title))
+        CreateTopicContent(viewModel, topicIndex)
         Spacer(modifier = Modifier.weight(1f))
         TeumDivider()
-        MoimCreateBtn(text = "다음")
+        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = topicIndex.value >=0, viewModel = viewModel)
         TmMarginVerticalSpacer(size = 24)
     }
 }
 
 @Composable
-fun TeumDivider() {
-    Divider(
-        color = TmtmColorPalette.current.ColorDivider,
-        thickness = 1.dp,
-        startIndent = 0.dp
-    )
-}
-
-
-@Composable
-fun MoimCreateBtn(text: String) {
-    var isClicked: Boolean = false
-    val buttonColors = if (isClicked) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
-    val textColors = if(isClicked) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+fun MoimCreateBtn(text: String, viewModel: MoimViewModel ,isEnabled: Boolean) {
+    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
+    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(76.dp)
             .padding(horizontal = 20.dp, vertical = 10.dp),
-        onClick = { !isClicked },
+        enabled = isEnabled,
+        onClick = { viewModel.goToNextScreen() },
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         shape = RoundedCornerShape(size = 4.dp)
     ) {
@@ -100,16 +95,25 @@ fun CreateMoimTitle(string:String) {
 }
 
 @Composable
-fun CreateTopicContent() {
-    val selectedTopicIndex = remember { mutableStateOf(-1) }
-    LazyColumn {
+fun CreateTopicContent(viewModel: MoimViewModel, topicIndex: MutableState<Int>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
         itemsIndexed(TopicType.values()) { index, topicType ->
-            val isSelected = index == selectedTopicIndex.value
+            val isSelected = index == topicIndex.value
             CreateTopicItem(
                 title = topicType.title,
                 subTitle = topicType.subTitle,
                 isSelected = isSelected,
-                onItemSelected = { selectedTopicIndex.value = index }
+                onItemSelected = {
+                    topicIndex.value = index
+                    viewModel.updateTopic(topicType)
+                    Log.d("moim_topic", topicType.toString())
+                }
             )
             TmMarginVerticalSpacer(size = 12)
         }
@@ -126,7 +130,7 @@ fun CreateTopicItem(
     val radioIcon = if (isSelected) R.drawable.ic_radio_active else R.drawable.ic_radio
     Box(
         modifier = Modifier
-            .width(360.dp)
+            .fillMaxWidth()
             .height(92.dp)
             .clickable(onClick = onItemSelected)
             .padding(horizontal = 20.dp)
@@ -159,18 +163,4 @@ fun CreateTopicItem(
             )
         }
     }
-}
-
-enum class TopicType(val value: String, val title: String ,val subTitle: String) {
-    SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
-    STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
-    GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
-    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
-
-}
-
-@Preview
-@Composable
-fun previewtmtm1() {
-    MoimCreateTopic()
 }
