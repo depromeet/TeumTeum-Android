@@ -15,7 +15,7 @@
             android:id="@+id/compose_moim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/progress_bar"/>
+            app:layout_constraintTop_toTopOf="@id/progress_bar"/>
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -26,20 +26,19 @@
             android:max="700"
             android:progress="100"
             android:progressDrawable="@drawable/progress_bar_color"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="1.0"/>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:navigationIcon="@drawable/ic_arrow_left_m"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        </androidx.appcompat.widget.Toolbar>
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            android:navigationIcon="@drawable/ic_arrow_left_m"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent">-->
+<!--        </androidx.appcompat.widget.Toolbar>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

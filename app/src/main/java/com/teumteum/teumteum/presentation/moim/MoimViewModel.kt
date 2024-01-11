@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -93,13 +95,35 @@ class MoimViewModel @Inject constructor(
             _people.value -=1
         }
     }
+    fun emitSnackbarEvent(event: SnackbarEvent) {
+        viewModelScope.launch {
+            _snackbarEvent.emit(event)
+        }
+    }
+
+    fun resetSnackbarEvent() {
+        viewModelScope.launch {
+            _snackbarEvent.emit(SnackbarEvent.DEFAULT)
+        }
+    }
+
 
     fun addImages(uris: List<Uri>, context: Context) {
         val currentList = _imageUri.value.toMutableList()
+        var isOverSizeImageFound = false
+
         for (uri in uris) {
             val size = getFileSize(uri, context)
-            if (size <= 10 * 1024 * 1024 && currentList.size < 5) { // 10MB 이하이고, 현재 리스트 크기가 5 미만인 경우
+            if (size > 10 * 1024 * 1024) { // 10MB 이상인 경우
+                isOverSizeImageFound = true
+            } else if (currentList.size < 5) { // 사이즈가 적절하고, 현재 리스트 크기가 5 미만인 경우
                 currentList.add(uri)
+            }
+        }
+        if (isOverSizeImageFound) {
+            viewModelScope.launch {
+                _snackbarEvent.emit(SnackbarEvent.FILE_OVER_10MB)
+                Log.d("snackbarEvent", _snackbarEvent.toString())
             }
         }
         _imageUri.value = currentList.take(5)
@@ -195,15 +219,13 @@ class MoimViewModel @Inject constructor(
     }
 
     enum class SnackbarEvent {
-        DEFAULT, FILE_OVER_10MB
-    }
-
-    enum class TopicType(val value: String, val title: String ,val subTitle: String) {
-        SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
-        STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
-        GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
-        SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
-
+        DEFAULT, FILE_OVER_10MB;
+        fun getMessage(): String {
+            return when (this) {
+                FILE_OVER_10MB -> "파일 크기가 10MB를 초과합니다."
+                else -> ""
+            }
+        }
     }
 
 }
@@ -211,5 +233,12 @@ class MoimViewModel @Inject constructor(
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Webview
 }
+    enum class TopicType(val value: String, val title: String ,val subTitle: String) {
+        SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
+        STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
+        GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
+        SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
+
+    }
 
 

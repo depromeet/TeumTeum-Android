@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -22,8 +23,13 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +50,7 @@ import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmSnackBar
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
@@ -53,37 +60,52 @@ fun MoimIntroduce(
 ) {
     val introduce by viewModel.introduction.collectAsState()
     val photo by viewModel.imageUri.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarEvent by viewModel.snackbarEvent.collectAsState(initial = MoimViewModel.SnackbarEvent.DEFAULT)
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(Unit) {
         viewModel.snackbarEvent.collect { event ->
-            val message = when (event) {
-                MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> "10MB 이하의 사진을 등록해주세요"
-                else -> null
+            when (event) {
+                MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = "파일 크기가 10MB를 초과합니다.",
+                        duration = SnackbarDuration.Short
+                    )
+                    if (result == SnackbarResult.Dismissed) {
+                        viewModel.resetSnackbarEvent()
+                    }
+                }
+                MoimViewModel.SnackbarEvent.DEFAULT -> {}
             }
-            message?.let {  }
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
-        TmMarginVerticalSpacer(size = 28)
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { innerPadding->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
+            TmMarginVerticalSpacer(size = 28)
 
-        MoimIntroColumn(viewModel)
-        TmMarginVerticalSpacer(size = 20)
-        TeumDivider()
-        TmMarginVerticalSpacer(size = 20)
+            MoimIntroColumn(viewModel)
+            TmMarginVerticalSpacer(size = 20)
+            TeumDivider()
+            TmMarginVerticalSpacer(size = 20)
 
-        MoimPhotoColumn(viewModel)
-        Spacer(modifier = Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
+            MoimPhotoColumn(viewModel)
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
+        }
     }
+
 }
 
 @Composable
@@ -137,6 +159,7 @@ fun MoimInputField(viewModel: MoimViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
+            .clickable { }
             .height(272.dp),
         placeholder = { Text(text = stringResource(id = R.string.moim_introduce_title), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
         onValueChange = { newText-> viewModel.updateIntroduce(newText) },

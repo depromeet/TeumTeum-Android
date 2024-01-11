@@ -104,7 +104,7 @@ fun CreateTopicContent(viewModel: MoimViewModel, topicIndex: MutableState<Int>) 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        itemsIndexed(MoimViewModel.TopicType.values()) { index, topicType ->
+        itemsIndexed(TopicType.values()) { index, topicType ->
             val isSelected = index == topicIndex.value
             CreateTopicItem(
                 title = topicType.title,

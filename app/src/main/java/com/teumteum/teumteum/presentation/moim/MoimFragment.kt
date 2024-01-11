@@ -51,11 +51,11 @@ class MoimFragment :
                 else -> {}
             }
         }
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
+//        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
 
-        binding.toolbar.setNavigationOnClickListener {
-            goFrontScreen()
-        }
+//        binding.toolbar.setNavigationOnClickListener {
+//            goFrontScreen()
+//        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
@@ -68,6 +68,8 @@ class MoimFragment :
     private fun goFrontScreen() {
         if (viewModel.screenState.value == ScreenState.Topic) {
             findNavController().navigate(R.id.action_moimFragment_to_homeFragment)
+            (activity as MainActivity).showBottomNavi()
+
         } else {
             viewModel.goPreviousScreen()
         }

@@ -20,14 +20,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import androidx.compose.material.*
 import androidx.compose.ui.tooling.preview.Preview
+import com.teumteum.base.component.compose.theme.TmTypo
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun CustomSnackbar(
+fun TmSnackBar(
     text: String,
+    snackbarHostState: SnackbarHostState,
 ) {
-    val snackbarHostState = remember { SnackbarHostState()}
     val coroutineScope = rememberCoroutineScope()
     Box(
         modifier = Modifier
@@ -35,8 +36,6 @@ fun CustomSnackbar(
             .height(60.dp)
             .clickable {
                 coroutineScope.launch {
-                    // snackBar의 결과를 받을 수 있음
-                    // 이 결과는 스낵바가 닫아졌는지? 스낵바의 버튼이 눌러졌는지?
                     snackbarHostState
                         .showSnackbar(
                             "snackBar show!!", "확인", SnackbarDuration.Short // 스낵바 보여주는 시간
@@ -46,7 +45,6 @@ fun CustomSnackbar(
                                 SnackbarResult.Dismissed ->
                                     Log.d("snackBar", "snackBar: 스낵바 닫아짐")
 
-                                // 스낵바에 있는 버튼이 눌러졌을 때 로직처리 하는 부분
                                 SnackbarResult.ActionPerformed ->
                                     Log.d("snackBar", "snackBar: 확인 버튼 눌러짐")
 
@@ -63,7 +61,8 @@ fun CustomSnackbar(
     ) {
         Text(
             text = text,
-            color = TmtmColorPalette.current.color_text_body_quinary
+            color = TmtmColorPalette.current.color_text_body_quinary,
+            style= TmTypo.current.Body1
         )
 
         SnackbarHost(
