@@ -35,7 +35,7 @@
             android:exported="true">
         </activity>
         <activity android:name=".presentation.group.search.SearchActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>
