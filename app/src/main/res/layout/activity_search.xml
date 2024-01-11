@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.teumteum.teumteum.presentation.group.search.SearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_arrow_left_l"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search" />
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/transparent"
+            android:hint="@string/group_search_hint"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingVertical="13dp"
+            android:text="@={viewModel.etSearch}"
+            android:textAppearance="@style/ta.body.1"
+            android:textColor="@color/text_body_primary"
+            android:textColorHint="@color/text_body_quinary"
+            app:layout_constraintEnd_toStartOf="@id/iv_clear"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_close_fill"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/iv_search"
+            app:layout_constraintEnd_toStartOf="@id/iv_search"
+            app:layout_constraintTop_toTopOf="@id/iv_search" />
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search" />
+
+        <View
+            android:id="@+id/view_division_search"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_level02"
+            app:layout_constraintTop_toBottomOf="@id/et_search" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_recommend_keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_division_search">
+
+            <TextView
+                android:id="@+id/tv_recommend_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_search_recommend_keyword"
+                android:textAppearance="@style/ta.body.2"
+                android:textColor="@color/grey_500"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recommend_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_recommend_title"
+                app:spanCount="3"
+                tools:itemCount="8"
+                tools:listitem="@layout/item_keyword_list" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_group_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_division_search" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_division_search"
+            app:layout_constraintVertical_bias="0.35">
+
+            <ImageView
+                android:id="@+id/iv_empty"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@color/grey_500" />
+
+            <TextView
+                android:id="@+id/tv_empty_group_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textAppearance="@style/ta.headline.7"
+                android:textColor="@color/text_headline_teritary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_empty"
+                tools:text="'모여서 각자 일하기'" />
+
+            <TextView
+                android:id="@+id/tv_empty_not_response"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/group_search_not_response_keyword"
+                android:textAppearance="@style/ta.body.1"
+                android:textColor="@color/text_body_quinary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_empty_group_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

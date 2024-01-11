@@ -3,12 +3,12 @@ package com.teumteum.teumteum.presentation.group
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.teumteum.domain.entity.Group
+import com.teumteum.domain.entity.Meeting
 import com.teumteum.teumteum.databinding.ItemGroupListBinding
 
-class GroupListAdapter(private val itemClick: (Group) -> (Unit)) :
+class GroupListAdapter(private val itemClick: (Meeting) -> (Unit)) :
     RecyclerView.Adapter<GroupListAdapter.GroupListViewHolder>() {
-    private val groupList = mutableListOf<Group>()
+    private val groupList = mutableListOf<Meeting>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupListViewHolder {
         val binding = ItemGroupListBinding.inflate(
@@ -25,7 +25,7 @@ class GroupListAdapter(private val itemClick: (Group) -> (Unit)) :
 
     override fun getItemCount(): Int = groupList.size
 
-    fun setItems(newItems: List<Group>) {
+    fun setItems(newItems: List<Meeting>) {
         groupList.clear()
         groupList.addAll(newItems)
         notifyDataSetChanged()
@@ -33,9 +33,9 @@ class GroupListAdapter(private val itemClick: (Group) -> (Unit)) :
 
     class GroupListViewHolder(
         private val binding: ItemGroupListBinding,
-        private val itemClick: (Group) -> (Unit)
+        private val itemClick: (Meeting) -> (Unit)
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(item: Group) {
+        fun onBind(item: Meeting) {
             binding.tvGroupName.text = item.name
             binding.tvTitleBadge.text = item.topic
             binding.tvDate.text = item.date
