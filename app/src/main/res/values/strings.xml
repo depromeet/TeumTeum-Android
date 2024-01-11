@@ -35,6 +35,7 @@
     <string name="moim_introduce_title1_photo">사진 등록</string>
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
+    <string name="moim_introduce_snackbar">파일 크기가 10MB를 초과합니다.</string>
 
     <string name="moim_datetime_title">모임 일정을 정해주세요</string>
     <string name="moim_datetime_label1">날짜</string>

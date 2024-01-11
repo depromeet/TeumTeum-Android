@@ -32,7 +32,7 @@ data class ColorPalette_Light(
 
     //button
     val color_text_button_primary_default: Color = Color(0xFFFFFFFF),
-    val color_text_button_primary_default02: Color = Color(0x4444444),
+    val color_text_button_primary_default02: Color = Color(0xFF444444),
     val color_text_button_primary_press: Color = Color(0xFF96D1FF), //tmtm blue 200
     val color_text_button_primary_disabled: Color = Color(0xFFC9C9C9),
     val color_text_button_secondary_default: Color = Color(0xFF44AEFF),

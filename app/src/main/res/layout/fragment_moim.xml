@@ -31,15 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_percent="1.0"/>
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            android:navigationIcon="@drawable/ic_arrow_left_m"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent">-->
-<!--        </androidx.appcompat.widget.Toolbar>-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

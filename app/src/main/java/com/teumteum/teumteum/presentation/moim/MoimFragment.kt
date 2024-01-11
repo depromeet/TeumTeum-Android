@@ -51,11 +51,6 @@ class MoimFragment :
                 else -> {}
             }
         }
-//        (activity as? AppCompatActivity)?.setSupportActionBar(binding.toolbar)
-
-//        binding.toolbar.setNavigationOnClickListener {
-//            goFrontScreen()
-//        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 

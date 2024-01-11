@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,6 +44,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
@@ -53,6 +55,7 @@ import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmSnackBar
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import kotlinx.coroutines.delay
 
 @Composable
 fun MoimIntroduce(
@@ -61,16 +64,17 @@ fun MoimIntroduce(
     val introduce by viewModel.introduction.collectAsState()
     val photo by viewModel.imageUri.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-    val snackbarEvent by viewModel.snackbarEvent.collectAsState(initial = MoimViewModel.SnackbarEvent.DEFAULT)
 
     LaunchedEffect(Unit) {
         viewModel.snackbarEvent.collect { event ->
             when (event) {
                 MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> {
                     val result = snackbarHostState.showSnackbar(
-                        message = "파일 크기가 10MB를 초과합니다.",
+                        message = "10mb 이하의 사진을 등록해주세요",
                         duration = SnackbarDuration.Short
                     )
+                    delay(1000)
+                    snackbarHostState.currentSnackbarData?.dismiss()
                     if (result == SnackbarResult.Dismissed) {
                         viewModel.resetSnackbarEvent()
                     }
@@ -80,8 +84,9 @@ fun MoimIntroduce(
         }
     }
 
+    TmSnackBar(snackbarHostState = snackbarHostState)
+
     Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { innerPadding->
         Column(
             modifier = Modifier
@@ -93,19 +98,43 @@ fun MoimIntroduce(
         ) {
             CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
             TmMarginVerticalSpacer(size = 28)
-
             MoimIntroColumn(viewModel)
             TmMarginVerticalSpacer(size = 20)
             TeumDivider()
             TmMarginVerticalSpacer(size = 20)
 
             MoimPhotoColumn(viewModel)
+            TmMarginVerticalSpacer(size = 20)
+            TmSnackBar(snackbarHostState = snackbarHostState)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
             MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
+            TmMarginVerticalSpacer(size = 24)
         }
     }
+}
 
+@Preview
+@Composable
+fun TmSnackBar(
+) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(
+                    color = TmtmColorPalette.current.color_text_button_primary_default02,
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(horizontal = 12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "스낵바",
+                color = TmtmColorPalette.current.color_text_body_quinary,
+                style= TmTypo.current.Body1
+            )
+        }
 }
 
 @Composable
