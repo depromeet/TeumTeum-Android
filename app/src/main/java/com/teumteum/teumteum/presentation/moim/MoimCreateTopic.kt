@@ -48,6 +48,7 @@ fun MoimCreateTopic(viewModel: MoimViewModel) {
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
+        TmMarginVerticalSpacer(size = 48)
         CreateMoimTitle(string = stringResource(id = R.string.moim_topic_title))
         CreateTopicContent(viewModel, topicIndex)
         Spacer(modifier = Modifier.weight(1f))
@@ -103,7 +104,7 @@ fun CreateTopicContent(viewModel: MoimViewModel, topicIndex: MutableState<Int>) 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        itemsIndexed(TopicType.values()) { index, topicType ->
+        itemsIndexed(MoimViewModel.TopicType.values()) { index, topicType ->
             val isSelected = index == topicIndex.value
             CreateTopicItem(
                 title = topicType.title,

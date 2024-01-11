@@ -6,8 +6,11 @@ import android.provider.OpenableColumns
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -49,6 +52,9 @@ class MoimViewModel @Inject constructor(
 
     private val _people = MutableStateFlow(2)
     val people: StateFlow<Int> = _people.asStateFlow()
+
+    private val _snackbarEvent = MutableSharedFlow<SnackbarEvent>()
+    val snackbarEvent : SharedFlow<SnackbarEvent> = _snackbarEvent.asSharedFlow()
 
 
     fun updateTopic(topicType: TopicType) {
@@ -188,19 +194,22 @@ class MoimViewModel @Inject constructor(
         return size
     }
 
+    enum class SnackbarEvent {
+        DEFAULT, FILE_OVER_10MB
+    }
 
+    enum class TopicType(val value: String, val title: String ,val subTitle: String) {
+        SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
+        STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
+        GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
+        SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
 
-
-}
-
-enum class TopicType(val value: String, val title: String ,val subTitle: String) {
-    SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
-    STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
-    GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
-    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
+    }
 
 }
 
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Webview
 }
+
+

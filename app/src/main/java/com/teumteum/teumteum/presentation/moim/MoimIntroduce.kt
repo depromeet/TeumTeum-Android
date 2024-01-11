@@ -22,11 +22,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
-import coil.transform.CircleCropTransformation
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.teumteum.R
@@ -46,9 +48,22 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
-fun MoimIntroduce(viewModel: MoimViewModel) {
+fun MoimIntroduce(
+    viewModel: MoimViewModel,
+) {
     val introduce by viewModel.introduction.collectAsState()
     val photo by viewModel.imageUri.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.snackbarEvent.collect { event ->
+            val message = when (event) {
+                MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> "10MB 이하의 사진을 등록해주세요"
+                else -> null
+            }
+            message?.let {  }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -213,5 +228,7 @@ fun MoimPhotoInput(
         }
     }
 }
+
+
 
 

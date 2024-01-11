@@ -9,6 +9,7 @@
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.teumteum.teumteum.presentation.home.HomeFragment"
+        android:title="@string/bottom_menu_home"
         android:label="HomeFragment">
 
         <action
@@ -30,6 +31,7 @@
         android:id="@+id/fragment_moim"
         android:name="com.teumteum.teumteum.presentation.moim.MoimFragment"
         android:label="MoimFragment"
+        android:title="@string/bottom_menu_teum_teum"
         tools:layout="@layout/fragment_moim">
         <action
             android:id="@+id/action_moimFragment_to_webViewFragment"
@@ -61,6 +63,18 @@
         android:id="@+id/fragment_my_page"
         android:name="com.teumteum.teumteum.presentation.mypage.MyPageFragment"
         android:label="MyPageFragment"
-        tools:layout="@layout/fragment_my_page"/>
+        android:title="@string/bottom_menu_my_page"
+        tools:layout="@layout/fragment_my_page">
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_home"
+            app:destination="@id/fragment_home" />
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_home2"
+            app:destination="@id/fragment_home" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.teumteum.teumteum.presentation.MainActivity"
+        android:label="MainActivity" />
 
 </navigation>
