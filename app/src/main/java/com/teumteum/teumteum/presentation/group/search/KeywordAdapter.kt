@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.teumteum.databinding.ItemKeywordListBinding
 
-class keywordAdapter(private val itemClick: (String) -> (Unit)): RecyclerView.Adapter<keywordAdapter.KeywordAdapter>() {
+class KeywordAdapter(private val itemClick: (String) -> (Unit)) :
+    RecyclerView.Adapter<KeywordAdapter.KeywordAdapter>() {
     private val keywordList = mutableListOf<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordAdapter {
         val binding = ItemKeywordListBinding.inflate(
