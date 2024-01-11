@@ -33,4 +33,11 @@
     <string name="group_search_not_response_keyword">에 대한 검색 결과가 없습니다.</string>
     <string name="group_search_keyword">\&apos;%1$s\&apos;</string>
 
+    <string name="front_card_mbti">MBTI</string>
+    <string name="front_card_area">선택 지역에 사는</string>
+    <string name="front_card_level">lv.3층</string>
+    <string name="front_card_job">직무명</string>
+    <string name="front_card_company">\@직장,학교명</string>
+    <string name="front_card_name">디프만</string>
+
 </resources>
