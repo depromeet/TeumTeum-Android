@@ -55,6 +55,8 @@ data class ColorPalette_Light(
     val GreyWhite: Color = Color(0xFFFFFFFF),
     val ColorDivider: Color = Color(0xFFF0F0F0),
     val elevation_color_elevation_level01: Color = Color(0xFFF5F5F5),
+    val color_icon_level01: Color = Color(0xFF212121),
+    val color_background: Color = Color(0xFFFFFFFF)
 )
 
 val TmtmColorPalette = staticCompositionLocalOf { ColorPalette_Light() }

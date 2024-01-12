@@ -24,9 +24,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.TextFieldDefaults
@@ -44,7 +42,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
@@ -70,7 +67,7 @@ fun MoimIntroduce(
             when (event) {
                 MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> {
                     val result = snackbarHostState.showSnackbar(
-                        message = "10mb 이하의 사진을 등록해주세요",
+                        message = event.getMessage(),
                         duration = SnackbarDuration.Short
                     )
                     delay(1000)
@@ -112,29 +109,6 @@ fun MoimIntroduce(
             TmMarginVerticalSpacer(size = 24)
         }
     }
-}
-
-@Preview
-@Composable
-fun TmSnackBar(
-) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(
-                    color = TmtmColorPalette.current.color_text_button_primary_default02,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .padding(horizontal = 12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "스낵바",
-                color = TmtmColorPalette.current.color_text_body_quinary,
-                style= TmTypo.current.Body1
-            )
-        }
 }
 
 @Composable

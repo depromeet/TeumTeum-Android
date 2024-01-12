@@ -222,12 +222,11 @@ class MoimViewModel @Inject constructor(
         DEFAULT, FILE_OVER_10MB;
         fun getMessage(): String {
             return when (this) {
-                FILE_OVER_10MB -> "파일 크기가 10MB를 초과합니다."
+                FILE_OVER_10MB -> "10mb 이하의 사진을 등록해주세요"
                 else -> ""
             }
         }
     }
-
 }
 
 enum class ScreenState {
