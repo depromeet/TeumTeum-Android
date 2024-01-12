@@ -38,32 +38,36 @@ import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoimPeople(viewModel: MoimViewModel) {
+fun MoimPeople(viewModel: MoimViewModel, onClick: () -> Unit) {
     val people by viewModel.people.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string = stringResource(id = R.string.moim_people_title))
-        TmMarginVerticalSpacer(size = 28)
+    TmScaffold(onClick = { onClick()}) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_people_title))
+            TmMarginVerticalSpacer(size = 28)
 
-        PeopleContent(viewModel)
-        TmMarginVerticalSpacer(size = 39)
-        PeopleSystemText()
+            PeopleContent(viewModel)
+            TmMarginVerticalSpacer(size = 39)
+            PeopleSystemText()
 
-        Spacer(modifier= Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people in 3..6, viewModel = viewModel)
-        TmMarginVerticalSpacer(size = 24)
+            Spacer(modifier= Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people in 3..6, viewModel = viewModel)
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
 }
 

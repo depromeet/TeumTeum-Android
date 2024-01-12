@@ -25,30 +25,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 
 @Composable
-fun MoimAddress(viewModel: MoimViewModel) {
+fun MoimAddress(viewModel: MoimViewModel, onClick: () -> Unit) {
     val people by viewModel.title.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string = stringResource(id = R.string.moim_address_title))
-        TmMarginVerticalSpacer(size = 28)
-        MoimAddress1Column()
-        TmMarginVerticalSpacer(size = 20)
-        MoimAddress2Column()
+    TmScaffold(onClick = {onClick()}) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_address_title))
+            TmMarginVerticalSpacer(size = 28)
+            MoimAddress1Column()
+            TmMarginVerticalSpacer(size = 20)
+            MoimAddress2Column()
 
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people.isNotEmpty() , viewModel = viewModel)
-        TmMarginVerticalSpacer(size = 24)
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people.isNotEmpty() , viewModel = viewModel)
+            TmMarginVerticalSpacer(size = 24)
 
+        }
     }
 
 }

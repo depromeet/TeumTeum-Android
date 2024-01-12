@@ -34,28 +34,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
-fun MoimCreateTopic(viewModel: MoimViewModel) {
+fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {
     val topicIndex = remember { mutableStateOf(-1) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        TmMarginVerticalSpacer(size = 48)
-        CreateMoimTitle(string = stringResource(id = R.string.moim_topic_title))
-        CreateTopicContent(viewModel, topicIndex)
-        Spacer(modifier = Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = topicIndex.value >=0, viewModel = viewModel)
-        TmMarginVerticalSpacer(size = 24)
+    TmScaffold(onClick = { onClick() }) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_topic_title))
+            CreateTopicContent(viewModel, topicIndex)
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = topicIndex.value >=0, viewModel = viewModel)
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
+
 }
 
 @Composable

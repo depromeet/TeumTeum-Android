@@ -24,7 +24,7 @@ import com.teumteum.base.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TmScaffold(
-    topbarText: String,
+    topbarText: String = "",
     onClick: (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {

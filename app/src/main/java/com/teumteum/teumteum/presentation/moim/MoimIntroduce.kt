@@ -49,6 +49,7 @@ import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.TmSnackBar
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
@@ -57,6 +58,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun MoimIntroduce(
     viewModel: MoimViewModel,
+    onClick: () -> Unit
 ) {
     val introduce by viewModel.introduction.collectAsState()
     val photo by viewModel.imageUri.collectAsState()
@@ -83,16 +85,15 @@ fun MoimIntroduce(
 
     TmSnackBar(snackbarHostState = snackbarHostState)
 
-    Scaffold(
-    ) { innerPadding->
+    TmScaffold(onClick = {onClick()}) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
                 .background(color = TmtmColorPalette.current.GreyWhite),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
         ) {
+            TmMarginVerticalSpacer(size = 48)
             CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
             TmMarginVerticalSpacer(size = 28)
             MoimIntroColumn(viewModel)

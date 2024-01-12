@@ -31,7 +31,7 @@ class MoimViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Topic)
     val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
 
-    private val _currentStep = MutableStateFlow<Int>(1)
+    private val _currentStep = MutableStateFlow<Int>(0)
     val currentStep: StateFlow<Int> = _currentStep.asStateFlow()
 
     private val _topic = MutableStateFlow<TopicType?>(null)
@@ -201,7 +201,7 @@ class MoimViewModel @Inject constructor(
 
     fun goToNextStep() {
         val nextStep = _currentStep.value + 1
-        _currentStep.value = nextStep.coerceIn(1, 6)
+        _currentStep.value = nextStep.coerceIn(0, 5)
     }
 
     fun goToPreviousStep() {
