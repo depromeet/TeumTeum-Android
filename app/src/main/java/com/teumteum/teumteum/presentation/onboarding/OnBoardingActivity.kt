@@ -2,7 +2,6 @@ package com.teumteum.teumteum.presentation.onboarding
 
 import android.Manifest
 import android.content.Intent
-import android.os.Build.VERSION_CODES.M
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView

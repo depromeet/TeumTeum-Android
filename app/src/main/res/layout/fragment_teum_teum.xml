@@ -15,14 +15,22 @@
             android:id="@+id/cv_character"
             android:layout_width="280dp"
             android:layout_height="400dp"
-            app:name="김우남"
-            app:company="디프만"
-            app:job="안드로이드 개발"
-            app:level="lv.1층"
             app:area="서울 광진구"
-            app:mbti="ESTP"
+            app:company="디프만"
             app:image="@drawable/ic_card_penguin"
+            app:job="안드로이드 개발"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:level="lv.1층"
+            app:mbti="ESTP"
+            app:name="김우남" />
+
+        <Button
+            android:id="@+id/btnOnboarding"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
