@@ -9,7 +9,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCommunityBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
-//import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
+import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -18,7 +18,7 @@ class CommunityFragment
     : BindingFragment<FragmentCommunityBinding>(R.layout.fragment_community) {
 
     private val viewModel by activityViewModels<SignUpViewModel>()
-//    private var bottomSheet: SingleModalBottomSheet? = null
+    private var bottomSheet: SingleModalBottomSheet? = null
     private val communityList = ArrayList<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,15 +35,16 @@ class CommunityFragment
 
         val listener: (String) -> Unit = { item ->
             viewModel.updateCommunity(item)
-//            bottomSheet?.dismiss()
+            bottomSheet?.dismiss()
         }
 
-//        bottomSheet = SingleModalBottomSheet.newInstance("상태 입력", communityList, listener)
+        bottomSheet = SingleModalBottomSheet.newInstance("상태 입력", communityList, listener)
 
         with(binding) {
             llStatus.setOnClickListener {
-//                bottomSheet?.setFocusedImageView(ivShow)
-//                bottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
+                bottomSheet?.setFocusedImageView(ivShow)
+                bottomSheet?.setSelectedItem(viewModel.community.value)
+                bottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
                 ivShow.setImageResource(R.drawable.ic_arrow_up_l)
             }
         }
