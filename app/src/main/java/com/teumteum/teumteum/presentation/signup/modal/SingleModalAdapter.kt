@@ -11,22 +11,22 @@ import com.teumteum.teumteum.databinding.ItemSingleModalBinding
 class SingleModalAdapter(private val itemClickListener: (String) -> Unit)
     : ListAdapter<String, SingleModalAdapter.ViewHolder>(DiffCallback()) {
 
-    private var selectedIndex: Int = RecyclerView.NO_POSITION
+    private var selectedItem: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemSingleModalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding, itemClickListener)
     }
 
-    fun setSelectedIndex(index: Int) {
-        selectedIndex = index
+    fun setSelectedItem(name: String) {
+        selectedItem = name
         notifyDataSetChanged()
     }
 
     // onBindViewHolder 내부에서 isSelected 메서드를 통해 선택 여부 확인
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = getItem(position)
-        holder.bind(currentItem, position == selectedIndex)
+        holder.bind(currentItem, currentItem.equals(selectedItem))
     }
 
     class ViewHolder(private val binding: ItemSingleModalBinding, itemClickListener: (String) -> Unit) : RecyclerView.ViewHolder(binding.root) {

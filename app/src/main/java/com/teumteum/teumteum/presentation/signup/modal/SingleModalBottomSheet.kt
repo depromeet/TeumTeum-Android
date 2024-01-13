@@ -17,6 +17,7 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
     private lateinit var recyclerViewAdapter: SingleModalAdapter
     private lateinit var itemClickListener: (String) -> Unit
     private lateinit var focusedShowImageView: ImageView
+    private var selectedItem: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +32,7 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewAdapter = SingleModalAdapter(itemClickListener)
+        recyclerViewAdapter.setSelectedItem(selectedItem)
         binding.rv.adapter = recyclerViewAdapter
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
 
@@ -46,6 +48,10 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
 
     fun setFocusedImageView(iv: ImageView) {
         focusedShowImageView = iv
+    }
+
+    fun setSelectedItem(item: String) {
+        selectedItem = item
     }
 
     override fun onDismiss(dialog: DialogInterface) {
