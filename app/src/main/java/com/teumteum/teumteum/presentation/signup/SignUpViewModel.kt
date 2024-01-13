@@ -1,10 +1,14 @@
 package com.teumteum.teumteum.presentation.signup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,12 +36,33 @@ class SignUpViewModel @Inject constructor(
         _userName.value = userName
     }
 
-    private val _birthYear = MutableStateFlow<Int>(0)
-    val birthYear: StateFlow<Int> = _birthYear.asStateFlow()
-    private val _birthMonth = MutableStateFlow<Int>(0)
-    val birthMonth: StateFlow<Int> = _birthMonth.asStateFlow()
-    private val _birthDate = MutableStateFlow<Int>(0)
-    val birthDate: StateFlow<Int> = _birthDate.asStateFlow()
+    private val _birthYear = MutableStateFlow("")
+    val birthYear: StateFlow<String> = _birthYear.asStateFlow()
+    private val _birthMonth = MutableStateFlow("")
+    val birthMonth: StateFlow<String> = _birthMonth.asStateFlow()
+    private val _birthDate = MutableStateFlow("")
+    val birthDate: StateFlow<String> = _birthDate.asStateFlow()
+    val birthValid: StateFlow<Boolean> = combine(
+        birthYear,
+        birthMonth,
+        birthDate
+    ) { year, month, date ->
+        year.toIntOrNull() in 1000..2122
+                && month.toIntOrNull() in 1..12
+                && date.toIntOrNull() in 1..31
+    }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
+
+    fun updateBirthYear(birthYear: String) {
+        _birthYear.value = birthYear
+    }
+
+    fun updateBirthMonth(birthMonth: String) {
+        _birthMonth.value = birthMonth
+    }
+
+    fun updateBirthDate(birthDate: String) {
+        _birthDate.value = birthDate
+    }
 
     private val _community = MutableStateFlow<String>("")
     val community: StateFlow<String> = _community.asStateFlow()

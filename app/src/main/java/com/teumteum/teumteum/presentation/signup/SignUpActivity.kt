@@ -14,6 +14,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
 import com.teumteum.teumteum.presentation.signup.birthday.BirthdayFragment
 import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
+import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,7 +91,7 @@ class SignUpActivity
             SignUpProgress.Character -> navigateTo<CharacterFragment>()
             SignUpProgress.Name -> navigateTo<GetNameFragment>()
             SignUpProgress.Birthday -> navigateTo<BirthdayFragment>()
-//            SignUpProgress.Community -> navigateTo<>()
+            SignUpProgress.Community -> navigateTo<CommunityFragment>()
             else -> return
         }
     }
