@@ -1,8 +1,12 @@
 package com.teumteum.teumteum.presentation.teumteum.shake
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +18,10 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.base.R.color
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
+import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -25,13 +31,6 @@ class ShakeOnBoardingActivity
     private val shakeOnboardingAdapter = ShakeOnBoardingAdapter()
 
     private val viewpagerList = ArrayList<ShakeOnboarding>()
-
-    private val locationPermissionRequest = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) {
-        startActivity(Intent(this@ShakeOnBoardingActivity, SignInActivity::class.java))
-        finish()
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,13 +107,57 @@ class ShakeOnBoardingActivity
         }.attach()
     }
 
-    private fun checkLocationPermission() {
-        locationPermissionRequest.launch(
-            arrayOf(
-                ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
-            )
-        )
+    private fun isLocationPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            OnBoardingActivity.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    this,
+                    OnBoardingActivity.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
+
+    // Handle the permission result
+    private val locationLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[OnBoardingActivity.ACCESS_FINE_LOCATION] == true && permissions[OnBoardingActivity.ACCESS_COARSE_LOCATION] == true -> {
+                // Permission granted
+                Timber.d("권한 허용 완료")
+            }
+
+            else -> {
+                // Permission denied
+                showPermissionDeniedDialog()
+            }
+        }
+    }
+
+    private fun showPermissionDeniedDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Location Permission Required")
+            .setMessage("This app requires location permissions to function. Please enable them in settings.")
+            .setPositiveButton("Open Settings") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun checkLocationPermission() {
+        if (!isLocationPermissionGranted()) {
+            locationLauncher.launch(arrayOf(
+                ACCESS_FINE_LOCATION,
+                ACCESS_COARSE_LOCATION
+            ))
+        }
+    }
+
 
     companion object {
         const val ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
