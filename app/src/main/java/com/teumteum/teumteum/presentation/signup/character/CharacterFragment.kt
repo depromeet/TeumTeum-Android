@@ -1,9 +1,7 @@
 package com.teumteum.teumteum.presentation.signup.character
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
@@ -11,10 +9,8 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCharacterBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
-import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class CharacterFragment
@@ -27,6 +23,7 @@ class CharacterFragment
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
+        binding.lifecycleOwner = this
         initAdapter()
         checkValidInput()
     }

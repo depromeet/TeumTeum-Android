@@ -52,7 +52,9 @@
     <string name="signup_tv_bday_month">01월</string>
     <string name="signup_tv_bday_date">01일</string>
 
-    <string name="signup_tv_suffix_day">일</string>
+    <string name="signup_tv_suffix_year">년</string>
+    <string name="signup_tv_suffix_month">월</string>
+    <string name="signup_tv_suffix_date">일</string>
     <string name="signup_tv_name_invalid">형식이 올바르지 않아요.</string>
     <string name="signup_tv_bday_invalid">생년월일 형식이 올바르지 않아요.</string>
 

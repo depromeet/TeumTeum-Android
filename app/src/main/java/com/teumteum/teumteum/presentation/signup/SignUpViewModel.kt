@@ -67,6 +67,10 @@ class SignUpViewModel @Inject constructor(
     private val _community = MutableStateFlow<String>("")
     val community: StateFlow<String> = _community.asStateFlow()
 
+    fun updateCommunity(community: String) {
+        _community.value = community
+    }
+
     private val _companyName = MutableStateFlow<String>("")
     val companyName: StateFlow<String> = _companyName.asStateFlow()
 

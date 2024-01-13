@@ -25,9 +25,9 @@ class BirthdayFragment
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
+        binding.lifecycleOwner = this
         setTextChangedListener()
         checkValidInput()
-        addSuffixText()
     }
 
     private fun setTextChangedListener() {
@@ -101,29 +101,6 @@ class BirthdayFragment
                     else til.setBackgroundResource(R.drawable.shape_rect4_elevation_level01_error)
                     if (!viewModel.birthValid.value) binding.tvError.visibility = View.VISIBLE
                 }
-            }
-        }
-    }
-
-    private fun addSuffixText() {
-        lifecycleScope.launch {
-            viewModel.birthYear.collect { birthYear ->
-                if (birthYear.isNotBlank()) binding.tilBdayYear.suffixText = "년"
-                else binding.tilBdayYear.suffixText = ""
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.birthMonth.collect { birthMonth ->
-                if (birthMonth.isNotBlank()) binding.tilBdayMonth.suffixText = "월"
-                else binding.tilBdayMonth.suffixText = ""
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.birthDate.collect { birthDate ->
-                if (birthDate.isNotBlank()) binding.tilBdayDate.suffixText = "일"
-                else binding.tilBdayDate.suffixText = ""
             }
         }
     }

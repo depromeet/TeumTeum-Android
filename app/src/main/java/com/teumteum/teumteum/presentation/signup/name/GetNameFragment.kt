@@ -25,6 +25,7 @@ class GetNameFragment
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
+        binding.lifecycleOwner = this
         setTextChangedListener()
         checkValidinput()
     }
