@@ -32,6 +32,21 @@ class ShakeOnBoardingActivity
 
     private val viewpagerList = ArrayList<ShakeOnboarding>()
 
+    private val locationLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[OnBoardingActivity.ACCESS_FINE_LOCATION] == true && permissions[OnBoardingActivity.ACCESS_COARSE_LOCATION] == true -> {
+                // 권한 허용 시
+            }
+
+            else -> {
+                // 권한 거부 시
+                showPermissionDeniedDialog()
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +67,7 @@ class ShakeOnBoardingActivity
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = null
+                clickEvent = ::finish
             )
         )
     }
@@ -118,34 +133,18 @@ class ShakeOnBoardingActivity
                 ) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Handle the permission result
-    private val locationLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions[OnBoardingActivity.ACCESS_FINE_LOCATION] == true && permissions[OnBoardingActivity.ACCESS_COARSE_LOCATION] == true -> {
-                // Permission granted
-                Timber.d("권한 허용 완료")
-            }
-
-            else -> {
-                // Permission denied
-                showPermissionDeniedDialog()
-            }
-        }
-    }
-
+    //TODO 임시 디자인
     private fun showPermissionDeniedDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Location Permission Required")
-            .setMessage("This app requires location permissions to function. Please enable them in settings.")
-            .setPositiveButton("Open Settings") { _, _ ->
+            .setTitle("위치 권한을 허용해주세요")
+            .setMessage("지역 기반 기능 사용 시 위치 권한이 필요합니다")
+            .setPositiveButton("설정") { _, _ ->
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 val uri = Uri.fromParts("package", packageName, null)
                 intent.data = uri
                 startActivity(intent)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton("닫기", null)
             .show()
     }
 
