@@ -2,7 +2,6 @@ package com.teumteum.teumteum.presentation.teumteum.shake.view
 
 import ShakeDetector
 import android.content.Context
-import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -14,6 +13,7 @@ import android.os.Vibrator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
@@ -48,16 +48,16 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
         // UserInterest 객체를 위한 정보를 정의한 리스트
         val userInterests = listOf(
-            UserInterestInfo("디자인", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("IT", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)),
-            UserInterestInfo("경제", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)),
-            UserInterestInfo("재테크", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("퍼스널 브랜딩", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("마음 수련", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_skyblue)),
-            UserInterestInfo("네트워킹", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_mint)),
-            UserInterestInfo("네트워킹", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)),
-            UserInterestInfo("고민 나누기", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_yelloworange)),
-            UserInterestInfo("IT", ContextCompat.getColor(this, com.teumteum.base.R.color.graphic_pink)),
+            UserInterestInfo("디자인", ContextCompat.getColor(this, color.graphic_skyblue)),
+            UserInterestInfo("IT", ContextCompat.getColor(this, color.graphic_mint)),
+            UserInterestInfo("경제", ContextCompat.getColor(this, color.graphic_pink)),
+            UserInterestInfo("재테크", ContextCompat.getColor(this, color.graphic_skyblue)),
+            UserInterestInfo("퍼스널 브랜딩", ContextCompat.getColor(this, color.graphic_skyblue)),
+            UserInterestInfo("마음 수련", ContextCompat.getColor(this, color.graphic_skyblue)),
+            UserInterestInfo("네트워킹", ContextCompat.getColor(this, color.graphic_mint)),
+            UserInterestInfo("네트워킹", ContextCompat.getColor(this, color.graphic_yelloworange)),
+            UserInterestInfo("고민 나누기", ContextCompat.getColor(this, color.graphic_yelloworange)),
+            UserInterestInfo("IT", ContextCompat.getColor(this, color.graphic_pink)),
         )
 
         addUserInterestView(userInterests)
@@ -65,6 +65,7 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
     override fun initAppBarLayout() {
         setAppBarHeight(48)
+        setAppBarBackgroundColor(color.background)
 
         addMenuToLeft(
             AppBarMenu.IconStyle(
@@ -162,6 +163,6 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         shakeView.layoutParams = layoutParams
 
         // ShakeView를 Fragment의 레이아웃에 추가
-        binding.cl.addView(shakeView)
+        binding.clChild.addView(shakeView)
     }
 }
