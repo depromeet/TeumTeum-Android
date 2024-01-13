@@ -2,13 +2,16 @@ package com.teumteum.teumteum.presentation.teumteum
 
 import ShakeDetector
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentTeumTeumBinding
+import com.teumteum.teumteum.presentation.teumteum.shake.ShakeOnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +22,17 @@ class TeumTeumFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         shakeDetector = ShakeDetector(requireContext(), ::triggerVibration, ::stopVibration)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnOnboarding.setOnClickListener {
+            val intent = Intent(requireActivity(), ShakeOnBoardingActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onResume() {
