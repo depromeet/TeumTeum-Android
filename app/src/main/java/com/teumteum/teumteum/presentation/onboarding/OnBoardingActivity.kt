@@ -12,6 +12,7 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.domain.entity.CommonViewPagerEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.onboarding.adapter.OnBoardingViewPagerAdapter
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +39,7 @@ class OnBoardingActivity
         initAppBarLayout()
         initViewPagerItem()
         initViewPager()
+        setUpListener()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -47,11 +49,35 @@ class OnBoardingActivity
         setAppBarHeight(48)
     }
 
+    private fun setUpListener() {
+        binding.btnStart.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
     private fun initViewPagerItem() {
         with(viewpagerList) {
-            add(CommonViewPagerEntity(getString(R.string.onboarding_tv_namecard_title), getString(R.string.onboarding_tv_namecard_subtitle), 0))
-            add(CommonViewPagerEntity(getString(R.string.onboarding_tv_meet_title), getString(R.string.onboarding_tv_meet_subtitle), 0))
-            add(CommonViewPagerEntity(getString(R.string.onboarding_tv_networking_title), getString(R.string.onboarding_tv_networking_subtitle), 0))
+            add(
+                CommonViewPagerEntity(
+                    getString(R.string.onboarding_tv_namecard_title),
+                    getString(R.string.onboarding_tv_namecard_subtitle),
+                    0
+                )
+            )
+            add(
+                CommonViewPagerEntity(
+                    getString(R.string.onboarding_tv_meet_title),
+                    getString(R.string.onboarding_tv_meet_subtitle),
+                    0
+                )
+            )
+            add(
+                CommonViewPagerEntity(
+                    getString(R.string.onboarding_tv_networking_title),
+                    getString(R.string.onboarding_tv_networking_subtitle),
+                    0
+                )
+            )
         }
     }
 
@@ -71,8 +97,11 @@ class OnBoardingActivity
     }
 
     private fun checkLocationPermission() {
-        locationPermissionRequest.launch(arrayOf(
-            ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))
+        locationPermissionRequest.launch(
+            arrayOf(
+                ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+            )
+        )
     }
 
     companion object {

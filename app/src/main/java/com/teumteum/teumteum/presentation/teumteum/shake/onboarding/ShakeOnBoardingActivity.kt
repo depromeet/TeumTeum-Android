@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.shake
+package com.teumteum.teumteum.presentation.teumteum.shake.onboarding
 
 import android.Manifest
 import android.app.AlertDialog
@@ -12,16 +12,16 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
-import com.teumteum.base.R.color
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
-import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.presentation.teumteum.shake.ShakeActivity
+import com.teumteum.teumteum.presentation.teumteum.shake.model.ShakeOnBoarding
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -29,8 +29,7 @@ class ShakeOnBoardingActivity
     : BindingActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding), AppBarLayout {
 
     private val shakeOnboardingAdapter = ShakeOnBoardingAdapter()
-
-    private val viewpagerList = ArrayList<ShakeOnboarding>()
+    private val viewpagerList = ArrayList<ShakeOnBoarding>()
 
     private val locationLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -47,13 +46,28 @@ class ShakeOnBoardingActivity
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
         initViewPagerItem()
         initViewPager()
+        setUpListener()
+    }
+
+    private fun setUpListener() {
+        binding.btnStart.setOnClickListener {
+            if (isLocationPermissionGranted()) startToShakeActivity()
+        }
+    }
+
+    private fun startToShakeActivity() {
+        startActivity(
+            Intent(
+                this@ShakeOnBoardingActivity,
+                ShakeActivity::class.java
+            )
+        )
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -75,7 +89,7 @@ class ShakeOnBoardingActivity
     private fun initViewPagerItem() {
         with(viewpagerList) {
             add(
-                ShakeOnboarding(
+                ShakeOnBoarding(
                     getString(R.string.shake_onboarding_location_title),
                     getString(R.string.shake_onboarding_location_subtitle),
                     ContextCompat.getDrawable(
@@ -85,7 +99,7 @@ class ShakeOnBoardingActivity
                 )
             )
             add(
-                ShakeOnboarding(
+                ShakeOnBoarding(
                     getString(R.string.shake_onboarding_card_title),
                     getString(R.string.shake_onboarding_card_subtitle),
                     ContextCompat.getDrawable(
@@ -95,7 +109,7 @@ class ShakeOnBoardingActivity
                 )
             )
             add(
-                ShakeOnboarding(
+                ShakeOnBoarding(
                     getString(R.string.shake_onboarding_interst_title),
                     getString(R.string.shake_onboarding_interest_subtitle),
                     ContextCompat.getDrawable(
@@ -150,10 +164,12 @@ class ShakeOnBoardingActivity
 
     private fun checkLocationPermission() {
         if (!isLocationPermissionGranted()) {
-            locationLauncher.launch(arrayOf(
-                ACCESS_FINE_LOCATION,
-                ACCESS_COARSE_LOCATION
-            ))
+            locationLauncher.launch(
+                arrayOf(
+                    ACCESS_FINE_LOCATION,
+                    ACCESS_COARSE_LOCATION
+                )
+            )
         }
     }
 

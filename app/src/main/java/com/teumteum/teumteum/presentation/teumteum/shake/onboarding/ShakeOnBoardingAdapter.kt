@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.shake
+package com.teumteum.teumteum.presentation.teumteum.shake.onboarding
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teumteum.teumteum.databinding.ItemShakeOnboardingBinding
+import com.teumteum.teumteum.presentation.teumteum.shake.model.ShakeOnBoarding
 
 class ShakeOnBoardingAdapter() :
-    ListAdapter<ShakeOnboarding, ShakeOnBoardingAdapter.ItemViewHolder>(
+    ListAdapter<ShakeOnBoarding, ShakeOnBoardingAdapter.ItemViewHolder>(
         ItemListDiffCallback
     ) {
     private lateinit var binding: ItemShakeOnboardingBinding
@@ -30,7 +31,7 @@ class ShakeOnBoardingAdapter() :
 
     class ItemViewHolder(private val binding: ItemShakeOnboardingBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ShakeOnboarding) {
+        fun bind(item: ShakeOnBoarding) {
             with(binding) {
                 tvTitle.text = item.title
                 tvSubtitle.text = item.subtitle
@@ -43,14 +44,14 @@ class ShakeOnBoardingAdapter() :
         }
     }
 
-    object ItemListDiffCallback : DiffUtil.ItemCallback<ShakeOnboarding>() {
-        override fun areItemsTheSame(oldItem: ShakeOnboarding, newItem: ShakeOnboarding): Boolean {
+    object ItemListDiffCallback : DiffUtil.ItemCallback<ShakeOnBoarding>() {
+        override fun areItemsTheSame(oldItem: ShakeOnBoarding, newItem: ShakeOnBoarding): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ShakeOnboarding,
-            newItem: ShakeOnboarding
+            oldItem: ShakeOnBoarding,
+            newItem: ShakeOnBoarding
         ): Boolean {
             return oldItem.title == newItem.title
         }

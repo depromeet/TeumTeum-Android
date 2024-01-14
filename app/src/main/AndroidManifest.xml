@@ -16,34 +16,47 @@
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TeumTeum"
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".presentation.teumteum.shake.ShakeActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.onboarding.OnBoardingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.group.GroupListActivity"
+        <activity
+            android:name=".presentation.group.GroupListActivity"
             android:exported="false" />
-        <activity android:name=".presentation.teumteum.shake.ShakeOnBoardingActivity"
+        <activity
+            android:name=".presentation.teumteum.shake.onboarding.ShakeOnBoardingActivity"
             android:exported="false" />
-        <activity android:name=".presentation.signin.SignInActivity"
+        <activity
+            android:name=".presentation.signin.SignInActivity"
             android:exported="false" />
-        <activity android:name=".presentation.signup.terms.TermsActivity"
+        <activity
+            android:name=".presentation.signup.terms.TermsActivity"
             android:exported="false" />
-        <activity android:name=".presentation.signup.intro.CardIntroActivity"
+        <activity
+            android:name=".presentation.signup.intro.CardIntroActivity"
             android:exported="false" />
-        <activity android:name=".presentation.signup.SignUpActivity"
+        <activity
+            android:name=".presentation.signup.SignUpActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.search.SearchActivity"
+        <activity
+            android:name=".presentation.group.search.SearchActivity"
             android:exported="false" />
     </application>
 
