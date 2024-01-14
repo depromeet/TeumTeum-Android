@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/text_button_primary_default" android:state_enabled="true" />
+    <item android:color="@color/text_button_primary_disabled" android:state_enabled="false" android:state_active="false" />
+    <item android:color="@color/text_button_primary_press" android:state_pressed="true" />
+</selector>
