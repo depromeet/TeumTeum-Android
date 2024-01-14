@@ -74,17 +74,73 @@ class SignUpViewModel @Inject constructor(
     private val _companyName = MutableStateFlow<String>("")
     val companyName: StateFlow<String> = _companyName.asStateFlow()
 
+    fun updateCompanyName(companyName: String) {
+        _companyName.value = companyName
+    }
+
     private val _jobClass = MutableStateFlow<String>("")
     val jobClass: StateFlow<String> = _jobClass.asStateFlow()
+
+    fun updateJobClass(jobClass: String) {
+        _jobClass.value = jobClass
+    }
 
     private val _jobDetailClass = MutableStateFlow<String>("")
     val jobDetailClass: StateFlow<String> = _jobDetailClass.asStateFlow()
 
+    fun updateJobDetailClass(jobDetailClass: String) {
+        _jobDetailClass.value = jobDetailClass
+    }
+
+    val currentJobValid: StateFlow<Boolean> = combine(
+        companyName,
+        jobClass,
+        jobDetailClass
+    ) { companyName, jobClass, jobDetailClass ->
+        companyName.trim().length in 2..13 && jobClass.isNotBlank() && jobDetailClass.isNotBlank()
+    }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
+
+    private val _schoolName = MutableStateFlow<String>("")
+    val schoolName: StateFlow<String> = _schoolName.asStateFlow()
+
+    fun updateSchoolName(school: String) {
+        _schoolName.value = school
+    }
+
+    private val _readyJobClass = MutableStateFlow<String>("")
+    val readyJobClass: StateFlow<String> = _readyJobClass.asStateFlow()
+
+    private val _readyJobDetailClass = MutableStateFlow<String>("")
+    val readyJobDetailClass: StateFlow<String> = _readyJobDetailClass.asStateFlow()
+
+    fun updateReadyJobClass(readyJobClass: String) {
+        _readyJobClass.value = readyJobClass
+    }
+
+    fun updateReadyJobDetailClass(readyJobDetailClass: String) {
+        _readyJobDetailClass.value = readyJobDetailClass
+    }
+
+    val readyJobValid: StateFlow<Boolean> = combine(
+        readyJobClass,
+        readyJobDetailClass
+    ) { readyJobClass, readyJobDetailClass ->
+        readyJobClass.isNotBlank() && readyJobDetailClass.isNotBlank()
+    }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
+
     private val _preferredArea = MutableStateFlow<String>("")
     val preferredArea: StateFlow<String> = _preferredArea.asStateFlow()
 
+    fun updatePreferredArea(preferredArea: String) {
+        _preferredArea.value = preferredArea
+    }
+
     private val _mbtiText = MutableStateFlow<String>("")
     val mbtiText: StateFlow<String> = _mbtiText.asStateFlow()
+
+    fun updateMbtiText(mbti: String) {
+        _mbtiText.value = mbti
+    }
 
     fun goToNextScreen() {
         _signUpProgress.value =
