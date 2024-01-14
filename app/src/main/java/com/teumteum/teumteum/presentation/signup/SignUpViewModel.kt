@@ -158,6 +158,39 @@ class SignUpViewModel @Inject constructor(
         _mbtiText.value = mbti
     }
 
+    private val _interestSelf = MutableStateFlow<ArrayList<String>>(ArrayList())
+    val interestSelf: StateFlow<ArrayList<String>> = _interestSelf.asStateFlow()
+
+    fun removeInterestSelf(interest: String) {
+        if (_interestSelf.value.contains(interest)) _interestSelf.value.remove(interest)
+        updateInterestCount()
+    }
+
+    fun addInterestSelf(interest: String) {
+        if (!_interestSelf.value.contains(interest)) _interestSelf.value.add(interest)
+        updateInterestCount()
+    }
+
+    private val _interestField = MutableStateFlow<ArrayList<String>>(ArrayList())
+    val interestField: StateFlow<ArrayList<String>> = _interestField.asStateFlow()
+
+    fun removeInterestField(interest: String) {
+        if (_interestField.value.contains(interest)) _interestField.value.remove(interest)
+        updateInterestCount()
+    }
+
+    fun addInterestField(interest: String) {
+        if (!_interestField.value.contains(interest)) _interestField.value.add(interest)
+        updateInterestCount()
+    }
+
+    private var _interestCount = MutableStateFlow<Int>(0)
+    val interestCount: StateFlow<Int> = _interestCount.asStateFlow()
+
+    fun updateInterestCount() {
+        _interestCount.value = interestField.value.size + interestSelf.value.size
+    }
+
     fun goToNextScreen() {
         _signUpProgress.value =
             when (_signUpProgress.value) {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Normal state -->
+    <item android:color="@color/text_body_teritary" android:state_enabled="true" android:state_checked="false" />
+
+    <!-- Pressed/focused state -->
+    <item android:color="@color/text_button_primary_default" android:state_enabled="true" android:state_checked="true" />
+</selector>

@@ -16,6 +16,7 @@ import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
 import com.teumteum.teumteum.presentation.signup.birthday.BirthdayFragment
 import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
 import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
+import com.teumteum.teumteum.presentation.signup.interests.GetInterestFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
 import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
@@ -102,6 +103,7 @@ class SignUpActivity
             SignUpProgress.ReadyJob -> navigateTo<ReadyJobFragment>()
             SignUpProgress.Area -> navigateTo<PreferredAreaFragment>()
             SignUpProgress.Mbti -> navigateTo<GetMbtiFragment>()
+            SignUpProgress.Interests -> navigateTo<GetInterestFragment>()
 
             else -> return
         }

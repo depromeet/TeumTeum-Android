@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Normal state -->
+    <item android:state_checked="false" android:color="@color/outline_level03" />
+
+    <!-- Pressed/focused state -->
+    <item android:state_checked="true" android:color="@color/transparent" />
+</selector>
