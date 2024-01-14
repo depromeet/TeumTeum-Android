@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/group_meet_check_title"
+            android:textAppearance="@style/ta.headline.3"
+            android:textColor="@color/text_headline_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_check_first"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="47dp"
+            app:cardBackgroundColor="@color/elevation_level01"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <TextView
+                android:id="@+id/tv_check_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/number_one"
+                android:textAppearance="@style/ta.body.2"
+                android:textColor="@color/text_body_primary" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_check_first_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/group_meet_check_first"
+            android:textAppearance="@style/ta.body.1"
+            android:textColor="@color/text_body_secondary"
+            app:layout_constraintStart_toEndOf="@id/card_check_first"
+            app:layout_constraintTop_toTopOf="@id/card_check_first" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_check_second"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/elevation_level01"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_check_first_info">
+
+            <TextView
+                android:id="@+id/tv_check_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/number_two"
+                android:textAppearance="@style/ta.body.2"
+                android:textColor="@color/text_body_primary" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_check_second_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/group_meet_check_first"
+            android:textAppearance="@style/ta.body.1"
+            android:textColor="@color/text_body_secondary"
+            app:layout_constraintStart_toEndOf="@id/card_check_second"
+            app:layout_constraintTop_toTopOf="@id/card_check_second" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/shape_elevation_level1_8dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_check_second_info">
+
+            <TextView
+                android:id="@+id/tv_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/group_meet_check_warning"
+                android:textAppearance="@style/ta.body.2"
+                android:textColor="@color/text_body_teritary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/checkbox_waring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/transparent"
+                android:button="@null"
+                android:drawableStart="@drawable/selector_check_box"
+                android:drawablePadding="8dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="0dp"
+                android:text="@string/group_meet_check_box_text"
+                android:textColor="@color/selector_check_box_group"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_warning" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view_division_button"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/divider_level02"
+            app:layout_constraintBottom_toTopOf="@id/btn_join" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_join"
+            style="@style/Component_Button_primary_Fill_4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:enabled="false"
+            android:text="@string/group_join"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
