@@ -18,6 +18,7 @@ mdcVersion="1.1.16"
 composeAppcompatVersion="0.28.0"
 composeLifecycleVersion="2.3.1"
 uiPreviewCompose ="1.2.1"
+pager-google="0.20.1"
 
 ## AndroidX
 coreKtxVersion = "1.10.1"
@@ -180,8 +181,8 @@ compose-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 compose-lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
 compose-mdc= {group = "com.google.android.material", name="compose-theme-adapter", version.ref="mdcVersion"}
 compose-appcompat = { group="com.google.accompanist", name="accompanist-appcompat-theme", version.ref="composeAppcompatVersion"}
-
-
+compose-pager = {group="com.google.accompanist", name="accompanist-pager", version.ref="pager-google"}
+compose-page-indicator = {group="com.google.accompanist", name="accompanist-pager-indicators", version.ref="pager-google"}
 ## Test
 jUnit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 androidTest = { group = "androidx.test.ext", name = "junit", version.ref = "androidTestVersion" }
@@ -239,7 +240,9 @@ compose = [
     "material3-window",
     "materialDesign",
     "compose-appcompat",
-    "compose-mdc"
+    "compose-mdc",
+    "compose-page-indicator",
+    "compose-pager"
 ]
 
 #kakao = [

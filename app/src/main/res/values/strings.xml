@@ -51,6 +51,14 @@
 
     <string name="moim_people_title">모임 참여 인원을 설정해 주세요</string>
     <string name="moim_peoople_system">안전한 모임을 위해 최소 3명 이상 최대 6명 참여자가 필요해요</string>
+
+    <string name="moim_confirm_appbar">모임 생성 확인</string>
+    <string name="moin_confirm_title1">일정</string>
+    <string name="moin_confirm_title2">주제</string>
+    <string name="moin_confirm_title3">인원</string>
+    <string name="moin_confirm_title4">장소</string>
+    <string name="moin_confirm_title5">모임 소개</string>
+    <string name="moin_confirm_btn">모임 열기</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
