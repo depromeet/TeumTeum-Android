@@ -46,6 +46,10 @@
             android:exported="false" />
         <activity android:name=".presentation.group.search.SearchActivity"
             android:exported="false" />
+        <activity android:name=".presentation.group.join.GroupMeetCheckActivity"
+            android:exported="false" />
+        <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
