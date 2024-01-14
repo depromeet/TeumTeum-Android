@@ -38,7 +38,8 @@
 
     <!-- BUTTON -->
     <attr name="color_button_active" format="reference|color" />
-    <attr name="color_button_pressed" format="reference|color" />
+    <attr name="color_button_pressed01" format="reference|color" />
+    <attr name="color_button_pressed02" format="reference|color" />
     <attr name="color_button_disabled" format="reference|color" />
     <attr name="color_button_default01" format="reference|color" />
     <attr name="color_button_default02" format="reference|color" />

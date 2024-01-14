@@ -9,11 +9,14 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.databinding.BottomsheetAreaModalBinding
 import com.teumteum.teumteum.databinding.BottomsheetSingleModalBinding
 
 class SingleModalBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding: BottomsheetSingleModalBinding
+    private var _binding: BottomsheetSingleModalBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var singleRvAdapter: SingleModalAdapter
     private lateinit var itemClickListener: (String) -> Unit
     private lateinit var focusedShowImageView: ImageView
@@ -24,7 +27,7 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BottomsheetSingleModalBinding.inflate(inflater, container, false)
+        _binding = BottomsheetSingleModalBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -67,6 +70,11 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     companion object {

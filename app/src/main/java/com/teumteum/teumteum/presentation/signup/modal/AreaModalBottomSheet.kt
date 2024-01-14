@@ -14,7 +14,9 @@ import com.teumteum.teumteum.databinding.BottomsheetAreaModalBinding
 
 class AreaModalBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding: BottomsheetAreaModalBinding
+    private var _binding: BottomsheetAreaModalBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var cityRvAdapter: AreaCityModalAdapter
     private lateinit var streetRvAdapter: AreaStreetModalAdapter
     private lateinit var cityItemClickListener: (String) -> Unit
@@ -29,7 +31,7 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BottomsheetAreaModalBinding.inflate(inflater, container, false)
+        _binding = BottomsheetAreaModalBinding.inflate(inflater, container, false)
         setModalBehavior()
         return binding.root
     }
@@ -107,6 +109,11 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     companion object {
