@@ -88,6 +88,8 @@ google-oss-plugin = { group = "com.google.android.gms", name = "oss-licenses-plu
 #google-services-plugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServicePlugin" }
 #google-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "googleAppdistributionPlugin" }
 #google-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "googleCrashlyticsPlguin" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version = "21.0.1" }
+
 navigation-plugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationVersion" }
 
 # Kotlin
