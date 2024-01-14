@@ -32,8 +32,8 @@
     <color name="grey_400">#A6A6A6</color>
     <color name="grey_300">#C9C9C9</color>
     <color name="grey_250">#DFDFDF</color>
-    <color name="grey_200">#F0F0F0</color>
-    <color name="grey_100">#E9E9E9</color>
+    <color name="grey_200">#E9E9E9</color>
+    <color name="grey_100">#F0F0F0</color>
     <color name="grey_50">#F5F5F5</color>
     <color name="grey_white">#FFFFFF</color>
 
@@ -125,7 +125,8 @@
 
     <!-- BUTTON -->
     <color name="button_active">@color/tmtm_blue_400</color>
-    <color name="button_pressed">@color/tmtm_blue_500</color>
+    <color name="button_pressed01">@color/tmtm_blue_500</color>
+    <color name="button_pressed02">@color/tmtm_blue_200</color>
     <color name="button_disabled">@color/grey_200</color>
     <color name="button_default01">@color/grey_50</color>
     <color name="button_default02">@color/grey_700</color>

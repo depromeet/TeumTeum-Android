@@ -80,7 +80,7 @@
     <string name="signup_tv_area_input">관심 지역</string>
     <string name="signup_tv_mbti_title">MBTI가\n무엇인가요?</string>
     <string name="signup_tv_mbti_input">MBTI</string>
-    <string name="signup_tv_mbti_hint">선택해주세요</string>
+    <string name="signup_tv_mbti_hint">선택해 주세요</string>
     <string name="signup_tv_interest_title">카드의 뒷면을 완성해\n나를 표현해 주세요!</string>
     <string name="signup_tv_interest_1">자기계발</string>
     <string name="signup_tv_interest_2">관심분야</string>
