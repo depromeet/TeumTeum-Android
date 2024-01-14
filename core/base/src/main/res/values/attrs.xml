@@ -81,10 +81,5 @@
     <attr name="color_graphic_tmtm_lightpurple" format="reference|color" />
     <attr name="color_graphic_kakao" format="reference|color" />
     <attr name="color_graphic_naver" format="reference|color" />
-
-    <declare-styleable name="TextAppearance">
-        <attr name="textColor" format="color" />
-        <attr name="textSize" format="dimension" />
-        <!-- 추가적으로 필요한 속성들을 여기에 선언 -->
-    </declare-styleable>
+    
 </resources>
