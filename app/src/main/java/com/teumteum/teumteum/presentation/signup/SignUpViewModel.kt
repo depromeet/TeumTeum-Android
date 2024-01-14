@@ -128,12 +128,28 @@ class SignUpViewModel @Inject constructor(
         readyJobClass.isNotBlank() && readyJobDetailClass.isNotBlank()
     }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
 
-    private val _preferredArea = MutableStateFlow<String>("")
-    val preferredArea: StateFlow<String> = _preferredArea.asStateFlow()
+    private val _preferredCity = MutableStateFlow<String>("")
+    val preferredCity: StateFlow<String> = _preferredCity.asStateFlow()
 
-    fun updatePreferredArea(preferredArea: String) {
-        _preferredArea.value = preferredArea
+    private val _preferredStreet = MutableStateFlow<String>("")
+    val preferredStreet: StateFlow<String> = _preferredStreet.asStateFlow()
+
+    fun updatePreferredArea(city: String, street: String) {
+        _preferredCity.value = city
+        _preferredStreet.value = street
     }
+
+    val preferredArea: StateFlow<String> = combine(
+        preferredCity,
+        preferredStreet
+    ) { preferredCity, preferredStreet ->
+        if (preferredStreet.isNotBlank() && preferredCity.isNotBlank()) {
+            if (preferredStreet.split(" ").last().equals("전체")) preferredStreet
+            else "$preferredCity $preferredStreet"
+        }
+        else ""
+    }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, "")
+
 
     private val _mbtiText = MutableStateFlow<String>("")
     val mbtiText: StateFlow<String> = _mbtiText.asStateFlow()

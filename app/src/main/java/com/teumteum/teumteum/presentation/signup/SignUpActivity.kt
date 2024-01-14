@@ -12,6 +12,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
+import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
 import com.teumteum.teumteum.presentation.signup.birthday.BirthdayFragment
 import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
 import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
@@ -98,6 +99,8 @@ class SignUpActivity
             SignUpProgress.CurrentJob -> navigateTo<CurrentJobFragment>()
             SignUpProgress.School -> navigateTo<CurrentSchoolFragment>()
             SignUpProgress.ReadyJob -> navigateTo<ReadyJobFragment>()
+            SignUpProgress.Area -> navigateTo<PreferredAreaFragment>()
+
             else -> return
         }
     }
