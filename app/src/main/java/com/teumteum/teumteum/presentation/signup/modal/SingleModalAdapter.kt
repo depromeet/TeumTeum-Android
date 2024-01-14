@@ -55,12 +55,12 @@ class SingleModalAdapter(private val itemClickListener: (String) -> Unit)
         }
 
         // 이미지를 보이게 하는 메서드
-        fun showImage() {
+        private fun showImage() {
             binding.ivSelected.visibility = View.VISIBLE
         }
 
         // 이미지를 숨기는 메서드
-        fun hideImage() {
+        private fun hideImage() {
             binding.ivSelected.visibility = View.GONE
         }
     }

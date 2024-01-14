@@ -14,7 +14,7 @@ import com.teumteum.teumteum.databinding.BottomsheetSingleModalBinding
 class SingleModalBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var binding: BottomsheetSingleModalBinding
-    private lateinit var recyclerViewAdapter: SingleModalAdapter
+    private lateinit var singleRvAdapter: SingleModalAdapter
     private lateinit var itemClickListener: (String) -> Unit
     private lateinit var focusedShowImageView: ImageView
     private var selectedItem: String = ""
@@ -31,18 +31,28 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerViewAdapter = SingleModalAdapter(itemClickListener)
-        recyclerViewAdapter.setSelectedItem(selectedItem)
-        binding.rv.adapter = recyclerViewAdapter
-        binding.rv.layoutManager = LinearLayoutManager(requireContext())
+        setStyle(STYLE_NORMAL, com.teumteum.base.R.style.CustomBottomSheetDialogTheme)
+        initSingleRvAdapter()
+        initBottomSheetArguments()
+    }
 
+    private fun initSingleRvAdapter() {
+        singleRvAdapter = SingleModalAdapter(itemClickListener)
+        singleRvAdapter.setSelectedItem(selectedItem)
+        with(binding.rv) {
+            adapter = singleRvAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    private fun initBottomSheetArguments() {
         arguments?.let {
             val title = it.getString("title", "Default Title")
             binding.tvTitle.text = title
         }
 
         arguments?.getStringArrayList("data")?.let { dataList ->
-            recyclerViewAdapter.submitList(dataList)
+            singleRvAdapter.submitList(dataList)
         }
     }
 
