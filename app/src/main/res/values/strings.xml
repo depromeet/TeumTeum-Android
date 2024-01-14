@@ -84,6 +84,8 @@
     <string name="signup_tv_interest_title">카드의 뒷면을 완성해\n나를 표현해 주세요!</string>
     <string name="signup_tv_interest_1">자기계발</string>
     <string name="signup_tv_interest_2">관심분야</string>
+
+    <string name="signup_tv_area_modal_title">관심 지역</string>
   
     <string name="moim_topic_title">어떤 주제로 모임을 만들까요?</string>
     <string name="moim_next_btn">다음</string>
