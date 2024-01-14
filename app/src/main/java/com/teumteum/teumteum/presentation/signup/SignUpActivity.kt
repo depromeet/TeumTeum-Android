@@ -18,6 +18,7 @@ import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
 import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
+import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,6 +101,7 @@ class SignUpActivity
             SignUpProgress.School -> navigateTo<CurrentSchoolFragment>()
             SignUpProgress.ReadyJob -> navigateTo<ReadyJobFragment>()
             SignUpProgress.Area -> navigateTo<PreferredAreaFragment>()
+            SignUpProgress.Mbti -> navigateTo<GetMbtiFragment>()
 
             else -> return
         }
