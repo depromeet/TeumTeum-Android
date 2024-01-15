@@ -191,6 +191,13 @@ class SignUpViewModel @Inject constructor(
         _interestCount.value = interestField.value.size + interestSelf.value.size
     }
 
+    private var _goalText = MutableStateFlow<String>("")
+    val goalText: StateFlow<String> = _goalText.asStateFlow()
+
+    fun updateGoalText(goal: String) {
+        _goalText.value = goal
+    }
+
     fun goToNextScreen() {
         _signUpProgress.value =
             when (_signUpProgress.value) {
@@ -211,6 +218,7 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.Area -> SignUpProgress.Mbti
                 SignUpProgress.Mbti -> SignUpProgress.Interests
                 SignUpProgress.Interests -> SignUpProgress.Goal
+                SignUpProgress.Goal -> SignUpProgress.End
                 else -> _signUpProgress.value
             }
         goToNextStep()
@@ -269,5 +277,5 @@ class SignUpViewModel @Inject constructor(
 }
 
 enum class SignUpProgress {
-    Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal
+    Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal, End
 }
