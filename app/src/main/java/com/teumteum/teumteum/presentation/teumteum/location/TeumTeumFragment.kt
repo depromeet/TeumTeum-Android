@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum
+package com.teumteum.teumteum.presentation.teumteum.location
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -16,6 +16,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentTeumTeumBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.teumteum.shake.onboarding.ShakeOnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -26,8 +27,12 @@ class TeumTeumFragment :
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initAppBarLayout()
+        (activity as MainActivity).hideBottomNavi()
 
         binding.btnStart.setOnClickListener {
             val intent = Intent(requireActivity(), ShakeOnBoardingActivity::class.java)

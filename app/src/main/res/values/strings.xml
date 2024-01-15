@@ -92,5 +92,7 @@
     <string name="shake_onboarding_interst_title">기기를 흔들고\n공통 관심 대화 주제를 받아요</string>
     <string name="shake_onboarding_interest_subtitle">3초만 모바일 기기를 흔들어 보세요!\n관심사 기반 대화 주제를 받을 수 있어요</string>
     <string name="location_title">근처에 틈틈을 켠 사람을\n찾고 있어요!</string>
+    <string name="character_name">김프만</string>
+    <string name="character_job">AOS 개발자</string>
 
 </resources>
