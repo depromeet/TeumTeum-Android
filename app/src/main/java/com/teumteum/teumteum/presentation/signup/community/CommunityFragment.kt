@@ -31,7 +31,7 @@ class CommunityFragment
     }
 
     private fun initBottomSheet() {
-        communityList.addAll(arrayOf("직장인", "학생", "취업준비생"))
+        communityList.addAll(resources.getStringArray(R.array.community_status))
 
         val listener: (String) -> Unit = { item ->
             viewModel.updateCommunity(item)
