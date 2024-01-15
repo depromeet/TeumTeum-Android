@@ -10,6 +10,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,7 @@ import kotlinx.coroutines.coroutineScope
 class MoimFragment :
     BindingFragment<FragmentMoimBinding>(R.layout.fragment_moim) {
     private val viewModel: MoimViewModel by viewModels()
+    private val WebViewModel: WebViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()
@@ -33,20 +35,30 @@ class MoimFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val navController = findNavController()
+
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
             }
+            WebViewModel.selectedAddress.collect {newAddress->
+                newAddress.let {
+                    if (newAddress != null) {
+                        viewModel.updateAddress(newAddress)
+                    }
+                }
+            }
         }
+
 
         binding.composeMoim.setContent {
             val screenState by viewModel.screenState.collectAsState()
             when (screenState) {
-                ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen() }
+                ScreenState.Topic -> MoimAddress(viewModel, navController) { goFrontScreen()}
                 ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
                 ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
                 ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
-                ScreenState.Address -> MoimAddress(viewModel) { goFrontScreen()}
+                ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
                 ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
                 else -> {}
             }

@@ -55,6 +55,9 @@ class MoimViewModel @Inject constructor(
     private val _people = MutableStateFlow(2)
     val people: StateFlow<Int> = _people.asStateFlow()
 
+    private val _address = MutableStateFlow<String?>(null)
+    val address: StateFlow<String?> = _address.asStateFlow()
+
     private val _snackbarEvent = MutableSharedFlow<SnackbarEvent>()
     val snackbarEvent : SharedFlow<SnackbarEvent> = _snackbarEvent.asSharedFlow()
 
@@ -75,6 +78,10 @@ class MoimViewModel @Inject constructor(
         if (input.length == 4) {
             _date.value = formatDateAndDay(input)
         }
+    }
+
+    fun updateAddress(address: String) {
+        _address.value = address
     }
 
     fun updateTime(input: String): String {

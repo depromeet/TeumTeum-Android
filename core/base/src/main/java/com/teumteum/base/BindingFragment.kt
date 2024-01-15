@@ -13,7 +13,7 @@ abstract class BindingFragment<B : ViewDataBinding>(
     @LayoutRes private val layoutResId: Int
 ) : Fragment() {
     private var _binding: B? = null
-    protected val binding
+    protected open val binding
         get() = requireNotNull(_binding) { "binding object is not initialized" }
 
     override fun onCreateView(

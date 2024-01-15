@@ -28,13 +28,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:rippleColor="@color/white">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:contentDescription="@string/webview_floating_btn"
-                android:src="@drawable/ic_baseline_arrow_back_24" />
         </com.google.android.material.card.MaterialCardView>
 
         <WebView
@@ -43,15 +36,6 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"/>
 
-        <ProgressBar
-            android:id="@+id/web_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

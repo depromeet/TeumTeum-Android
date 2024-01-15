@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
@@ -31,7 +33,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 
 @Composable
-fun MoimAddress(viewModel: MoimViewModel, onClick: () -> Unit) {
+fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick: () -> Unit) {
     val people by viewModel.title.collectAsState()
     TmScaffold(onClick = {onClick()}) {
         Column(
@@ -44,9 +46,9 @@ fun MoimAddress(viewModel: MoimViewModel, onClick: () -> Unit) {
             TmMarginVerticalSpacer(size = 48)
             CreateMoimTitle(string = stringResource(id = R.string.moim_address_title))
             TmMarginVerticalSpacer(size = 28)
-            MoimAddress1Column()
+            MoimAddress1Column(navController)
             TmMarginVerticalSpacer(size = 20)
-            MoimAddress2Column()
+            MoimAddress2Column(navController)
 
             TeumDivider()
             MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people.isNotEmpty() , viewModel = viewModel)
@@ -58,7 +60,7 @@ fun MoimAddress(viewModel: MoimViewModel, onClick: () -> Unit) {
 }
 
 @Composable
-fun MoimAddress1Column() {
+fun MoimAddress1Column(navController: NavController) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -75,11 +77,13 @@ fun MoimAddress1Column() {
 }
 
 @Composable
-fun MoimAddress2Column() {
+fun MoimAddress2Column(navController: NavController) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
         .padding(horizontal = 20.dp)
+        .clickable { navController.navigate(R.id.action_moimFragment_to_fragment_web_view)
+        }
     ) {
         Text(
             text = stringResource(id = R.string.moim_address_label2),
@@ -93,19 +97,15 @@ fun MoimAddress2Column() {
 
 @Composable
 fun MoimAddressInputField(
-    placeHolder:String,
-    context: Context = LocalContext.current
-) {
+    placeHolder:String
+    ) {
     var text by remember { mutableStateOf("") }
 
     OutlinedTextField(
         value = text,
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .clickable {
-
-            },
+            .wrapContentHeight(),
         placeholder = { Text(text =placeHolder, style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary)},
         onValueChange = { newText ->
             text = newText
