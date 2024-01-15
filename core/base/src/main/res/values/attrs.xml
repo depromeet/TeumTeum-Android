@@ -93,4 +93,5 @@
         <attr name="mbti" format="string" />
         <attr name="image" format="integer" />
     </declare-styleable>
+    
 </resources>

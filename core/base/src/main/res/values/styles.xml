@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Component_Button_primary_Fill_4dp" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/component_button_fill_primary</item>
+        <item name="android:textColor">@color/component_button_primary_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingVertical">17dp</item>
+        <item name="android:textAppearance">@style/ta.headline.6</item>
+    </style>
+
+    <style name="Component_Button_alternative_Fill_4dp" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/component_button_fill_alternative</item>
+        <item name="android:textColor">@color/component_button_alternative_color</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingVertical">17dp</item>
+        <item name="android:textAppearance">@style/ta.headline.6</item>
+    </style>
+</resources>

@@ -32,6 +32,7 @@ data class ColorPalette_Light(
 
     //button
     val color_text_button_primary_default: Color = Color(0xFFFFFFFF),
+    val color_text_button_primary_default02: Color = Color(0xFF444444),
     val color_text_button_primary_press: Color = Color(0xFF96D1FF), //tmtm blue 200
     val color_text_button_primary_disabled: Color = Color(0xFFC9C9C9),
     val color_text_button_secondary_default: Color = Color(0xFF44AEFF),
@@ -54,6 +55,8 @@ data class ColorPalette_Light(
     val GreyWhite: Color = Color(0xFFFFFFFF),
     val ColorDivider: Color = Color(0xFFF0F0F0),
     val elevation_color_elevation_level01: Color = Color(0xFFF5F5F5),
+    val color_icon_level01: Color = Color(0xFF212121),
+    val color_background: Color = Color(0xFFFFFFFF)
 )
 
 val TmtmColorPalette = staticCompositionLocalOf { ColorPalette_Light() }

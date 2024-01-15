@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.moim
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,10 +17,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -31,31 +38,36 @@ import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import kotlinx.coroutines.launch
 
 @Composable
-fun MoimPeople(viewModel: MoimViewModel) {
+fun MoimPeople(viewModel: MoimViewModel, onClick: () -> Unit) {
     val people by viewModel.people.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string = stringResource(id = R.string.moim_people_title))
-        TmMarginVerticalSpacer(size = 28)
+    TmScaffold(onClick = { onClick()}) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_people_title))
+            TmMarginVerticalSpacer(size = 28)
 
-        PeopleContent(viewModel)
-        TmMarginVerticalSpacer(size = 39)
-        PeopleSystemText()
+            PeopleContent(viewModel)
+            TmMarginVerticalSpacer(size = 39)
+            PeopleSystemText()
 
-        Spacer(modifier= Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people in 3..6, viewModel = viewModel)
-        TmMarginVerticalSpacer(size = 24)
+            Spacer(modifier= Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people in 3..6, viewModel = viewModel)
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
 }
 

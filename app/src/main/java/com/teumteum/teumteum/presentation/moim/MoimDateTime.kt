@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
@@ -37,28 +38,31 @@ import java.util.Locale
 
 
 @Composable
-fun MoimDateTime(viewModel: MoimViewModel) {
+fun MoimDateTime(viewModel: MoimViewModel, onClick: ()->Unit) {
     val time by viewModel.time.collectAsState()
     val date by viewModel.date.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string = stringResource(id = R.string.moim_datetime_title))
-        TmMarginVerticalSpacer(size = 28)
-        MoimDateColumn(viewModel)
-        TmMarginVerticalSpacer(size = 20)
-        MoimTimeColumn(viewModel)
-        Spacer(modifier = Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(
-            text = stringResource(id = R.string.moim_next_btn),
-            viewModel = viewModel,
-            isEnabled = time.isNotEmpty() && date.isNotEmpty())
-        TmMarginVerticalSpacer(size = 24)
+    TmScaffold(onClick = {onClick()}) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_datetime_title))
+            TmMarginVerticalSpacer(size = 28)
+            MoimDateColumn(viewModel)
+            TmMarginVerticalSpacer(size = 20)
+            MoimTimeColumn(viewModel)
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(
+                text = stringResource(id = R.string.moim_next_btn),
+                viewModel = viewModel,
+                isEnabled = time.isNotEmpty() && date.isNotEmpty())
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
 }
 

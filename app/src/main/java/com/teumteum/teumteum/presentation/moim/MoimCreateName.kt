@@ -13,27 +13,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 
 @Composable
-fun MoimCreateName(viewModel: MoimViewModel) {
+fun MoimCreateName(viewModel: MoimViewModel, onClick: () ->Unit) {
     val title by viewModel.title.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string = stringResource(id = R.string.moim_name_title))
-        TmMarginVerticalSpacer(size = 28)
-        CreateNameContent(viewModel)
-        Spacer(modifier = Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text= stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = title.length in 2..32)
-        TmMarginVerticalSpacer(size = 24)
+    TmScaffold(onClick = {onClick()}) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_name_title))
+            TmMarginVerticalSpacer(size = 28)
+            CreateNameContent(viewModel)
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text= stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = title.length in 2..32)
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
 }
 

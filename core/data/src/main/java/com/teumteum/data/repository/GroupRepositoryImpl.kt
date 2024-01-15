@@ -19,4 +19,16 @@ class GroupRepositoryImpl @Inject constructor(
             ).data.meetings.map { it.toMeeting() }
         }
     }
+
+    override suspend fun postGroupJoin(meetingId: Long): Result<Meeting> {
+        return runCatching {
+            dataSource.postGroupJoin(meetingId).toMeeting()
+        }
+    }
+
+    override suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean> {
+        return runCatching {
+            dataSource.deleteGroupJoin(meetingId)
+        }
+    }
 }
