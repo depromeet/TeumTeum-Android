@@ -42,6 +42,7 @@
 
         <!-- BUTTON -->
         <item name="color_button_active">@color/button_active</item>
+        <item name="color_button_pressed">@color/button_pressed</item>
         <item name="color_button_pressed01">@color/button_pressed01</item>
         <item name="color_button_pressed02">@color/button_pressed02</item>
         <item name="color_button_disabled">@color/button_disabled</item>
