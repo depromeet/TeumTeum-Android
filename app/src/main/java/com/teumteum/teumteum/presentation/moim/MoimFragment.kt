@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.moim
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -19,13 +20,14 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.di.NetworkStatus
 import com.teumteum.teumteum.presentation.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 
 
 class MoimFragment :
     BindingFragment<FragmentMoimBinding>(R.layout.fragment_moim) {
-    private val viewModel: MoimViewModel by viewModels()
-    private val WebViewModel: WebViewModel by activityViewModels()
+    private val viewModel: MoimViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()
@@ -41,20 +43,13 @@ class MoimFragment :
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
             }
-            WebViewModel.selectedAddress.collect {newAddress->
-                newAddress.let {
-                    if (newAddress != null) {
-                        viewModel.updateAddress(newAddress)
-                    }
-                }
-            }
         }
 
 
         binding.composeMoim.setContent {
             val screenState by viewModel.screenState.collectAsState()
             when (screenState) {
-                ScreenState.Topic -> MoimAddress(viewModel, navController) { goFrontScreen()}
+                ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen()}
                 ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
                 ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
                 ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
@@ -87,14 +82,6 @@ class MoimFragment :
         ObjectAnimator.ofInt(binding.progressBar, "progress", targetProgress)
             .setDuration(500)
             .start()
-    }
-
-    private fun goToWebFragment() {
-        val status = NetworkStatus.getConnectivityStatus(requireContext())
-        if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI)  {
-        } else {
-            Toast.makeText(context, "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
-        }
     }
     companion object {
 

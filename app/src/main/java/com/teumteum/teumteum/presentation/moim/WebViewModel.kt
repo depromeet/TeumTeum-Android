@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.moim
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,7 @@ class WebViewModel @Inject constructor(): ViewModel() {
 
     fun setAddress(address: String) {
         _selectedAddress.value = address
+        Log.d("webview model 성공", address.toString())
     }
 
 }

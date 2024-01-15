@@ -22,6 +22,7 @@ class WebviewFragment :
     BindingFragment<FragmentWebviewBinding>(R.layout.fragment_webview){
 
     private val webViewModel: WebViewModel by activityViewModels()
+    private val moimViewModel: MoimViewModel by activityViewModels()
     private lateinit var handler: Handler
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,6 +69,7 @@ class WebviewFragment :
             handler.post {
                 val fullAddress = data.toString()
                 webViewModel.setAddress(fullAddress)
+                moimViewModel.updateAddress(fullAddress)
                 Log.d("address", fullAddress.toString())
                 activity?.runOnUiThread {
                     parentFragmentManager.popBackStack()

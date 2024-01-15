@@ -38,7 +38,9 @@ import com.teumteum.teumteum.R
 
 @Composable
 fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick: () -> Unit) {
-    val people by viewModel.title.collectAsState()
+    val address by viewModel.address.collectAsState()
+    val detailAddress by viewModel.detailAddress.collectAsState()
+
     TmScaffold(onClick = {onClick()}) {
         Column(
             modifier = Modifier
@@ -50,12 +52,12 @@ fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick:
             TmMarginVerticalSpacer(size = 48)
             CreateMoimTitle(string = stringResource(id = R.string.moim_address_title))
             TmMarginVerticalSpacer(size = 28)
-            MoimAddress1Column(navController)
+            MoimAddress1Column(viewModel, navController)
             TmMarginVerticalSpacer(size = 20)
-            MoimAddress2Column()
+            MoimAddress2Column(viewModel)
             Spacer(Modifier.weight(1f))
             TeumDivider()
-            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people.isNotEmpty() , viewModel = viewModel)
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = !address.isNullOrEmpty() && detailAddress.isNotEmpty(), viewModel = viewModel)
             TmMarginVerticalSpacer(size = 24)
         }
     }
@@ -63,7 +65,8 @@ fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick:
 }
 
 @Composable
-fun MoimAddress1Column(navController: NavController) {
+fun MoimAddress1Column(viewModel: MoimViewModel, navController: NavController) {
+    val address by viewModel.address.collectAsState()
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -87,17 +90,19 @@ fun MoimAddress1Column(navController: NavController) {
             }
         ) {
             Text(
-                text = stringResource(id = R.string.moim_address_placeholdler1),
+                text = address ?: stringResource(id = R.string.moim_address_placeholdler1),
                 color = TmtmColorPalette.current.color_text_body_quinary,
                 style = TmTypo.current.Body1,
-                        modifier = Modifier.align(Alignment.CenterStart).padding(start = 16.dp)
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp)
             )
         }
     }
 }
 
 @Composable
-fun MoimAddress2Column() {
+fun MoimAddress2Column(viewModel: MoimViewModel) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -109,15 +114,16 @@ fun MoimAddress2Column() {
             color = TmtmColorPalette.current.color_text_body_quaternary
         )
         TmMarginVerticalSpacer(size = 8)
-        MoimAddressInputField(placeHolder = stringResource(id = R.string.moim_address_placeholder2))
+        MoimAddressInputField(viewModel = viewModel, placeHolder = stringResource(id = R.string.moim_address_placeholder2))
     }
 }
 
 @Composable
 fun MoimAddressInputField(
-    placeHolder:String
+    placeHolder:String,
+    viewModel: MoimViewModel
     ) {
-    var text by remember { mutableStateOf("") }
+    val text by viewModel.detailAddress.collectAsState()
 
     OutlinedTextField(
         value = text,
@@ -126,7 +132,7 @@ fun MoimAddressInputField(
             .wrapContentHeight(),
         placeholder = { Text(text =placeHolder, style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary)},
         onValueChange = { newText ->
-            text = newText
+            viewModel.updateDetailAddress(newText)
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = TmtmColorPalette.current.color_text_body_primary,
