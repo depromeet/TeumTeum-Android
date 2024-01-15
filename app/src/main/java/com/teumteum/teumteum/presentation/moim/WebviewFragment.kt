@@ -46,11 +46,14 @@ class WebviewFragment :
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     binding.daumWebview.visibility =
                         View.INVISIBLE
+                    binding.progressBar.visibility=
+                        View.VISIBLE
                     super.onPageStarted(view, url, favicon)
                 }
                 override fun onPageFinished(view: WebView, url: String) {
                     view.loadUrl("javascript:sample2_execDaumPostcode();")
                     handler.postDelayed({
+                        binding.progressBar.visibility = View.GONE
                         binding.daumWebview.visibility = View.VISIBLE
                     }, 1000)
                 }

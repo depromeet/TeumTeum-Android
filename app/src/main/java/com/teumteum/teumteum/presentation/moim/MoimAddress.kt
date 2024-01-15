@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
@@ -48,12 +52,11 @@ fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick:
             TmMarginVerticalSpacer(size = 28)
             MoimAddress1Column(navController)
             TmMarginVerticalSpacer(size = 20)
-            MoimAddress2Column(navController)
-
+            MoimAddress2Column()
+            Spacer(Modifier.weight(1f))
             TeumDivider()
             MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = people.isNotEmpty() , viewModel = viewModel)
             TmMarginVerticalSpacer(size = 24)
-
         }
     }
 
@@ -72,18 +75,33 @@ fun MoimAddress1Column(navController: NavController) {
             color = TmtmColorPalette.current.color_text_body_quaternary
         )
         TmMarginVerticalSpacer(size = 8)
-        MoimAddressInputField(placeHolder = stringResource(id = R.string.moim_address_placeholdler1))
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .background(
+                color = TmtmColorPalette.current.elevation_color_elevation_level01,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .clickable {
+                navController.navigate(R.id.action_moimFragment_to_fragment_web_view)
+            }
+        ) {
+            Text(
+                text = stringResource(id = R.string.moim_address_placeholdler1),
+                color = TmtmColorPalette.current.color_text_body_quinary,
+                style = TmTypo.current.Body1,
+                        modifier = Modifier.align(Alignment.CenterStart).padding(start = 16.dp)
+            )
+        }
     }
 }
 
 @Composable
-fun MoimAddress2Column(navController: NavController) {
+fun MoimAddress2Column() {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
         .padding(horizontal = 20.dp)
-        .clickable { navController.navigate(R.id.action_moimFragment_to_fragment_web_view)
-        }
     ) {
         Text(
             text = stringResource(id = R.string.moim_address_label2),
