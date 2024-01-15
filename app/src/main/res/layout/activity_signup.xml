@@ -33,7 +33,7 @@
             />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fcv"
+            android:id="@+id/fcv_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="-6dp"
@@ -47,11 +47,11 @@
             android:layout_height="1dp"
             android:layout_marginBottom="10dp"
             android:background="?attr/color_divider_level02"
-            app:layout_constraintBottom_toTopOf="@id/btn_next"
+            app:layout_constraintBottom_toTopOf="@id/btn_next_signup"
             />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_next"
+            android:id="@+id/btn_next_signup"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginHorizontal="20dp"

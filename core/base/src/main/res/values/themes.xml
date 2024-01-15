@@ -43,6 +43,8 @@
         <!-- BUTTON -->
         <item name="color_button_active">@color/button_active</item>
         <item name="color_button_pressed">@color/button_pressed</item>
+        <item name="color_button_pressed01">@color/button_pressed01</item>
+        <item name="color_button_pressed02">@color/button_pressed02</item>
         <item name="color_button_disabled">@color/button_disabled</item>
         <item name="color_button_default01">@color/button_default01</item>
         <item name="color_button_default02">@color/button_default02</item>
@@ -85,6 +87,15 @@
         <item name="color_graphic_tmtm_lightpurple">@color/graphic_tmtm_lightpurple</item>
         <item name="color_graphic_kakao">@color/graphic_kakao</item>
         <item name="color_graphic_naver">@color/graphic_naver</item>
+
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialogTheme</item>
+    </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomRoundedBackgroundBottomSheet</item>
+    </style>
+    <style name="CustomRoundedBackgroundBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/transparent</item>
     </style>
 
     <!--TextAppearance -->

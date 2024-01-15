@@ -1,22 +1,25 @@
-package com.teumteum.teumteum.presentation.signup.character
+package com.teumteum.teumteum.presentation.signup.school
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.FragmentCharacterBinding
+import com.teumteum.teumteum.databinding.FragmentCurrentSchoolBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
+import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 
 @AndroidEntryPoint
-class CharacterFragment
-    : BindingFragment<FragmentCharacterBinding>(R.layout.fragment_character) {
+class CurrentSchoolFragment
+    : BindingFragment<FragmentCurrentSchoolBinding>(R.layout.fragment_current_school) {
 
-    private lateinit var adapter: CharacterListAdapter
     private val viewModel by activityViewModels<SignUpViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,35 +27,31 @@ class CharacterFragment
 
         binding.vm = viewModel
         binding.lifecycleOwner = this
-        initAdapter()
+        setTextChangedListener()
         checkValidInput()
     }
 
-    private fun initAdapter() {
-        adapter = CharacterListAdapter {
-            binding.ivCharacter.imageTintList = null
-            viewModel.updateCharacterId(it)
-            (activity as SignUpActivity).activateNextButton()
-        }
-        binding.rvCharacter.adapter = adapter
+    private fun setTextChangedListener() {
+        binding.etSchool.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                viewModel.updateSchoolName(p0.toString())
+            }
+        })
     }
 
     private fun checkValidInput() {
         lifecycleScope.launch {
-            viewModel.characterId.collect { characterId ->
-                if (characterId in 0..11)
-                {
-                    adapter.getCharacterResource(characterId)
-                        ?.let {
-                            binding.ivCharacter.setImageResource(it)
-                            binding.ivCharacter.imageTintList = null
-                        }
+            viewModel.schoolName.collect { schoolName ->
+                if (schoolName.trim().length in 2..13)
                     (activity as SignUpActivity).activateNextButton()
-                }
                 else
-                {
                     (activity as SignUpActivity).disableNextButton()
-                }
             }
         }
     }

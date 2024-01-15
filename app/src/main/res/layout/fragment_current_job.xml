@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="vm"
+            type="com.teumteum.teumteum.presentation.signup.SignUpViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_tv_job_title"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="32dp"
+            android:paddingBottom="32dp"
+            android:textAppearance="@style/ta.headline.3"
+            android:lineSpacingExtra="3sp"
+            android:textColor="?attr/color_text_headline_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tv_where"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_tv_job_where_input"
+            android:textAppearance="@style/ta.body.2"
+            android:textColor="?attr/color_text_body_quaternary"
+            app:layout_constraintStart_toStartOf="@id/et_where"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            />
+
+        <EditText
+            android:id="@+id/et_where"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:background="@drawable/shape_rect4_elevation_level01"
+            android:textAppearance="@style/ta.body.1"
+            android:letterSpacing="-0.03125"
+            android:lineSpacingExtra="5sp"
+            android:text="@{vm.companyName}"
+            android:maxLength="13"
+            android:textColorHint="?attr/color_text_body_quinary"
+            android:hint="@string/signup_tv_job_where_hint"
+            app:layout_constraintTop_toBottomOf="@id/tv_where"
+            />
+
+        <TextView
+            android:id="@+id/tv_who"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/signup_tv_job_who_input"
+            android:textAppearance="@style/ta.body.2"
+            android:textColor="?attr/color_text_body_quaternary"
+            app:layout_constraintStart_toStartOf="@id/et_where"
+            app:layout_constraintTop_toBottomOf="@id/et_where"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_who"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_rect4_elevation_level01"
+            app:layout_constraintTop_toBottomOf="@id/tv_who"
+            >
+
+            <TextView
+                android:id="@+id/et_who"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:textAppearance="@style/ta.body.1"
+                android:letterSpacing="-0.03125"
+                android:lineSpacingExtra="5sp"
+                android:textColor="?attr/color_text_body_primary"
+                android:hint="@string/signup_tv_job_who_hint"
+                android:text="@{vm.jobClass}"
+                android:textColorHint="?attr/color_text_body_quinary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/iv_show_who"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_down_l"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/icon_level03" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_what"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/signup_tv_job_what_input"
+            android:textAppearance="@style/ta.body.2"
+            android:textColor="?attr/color_text_body_quaternary"
+            app:layout_constraintStart_toStartOf="@id/et_where"
+            app:layout_constraintTop_toBottomOf="@id/ll_who"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_what"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_rect4_elevation_level01"
+            app:layout_constraintTop_toBottomOf="@id/tv_what"
+            >
+
+            <TextView
+                android:id="@+id/et_what"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:textAppearance="@style/ta.body.1"
+                android:letterSpacing="-0.03125"
+                android:lineSpacingExtra="5sp"
+                android:textColor="?attr/color_text_body_primary"
+                android:hint="@string/signup_tv_job_what_hint"
+                android:text="@{vm.jobDetailClass}"
+                android:textColorHint="?attr/color_text_body_quinary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/iv_show_what"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_down_l"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/icon_level03" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

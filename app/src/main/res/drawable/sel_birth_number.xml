@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/shape_rect4_elevation_level01"
+        android:state_focused="false"
+        />
+    <item android:drawable="@drawable/shape_rect4_elevation_level01_active"
+        android:state_focused="true"
+        />
+</selector>

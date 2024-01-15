@@ -42,6 +42,51 @@
 
     <string name="signup_tv_character_title">프만님을 대표할 수 있는\n티미 캐릭터를 골라주세요</string>
     <string name="signup_btn_next">다음</string>
+
+    <string name="signup_tv_name_title">이름을 입력해주세요</string>
+    <string name="signup_tv_name_subtitle">틈틈은 신뢰 기반 커뮤니티로 실명으로\n대화하고 있어요</string>
+    <string name="signup_tv_name_input">이름</string>
+    <string name="signup_tv_name_hint">실명을 입력해주세요</string>
+    <string name="signup_tv_bday_title">생일이 언제인가요?</string>
+    <string name="signup_tv_bday_subtitle">또래와 함께하는 맞춤형 모임을 추천해 드려요</string>
+    <string name="signup_tv_bday_year">2000년</string>
+    <string name="signup_tv_bday_month">01월</string>
+    <string name="signup_tv_bday_date">01일</string>
+
+    <string name="signup_tv_suffix_year">년</string>
+    <string name="signup_tv_suffix_month">월</string>
+    <string name="signup_tv_suffix_date">일</string>
+    <string name="signup_tv_name_invalid">형식이 올바르지 않아요.</string>
+    <string name="signup_tv_bday_invalid">생년월일 형식이 올바르지 않아요.</string>
+
+    <string name="signup_tv_community_title">현재 어떤 상태인지\n알려주세요</string>
+    <string name="signup_tv_community_input">상태</string>
+    <string name="signup_tv_community_hint">선택해 주세요</string>
+    <string name="signup_tv_community_modal_title">상태 입력</string>
+    <string name="signup_tv_job_title">어떤 직업을 가지고\n있나요?</string>
+    <string name="signup_tv_job_where_input">직장명</string>
+    <string name="signup_tv_job_where_hint">직장명을 입력해 주세요</string>
+    <string name="signup_tv_job_who_input">직군</string>
+    <string name="signup_tv_job_who_hint">선택해 주세요</string>
+    <string name="signup_tv_job_what_input">직무</string>
+    <string name="signup_tv_job_what_hint">선택해 주세요</string>
+
+    <string name="signup_tv_school_title">어떤 학교에\n다니고 계신가요?</string>
+    <string name="signup_tv_school_input">학교명</string>
+    <string name="signup_tv_school_hint">학교명을 입력해주세요</string>
+    <string name="signup_tv_ready_title">어떤 직무를\n준비하고 계신가요?</string>
+
+    <string name="signup_tv_area_title">관심 지역을\n선택해 주세요</string>
+    <string name="signup_tv_area_subtitle">사는 지역이나 자주 찾는 지역을 선택해주세요</string>
+    <string name="signup_tv_area_input">관심 지역</string>
+    <string name="signup_tv_mbti_title">MBTI가\n무엇인가요?</string>
+    <string name="signup_tv_mbti_input">MBTI</string>
+    <string name="signup_tv_mbti_hint">선택해 주세요</string>
+    <string name="signup_tv_interest_title">카드의 뒷면을 완성해\n나를 표현해 주세요!</string>
+    <string name="signup_tv_interest_1">자기계발</string>
+    <string name="signup_tv_interest_2">관심분야</string>
+
+    <string name="signup_tv_area_modal_title">관심 지역</string>
   
     <string name="moim_topic_title">어떤 주제로 모임을 만들까요?</string>
     <string name="moim_next_btn">다음</string>
