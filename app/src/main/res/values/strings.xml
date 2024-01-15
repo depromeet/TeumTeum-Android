@@ -86,7 +86,18 @@
     <string name="signup_tv_interest_2">관심분야</string>
 
     <string name="signup_tv_area_modal_title">관심 지역</string>
-  
+    <string name="signup_tv_goal_title">틈틈을 이용해 달성하고\n싶은 목표를 알려주세요!</string>
+    <string name="signup_tv_goal_subtitle_1">나는 틈틈을 통해</string>
+    <string name="signup_tv_goal_subtitle_2">을 달성하고 싶어요</string>
+    <string name="signup_tv_goal_hint">가고 싶은 회사에 취업하기</string>
+    <string name="signup_tv_complete_title">소개서를 완성했어요!</string>
+    <string name="signup_tv_complete_fix">수정할래요</string>
+    <string name="signup_tv_complete_keep">마음에 들어요</string>
+    <string name="signup_tv_fix_finish">수정완료</string>
+    <string name="signup_tv_finish_title">가입을 완료했어요</string>
+    <string name="signup_tv_finish_subtitle">또래와 함께하는 맞춤형 모임을 추천해드려요</string>
+    <string name="signup_tv_go_home">홈으로 가기</string>
+
     <string name="moim_topic_title">어떤 주제로 모임을 만들까요?</string>
     <string name="moim_next_btn">다음</string>
 
