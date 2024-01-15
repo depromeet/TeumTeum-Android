@@ -24,7 +24,25 @@
     <string name="onboarding_tv_meet_subtitle">시간과 시간 사이\n여러분의 시간을 틈틈으로 채워보세요</string>
     <string name="onboarding_tv_networking_title">틈틈의 인증 시스템들로\n안전한 네트워킹을 즐겨보세요</string>
     <string name="onboarding_tv_networking_subtitle">회사/학교 인증, 지인 인증, 리뷰 등으로\n안전한 네트워킹을 즐겨보세요</string>
+    <string name="shake_title">세 분의 관심사의 틈을 채워\n대화 주제를 조합하는 중이에요</string>
 
+    <string name="signin_tv_kakao">카카오톡으로 시작하기</string>
+    <string name="signin_tv_naver">네이버로 시작하기</string>
+
+    <string name="signup_tv_terms_title">틈틈에 오신 것을 환영합니다</string>
+    <string name="signup_tv_terms_subtitle">서비스 시작 및 가입을 위해서 먼저\n가입 및 정보 제공에 동의해 주세요.</string>
+    <string name="signup_tv_terms_agree_all">전체동의</string>
+    <string name="signup_tv_terms_agree_1">서비스 이용약관</string>
+    <string name="signup_tv_terms_agree_2">개인정보 처리방침</string>
+    <string name="signup_tv_terms_mandatory">(필수)</string>
+    <string name="signup_btn_start">시작하기</string>
+    <string name="signup_tv_card_intro_title">나만의 소개서를 만들어 봐요</string>
+    <string name="signup_tv_card_intro_subtitle">모임에 참여할 때 나를 더 쉽게 소개할 수 있어요</string>
+    <string name="signup_tv_move_card">좌우로 움직여 앞/뒷면을 확인해 보세요</string>
+
+    <string name="signup_tv_character_title">프만님을 대표할 수 있는\n티미 캐릭터를 골라주세요</string>
+    <string name="signup_btn_next">다음</string>
+  
     <string name="moim_topic_title">어떤 주제로 모임을 만들까요?</string>
     <string name="moim_next_btn">다음</string>
 
@@ -36,6 +54,12 @@
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
     <string name="moim_introduce_snackbar">파일 크기가 10MB를 초과합니다.</string>
+
+    <string name="group_search_hint">검색어를 입력해 주세요</string>
+    <string name="group_search_recommend_keyword">추천 검색어</string>
+    <string name="group_search_empty_keyword">검색어를 입력하세요</string>
+    <string name="group_search_not_response_keyword">에 대한 검색 결과가 없습니다.</string>
+    <string name="group_search_keyword">\&apos;%1$s\&apos;</string>
 
     <string name="moim_datetime_title">모임 일정을 정해주세요</string>
     <string name="moim_datetime_label1">날짜</string>
@@ -68,4 +92,11 @@
     <string name="front_card_job">직무명</string>
     <string name="front_card_company">\@직장,학교명</string>
     <string name="front_card_name">디프만</string>
+    <string name="shake_onboarding_location_title">주변에 있는 틈틈 유저들을\n선택해주세요</string>
+    <string name="shake_onboarding_location_subtitle">틈틈을 켠 100m 이내에 있는 틈틈 유저들이\n화면에 등장해요! 오프라인 모임이 더 풍성해질 거예요.</string>
+    <string name="shake_onboarding_card_title">상대방을 더 알고 싶다면\n서로의 소개서를 확인해 보세요</string>
+    <string name="shake_onboarding_card_subtitle">모임에서 새롭게 만난 틈틈 유저들과\n서로의 소개서를 공유해 자신을 소개해 보세요.</string>
+    <string name="shake_onboarding_interst_title">기기를 흔들고\n공통 관심 대화 주제를 받아요</string>
+    <string name="shake_onboarding_interest_subtitle">3초만 모바일 기기를 흔들어 보세요!\n관심사 기반 대화 주제를 받을 수 있어요</string>
+
 </resources>
