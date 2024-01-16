@@ -12,10 +12,6 @@
         android:theme="@style/Theme.TeumTeum"
         >
 
-        <include
-            android:id="@+id/appBar"
-            layout="@layout/layout_common_appbar" />
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
@@ -27,7 +23,7 @@
             android:lineSpacingExtra="3sp"
             android:textColor="?attr/color_text_headline_primary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBar"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <TextView
@@ -46,41 +42,21 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             />
 
-        <View
-            android:id="@+id/iv_teumee_card"
+        <com.teumteum.teumteum.util.custom.view.FrontCardView
+            android:id="@+id/cardview"
             android:layout_width="280dp"
             android:layout_height="400dp"
-            android:background="@color/error_100"
-            android:layout_marginTop="56dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            app:name="@string/front_card_name"
+            app:company="@string/front_card_company"
+            app:job="안드로이드 개발"
+            app:level="@string/front_card_level"
+            app:area="@string/front_card_area"
+            app:mbti="@string/front_card_mbti"
+            app:image="@drawable/ic_card_penguin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            android:layout_marginTop="56dp"
             />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="10dp"
-            android:background="?attr/color_divider_level02"
-            app:layout_constraintBottom_toTopOf="@id/btn_finish"
-            />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_finish"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/sel_button_cta"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:elevation="0dp"
-            android:stateListAnimator="@null"
-            android:enabled="true"
-            android:text="@string/signup_tv_fix_finish"
-            android:textAppearance="@style/ta.headline.6"
-            android:textColor="@color/color_text_button_primary_selector"
-            />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

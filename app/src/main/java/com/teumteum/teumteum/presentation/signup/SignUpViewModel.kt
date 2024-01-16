@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.signup
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,7 @@ class SignUpViewModel @Inject constructor(
 
     fun updateCharacterId(characterId: Int) {
         _characterId.value = characterId
+        Log.d("teum-card", "characterId updated $characterId")
     }
 
     private val _userName = MutableStateFlow<String>("")
@@ -218,7 +220,8 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.Area -> SignUpProgress.Mbti
                 SignUpProgress.Mbti -> SignUpProgress.Interests
                 SignUpProgress.Interests -> SignUpProgress.Goal
-                SignUpProgress.Goal -> SignUpProgress.End
+                SignUpProgress.Goal -> SignUpProgress.Complete
+                SignUpProgress.Complete -> SignUpProgress.Fix
                 else -> _signUpProgress.value
             }
         goToNextStep()
@@ -250,6 +253,7 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.Mbti -> SignUpProgress.Area
                 SignUpProgress.Interests -> SignUpProgress.Mbti
                 SignUpProgress.Goal -> SignUpProgress.Interests
+                SignUpProgress.Fix -> SignUpProgress.Complete
                 else -> _signUpProgress.value
             }
         goToPreviousStep()
@@ -284,5 +288,6 @@ class SignUpViewModel @Inject constructor(
 }
 
 enum class SignUpProgress {
-    Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal, End
+    Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal,
+    Complete, Fix
 }
