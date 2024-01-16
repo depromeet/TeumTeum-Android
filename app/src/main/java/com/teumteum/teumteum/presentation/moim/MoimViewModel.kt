@@ -34,8 +34,8 @@ class MoimViewModel @Inject constructor(
     private val _currentStep = MutableStateFlow<Int>(0)
     val currentStep: StateFlow<Int> = _currentStep.asStateFlow()
 
-    private val _topic = MutableStateFlow<TopicType?>(null)
-    val topic: StateFlow<TopicType?> = _topic.asStateFlow()
+    private val _topic = MutableStateFlow("")
+    val topic: StateFlow<String> = _topic.asStateFlow()
 
     private val _title = MutableStateFlow("")
     val title : StateFlow<String> = _title.asStateFlow()
@@ -55,11 +55,17 @@ class MoimViewModel @Inject constructor(
     private val _people = MutableStateFlow(2)
     val people: StateFlow<Int> = _people.asStateFlow()
 
+    private val _address = MutableStateFlow<String?>(null)
+    val address: StateFlow<String?> = _address.asStateFlow()
+
+    private val _detailAddress = MutableStateFlow("")
+    val detailAddress: StateFlow<String> = _detailAddress
+
     private val _snackbarEvent = MutableSharedFlow<SnackbarEvent>()
     val snackbarEvent : SharedFlow<SnackbarEvent> = _snackbarEvent.asSharedFlow()
 
 
-    fun updateTopic(topicType: TopicType) {
+    fun updateTopic(topicType: String) {
         _topic.value = topicType
     }
 
@@ -75,6 +81,14 @@ class MoimViewModel @Inject constructor(
         if (input.length == 4) {
             _date.value = formatDateAndDay(input)
         }
+    }
+
+    fun updateAddress(address: String) {
+        _address.value = address
+    }
+
+    fun updateDetailAddress(address: String) {
+        _detailAddress.value = address
     }
 
     fun updateTime(input: String): String {
@@ -133,7 +147,7 @@ class MoimViewModel @Inject constructor(
     fun formatTime(input: String): String {
         return try {
             val parsedTime = LocalTime.parse(input, DateTimeFormatter.ofPattern("HHmm"))
-            parsedTime.format(DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault()))
+            parsedTime.format(DateTimeFormatter.ofPattern("a hh:mm", Locale.KOREA))
         } catch (e: Exception) {
             input // 실패시 원본 입력 반환
         }
@@ -195,10 +209,6 @@ class MoimViewModel @Inject constructor(
         goToPreviousStep()
     }
 
-    fun goBackToHomeScreen() {
-
-    }
-
     fun goToNextStep() {
         val nextStep = _currentStep.value + 1
         _currentStep.value = nextStep.coerceIn(0, 5)
@@ -230,7 +240,7 @@ class MoimViewModel @Inject constructor(
 }
 
 enum class ScreenState {
-    Topic, Name, Introduce, DateTime, Address, People, Create, Webview
+    Topic, Name, Introduce, DateTime, Address, People, Create, Finish
 }
     enum class TopicType(val value: String, val title: String ,val subTitle: String) {
         SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),

@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.moim
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -10,6 +11,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,12 +20,14 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.di.NetworkStatus
 import com.teumteum.teumteum.presentation.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 
 
 class MoimFragment :
     BindingFragment<FragmentMoimBinding>(R.layout.fragment_moim) {
-    private val viewModel: MoimViewModel by viewModels()
+    private val viewModel: MoimViewModel by activityViewModels()
 
     override fun onResume() {
         super.onResume()
@@ -33,11 +37,14 @@ class MoimFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val navController = findNavController()
+
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
             }
         }
+
 
         binding.composeMoim.setContent {
             val screenState by viewModel.screenState.collectAsState()
@@ -46,8 +53,12 @@ class MoimFragment :
                 ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
                 ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
                 ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
-                ScreenState.Address -> MoimAddress(viewModel) { goFrontScreen()}
+                ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
                 ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
+                ScreenState.Create -> {
+                    binding.progressBar.visibility = View.GONE
+                    MoimConfirm(viewModel)
+                }
                 else -> {}
             }
         }
@@ -75,14 +86,6 @@ class MoimFragment :
         ObjectAnimator.ofInt(binding.progressBar, "progress", targetProgress)
             .setDuration(500)
             .start()
-    }
-
-    private fun goToWebFragment() {
-        val status = NetworkStatus.getConnectivityStatus(requireContext())
-        if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI)  {
-        } else {
-            Toast.makeText(context, "인터넷 연결을 확인해주세요.", Toast.LENGTH_SHORT).show()
-        }
     }
     companion object {
 

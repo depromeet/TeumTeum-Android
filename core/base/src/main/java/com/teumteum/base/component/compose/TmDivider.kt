@@ -13,3 +13,12 @@ fun TeumDivider() {
         startIndent = 0.dp
     )
 }
+
+@Composable
+fun TeumDividerThick(int : Int) {
+    Divider(
+        color = TmtmColorPalette.current.ColorDivider,
+        thickness = int.dp,
+        startIndent = 0.dp
+    )
+}
