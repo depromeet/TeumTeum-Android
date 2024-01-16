@@ -1,15 +1,19 @@
 package com.teumteum.data.model.response
 
 import com.teumteum.domain.entity.Meeting
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ResponseGroup(
-    val data: ResponseGroupData,
-    val hasNext: Boolean
+    val data: ResponseGroupData = ResponseGroupData(listOf()),
+    val hasNext: Boolean = false
 ) {
+    @Serializable
     data class ResponseGroupData(
         val meetings: List<ResponseMeeting>
     )
 }
+@Serializable
 data class ResponseMeeting(
     val hostId: Long,
     val id: Long,

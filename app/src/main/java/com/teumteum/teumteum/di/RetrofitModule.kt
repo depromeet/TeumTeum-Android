@@ -1,8 +1,11 @@
 package com.teumteum.teumteum.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.teumteum.data.remote.AuthInterceptor
 import com.teumteum.teumteum.BuildConfig.BASE_URL
 import com.teumteum.teumteum.addFlipperNetworkPlugin
+import com.teumteum.teumteum.di.qualifier.Auth
+import com.teumteum.teumteum.di.qualifier.Logger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,9 +26,15 @@ object RetrofitModule {
 
     @Provides
     @Singleton
+    @Logger
     fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
+
+    @Provides
+    @Singleton
+    @Auth
+    fun provideAuthInterceptor(interceptor: AuthInterceptor): Interceptor = interceptor
 
     @Provides
     @Singleton
@@ -37,9 +46,11 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: Interceptor
+        @Logger loggingInterceptor: Interceptor,
+        @Auth authInterceptor: Interceptor,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(authInterceptor)
         .addFlipperNetworkPlugin()
         .build()
 
