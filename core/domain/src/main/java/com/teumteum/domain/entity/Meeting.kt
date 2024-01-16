@@ -1,5 +1,8 @@
 package com.teumteum.domain.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Meeting(
     val id: Long,
     val hostId: Long,
