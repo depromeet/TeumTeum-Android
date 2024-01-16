@@ -40,15 +40,12 @@ class WebviewFragment :
                 setRenderPriority(WebSettings.RenderPriority.HIGH)
                 javaScriptCanOpenWindowsAutomatically = true
                 setSupportMultipleWindows(true)
-                setRenderPriority(WebSettings.RenderPriority.HIGH)
             }
             addJavascriptInterface(WebAppInterface(), "Android")
             webViewClient = object : WebViewClient() {
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    binding.daumWebview.visibility =
-                        View.INVISIBLE
-                    binding.progressBar.visibility=
-                        View.VISIBLE
+                    binding.daumWebview.visibility = View.INVISIBLE
+                    binding.progressBar.visibility= View.VISIBLE
                     super.onPageStarted(view, url, favicon)
                 }
                 override fun onPageFinished(view: WebView, url: String) {
@@ -70,7 +67,6 @@ class WebviewFragment :
                 val fullAddress = data.toString()
                 webViewModel.setAddress(fullAddress)
                 moimViewModel.updateAddress(fullAddress)
-                Log.d("address", fullAddress.toString())
                 activity?.runOnUiThread {
                     parentFragmentManager.popBackStack()
                 }

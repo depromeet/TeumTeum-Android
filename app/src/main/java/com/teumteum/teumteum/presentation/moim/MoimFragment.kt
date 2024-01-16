@@ -49,12 +49,16 @@ class MoimFragment :
         binding.composeMoim.setContent {
             val screenState by viewModel.screenState.collectAsState()
             when (screenState) {
-                ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen()}
+                ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen() }
                 ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
                 ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
                 ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
                 ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
                 ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
+                ScreenState.Create -> {
+                    binding.progressBar.visibility = View.GONE
+                    MoimConfirm(viewModel)
+                }
                 else -> {}
             }
         }

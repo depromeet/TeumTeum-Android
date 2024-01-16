@@ -15,7 +15,6 @@ class WebViewModel @Inject constructor(): ViewModel() {
 
     fun setAddress(address: String) {
         _selectedAddress.value = address
-        Log.d("webview model 성공", address.toString())
     }
 
 }

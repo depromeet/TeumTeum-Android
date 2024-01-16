@@ -56,6 +56,7 @@ fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick:
             TmMarginVerticalSpacer(size = 20)
             MoimAddress2Column(viewModel)
             Spacer(Modifier.weight(1f))
+
             TeumDivider()
             MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = !address.isNullOrEmpty() && detailAddress.isNotEmpty(), viewModel = viewModel)
             TmMarginVerticalSpacer(size = 24)
