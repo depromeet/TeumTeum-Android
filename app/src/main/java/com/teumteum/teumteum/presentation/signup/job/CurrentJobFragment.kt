@@ -22,10 +22,6 @@ class CurrentJobFragment
     private val viewModel by activityViewModels<SignUpViewModel>()
     private var jobClassBottomSheet: SingleModalBottomSheet? = null
     private var jobDetailClassBottomSheet: SingleModalBottomSheet? = null
-    private val jobSort = ArrayList<String>()
-    private val jobDesigner = ArrayList<String>()
-    private val jobDev = ArrayList<String>()
-    private val jobManager = ArrayList<String>()
     private var jobDetailList = ArrayList<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,7 +30,6 @@ class CurrentJobFragment
         binding.vm = viewModel
         binding.lifecycleOwner = this
         setTextChangedListener()
-        initJobInfo()
         initBottomSheet()
         checkValidInput()
     }
@@ -53,14 +48,6 @@ class CurrentJobFragment
         })
     }
 
-    private fun initJobInfo() {
-        jobSort.addAll(arrayOf("디자인", "개발", "기획"))
-        jobDesigner.addAll(arrayOf("프로덕트 디자이너", "BX 디자이너", "그래픽 디자이너",
-            "영상 디자이너", "UX 디자이너", "UI 디자이너", "플랫폼 디자이너"))
-        jobDev.addAll(arrayOf("BE 개발자", "iOS 개발자", "AOS 개발자", "FE 개발자"))
-        jobManager.addAll(arrayOf("PO", "PM", "서비스 기획자"))
-    }
-
     private fun initBottomSheet() {
         val jobClassListener: (String) -> Unit = { item ->
             viewModel.updateJobClass(item)
@@ -77,25 +64,29 @@ class CurrentJobFragment
 
         with(binding) {
             llWho.setOnClickListener {
-                jobClassBottomSheet?.setFocusedImageView(ivShowWho)
-                jobClassBottomSheet?.setSelectedItem(viewModel.jobClass.value)
-                jobClassBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
+                jobClassBottomSheet?.apply {
+                    setFocusedImageView(ivShowWho)
+                    setSelectedItem(viewModel.jobClass.value)
+                    show(childFragmentManager, SingleModalBottomSheet.TAG)
+                }
                 ivShowWho.setImageResource(R.drawable.ic_arrow_up_l)
             }
 
             llWhat.setOnClickListener {
                 if (viewModel.jobClass.value in jobSort) {
                     jobDetailList = when (viewModel.jobClass.value) {
-                        "디자인" -> jobDesigner
-                        "개발" -> jobDev
-                        "기획" -> jobManager
+                        JOB_DESIGN -> jobDesigner
+                        JOB_DEVELOPMENT -> jobDev
+                        JOB_PLANNING -> jobManager
                         else -> ArrayList()
                     }
                     if (viewModel.jobClass.value in jobSort) {
                         jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance("직군 입력", jobDetailList, jobDetailClassListener)
-                        jobDetailClassBottomSheet?.setFocusedImageView(ivShowWhat)
-                        jobDetailClassBottomSheet?.setSelectedItem(viewModel.jobDetailClass.value)
-                        jobDetailClassBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
+                        jobClassBottomSheet?.apply {
+                            setFocusedImageView(ivShowWhat)
+                            setSelectedItem(viewModel.jobDetailClass.value)
+                            show(childFragmentManager, SingleModalBottomSheet.TAG)
+                        }
                         ivShowWhat.setImageResource(R.drawable.ic_arrow_up_l)
                     }
                 }
@@ -113,5 +104,23 @@ class CurrentJobFragment
     }
 
     companion object {
+        const val JOB_DESIGN = "디자인"
+        const val JOB_DEVELOPMENT = "개발"
+        const val JOB_PLANNING = "기획"
+
+        val jobSort = arrayListOf(JOB_DESIGN, JOB_DEVELOPMENT, JOB_PLANNING)
+
+        val jobDesigner = arrayListOf(
+            "프로덕트 디자이너", "BX 디자이너", "그래픽 디자이너",
+            "영상 디자이너", "UX 디자이너", "UI 디자이너", "플랫폼 디자이너"
+        )
+
+        val jobDev = arrayListOf(
+            "BE 개발자", "iOS 개발자", "AOS 개발자", "FE 개발자"
+        )
+
+        val jobManager = arrayListOf(
+            "PO", "PM", "서비스 기획자"
+        )
     }
 }

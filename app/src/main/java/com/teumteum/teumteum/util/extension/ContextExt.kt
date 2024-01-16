@@ -9,3 +9,11 @@ fun Context.hideKeyboard(view: View) {
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     view.clearFocus()
 }
+
+fun Context.getScreenWidth(): Float {
+    return this@getScreenWidth.resources.displayMetrics.widthPixels.toFloat()
+}
+
+fun Context.getScreenHeight(): Float {
+    return this@getScreenHeight.resources.displayMetrics.heightPixels.toFloat()
+}

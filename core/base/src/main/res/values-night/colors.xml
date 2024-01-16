@@ -47,6 +47,7 @@
 
     <!-- BUTTON -->
     <color name="button_active">@color/tmtm_blue_400</color>
+    <color name="button_pressed">@color/tmtm_blue_500</color>
     <color name="button_pressed01">@color/tmtm_blue_500</color>
     <color name="button_pressed02">@color/tmtm_blue_200</color>
     <color name="button_disabled">@color/grey_850</color>

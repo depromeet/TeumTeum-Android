@@ -1,7 +1,12 @@
 package com.teumteum.data.service
 
 import com.teumteum.data.model.response.ResponseGroup
+import com.teumteum.data.model.response.ResponseMeeting
+import okhttp3.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GroupService {
@@ -16,4 +21,14 @@ interface GroupService {
         @Query("participantUserId") participantUserId: Long?,
         @Query("searchWord") searchWord: String?
     ): ResponseGroup
+
+    @POST("meetings/{meetingId}/participants")
+    suspend fun postGroupJoin(
+        @Path("meetingId") meetingId: Long
+    ): ResponseMeeting
+
+    @DELETE("meetings/{meetingId}/participants")
+    suspend fun deleteGroupJoin(
+        @Path("meetingId") meetingId: Long
+    ): Response
 }

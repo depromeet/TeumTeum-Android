@@ -6,18 +6,21 @@
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="@string/bottom_menu_home"
+        android:menuCategory="secondary"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/fragment_teum_teum"
         android:enabled="true"
         android:icon="@drawable/ic_teum_teum"
         android:title="@string/bottom_menu_teum_teum"
+        android:menuCategory="secondary"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/fragment_my_page"
         android:enabled="true"
         android:icon="@drawable/ic_my_page"
         android:title="@string/bottom_menu_my_page"
+        android:menuCategory="secondary"
         app:showAsAction="ifRoom" />
 
 </menu>

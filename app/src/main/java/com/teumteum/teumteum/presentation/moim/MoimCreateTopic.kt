@@ -23,42 +23,58 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.FragmentActivity
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 @Composable
-fun MoimCreateTopic(viewModel: MoimViewModel) {
+fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {
     val topicIndex = remember { mutableStateOf(-1) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string = stringResource(id = R.string.moim_topic_title))
-        CreateTopicContent(viewModel, topicIndex)
-        Spacer(modifier = Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = topicIndex.value >=0, viewModel = viewModel)
-        TmMarginVerticalSpacer(size = 24)
+    TmScaffold(onClick = { onClick() }) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string = stringResource(id = R.string.moim_topic_title))
+            CreateTopicContent(viewModel, topicIndex)
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = topicIndex.value >=0, viewModel = viewModel)
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
+
 }
 
 @Composable
-fun MoimCreateBtn(text: String, viewModel: MoimViewModel ,isEnabled: Boolean) {
+fun MoimCreateBtn(
+    text: String,
+    viewModel: MoimViewModel ,
+    isEnabled: Boolean = true
+) {
+    val screenState by viewModel.screenState.collectAsState()
+    val context = LocalContext.current
+
     val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
     val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
     androidx.compose.material3.Button(
@@ -67,7 +83,10 @@ fun MoimCreateBtn(text: String, viewModel: MoimViewModel ,isEnabled: Boolean) {
             .height(76.dp)
             .padding(horizontal = 20.dp, vertical = 10.dp),
         enabled = isEnabled,
-        onClick = { viewModel.goToNextScreen() },
+        onClick = {
+            if (screenState == ScreenState.Create) { (context as? FragmentActivity)?.supportFragmentManager?.popBackStack() }
+            else { viewModel.goToNextScreen() }
+                  },
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         shape = RoundedCornerShape(size = 4.dp)
     ) {
@@ -111,7 +130,7 @@ fun CreateTopicContent(viewModel: MoimViewModel, topicIndex: MutableState<Int>) 
                 isSelected = isSelected,
                 onItemSelected = {
                     topicIndex.value = index
-                    viewModel.updateTopic(topicType)
+                    viewModel.updateTopic(topicType.title)
                     Log.d("moim_topic", topicType.toString())
                 }
             )

@@ -206,9 +206,9 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.Birthday -> SignUpProgress.Community
                 SignUpProgress.Community -> {
                     when (_community.value) {
-                        "직장인" -> SignUpProgress.CurrentJob
-                        "학생" -> SignUpProgress.School
-                        "취업준비생" -> SignUpProgress.ReadyJob
+                        COMMUNITY_WORKER -> SignUpProgress.CurrentJob
+                        COMMUNITY_STUDENT -> SignUpProgress.School
+                        COMMUNITY_TRAINEE -> SignUpProgress.ReadyJob
                         else -> _signUpProgress.value
                     }
                 }
@@ -234,16 +234,16 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.School -> SignUpProgress.Community
                 SignUpProgress.ReadyJob -> {
                     when (_community.value) {
-                        "학생" -> SignUpProgress.School
-                        "취업준비생" -> SignUpProgress.Community
+                        COMMUNITY_STUDENT -> SignUpProgress.School
+                        COMMUNITY_TRAINEE -> SignUpProgress.Community
                         else -> _signUpProgress.value
                     }
                 }
                 SignUpProgress.Area -> {
                     when (_community.value) {
-                        "직장인" -> SignUpProgress.CurrentJob
-                        "학생" -> SignUpProgress.ReadyJob
-                        "취업준비생" -> SignUpProgress.ReadyJob
+                        COMMUNITY_WORKER -> SignUpProgress.CurrentJob
+                        COMMUNITY_STUDENT -> SignUpProgress.ReadyJob
+                        COMMUNITY_TRAINEE -> SignUpProgress.ReadyJob
                         else -> _signUpProgress.value
                     }
                 }
@@ -256,23 +256,30 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun goToNextStep() {
-        if (_signUpProgress.value == SignUpProgress.CurrentJob && _community.value == "직장인"
-            || _signUpProgress.value == SignUpProgress.ReadyJob && _community.value == "취업준비생")
-            _currentStep.value++
+        val isWorkerInCurrentJob = _signUpProgress.value == SignUpProgress.CurrentJob
+                && _community.value == COMMUNITY_WORKER
+        val isTraineeInReadyJob = _signUpProgress.value == SignUpProgress.ReadyJob
+                && _community.value == COMMUNITY_TRAINEE
+        if (isWorkerInCurrentJob || isTraineeInReadyJob) _currentStep.value++
         val nextStep = _currentStep.value + 1
         _currentStep.value = nextStep.coerceIn(1, 10)
     }
 
     fun goToPreviousStep() {
-        if (_signUpProgress.value == SignUpProgress.Area && _community.value == "직장인"
-            || _signUpProgress.value == SignUpProgress.Area && _community.value == "취업준비생")
-            _currentStep.value--
+        val isWorkerInArea = _signUpProgress.value == SignUpProgress.Area
+                && _community.value == COMMUNITY_WORKER
+        val isTraineeInArea = _signUpProgress.value == SignUpProgress.Area
+                && _community.value == COMMUNITY_TRAINEE
+        if (isWorkerInArea || isTraineeInArea) _currentStep.value--
         val previousStep = _currentStep.value - 1
         _currentStep.value = previousStep.coerceAtLeast(0)
     }
 
     companion object {
         private const val REGEX_ID_PATTERN = "^([A-Za-z0-9_.]*)\$"
+        private const val COMMUNITY_WORKER = "직장인"
+        private const val COMMUNITY_STUDENT = "학생"
+        private const val COMMUNITY_TRAINEE = "취업준비생"
     }
 }
 

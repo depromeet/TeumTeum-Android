@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -8,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +24,17 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,37 +45,70 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.size.Scale
-import coil.transform.CircleCropTransformation
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
+import com.teumteum.base.component.compose.TmScaffold
+import com.teumteum.base.component.compose.TmSnackBar
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import kotlinx.coroutines.delay
 
 @Composable
-fun MoimIntroduce(viewModel: MoimViewModel) {
+fun MoimIntroduce(
+    viewModel: MoimViewModel,
+    onClick: () -> Unit
+) {
     val introduce by viewModel.introduction.collectAsState()
     val photo by viewModel.imageUri.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = TmtmColorPalette.current.GreyWhite),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-    ) {
-        CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
-        TmMarginVerticalSpacer(size = 28)
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        MoimIntroColumn(viewModel)
-        TmMarginVerticalSpacer(size = 20)
-        TeumDivider()
-        TmMarginVerticalSpacer(size = 20)
+    LaunchedEffect(Unit) {
+        viewModel.snackbarEvent.collect { event ->
+            when (event) {
+                MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> {
+                    val result = snackbarHostState.showSnackbar(
+                        message = event.getMessage(),
+                        duration = SnackbarDuration.Short
+                    )
+                    delay(1000)
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    if (result == SnackbarResult.Dismissed) {
+                        viewModel.resetSnackbarEvent()
+                    }
+                }
+                MoimViewModel.SnackbarEvent.DEFAULT -> {}
+            }
+        }
+    }
 
-        MoimPhotoColumn(viewModel)
-        Spacer(modifier = Modifier.weight(1f))
-        TeumDivider()
-        MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
+    TmSnackBar(snackbarHostState = snackbarHostState)
+
+    TmScaffold(onClick = {onClick()}) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.GreyWhite),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            TmMarginVerticalSpacer(size = 48)
+            CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
+            TmMarginVerticalSpacer(size = 28)
+            MoimIntroColumn(viewModel)
+            TmMarginVerticalSpacer(size = 20)
+            TeumDivider()
+            TmMarginVerticalSpacer(size = 20)
+
+            MoimPhotoColumn(viewModel)
+            TmMarginVerticalSpacer(size = 20)
+            TmSnackBar(snackbarHostState = snackbarHostState)
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
+            TmMarginVerticalSpacer(size = 24)
+        }
     }
 }
 
@@ -122,6 +163,7 @@ fun MoimInputField(viewModel: MoimViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
+            .clickable { }
             .height(272.dp),
         placeholder = { Text(text = stringResource(id = R.string.moim_introduce_title), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
         onValueChange = { newText-> viewModel.updateIntroduce(newText) },
@@ -213,5 +255,7 @@ fun MoimPhotoInput(
         }
     }
 }
+
+
 
 
