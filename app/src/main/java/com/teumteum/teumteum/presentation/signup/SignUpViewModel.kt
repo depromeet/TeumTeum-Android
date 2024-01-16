@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-//    private val authRepository: AuthRepository,
+//    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _signUpProgress = MutableStateFlow<SignUpProgress>(SignUpProgress.Character)

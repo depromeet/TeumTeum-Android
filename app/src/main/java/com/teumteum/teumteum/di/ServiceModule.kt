@@ -1,9 +1,11 @@
 package com.teumteum.teumteum.di
 
 
+import com.teumteum.data.service.AuthService
 import com.teumteum.data.service.GroupService
 import com.teumteum.data.service.HomeService
 import com.teumteum.data.service.SampleService
+import com.teumteum.data.service.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +30,14 @@ object ServiceModule {
     @Provides
     fun provideGroupService(retrofit: Retrofit) =
         retrofit.create(GroupService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideAuthService(retrofit: Retrofit) =
+        retrofit.create(AuthService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideUserService(retrofit: Retrofit) =
+        retrofit.create(UserService::class.java)
 }

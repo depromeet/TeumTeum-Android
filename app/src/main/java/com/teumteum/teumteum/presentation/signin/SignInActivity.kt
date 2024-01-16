@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.signin
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.compose.ui.input.key.Key.Companion.K
 import com.teumteum.base.BindingActivity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySigninBinding
@@ -22,6 +23,8 @@ class SignInActivity
     private fun setClickListener() {
         with(binding) {
             btnKakao.setOnClickListener {
+                val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
+                intent.putExtra("provider", "kakao")
                 startActivity(Intent(this@SignInActivity, TermsActivity::class.java))
                 finish()
             }
