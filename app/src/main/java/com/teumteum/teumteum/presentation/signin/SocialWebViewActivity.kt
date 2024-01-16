@@ -14,6 +14,7 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.toast
+import com.teumteum.data.BuildConfig
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySocialWebviewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,8 +59,8 @@ class SocialWebViewActivity
         when (provider) {
             KAKAO_PROVIDER -> {
                 loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&" +
-                        "client_id=${com.teumteum.data.BuildConfig.KAKAO_API_KEY}&" +
-                        "redirect_uri=${com.teumteum.data.BuildConfig.KAKAO_REDIRECT_URL}"
+                        "client_id=${BuildConfig.KAKAO_API_KEY}&" +
+                        "redirect_uri=${BuildConfig.KAKAO_REDIRECT_URL}"
             }
             NAVER_PROVIDER -> {
                 loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&" +

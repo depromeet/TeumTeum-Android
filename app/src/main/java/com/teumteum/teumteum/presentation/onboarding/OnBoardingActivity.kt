@@ -51,7 +51,7 @@ class OnBoardingActivity
 
     private fun setUpListener() {
         binding.btnStart.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, SignInActivity::class.java))
         }
     }
 
