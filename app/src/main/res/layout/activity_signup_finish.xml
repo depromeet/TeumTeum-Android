@@ -43,15 +43,16 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             />
 
-        <View
-            android:layout_width="276dp"
-            android:layout_height="102dp"
+        <ImageView
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:src="@drawable/img_finish_celebrate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
-            android:layout_marginTop="121dp"
-            android:background="@color/error_100"
+            android:layout_marginTop="64dp"
             />
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
