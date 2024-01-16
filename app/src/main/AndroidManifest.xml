@@ -61,14 +61,14 @@
         <activity android:name=".presentation.group.join.GroupMeetCheckActivity"
             android:exported="false" />
         <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
+            android:exported="false" />
         <activity android:name=".presentation.signup.complete.CardCompleteActivity"
             android:exported="false" />
         <activity android:name=".presentation.signup.fix.CardFixActivity"
             android:exported="false" />
         <activity android:name=".presentation.signup.finish.SignUpFinishActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.search.SearchActivity"
-            android:exported="false" />
+
     </application>
 
 </manifest>
