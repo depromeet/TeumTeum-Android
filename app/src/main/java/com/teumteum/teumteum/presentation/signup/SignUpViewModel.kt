@@ -128,18 +128,74 @@ class SignUpViewModel @Inject constructor(
         readyJobClass.isNotBlank() && readyJobDetailClass.isNotBlank()
     }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
 
-    private val _preferredArea = MutableStateFlow<String>("")
-    val preferredArea: StateFlow<String> = _preferredArea.asStateFlow()
+    private val _preferredCity = MutableStateFlow<String>("")
+    val preferredCity: StateFlow<String> = _preferredCity.asStateFlow()
 
-    fun updatePreferredArea(preferredArea: String) {
-        _preferredArea.value = preferredArea
+    private val _preferredStreet = MutableStateFlow<String>("")
+    val preferredStreet: StateFlow<String> = _preferredStreet.asStateFlow()
+
+    fun updatePreferredArea(city: String, street: String) {
+        _preferredCity.value = city
+        _preferredStreet.value = street
     }
+
+    val preferredArea: StateFlow<String> = combine(
+        preferredCity,
+        preferredStreet
+    ) { preferredCity, preferredStreet ->
+        if (preferredStreet.isNotBlank() && preferredCity.isNotBlank()) {
+            if (preferredStreet.split(" ").last().equals("전체")) preferredStreet
+            else "$preferredCity $preferredStreet"
+        }
+        else ""
+    }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, "")
+
 
     private val _mbtiText = MutableStateFlow<String>("")
     val mbtiText: StateFlow<String> = _mbtiText.asStateFlow()
 
     fun updateMbtiText(mbti: String) {
         _mbtiText.value = mbti
+    }
+
+    private val _interestSelf = MutableStateFlow<ArrayList<String>>(ArrayList())
+    val interestSelf: StateFlow<ArrayList<String>> = _interestSelf.asStateFlow()
+
+    fun removeInterestSelf(interest: String) {
+        if (_interestSelf.value.contains(interest)) _interestSelf.value.remove(interest)
+        updateInterestCount()
+    }
+
+    fun addInterestSelf(interest: String) {
+        if (!_interestSelf.value.contains(interest)) _interestSelf.value.add(interest)
+        updateInterestCount()
+    }
+
+    private val _interestField = MutableStateFlow<ArrayList<String>>(ArrayList())
+    val interestField: StateFlow<ArrayList<String>> = _interestField.asStateFlow()
+
+    fun removeInterestField(interest: String) {
+        if (_interestField.value.contains(interest)) _interestField.value.remove(interest)
+        updateInterestCount()
+    }
+
+    fun addInterestField(interest: String) {
+        if (!_interestField.value.contains(interest)) _interestField.value.add(interest)
+        updateInterestCount()
+    }
+
+    private var _interestCount = MutableStateFlow<Int>(0)
+    val interestCount: StateFlow<Int> = _interestCount.asStateFlow()
+
+    fun updateInterestCount() {
+        _interestCount.value = interestField.value.size + interestSelf.value.size
+    }
+
+    private var _goalText = MutableStateFlow<String>("")
+    val goalText: StateFlow<String> = _goalText.asStateFlow()
+
+    fun updateGoalText(goal: String) {
+        _goalText.value = goal
     }
 
     fun goToNextScreen() {
@@ -162,6 +218,7 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.Area -> SignUpProgress.Mbti
                 SignUpProgress.Mbti -> SignUpProgress.Interests
                 SignUpProgress.Interests -> SignUpProgress.Goal
+                SignUpProgress.Goal -> SignUpProgress.End
                 else -> _signUpProgress.value
             }
         goToNextStep()
@@ -227,5 +284,5 @@ class SignUpViewModel @Inject constructor(
 }
 
 enum class SignUpProgress {
-    Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal
+    Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal, End
 }

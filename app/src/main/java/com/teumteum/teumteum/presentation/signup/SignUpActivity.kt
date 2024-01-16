@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.signup
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
@@ -12,11 +13,16 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
+import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
 import com.teumteum.teumteum.presentation.signup.birthday.BirthdayFragment
 import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
 import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
+import com.teumteum.teumteum.presentation.signup.complete.CardCompleteActivity
+import com.teumteum.teumteum.presentation.signup.goal.GetGoalFragment
+import com.teumteum.teumteum.presentation.signup.interests.GetInterestFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
+import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +75,6 @@ class SignUpActivity
         binding.btnNextSignup.setOnClickListener {
             viewModel.goToNextScreen()
             moveToCurrentProgress()
-
         }
     }
 
@@ -98,8 +103,18 @@ class SignUpActivity
             SignUpProgress.CurrentJob -> navigateTo<CurrentJobFragment>()
             SignUpProgress.School -> navigateTo<CurrentSchoolFragment>()
             SignUpProgress.ReadyJob -> navigateTo<ReadyJobFragment>()
+            SignUpProgress.Area -> navigateTo<PreferredAreaFragment>()
+            SignUpProgress.Mbti -> navigateTo<GetMbtiFragment>()
+            SignUpProgress.Interests -> navigateTo<GetInterestFragment>()
+            SignUpProgress.Goal -> navigateTo<GetGoalFragment>()
+            SignUpProgress.End -> finishedSignUp()
             else -> return
         }
+    }
+
+    private fun finishedSignUp() {
+        startActivity(Intent(this, CardCompleteActivity::class.java))
+        finish()
     }
 
     inline fun <reified T : Fragment> navigateTo() {
