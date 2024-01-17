@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -18,13 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.fragment.app.FragmentActivity
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
+import com.teumteum.base.component.compose.TmTabItem
 import com.teumteum.base.component.compose.TmTabRow
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
-import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.util.custom.view.FrontCardView
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 
@@ -38,6 +36,7 @@ fun SettingScreen() {
         val scrollState = rememberScrollState()
         val frontCardData = FrontCard()
         val list = listOf("내 모임", "받은 리뷰", "북마크")
+        val selectedList = listOf("")
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -49,13 +48,23 @@ fun SettingScreen() {
             FrontCardView(frontCard =  frontCardData)
             TmMarginVerticalSpacer(size = 22)
             SettingBtn()
-            TmMarginVerticalSpacer(size = 20)
-            TmTabRow(tabItemList =list) {
-                
-            }
+            TmMarginVerticalSpacer(size = 5)
+            TmTabRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(46.dp),
+                tabItemList =list,
+                tabContent = {it  ->
+                    TmTabItem(text = it, isSelected = true)
+                }
+            )
         }
     }
 }
+
+
+
+
 
 @Composable
 fun SettingBtn() {

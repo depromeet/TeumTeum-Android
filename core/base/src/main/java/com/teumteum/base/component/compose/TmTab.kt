@@ -1,6 +1,7 @@
 package com.teumteum.base.component.compose
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -25,28 +26,35 @@ fun <T> TmTabRow(
     tabContent : @Composable (T) -> Unit,
 ){
     Row(
-        modifier = modifier.padding(horizontal = 20.dp)
-    ){
-        tabItemList.forEachIndexed { index, item ->
-            tabContent(item)
-            if(index != tabItemList.lastIndex)
-                Spacer(modifier = Modifier.width(16.dp))
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        tabItemList.forEach{ item ->
+            Box(
+                modifier = Modifier
+                    .weight(1f) // 여기에 weight 적용
+                    .height(48.dp)
+            ) {
+                tabContent(item)
+            }
         }
     }
 }
 
 @Composable
 fun TmTabItem(
-    text : String,
-    isSelected : Boolean,
-    onSelect : () -> Unit
+    text: String,
+    isSelected: Boolean = true,
+    onSelect: (()-> Unit)? = null
 ){
     Box(
         modifier = Modifier
             .height(48.dp)
-            .width(IntrinsicSize.Max)
+            .fillMaxWidth()
             .clickable {
-                onSelect()
+                if (onSelect != null) {
+                    onSelect()
+                }
             }
 
     ){
