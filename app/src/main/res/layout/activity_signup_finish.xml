@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
     </data>
@@ -10,19 +9,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent"
         android:theme="@style/Theme.TeumTeum"
+        android:background="@color/background"
+        android:paddingTop="48dp"
         >
 
         <TextView
             android:id="@+id/tv_title"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_tv_namecard_title"
+            android:text="@string/signup_tv_finish_title"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:textAppearance="@style/ta.headline.2"
+            android:layout_marginTop="52dp"
+            android:textAppearance="@style/ta.headline.3"
             android:lineSpacingExtra="3sp"
             android:textColor="?attr/color_text_headline_primary"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +30,11 @@
 
         <TextView
             android:id="@+id/tv_subtitle"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/onboarding_tv_namecard_subtitle"
+            android:text="@string/signup_tv_finish_subtitle"
             android:layout_marginTop="8dp"
+            android:paddingBottom="20dp"
             android:textAppearance="@style/ta.body.1"
             android:letterSpacing="-0.03125"
             android:lineSpacingExtra="5sp"
@@ -45,15 +44,39 @@
             />
 
         <ImageView
-            android:id="@+id/iv_viewpager"
             android:layout_width="280dp"
             android:layout_height="280dp"
-            android:layout_marginTop="56dp"
+            android:src="@drawable/img_finish_celebrate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            android:layout_marginTop="64dp"
             />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="?attr/color_divider_level02"
+            app:layout_constraintBottom_toTopOf="@id/btn_start"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/sel_button_cta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:enabled="true"
+            android:text="@string/signup_tv_go_home"
+            android:textAppearance="@style/ta.headline.6"
+            android:textColor="@color/color_text_button_primary_selector"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

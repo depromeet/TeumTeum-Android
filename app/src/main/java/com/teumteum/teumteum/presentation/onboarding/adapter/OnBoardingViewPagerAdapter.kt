@@ -29,6 +29,7 @@ class OnBoardingViewPagerAdapter: ListAdapter<CommonViewPagerEntity, OnBoardingV
             with(binding) {
                 tvTitle.text = item.title
                 tvSubtitle.text = item.subtitle
+                item.image?.let { ivViewpager.setImageResource(it) }
             }
         }
     }

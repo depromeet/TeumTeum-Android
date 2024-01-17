@@ -89,4 +89,27 @@
         <item>취업준비생</item>
     </string-array>
 
+    <string-array name="interest_1">
+        <item>스터디</item>
+        <item>독서</item>
+        <item>외주</item>
+        <item>모여서 각자 일하기</item>
+        <item>커리어</item>
+        <item>직무 고민</item>
+        <item>사이트 프로젝트</item>
+        <item>N잡</item>
+    </string-array>
+
+    <string-array name="interest_2">
+        <item>퍼스널 브랜딩</item>
+        <item>디자인</item>
+        <item>IT</item>
+        <item>마음 수련</item>
+        <item>경제</item>
+        <item>재테크</item>
+        <item>고민 나누기</item>
+        <item>네트워킹</item>
+        <item>외국어</item>
+    </string-array>
+
 </resources>
