@@ -6,6 +6,4 @@ data class SocialLoginResult (
     val oauthId: String?
 ) {
     val isAlreadyMember: Boolean = oauthId.isNullOrEmpty()
-    val getOauthId: String = oauthId!!
-    val getAuthToken: AuthTokenModel = AuthTokenModel(accessToken!!, refreshToken!!)
 }
