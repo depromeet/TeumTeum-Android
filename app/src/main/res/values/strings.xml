@@ -100,6 +100,23 @@
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
     <string name="moim_introduce_snackbar">파일 크기가 10MB를 초과합니다.</string>
 
+
+    <string name="setting_pager1_title">내 모임</string>
+    <string name="setting_pager1_top1">다가오는 모임</string>
+    <string name="setting_pager1_no_moim_text">신청한 모임이 없어요!</string>
+    <string name="setting_pager1_go_to_moim">신청하기</string>
+    <string name="setting_pager1_top2">참여 완료한 모임</string>
+
+    <string name="setting_pager2_title">받은 리뷰</string>
+    <string name="setting_pager2_very_good">최고예요!</string>
+    <string name="setting_pager2_good">좋아요!</string>
+    <string name="setting_pager2_sad">별로예요...</string>
+
+    <string name="setting_pager3_title">북마크</string>
+
+    <string name="setting_ddabong_friend">님을 추천한 친구</string>
+
+
     <string name="group_search_hint">검색어를 입력해 주세요</string>
     <string name="group_search_recommend_keyword">추천 검색어</string>
     <string name="group_search_empty_keyword">검색어를 입력하세요</string>

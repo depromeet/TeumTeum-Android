@@ -73,6 +73,7 @@ data class ColorPalette_Light(
     //body
     val color_text_body_primary: Color = Color(0xFF444444), // gray700
     val color_text_body_secondary: Color = Color(0xFF575757), //gray600
+    val color_text_body_teritary: Color = Color(0xFF6E6E6E), //gray600
     val color_text_body_quaternary : Color = Color(0xFF828282), //gray550
     val color_text_body_quinary: Color = Color(0xFFC9C9C9), //gray300
 
@@ -91,6 +92,14 @@ data class ColorPalette_Light(
     val color_text_button_secondary_default: Color = Color(0xFF44AEFF),
     val color_text_button_alternative: Color = Color(0xFF212121),
 
+    //outline
+    val color_outline_level04_active: Color = Color(0xFF212121),
+
+    //icon
+    val color_icon_level02_disabled: Color = Color(0xFFDFDFDF),
+    val color_icon_level02_active: Color = Color(0xFF44AEFF),
+    val color_icon_level01: Color = Color(0xFF212121),
+
     val Gray950: Color = Color(0xFF191919),
     val Gray900: Color = Color(0xFF212121),
     val Gray700: Color = Color(0xFF444444),
@@ -100,18 +109,17 @@ data class ColorPalette_Light(
     val Gray300: Color = Color(0xFFC9C9C9),
     val Gray200: Color = Color(0xFFE9E9E9),
     val Gray50: Color = Color(0xFFF5F5F5),
-
     val Error300: Color = Color(0xFFFC4E6D),
+
+    //Tmtm Blue
     val TMTMBlue200: Color = Color(0xFF96D7FF),
     val TMTMBlue400: Color = Color(0xFF444AEFF),
     val TMTMBlue500: Color = Color(0xFF1A9CFF),
+
     val color_button_active: Color = Color(0xFF44AEFF),
     val GreyWhite: Color = Color(0xFFFFFFFF),
     val ColorDivider: Color = Color(0xFFF0F0F0),
     val elevation_color_elevation_level01: Color = Color(0xFFF5F5F5),
-    val color_icon_level02_disabled: Color = Color(0xFFDFDFDF),
-    val color_icon_level02_active: Color = Color(0xFF44AEFF),
-    val color_icon_level01: Color = Color(0xFF212121),
     val color_background: Color = Color(0xFFFFFFFF)
 )
 
