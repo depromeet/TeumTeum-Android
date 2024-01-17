@@ -3,9 +3,9 @@ package com.teumteum.teumteum.presentation.signup
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.JobEntity
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val repository: UserRepository,
-    private val dataStore: TeumTeumDataStore
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _signUpProgress = MutableStateFlow<SignUpProgress>(SignUpProgress.Character)
@@ -34,7 +34,6 @@ class SignUpViewModel @Inject constructor(
 
     fun updateCharacterId(characterId: Int) {
         _characterId.value = characterId
-        Log.d("teum-card", "characterId updated $characterId")
     }
 
     private val _userName = MutableStateFlow<String>("")
@@ -306,11 +305,10 @@ class SignUpViewModel @Inject constructor(
                     userInfo!!, oauthId, serviceAgreed, privatePolicyAgreed, dateString
                 )
                     .onSuccess {
-                        // dataStore 로그인 상태 ok
-                        dataStore.isLogin = true
-                        // dataStore에 현재 유저 아이디 저장 필요 시 it 값 저장
-                        // userInfo에 임시로 넣어뒀던 아이디 -> 서버에서 받은 id 값으로 변경
-                        userInfo = userInfo!!.changeUserInfoId(it)
+                        // setAutoLogin에 회원가입 이후 유저토큰 전달
+                        authRepository.setAutoLogin(it.accessToken, it.refreshToken)
+                        // userInfo에 임시로 넣어뒀던 아이디 -> 서버에서 받은 id 값으로 변경 -> 필요 시 사용
+                        userInfo = userInfo!!.changeUserInfoId(it.id)
                         _userInfoState.value = UserInfoUiState.Success
                     }
                     .onFailure {

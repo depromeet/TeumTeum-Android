@@ -2,7 +2,6 @@ package com.teumteum.teumteum.presentation.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val repository: AuthRepository,
-    private val dataStore: TeumTeumDataStore
+    private val repository: AuthRepository
 ): ViewModel() {
 
     private val _memberState = MutableStateFlow<SignInUiState>(SignInUiState.Init)
@@ -24,9 +22,7 @@ class SignInViewModel @Inject constructor(
             repository.getSocialLogin(provider, code)
                 .onSuccess {
                     if (it.isAlreadyMember) {
-                        dataStore.refreshToken = it.refreshToken!!
-                        dataStore.userToken = it.accessToken!!
-                        dataStore.isLogin = true
+                        repository.setAutoLogin(it.accessToken!!, it.refreshToken!!)
                         _memberState.value = SignInUiState.Success
                     }
                     else {

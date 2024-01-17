@@ -2,6 +2,7 @@ package com.teumteum.data.repository
 
 import com.teumteum.data.datasource.remote.RemoteUserDataSource
 import com.teumteum.data.model.request.RequestUserInfo
+import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.UserRepository
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class UserRepositoryImpl @Inject constructor(
         serviceAgreed: Boolean,
         privatePolicyAgreed: Boolean,
         birth: String
-    ): Result<Long> {
+    ): Result<SignUpResult> {
         return runCatching {
             dataSource.postUserInfo(RequestUserInfo(
                 userInfo = user,

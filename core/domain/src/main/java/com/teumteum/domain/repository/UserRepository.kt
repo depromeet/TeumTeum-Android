@@ -1,5 +1,6 @@
 package com.teumteum.domain.repository
 
+import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 
 interface UserRepository {
@@ -9,6 +10,6 @@ interface UserRepository {
         serviceAgreed: Boolean,
         privatePolicyAgreed: Boolean,
         birth: String
-        ): Result<Long>
+        ): Result<SignUpResult>
     suspend fun getMyUserInfo(): Result<UserInfo>
 }
