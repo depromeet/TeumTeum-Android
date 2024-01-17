@@ -6,6 +6,9 @@ import android.provider.OpenableColumns
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teumteum.domain.entity.MeetingArea
+import com.teumteum.domain.entity.MoimRequestModel
+import com.teumteum.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -25,7 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoimViewModel @Inject constructor(
-
+    private val repository: GroupRepository
 ): ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Topic)
@@ -165,6 +169,16 @@ class MoimViewModel @Inject constructor(
         }
     }
 
+    private fun combineDateAndTime(): LocalDateTime? {
+        return try {
+            val localDate = LocalDate.parse(date.value, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            val localTime = LocalTime.parse(time.value, DateTimeFormatter.ofPattern("HH:mm"))
+            LocalDateTime.of(localDate, localTime)
+        } catch (e: Exception) {
+            null // 형식 오류 발생 시 null 반환
+        }
+    }
+
     fun dateTimeToServer(): Pair<String, String>? {
         return try {
             // 날짜 format - "yyyy-MM-dd"
@@ -181,6 +195,42 @@ class MoimViewModel @Inject constructor(
         }
     }
 
+    fun createMoim() {
+        viewModelScope.launch {
+            val dateTime = combineDateAndTime()
+            if(dateTime != null) {
+                val meetingArea = MeetingArea(
+                    mainStreet = address.value ?: "",
+                    address = address.value ?: "",
+                    addressDetail =  detailAddress.value ?: ""
+                )
+                val requestModel = MoimRequestModel(
+                    topic = topic.value,
+                    title = title.value,
+                    introduction = introduction.value,
+                    promiseDateTime = dateTime,
+                    numberOfRecruits = people.value,
+                    meetingArea = meetingArea
+                )
+                repository.postGroupMoim(requestModel)
+                    .onSuccess {
+                        if (it) {
+                            _screenState.value = ScreenState.Success
+                        } else {
+                            _screenState.value = ScreenState.Failure
+                        }
+                    }
+                    .onFailure {
+                        _screenState.value = ScreenState.Server
+                        Timber.e(it)
+
+                    }
+            } else {
+                _screenState.value = ScreenState.Failure
+            }
+        }
+    }
+
     fun goToNextScreen() {
         _screenState.value =
             when(_screenState.value) {
@@ -193,7 +243,6 @@ class MoimViewModel @Inject constructor(
                 else -> _screenState.value
             }
         goToNextStep()
-        Log.d("currentStep", _currentStep.value.toString())
     }
 
     fun goPreviousScreen() {
@@ -240,14 +289,16 @@ class MoimViewModel @Inject constructor(
 }
 
 enum class ScreenState {
-    Topic, Name, Introduce, DateTime, Address, People, Create, Finish
+    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server
 }
-    enum class TopicType(val value: String, val title: String ,val subTitle: String) {
-        SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
-        STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
-        GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
-        SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
 
-    }
+
+enum class TopicType(val value: String, val title: String ,val subTitle: String) {
+    SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
+    STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
+    GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
+    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
+
+}
 
 

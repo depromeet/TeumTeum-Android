@@ -1,7 +1,9 @@
 package com.teumteum.data.model.response
 
 import com.teumteum.domain.entity.Meeting
+import com.teumteum.domain.entity.MeetingArea
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
 
 @Serializable
 data class ResponseGroup(
@@ -30,3 +32,4 @@ data class ResponseMeeting(
         return Meeting(id, hostId, topic, title, introduction, photoUrls, promiseDateTime)
     }
 }
+

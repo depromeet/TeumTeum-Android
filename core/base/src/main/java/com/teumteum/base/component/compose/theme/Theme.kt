@@ -67,6 +67,7 @@ fun TeumTeumTheme(
 
     CompositionLocalProvider(
         TmtmColorPalette provides ColorPalette_Light(),
+        TmtmColorPalette2 provides ColorPalette_Dark(),
         TmTypo provides Type(),
         TmDimen provides Dimen()
     ) {

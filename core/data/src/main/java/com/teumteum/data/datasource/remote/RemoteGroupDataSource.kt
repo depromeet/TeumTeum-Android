@@ -1,8 +1,10 @@
 package com.teumteum.data.datasource.remote
 
+import com.teumteum.data.model.request.RequestMoim
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
 import com.teumteum.data.service.GroupService
+import com.teumteum.domain.entity.MoimRequestModel
 import javax.inject.Inject
 
 class RemoteGroupDataSource @Inject constructor(
@@ -31,5 +33,11 @@ class RemoteGroupDataSource @Inject constructor(
         meetingId: Long
     ): Boolean {
         return service.deleteGroupJoin(meetingId).isSuccessful
+    }
+
+    suspend fun postMeeting(
+        requestMoim: MoimRequestModel
+    ): Boolean {
+        return service.postMoim(requestMoim).isSuccessful
     }
 }

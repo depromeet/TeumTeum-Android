@@ -2,7 +2,9 @@ package com.teumteum.data.service
 
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
+import com.teumteum.domain.entity.MoimRequestModel
 import okhttp3.Response
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -10,6 +12,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GroupService {
+
+    @POST("meetings")
+    suspend fun postMoim(
+        @Body requestModel: MoimRequestModel
+    ): Response
+
+
     @GET("meetings")
     suspend fun getGroups(
         @Query("size") size: Int = 20,

@@ -123,7 +123,6 @@ fun MoimIntroColumn(viewModel: MoimViewModel) {
     ) {
         MoimInputField(viewModel)
         TmMarginVerticalSpacer(size = 24)
-        MoimSystemText(text = R.string.moim_introduce_system_text)
 
     }
 }

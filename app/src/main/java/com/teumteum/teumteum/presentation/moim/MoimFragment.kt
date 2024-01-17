@@ -6,23 +6,17 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
-import com.teumteum.teumteum.di.NetworkStatus
 import com.teumteum.teumteum.presentation.MainActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.onEach
 
 
 class MoimFragment :
@@ -38,14 +32,13 @@ class MoimFragment :
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
+        observe()
 
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
             }
         }
-
-
         binding.composeMoim.setContent {
             val screenState by viewModel.screenState.collectAsState()
             when (screenState) {
@@ -79,6 +72,21 @@ class MoimFragment :
         } else {
             viewModel.goPreviousScreen()
         }
+    }
+
+    private fun observe() {
+        viewModel.screenState.flowWithLifecycle(lifecycle)
+            .onEach {
+                when(it) {
+                    ScreenState.Failure -> {
+                        Toast.makeText(context, "알 수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    ScreenState.Server -> {
+                        Toast.makeText(context, "서버 통신에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {}
+                }
+            }
     }
 
     private fun animateProgressBar(targetStep: Int) {

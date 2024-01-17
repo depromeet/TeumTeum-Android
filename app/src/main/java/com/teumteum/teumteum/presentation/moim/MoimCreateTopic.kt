@@ -84,7 +84,12 @@ fun MoimCreateBtn(
             .padding(horizontal = 20.dp, vertical = 10.dp),
         enabled = isEnabled,
         onClick = {
-            if (screenState == ScreenState.Create) { (context as? FragmentActivity)?.supportFragmentManager?.popBackStack() }
+            if (screenState == ScreenState.Create) {
+                viewModel.createMoim()
+            }
+            else if (screenState == ScreenState.Success) {
+                (context as? FragmentActivity)?.supportFragmentManager?.popBackStack()
+            }
             else { viewModel.goToNextScreen() }
                   },
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
