@@ -10,5 +10,5 @@ interface UserRepository {
         privatePolicyAgreed: Boolean,
         birth: String
         ): Result<Long>
-    suspend fun getMyUserInfo(accessToken: String): Result<UserInfo>
+    suspend fun getMyUserInfo(): Result<UserInfo>
 }

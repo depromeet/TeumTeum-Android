@@ -8,10 +8,8 @@ import javax.inject.Inject
 class RemoteUserDataSource @Inject constructor(
     private val service: UserService
 ) {
-    suspend fun getMyUserInfo(
-        accessToken: String
-    ): ResponseUserInfo {
-        return service.getMyUserInfo(accessToken)
+    suspend fun getMyUserInfo(): ResponseUserInfo {
+        return service.getMyUserInfo()
     }
 
     suspend fun postUserInfo(

@@ -1,6 +1,5 @@
 package com.teumteum.data.model.request
 
-import com.teumteum.domain.entity.ActivityArea
 import com.teumteum.domain.entity.JobEntity
 import com.teumteum.domain.entity.UserInfo
 
@@ -10,7 +9,7 @@ data class RequestUserInfoWithOAuthId (
     val name: String,
     val birth: String,
     val characterId: Int,
-    val activityArea: ActivityArea,
+    val activityArea: String,
     val mbti: String,
     val status: String,
     val job: JobEntity,

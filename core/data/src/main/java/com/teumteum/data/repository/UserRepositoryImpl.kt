@@ -9,11 +9,9 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val dataSource: RemoteUserDataSource
 ) : UserRepository {
-    override suspend fun getMyUserInfo(accessToken: String): Result<UserInfo> {
+    override suspend fun getMyUserInfo(): Result<UserInfo> {
         return runCatching {
-            dataSource.getMyUserInfo(
-                accessToken = accessToken
-            ).toUserInfo()
+            dataSource.getMyUserInfo().toUserInfo()
         }
     }
 

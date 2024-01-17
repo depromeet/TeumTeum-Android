@@ -9,9 +9,7 @@ import retrofit2.http.POST
 
 interface UserService {
     @GET("users/me")
-    suspend fun getMyUserInfo(
-        @Header("Authorization") accessToken: String
-    ): ResponseUserInfo
+    suspend fun getMyUserInfo(): ResponseUserInfo
 
     @POST("users")
     suspend fun postUserInfo(
