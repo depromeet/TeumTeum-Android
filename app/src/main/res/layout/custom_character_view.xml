@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_dark"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/iv_character_self"
+            app:layout_constraintEnd_toEndOf="@id/iv_character_self"
+            app:layout_constraintStart_toStartOf="@id/iv_character_self" />
+
+        <ImageView
+            android:id="@+id/iv_character_self"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_character_pink"
+            app:layout_constraintBottom_toTopOf="@id/tv_character_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_character_name"
+            style="@style/ta.headline.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_headline_secondary"
+            app:layout_constraintBottom_toTopOf="@id/tv_character_job"
+            app:layout_constraintEnd_toEndOf="@id/iv_character_self"
+            app:layout_constraintStart_toStartOf="@id/iv_character_self"
+            app:layout_constraintTop_toBottomOf="@id/iv_character_self"
+            tools:text="나" />
+
+        <TextView
+            android:id="@+id/tv_character_job"
+            style="@style/ta.body.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_body_teritary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_character_self"
+            app:layout_constraintStart_toStartOf="@id/iv_character_self"
+            app:layout_constraintTop_toBottomOf="@id/tv_character_name"
+            tools:text="프로덕트 디자이너" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -161,11 +161,15 @@
     <string name="front_card_job">직무명</string>
     <string name="front_card_company">\@직장,학교명</string>
     <string name="front_card_name">디프만</string>
+
     <string name="shake_onboarding_location_title">주변에 있는 틈틈 유저들을\n선택해주세요</string>
     <string name="shake_onboarding_location_subtitle">틈틈을 켠 100m 이내에 있는 틈틈 유저들이\n화면에 등장해요! 오프라인 모임이 더 풍성해질 거예요.</string>
     <string name="shake_onboarding_card_title">상대방을 더 알고 싶다면\n서로의 소개서를 확인해 보세요</string>
     <string name="shake_onboarding_card_subtitle">모임에서 새롭게 만난 틈틈 유저들과\n서로의 소개서를 공유해 자신을 소개해 보세요.</string>
     <string name="shake_onboarding_interst_title">기기를 흔들고\n공통 관심 대화 주제를 받아요</string>
     <string name="shake_onboarding_interest_subtitle">3초만 모바일 기기를 흔들어 보세요!\n관심사 기반 대화 주제를 받을 수 있어요</string>
+    <string name="location_title">근처에 틈틈을 켠 사람을\n찾고 있어요!</string>
+    <string name="character_name">김프만</string>
+    <string name="character_job">AOS 개발자</string>
 
 </resources>

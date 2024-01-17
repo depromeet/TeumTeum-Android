@@ -83,6 +83,12 @@
         <item>연수</item>
     </string-array>
 
+    <string-array name="community_status">
+        <item>직장인</item>
+        <item>학생</item>
+        <item>취업준비생</item>
+    </string-array>
+
     <string-array name="interest_1">
         <item>스터디</item>
         <item>독서</item>
@@ -104,12 +110,6 @@
         <item>고민 나누기</item>
         <item>네트워킹</item>
         <item>외국어</item>
-    </string-array>
-
-    <string-array name="community_status">
-        <item>직장인</item>
-        <item>학생</item>
-        <item>취업준비생</item>
     </string-array>
 
 </resources>

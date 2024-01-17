@@ -61,21 +61,21 @@ class OnBoardingActivity
                 CommonViewPagerEntity(
                     getString(R.string.onboarding_tv_namecard_title),
                     getString(R.string.onboarding_tv_namecard_subtitle),
-                    0
+                    R.drawable.img_onboarding_1
                 )
             )
             add(
                 CommonViewPagerEntity(
                     getString(R.string.onboarding_tv_meet_title),
                     getString(R.string.onboarding_tv_meet_subtitle),
-                    0
+                    R.drawable.img_onboarding_2
                 )
             )
             add(
                 CommonViewPagerEntity(
                     getString(R.string.onboarding_tv_networking_title),
                     getString(R.string.onboarding_tv_networking_subtitle),
-                    0
+                    R.drawable.img_onboarding_3
                 )
             )
         }
