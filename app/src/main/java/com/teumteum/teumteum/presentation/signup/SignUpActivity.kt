@@ -7,11 +7,13 @@ import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
@@ -29,6 +31,7 @@ import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -40,11 +43,13 @@ class SignUpActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        getOauthIdFromSocial()
         initAppBarLayout()
         setProgressBar()
         setStartingFragment()
         initNextButton()
         initPreviousButton()
+        observer()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -60,6 +65,15 @@ class SignUpActivity
                 clickEvent = null
             )
         )
+    }
+
+    private fun getOauthIdFromSocial() {
+        val oauthId = intent.getStringExtra("oauthId")
+        if (!oauthId.isNullOrEmpty()) viewModel.updateOauthId(oauthId)
+        else {
+            toast("소셜 계정으로 회원가입에 실패했습니다")
+            finish()
+        }
     }
 
     private fun setStartingFragment() {
@@ -91,7 +105,7 @@ class SignUpActivity
             btnNextSignup.apply {
                 visibility = View.VISIBLE
                 text = getString(R.string.signup_tv_go_home)
-                setOnClickListener { goToHomeScreen() }
+                setOnClickListener { registerUserInfo() }
             }
         }
     }
@@ -116,7 +130,7 @@ class SignUpActivity
             moveToCurrentProgress()
         }
         binding.btnKeep.setOnClickListener {
-            goToHomeScreen()
+            registerUserInfo()
         }
         getLeftMenuChildAt(0).setOnClickListener {
             finish()
@@ -130,10 +144,30 @@ class SignUpActivity
         }
     }
 
-    private fun goToHomeScreen() {
+    private fun goToSignUpFinishActivity() {
         val intent = Intent(this, SignUpFinishActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+    }
+
+    private fun observer() {
+        viewModel.userInfoState.flowWithLifecycle(lifecycle)
+            .onEach {
+                when (it) {
+                    is UserInfoUiState.Success -> {
+                        goToSignUpFinishActivity()
+                    }
+                    is UserInfoUiState.Failure -> {
+                        toast(it.msg)
+                        finish()
+                    }
+                    else -> { }
+                }
+            }
+    }
+
+    private fun registerUserInfo() {
+        viewModel.postSignUp(viewModel.oauthId, serviceAgreed = true, privatePolicyAgreed = true)
     }
 
     private fun setProgressBar() {
