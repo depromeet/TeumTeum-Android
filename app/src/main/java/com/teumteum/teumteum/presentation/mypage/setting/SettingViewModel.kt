@@ -33,7 +33,7 @@ data class SettingUiModel(
 )
 
 
-enum class SettingStatus { LOGOUT, SIGNOUT, DEFAULT, NOTION, ERROR }
+enum class SettingStatus { LOGOUT, SIGNOUT, SIGNOUTCONFIRM,  DEFAULT, NOTION, ERROR }
 
 
 fun getMemberSetting(): List<SettingUiModel> {

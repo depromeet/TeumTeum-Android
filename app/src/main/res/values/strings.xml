@@ -141,6 +141,12 @@
     <string name="setting_ddabong_friend">님을 추천한 친구</string>
 
     <string name="setting_signout_title">탈퇴하는 이유가 무엇인가요?</string>
+    <string name="setting_signout_btn1">선택 완료</string>
+    <string name="setting_signout_title1">탈퇴하기 전에 확인해주세요</string>
+    <string name="setting_signout_text1">틈틈에서 관리했던 모든 개인정보를\n다시볼 수 없어요</string>
+    <string name="setting_signout_text2">모두 다 꼼꼼히 확인했어요</string>
+    <string name="setting_signout_btn2">탈퇴하기</string>
+
 
 
     <string name="group_search_hint">검색어를 입력해 주세요</string>
