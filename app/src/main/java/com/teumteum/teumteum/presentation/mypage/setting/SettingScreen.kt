@@ -31,6 +31,7 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.mypage.getMemberSetting
 
 @Preview
 @Composable
