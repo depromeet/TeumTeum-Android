@@ -20,7 +20,7 @@ class UserRepositoryImpl @Inject constructor(
         dataStore.userInfo = userInfo
     }
 
-    override suspend fun getMyUserInfoFromServer(): Result<UserInfo> {
+    override suspend fun getMyInfoFromServer(): Result<UserInfo> {
         return runCatching {
             dataSource.getMyUserInfo()
         }

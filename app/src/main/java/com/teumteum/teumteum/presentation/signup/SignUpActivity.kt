@@ -30,6 +30,8 @@ import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
 import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
+import com.teumteum.teumteum.presentation.splash.MyInfoUiState
+import com.teumteum.teumteum.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -40,6 +42,7 @@ class SignUpActivity
     : BindingActivity<ActivitySignupBinding>(R.layout.activity_signup), AppBarLayout {
 
     private val viewModel by viewModels<SignUpViewModel>()
+    private val splashViewModel by viewModels<SplashViewModel>()
     private var oauthId = ""
     private var provider = ""
 
@@ -53,6 +56,7 @@ class SignUpActivity
         initNextButton()
         initPreviousButton()
         observer()
+        userInfoObserver()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -154,7 +158,7 @@ class SignUpActivity
             .onEach {
                 when (it) {
                     is UserInfoUiState.Success -> {
-                        goToSignUpFinishActivity()
+                        splashViewModel.refreshUserInfo()
                     }
                     is UserInfoUiState.Failure -> {
                         toast(it.msg)
@@ -163,6 +167,22 @@ class SignUpActivity
                     else -> {
                         Timber.tag("teum-login").d("userInfoState: ${it.toString()}")
                     }
+                }
+            }
+    }
+
+    private fun userInfoObserver() {
+        splashViewModel.myInfoState.flowWithLifecycle(lifecycle)
+            .onEach {
+                when (it) {
+                    is MyInfoUiState.Success -> {
+                        goToSignUpFinishActivity()
+                    }
+                    is MyInfoUiState.Failure -> {
+                        toast(it.msg)
+                        finish()
+                    }
+                    else -> {}
                 }
             }
     }

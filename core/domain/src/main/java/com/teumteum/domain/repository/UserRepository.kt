@@ -11,7 +11,7 @@ interface UserRepository {
         privatePolicyAgreed: Boolean
         ): Result<SignUpResult>
 
-    suspend fun getMyUserInfoFromServer(): Result<UserInfo>
+    suspend fun getMyInfoFromServer(): Result<UserInfo>
 
     fun saveUserInfo(userInfo: String)
     fun getUserInfo(): String

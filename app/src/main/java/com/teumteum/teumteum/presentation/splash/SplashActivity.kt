@@ -6,7 +6,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.flowWithLifecycle
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.toast
 import com.teumteum.domain.entity.JobEntity
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.teumteum.R
@@ -16,6 +18,7 @@ import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 import com.teumteum.teumteum.util.NetworkManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class SplashActivity
@@ -26,9 +29,9 @@ class SplashActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        observer()
         initSplash()
         checkNetwork()
-
     }
 
     private fun checkNetwork() {
@@ -52,13 +55,31 @@ class SplashActivity
         Handler(Looper.getMainLooper()).postDelayed({
             if (viewModel.getIsFirstAfterInstall()) startOnBoarding()
             else if (!viewModel.getIsAutoLogin()) startSignIn()
-            else startHomeScreen()
+            else {
+                viewModel.refreshUserInfo()
+            }
         }, 3000)
     }
 
     private fun startOnBoarding() {
         startActivity(Intent(this, OnBoardingActivity::class.java))
         finish()
+    }
+
+    private fun observer() {
+        viewModel.myInfoState.flowWithLifecycle(lifecycle)
+            .onEach {
+                when (it) {
+                    is MyInfoUiState.Success -> {
+                        startHomeScreen()
+                    }
+                    is MyInfoUiState.Failure -> {
+                        toast(it.msg)
+                        startSignIn()
+                    }
+                    else -> {}
+                }
+            }
     }
 
     private fun saveUserInfoExample() {

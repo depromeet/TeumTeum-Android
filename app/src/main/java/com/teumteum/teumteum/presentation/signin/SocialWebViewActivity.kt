@@ -24,6 +24,8 @@ import com.teumteum.teumteum.databinding.ActivitySocialWebviewBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.terms.TermsActivity
+import com.teumteum.teumteum.presentation.splash.MyInfoUiState
+import com.teumteum.teumteum.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,6 +36,7 @@ class SocialWebViewActivity
     : BindingActivity<ActivitySocialWebviewBinding>(R.layout.activity_social_webview), AppBarLayout {
 
     private val viewModel by viewModels<SignInViewModel>()
+    private val splashViewModel by viewModels<SplashViewModel>()
     private var loginUrl = ""
     private var provider = ""
 
@@ -46,6 +49,7 @@ class SocialWebViewActivity
         initAppBarLayout()
         initWebView()
         observer()
+        userInfoObserver()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -154,8 +158,8 @@ class SocialWebViewActivity
                 when (it) {
                     is SignInUiState.Success -> {
                         // 바로 로그인
-                        // 유저 정보 받고 받으면 (지금은 토큰만 갱신) -> goToHomeScreen
-                        goToHomeScreen()
+                        // 유저 정보 받고 받으면 -> goToHomeScreen
+                        splashViewModel.refreshUserInfo()
                     }
                     is SignInUiState.UserNotRegistered -> {
                         goToTermsActivity()
@@ -168,6 +172,22 @@ class SocialWebViewActivity
                     else -> {}
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    private fun userInfoObserver() {
+        splashViewModel.myInfoState.flowWithLifecycle(lifecycle)
+            .onEach {
+                when (it) {
+                    is MyInfoUiState.Success -> {
+                        goToHomeScreen()
+                    }
+                    is MyInfoUiState.Failure -> {
+                        toast(it.msg)
+                        finish()
+                    }
+                    else -> {}
+                }
+            }
     }
 
     private fun goToTermsActivity() {

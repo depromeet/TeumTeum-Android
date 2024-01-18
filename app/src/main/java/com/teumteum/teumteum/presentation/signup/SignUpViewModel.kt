@@ -285,14 +285,14 @@ class SignUpViewModel @Inject constructor(
     val userInfoState: StateFlow<UserInfoUiState> = _userInfoState.asStateFlow()
 
     fun postSignUp(oauthId: String, provider: String, serviceAgreed: Boolean, privatePolicyAgreed: Boolean) {
-        var userInfo = getUserInfo(provider)
+        val userInfo = getUserInfo(provider)
         if (userInfo == null) {
             _userInfoState.value = UserInfoUiState.Failure("유저 정보 만들기 실패")
         }
         else {
             viewModelScope.launch {
                 repository.postUserInfo(
-                    userInfo!!, oauthId, serviceAgreed, privatePolicyAgreed
+                    userInfo, oauthId, serviceAgreed, privatePolicyAgreed
                 )
                     .onSuccess {
                         // setAutoLogin에 회원가입 이후 유저토큰 전달
