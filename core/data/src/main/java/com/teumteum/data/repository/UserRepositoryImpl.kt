@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val dataStore: TeumTeumDataStore,
+    private val dataSource: RemoteUserDataSource
 ) : UserRepository {
     override fun getUserInfo(): String {
         return dataStore.userInfo
@@ -17,11 +18,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun saveUserInfo(userInfo: String) {
         dataStore.userInfo = userInfo
-    private val dataSource: RemoteUserDataSource
-) : UserRepository {
-    override suspend fun getMyUserInfo(): Result<UserInfo> {
+    }
+
+    override suspend fun getMyUserInfoFromServer(): Result<UserInfo> {
         return runCatching {
-            dataSource.getMyUserInfo().toUserInfo()
+            dataSource.getMyUserInfo()
         }
     }
 
@@ -29,16 +30,14 @@ class UserRepositoryImpl @Inject constructor(
         user: UserInfo,
         oauthId: String,
         serviceAgreed: Boolean,
-        privatePolicyAgreed: Boolean,
-        birth: String
+        privatePolicyAgreed: Boolean
     ): Result<SignUpResult> {
         return runCatching {
             dataSource.postUserInfo(RequestUserInfo(
                 userInfo = user,
                 oauthId = oauthId,
                 serviceAgreed = serviceAgreed,
-                privatePolicyAgreed = privatePolicyAgreed,
-                birth = birth
+                privatePolicyAgreed = privatePolicyAgreed
             ).getRequestUserInfoWithOAuthId())
         }
     }

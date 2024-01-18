@@ -9,6 +9,7 @@ data class UserInfo (
     val birth: String, // YYYY.MM.DD
     val characterId: Int,
     val mannerTemperature: Int,
+    val authenticated: String,
     val activityArea: String,
     val mbti: String,
     val status: String,
@@ -18,8 +19,8 @@ data class UserInfo (
 )
 
 @Serializable
-data class JobEntity (
-    val name: String,
+data class JobEntity(
+    val name: String?,
     val `class`: String,
     val detailClass: String
 )
