@@ -31,17 +31,14 @@ import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.Meeting
 
 @Composable
-fun PagerItem(
-    text1: String,
-    text2: String,
-    onClick: () -> Unit
-    ) {
+fun MeetingItem(meeting: Meeting) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
-        .clickable { onClick() }
+        .clickable { }
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)
@@ -62,12 +59,12 @@ fun PagerItem(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = text1,
+                    text = "{$meeting.title}",
                     style = TmTypo.current.HeadLine7,
                     color = TmtmColorPalette.current.color_text_headline_primary
                 )
                 Text(
-                    text = text2,
+                    text = "${meeting.time}",
                     style = TmTypo.current.Body3,
                     color = TmtmColorPalette.current.color_text_body_quaternary
                 )
@@ -116,9 +113,9 @@ fun NoMoimItems(
         }
     }
 }
-@Preview
+
 @Composable
-fun myMoimItems() {
+fun myMoimItems(metting: Meeting) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
@@ -143,7 +140,7 @@ fun myMoimItems() {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "제목",
+                    text = "${metting.title}",
                     style = TmTypo.current.HeadLine7,
                     color = TmtmColorPalette.current.color_text_headline_primary
                 )
@@ -154,7 +151,7 @@ fun myMoimItems() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "1월 10일 오후 7:00",
+                        text = "${metting.time}",
                         style = TmTypo.current.Body3,
                         color = TmtmColorPalette.current.color_text_body_quaternary
                     )

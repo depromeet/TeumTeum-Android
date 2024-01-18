@@ -10,9 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/compose_mypage"
+            android:id="@+id/compose_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -20,4 +19,5 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

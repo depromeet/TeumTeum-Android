@@ -15,6 +15,7 @@ import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.MeetingDummy
 
 @Composable
 fun MyPagePager1Content() {
@@ -55,4 +56,9 @@ fun MyPagePager1Content() {
         }
 
     }
+}
+
+@Composable
+fun MeetingColumn() {
+
 }
