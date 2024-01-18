@@ -69,6 +69,10 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
         binding.etSearch.setOnFocusChangeListener { _, hasFocus ->
             binding.ivClear.isVisible = (hasFocus)
         }
+
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun observe() {
@@ -85,6 +89,10 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                     is SearchUiState.Empty -> {
                         binding.tvEmptyGroupTitle.text =
                             getString(R.string.group_search_keyword, it.keyword)
+                    }
+
+                    is SearchUiState.Failure -> {
+                        toast(it.msg)
                     }
 
                     else -> {}

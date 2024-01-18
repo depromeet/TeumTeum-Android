@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.group.join
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.repository.GroupRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,7 @@ class GroupMeetCheckViewModel @Inject constructor(
         viewModelScope.launch {
             repository.postGroupJoin(meetingId)
                 .onSuccess {
-                    _joinState.value = MeetCheckUiState.Success
+                    _joinState.value = MeetCheckUiState.Success(it)
                 }.onFailure {
                     _joinState.value = MeetCheckUiState.Failure("모임 참여 서버 통신 실패")
                 }
@@ -31,6 +32,6 @@ class GroupMeetCheckViewModel @Inject constructor(
 
 sealed interface MeetCheckUiState {
     object Init: MeetCheckUiState
-    object Success: MeetCheckUiState
+    data class Success(val data: Meeting): MeetCheckUiState
     data class Failure(val msg: String): MeetCheckUiState
 }
