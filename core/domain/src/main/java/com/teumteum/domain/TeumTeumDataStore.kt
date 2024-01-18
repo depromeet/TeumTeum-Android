@@ -5,5 +5,7 @@ interface TeumTeumDataStore {
     var refreshToken: String
     var isLogin: Boolean
 
+    var userInfo: String
+
     fun clearLocalPref()
 }
