@@ -140,6 +140,8 @@
 
     <string name="setting_ddabong_friend">님을 추천한 친구</string>
 
+    <string name="setting_signout_title">탈퇴하는 이유가 무엇인가요?</string>
+
 
     <string name="group_search_hint">검색어를 입력해 주세요</string>
     <string name="group_search_recommend_keyword">추천 검색어</string>
