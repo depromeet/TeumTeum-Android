@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.group.join
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -60,7 +61,7 @@ class GroupMeetCheckActivity :
             .onEach {
                 when (it) {
                     is MeetCheckUiState.Success -> {
-                        // TODO 모임 참여 완료 화면으로 이동
+                        startActivity(GroupMeetCompleteActivity.getIntent(this, it.data.id))
                     }
                     is MeetCheckUiState.Failure -> {
                         toast(it.msg)
