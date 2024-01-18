@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,16 +57,26 @@ fun SettingSignOutConfirm() {
                 color= TmtmColorPalette.current.color_text_body_quaternary,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
-            TmMarginVerticalSpacer(size = 35)
-            Image(painter = painterResource(R.drawable.ic_signout_img),
-                contentDescription = null)
+            TmMarginVerticalSpacer(size = 80)
+            SignOutImageColumn()
             Spacer(modifier = Modifier.weight(1f))
-            TeumDivider()
             SignOutConfirmCheck()
-            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn1))
+            TeumDivider()
+            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn2))
             TmMarginVerticalSpacer(size = 24)
         }
 
+    }
+}
+
+@Composable
+fun SignOutImageColumn() {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painter = painterResource(R.drawable.ic_signout_img),
+            contentDescription = null)
     }
 }
 
