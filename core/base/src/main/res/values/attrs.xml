@@ -92,7 +92,9 @@
         <attr name="level" format="string" />
         <attr name="area" format="string" />
         <attr name="mbti" format="string" />
-        <attr name="image" format="integer" />
+        <attr name="characterImage" format="integer" />
+        <attr name="isModify" format="boolean" />
+        <attr name="isModifyDetail" format="boolean" />
     </declare-styleable>
-    
+
 </resources>
