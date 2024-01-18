@@ -17,7 +17,6 @@ import com.teumteum.teumteum.presentation.onboarding.adapter.OnBoardingViewPager
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class OnBoardingActivity
     : BindingActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding), AppBarLayout {
@@ -39,7 +38,7 @@ class OnBoardingActivity
         initAppBarLayout()
         initViewPagerItem()
         initViewPager()
-        setUpListener()
+//        setUpListener()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
