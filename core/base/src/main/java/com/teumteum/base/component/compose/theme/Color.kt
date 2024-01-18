@@ -39,6 +39,9 @@ data class ColorPalette_Dark(
     val color_text_button_secondary_default: Color = Color(0xFF36B2FF),
     val color_text_button_alternative: Color = Color(0xFFFFFFFF),
 
+    //outline
+    val color_outline_level04_active: Color = Color(0xFF212121),
+
     val Gray950: Color = Color(0xFF191919),
     val Gray900: Color = Color(0xFFF5F5F5),
     val Gray800: Color = Color(0xFFE9E9E9),
@@ -94,6 +97,7 @@ data class ColorPalette_Light(
     val color_text_button_alternative: Color = Color(0xFF212121),
 
     //outline
+    val color_outline_level03: Color = Color(0xFFE9E9E9),
     val color_outline_level04_active: Color = Color(0xFF212121),
 
     //icon
