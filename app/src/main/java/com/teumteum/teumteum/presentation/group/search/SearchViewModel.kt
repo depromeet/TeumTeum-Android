@@ -42,7 +42,7 @@ class SearchViewModel @Inject constructor(
                         _searchData.value = SearchUiState.Success(it)
                     }
                 }.onFailure {
-                    _searchData.value = SearchUiState.Failure("실패")
+                    _searchData.value = SearchUiState.Failure("친구 검색 서버 통신에 실패했습니다.")
                 }
         }
     }
