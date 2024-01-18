@@ -47,10 +47,10 @@ jobs:
           naver_api_key: ${{ secrets.NAVER_API_KEY }}
         run: |
           echo base.url=\"$base_url\" >> local.properties
-          echo kakao.redirect.url=\"$kakao_redirect_url\" >> local.properties
-          echo naver.redirect.url=\"$naver_redirect_url\" >> local.properties
-          echo kakao.api.key=\"$kakao_api_key\" >> local.properties
-          echo naver.api.key=\"$naver_api_key\" >> local.properties
+          echo kakao.redirect=\"$kakao_redirect_url\" >> local.properties
+          echo naver.redirect=\"$naver_redirect_url\" >> local.properties
+          echo kakao.key=\"$kakao_api_key\" >> local.properties
+          echo naver.key=\"$naver_api_key\" >> local.properties
 
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
