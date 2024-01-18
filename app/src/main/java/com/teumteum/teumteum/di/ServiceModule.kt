@@ -26,6 +26,6 @@ object ServiceModule {
 
     @Singleton
     @Provides
-    fun provideGroupService(retrofit: Retrofit) =
-        retrofit.create(GroupService::class.java)
+    fun provideGroupService(teumteumRetrofit: Retrofit) =
+        teumteumRetrofit.create(GroupService::class.java)
 }

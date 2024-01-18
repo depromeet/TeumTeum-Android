@@ -7,8 +7,8 @@ import java.time.LocalDateTime
 
 @Serializable
 data class ResponseGroup(
-    val data: ResponseGroupData = ResponseGroupData(listOf()),
-    val hasNext: Boolean = false
+    val data: ResponseGroupData,
+    val hasNext: Boolean
 ) {
     @Serializable
     data class ResponseGroupData(
