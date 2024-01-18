@@ -13,10 +13,14 @@ import com.teumteum.teumteum.presentation.signup.SignUpActivity
 class CardIntroActivity
     : BindingActivity<ActivityCardIntroBinding>(R.layout.activity_card_intro), AppBarLayout {
 
+    private var oauthId = ""
+    private var provider = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
+        getIdProvider()
         initView()
     }
 
@@ -35,10 +39,18 @@ class CardIntroActivity
         )
     }
 
+    private fun getIdProvider() {
+        oauthId = intent.getStringExtra("oauthId").toString()
+        provider = intent.getStringExtra("provider").toString()
+    }
+
     private fun initView() {
         with (binding) {
             btnStart.setOnClickListener {
-                startActivity(Intent(this@CardIntroActivity, SignUpActivity::class.java))
+                val intent = Intent(this@CardIntroActivity, SignUpActivity::class.java)
+                intent.putExtra("oauthId", oauthId)
+                intent.putExtra("provider", provider)
+                startActivity(intent)
             }
             getLeftMenuChildAt(0).setOnClickListener {
                 finish()

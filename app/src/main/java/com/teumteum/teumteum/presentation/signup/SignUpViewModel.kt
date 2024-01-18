@@ -1,6 +1,5 @@
 package com.teumteum.teumteum.presentation.signup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.JobEntity
@@ -150,10 +149,8 @@ class SignUpViewModel @Inject constructor(
         preferredCity,
         preferredStreet
     ) { preferredCity, preferredStreet ->
-        if (preferredStreet.isNotBlank() && preferredCity.isNotBlank()) {
-            if (preferredStreet.split(" ").last().equals("전체")) preferredStreet
-            else "$preferredCity $preferredStreet"
-        }
+        if (preferredStreet.isNotBlank() && preferredCity.isNotBlank())
+            "$preferredCity $preferredStreet"
         else ""
     }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, "")
 
@@ -284,31 +281,24 @@ class SignUpViewModel @Inject constructor(
         _currentStep.value = previousStep.coerceAtLeast(0)
     }
 
-    var oauthId = ""
-
-    fun updateOauthId(id: String) {
-        oauthId = id
-    }
-
     private var _userInfoState = MutableStateFlow<UserInfoUiState>(UserInfoUiState.Init)
     val userInfoState: StateFlow<UserInfoUiState> = _userInfoState.asStateFlow()
 
-    fun postSignUp(oauthId: String, serviceAgreed: Boolean, privatePolicyAgreed: Boolean) {
-        var userInfo = getUserInfo()
-        val dateString = combineDateStrings()
+    fun postSignUp(oauthId: String, provider: String, serviceAgreed: Boolean, privatePolicyAgreed: Boolean) {
+        var userInfo = getUserInfo(provider)
         if (userInfo == null) {
             _userInfoState.value = UserInfoUiState.Failure("유저 정보 만들기 실패")
         }
         else {
             viewModelScope.launch {
                 repository.postUserInfo(
-                    userInfo!!, oauthId, serviceAgreed, privatePolicyAgreed, dateString
+                    userInfo!!, oauthId, serviceAgreed, privatePolicyAgreed
                 )
                     .onSuccess {
                         // setAutoLogin에 회원가입 이후 유저토큰 전달
                         authRepository.setAutoLogin(it.accessToken, it.refreshToken)
                         // userInfo에 임시로 넣어뒀던 아이디 -> 서버에서 받은 id 값으로 변경 -> 필요 시 사용
-                        userInfo = userInfo!!.changeUserInfoId(it.id)
+                        // it.id로 아이디 사용해서 내 정보 얻어오기
                         _userInfoState.value = UserInfoUiState.Success
                     }
                     .onFailure {
@@ -329,7 +319,7 @@ class SignUpViewModel @Inject constructor(
         return combinedString
     }
 
-    private fun getUserInfo(): UserInfo? {
+    private fun getUserInfo(provider: String): UserInfo? {
         val jobEntity =
             when (community.value) {
                 COMMUNITY_WORKER -> JobEntity(
@@ -355,8 +345,19 @@ class SignUpViewModel @Inject constructor(
         interests.addAll(interestSelf.value)
 
         return if (jobEntity != null) {
-            UserInfo(0L, userName.value, characterId.value, preferredArea.value, mbtiText.value,
-                community.value, jobEntity, interests, goalText.value)
+            UserInfo(
+                id = 0L,
+                name = userName.value,
+                birth = combineDateStrings(),
+                characterId = characterId.value,
+                mannerTemperature = 36,
+                authenticated = provider,
+                activityArea = preferredArea.value,
+                mbti =  mbtiText.value,
+                status = community.value,
+                goal = goalText.value,
+                job = jobEntity,
+                interests = interests)
         } else null
     }
 

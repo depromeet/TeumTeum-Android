@@ -33,17 +33,20 @@ import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SignUpActivity
     : BindingActivity<ActivitySignupBinding>(R.layout.activity_signup), AppBarLayout {
 
     private val viewModel by viewModels<SignUpViewModel>()
+    private var oauthId = ""
+    private var provider = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        getOauthIdFromSocial()
+        getIdProvider()
         initAppBarLayout()
         setProgressBar()
         setStartingFragment()
@@ -67,13 +70,9 @@ class SignUpActivity
         )
     }
 
-    private fun getOauthIdFromSocial() {
-        val oauthId = intent.getStringExtra("oauthId")
-        if (!oauthId.isNullOrEmpty()) viewModel.updateOauthId(oauthId)
-        else {
-            toast("소셜 계정으로 회원가입에 실패했습니다")
-            finish()
-        }
+    private fun getIdProvider() {
+        oauthId = intent.getStringExtra("oauthId").toString()
+        provider = intent.getStringExtra("provider").toString()
     }
 
     private fun setStartingFragment() {
@@ -161,13 +160,19 @@ class SignUpActivity
                         toast(it.msg)
                         finish()
                     }
-                    else -> { }
+                    else -> {
+                        Timber.tag("teum-login").d("userInfoState: ${it.toString()}")
+                    }
                 }
             }
     }
 
     private fun registerUserInfo() {
-        viewModel.postSignUp(viewModel.oauthId, serviceAgreed = true, privatePolicyAgreed = true)
+        viewModel.postSignUp(
+            oauthId,
+            provider,
+            serviceAgreed = true,
+            privatePolicyAgreed = true)
     }
 
     private fun setProgressBar() {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.teumteum.base.BindingActivity
 import com.teumteum.domain.entity.JobEntity
 import com.teumteum.domain.entity.UserInfo
@@ -13,6 +14,7 @@ import com.teumteum.teumteum.databinding.ActivitySplashBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.util.NetworkManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,6 +68,7 @@ class SplashActivity
             birth = "2000.01.01",
             characterId = 0,
             mannerTemperature = 36,
+            authenticated = "카카오",
             activityArea = "서울특별시 강남구",
             mbti = "ENFP",
             status = "학생",

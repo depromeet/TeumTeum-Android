@@ -2,27 +2,32 @@ package com.teumteum.teumteum.presentation.signin
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.GsonBuilder
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.toast
 import com.teumteum.data.BuildConfig
+import com.teumteum.domain.entity.SocialLoginResult
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySocialWebviewBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
+import com.teumteum.teumteum.presentation.signup.terms.TermsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SocialWebViewActivity
@@ -30,15 +35,16 @@ class SocialWebViewActivity
 
     private val viewModel by viewModels<SignInViewModel>()
     private var loginUrl = ""
+    private var provider = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val provider = intent.getStringExtra("provider")
+        provider = intent.getStringExtra("provider").toString()
         initProvider(provider)
         initAppBarLayout()
-        initWebView(provider!!)
+        initWebView()
         observer()
     }
 
@@ -57,17 +63,18 @@ class SocialWebViewActivity
         )
     }
 
-    private fun initProvider(provider: String?) {
+    private fun initProvider(provider: String) {
+        Timber.tag("teum-login").d("provider: $provider")
         when (provider) {
             KAKAO_PROVIDER -> {
-                loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&" +
-                        "client_id=${BuildConfig.KAKAO_API_KEY}&" +
-                        "redirect_uri=${BuildConfig.KAKAO_REDIRECT_URL}"
+                loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&state=STATE_STRING" +
+                        "&client_id=${BuildConfig.KAKAO_API_KEY}" +
+                        "&redirect_uri=${BuildConfig.KAKAO_REDIRECT_URL}"
             }
             NAVER_PROVIDER -> {
-                loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&" +
-                        "client_id=${com.teumteum.data.BuildConfig.NAVER_API_KEY}&" +
-                        "redirect_uri=${com.teumteum.data.BuildConfig.NAVER_REDIRECT_URL}"
+                loginUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code&state=STATE_STRING" +
+                        "&client_id=${BuildConfig.NAVER_API_KEY}" +
+                        "&redirect_uri=${BuildConfig.NAVER_REDIRECT_URL}"
             }
             else -> {
                 toast("소셜 로그인에 실패했습니다")
@@ -76,8 +83,9 @@ class SocialWebViewActivity
         }
     }
 
-    private fun initWebView(provider: String) {
+    private fun initWebView() {
         with(binding) {
+            signinWebview.settings.javaScriptEnabled = true
             signinWebview.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -88,29 +96,55 @@ class SocialWebViewActivity
                 }
 
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    checkAuthorizationCode(url, provider)
+                    val isKakaoRedirect = url?.startsWith(BuildConfig.KAKAO_REDIRECT_URL) == true
+                    val isNaverRedirect = url?.startsWith(BuildConfig.NAVER_REDIRECT_URL) == true
+                    if (isKakaoRedirect || isNaverRedirect)
+                        signinWebview.visibility = View.INVISIBLE
                     super.onPageStarted(view, url, favicon)
                 }
 
                 override fun onPageFinished(view: WebView?, url: String?) {
+                    val isKakaoRedirect = url?.startsWith(BuildConfig.KAKAO_REDIRECT_URL) == true
+                    val isNaverRedirect = url?.startsWith(BuildConfig.NAVER_REDIRECT_URL) == true
+                    if (isKakaoRedirect || isNaverRedirect)
+                        getJsonFromJavaScript(view)
                     super.onPageFinished(view, url)
+                }
+
+                override fun onReceivedError(
+                    view: WebView?,
+                    request: WebResourceRequest?,
+                    error: WebResourceError?
+                ) {
+                    Timber.tag("teum-login").d("error: ${error.toString()}")
+                    super.onReceivedError(view, request, error)
                 }
             }
             signinWebview.loadUrl(loginUrl)
         }
     }
 
-    private fun checkAuthorizationCode(url: String?, provider: String) {
-        // 콜백 URL에서 인가코드를 감지
-        if (url?.startsWith(CALLBACK_URL) == true) {
-            // 인가코드를 추출하는 로직을 추가
-            val uri = Uri.parse(url)
-            val code = uri.getQueryParameter("code")
-            if (code != null) {
-                // 추출된 인가코드를 사용하여 로그인 절차를 계속 진행
-                // 예: 서버에 인가코드를 보내어 액세스 토큰을 받아오는 등의 작업
-                viewModel.socialLogin(provider, code)
-            }
+    private fun getJsonFromJavaScript(view: WebView?) {
+        // JavaScript를 실행하여 바디 태그 안의 JSON을 가져오기
+        view?.evaluateJavascript(WEBVIEW_SCRIPT) { jsonString ->
+            // jsonString에는 가져온 JSON 정보가 포함됩니다.
+            // 이후에는 jsonString을 파싱하여 필요한 작업을 수행합니다.
+            Timber.tag("teum-login").d("jsonString: $jsonString")
+            handleJsonString(jsonString)
+        }
+    }
+
+    private fun handleJsonString(jsonString: String) {
+        try {
+            val gsonBuilder = GsonBuilder().create()
+            val socialLoginResult =
+                gsonBuilder
+                    .fromJson(jsonString.drop(1).dropLast(1).replace("\\", ""),
+                    SocialLoginResult::class.java)
+            viewModel.updateMemberState(socialLoginResult)
+        } catch (e: Exception) {
+            // JSON 파싱 중 에러 발생 시 처리
+            e.printStackTrace()
         }
     }
 
@@ -122,17 +156,9 @@ class SocialWebViewActivity
                         // 바로 로그인
                         // 유저 정보 받고 받으면 (지금은 토큰만 갱신) -> goToHomeScreen
                         goToHomeScreen()
-
                     }
                     is SignInUiState.UserNotRegistered -> {
-                        // 회원가입으로 이동
-                        // oauthId 받아서 SignUpActivity로
-                        val oauthId = it.oauthId
-                        val intent = Intent(this, SignUpActivity::class.java)
-                        intent.putExtra("oauthId", oauthId)
-                        startActivity(intent)
-                        finish()
-                        // SignUpActivity에서 SignUpFinishActivity로 이동하기 전에 이 oauthId 포함해서 회원가입 진행
+                        goToTermsActivity()
                     }
                     is SignInUiState.Failure -> {
                         toast(it.msg)
@@ -142,6 +168,17 @@ class SocialWebViewActivity
                     else -> {}
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    private fun goToTermsActivity() {
+        // 회원가입으로 이동
+        // oauthId 받아서 SignUpActivity로
+        val intent = Intent(this, TermsActivity::class.java)
+        intent.putExtra("oauthId", viewModel.oauthId)
+        intent.putExtra("provider", provider)
+        startActivity(intent)
+        finish()
+        // SignUpActivity에서 SignUpFinishActivity로 이동하기 전에 이 oauthId 포함해서 회원가입 진행
     }
 
     private fun goToHomeScreen() {
@@ -154,6 +191,17 @@ class SocialWebViewActivity
         const val KAKAO_PROVIDER = "kakao"
         const val NAVER_PROVIDER = "naver"
         const val CALLBACK_URL = ""
+
+        const val WEBVIEW_SCRIPT = "(function() { " +
+                "   var body = document.getElementsByTagName('body')[0]; " +
+                "   if (body) { " +
+                "       var jsonElement = body.querySelector('pre'); " +
+                "       if (jsonElement) { " +
+                "           return jsonElement.textContent; " +
+                "       } " +
+                "   } " +
+                "   return ''; " +
+                "})();"
     }
 
 }
