@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
@@ -10,6 +11,7 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.group.search.SearchActivity
 import com.teumteum.teumteum.presentation.moim.MoimFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,7 +44,11 @@ class HomeFragment :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_search,
                 useRippleEffect = false,
-                clickEvent = {  }
+                clickEvent = {
+                    Intent(requireActivity(), SearchActivity::class.java).apply {
+                        startActivity(this)
+                    }
+                }
             ),
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_alarm_active,
