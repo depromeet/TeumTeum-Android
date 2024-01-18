@@ -3,6 +3,7 @@ package com.teumteum.data.local
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.teumteum.domain.TeumTeumDataStore
+import com.teumteum.domain.entity.UserInfo
 import javax.inject.Inject
 
 class TeumTeumDataStoreImpl @Inject constructor(
@@ -24,12 +25,17 @@ class TeumTeumDataStoreImpl @Inject constructor(
         get() = userPref.getBoolean(PREF_IS_FIRST_AFTER_INSTALL, true)
         set(value) = userPref.edit { putBoolean(PREF_IS_FIRST_AFTER_INSTALL, value)}
 
+    override var userInfo: String
+        get() = userPref.getString(PREF_USER_INFO, "") ?: ""
+        set(value) = userPref.edit { putString(PREF_USER_INFO, value) }
+
     override fun clearLocalPref() = userPref.edit { clear() }
 
     companion object {
         private const val PREF_USER_TOKEN = "USER_TOKEN"
         private const val PREF_REFRESH_TOKEN = "REFRESH_TOKEN"
         private const val PREF_IS_LOGIN = "IS_LOGIN"
+        private const val PREF_USER_INFO = "USER_INFO"
         private const val PREF_IS_FIRST_AFTER_INSTALL = "IS_FIRST_AFTER_INSTALL"
     }
 }

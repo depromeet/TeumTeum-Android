@@ -6,5 +6,7 @@ interface TeumTeumDataStore {
     var isLogin: Boolean
     var isFirstAfterInstall: Boolean
 
+    var userInfo: String
+
     fun clearLocalPref()
 }
