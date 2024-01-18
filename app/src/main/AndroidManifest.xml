@@ -24,6 +24,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".presentation.teumteum.topic.TopicActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.teumteum.shake.ShakeActivity"
             android:exported="false" />
         <activity
@@ -34,6 +37,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -58,13 +62,15 @@
         <activity
             android:name=".presentation.group.search.SearchActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.GroupMeetCheckActivity"
+        <activity
+            android:name=".presentation.group.join.GroupMeetCheckActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
+        <activity
+            android:name=".presentation.group.join.GroupMeetCompleteActivity"
             android:exported="false" />
-        <activity android:name=".presentation.signup.finish.SignUpFinishActivity"
+        <activity
+            android:name=".presentation.signup.finish.SignUpFinishActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>
