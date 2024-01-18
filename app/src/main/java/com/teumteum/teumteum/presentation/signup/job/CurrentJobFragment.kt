@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.signup.job
 
+import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -67,8 +68,8 @@ class CurrentJobFragment
                 jobClassBottomSheet?.apply {
                     setFocusedImageView(ivShowWho)
                     setSelectedItem(viewModel.jobClass.value)
-                    show(childFragmentManager, SingleModalBottomSheet.TAG)
                 }
+                jobClassBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
                 ivShowWho.setImageResource(R.drawable.ic_arrow_up_l)
             }
 
@@ -81,12 +82,12 @@ class CurrentJobFragment
                         else -> ArrayList()
                     }
                     if (viewModel.jobClass.value in jobSort) {
-                        jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance("직군 입력", jobDetailList, jobDetailClassListener)
-                        jobClassBottomSheet?.apply {
+                        jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance("직무 입력", jobDetailList, jobDetailClassListener)
+                        jobDetailClassBottomSheet?.apply {
                             setFocusedImageView(ivShowWhat)
                             setSelectedItem(viewModel.jobDetailClass.value)
-                            show(childFragmentManager, SingleModalBottomSheet.TAG)
                         }
+                        jobDetailClassBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
                         ivShowWhat.setImageResource(R.drawable.ic_arrow_up_l)
                     }
                 }

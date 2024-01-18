@@ -62,6 +62,9 @@
             android:exported="false" />
         <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
             android:exported="false" />
+        <activity android:name=".presentation.signup.finish.SignUpFinishActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

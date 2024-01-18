@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:theme="@style/Theme.TeumTeum"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_tv_complete_title"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:textAppearance="@style/ta.headline.3"
+            android:lineSpacingExtra="3sp"
+            android:textColor="?attr/color_text_headline_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_tv_move_card"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="20dp"
+            android:gravity="start"
+            android:textAppearance="@style/ta.body.1"
+            android:letterSpacing="-0.03125"
+            android:lineSpacingExtra="5sp"
+            android:textColor="?attr/color_text_body_quaternary"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            />
+
+        <com.teumteum.teumteum.util.custom.view.FrontCardView
+            android:id="@+id/cardview"
+            android:layout_width="280dp"
+            android:layout_height="400dp"
+            app:name="@string/front_card_name"
+            app:company="@string/front_card_company"
+            app:job="안드로이드 개발"
+            app:level="@string/front_card_level"
+            app:area="@string/front_card_area"
+            app:mbti="@string/front_card_mbti"
+            app:image="@drawable/ic_card_penguin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            android:layout_marginTop="56dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,6 +1,8 @@
 package com.teumteum.teumteum.presentation.signup
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -12,11 +14,18 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
+import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
 import com.teumteum.teumteum.presentation.signup.birthday.BirthdayFragment
 import com.teumteum.teumteum.presentation.signup.character.CharacterFragment
 import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
+import com.teumteum.teumteum.presentation.signup.complete.CardCompleteFragment
+import com.teumteum.teumteum.presentation.signup.finish.SignUpFinishActivity
+import com.teumteum.teumteum.presentation.signup.fix.CardFixFragment
+import com.teumteum.teumteum.presentation.signup.goal.GetGoalFragment
+import com.teumteum.teumteum.presentation.signup.interests.GetInterestFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
+import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,11 +74,32 @@ class SignUpActivity
         binding.btnNextSignup.isEnabled = false
     }
 
+    private fun hideProgressBar() {
+        binding.seekBar.visibility = View.GONE
+    }
+
+    private fun changeToTwoCallButton() {
+        with(binding) {
+            btnNextSignup.visibility = View.GONE
+            btnTwocallSignup.visibility = View.VISIBLE
+        }
+    }
+
+    private fun changeToCtaButton() {
+        with(binding) {
+            btnTwocallSignup.visibility = View.GONE
+            btnNextSignup.apply {
+                visibility = View.VISIBLE
+                text = getString(R.string.signup_tv_go_home)
+                setOnClickListener { goToHomeScreen() }
+            }
+        }
+    }
+
     private fun initNextButton() {
         binding.btnNextSignup.setOnClickListener {
             viewModel.goToNextScreen()
             moveToCurrentProgress()
-
         }
     }
 
@@ -78,6 +108,32 @@ class SignUpActivity
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
         }
+    }
+
+    private fun setPreviousButtonOnCardComplete() {
+        binding.btnFix.setOnClickListener {
+            viewModel.goToNextScreen()
+            moveToCurrentProgress()
+        }
+        binding.btnKeep.setOnClickListener {
+            goToHomeScreen()
+        }
+        getLeftMenuChildAt(0).setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun setPreviousButtonOnCardFix() {
+        getLeftMenuChildAt(0).setOnClickListener {
+            viewModel.goToPreviousScreen()
+            moveToCurrentProgress()
+        }
+    }
+
+    private fun goToHomeScreen() {
+        val intent = Intent(this, SignUpFinishActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     private fun setProgressBar() {
@@ -98,8 +154,27 @@ class SignUpActivity
             SignUpProgress.CurrentJob -> navigateTo<CurrentJobFragment>()
             SignUpProgress.School -> navigateTo<CurrentSchoolFragment>()
             SignUpProgress.ReadyJob -> navigateTo<ReadyJobFragment>()
+            SignUpProgress.Area -> navigateTo<PreferredAreaFragment>()
+            SignUpProgress.Mbti -> navigateTo<GetMbtiFragment>()
+            SignUpProgress.Interests -> navigateTo<GetInterestFragment>()
+            SignUpProgress.Goal -> navigateTo<GetGoalFragment>()
+            SignUpProgress.Complete -> completeCard()
+            SignUpProgress.Fix -> fixCard()
             else -> return
         }
+    }
+
+    private fun completeCard() {
+        navigateTo<CardCompleteFragment>()
+        hideProgressBar()
+        setPreviousButtonOnCardComplete()
+        changeToTwoCallButton()
+    }
+
+    private fun fixCard() {
+        navigateTo<CardFixFragment>()
+        setPreviousButtonOnCardFix()
+        changeToCtaButton()
     }
 
     inline fun <reified T : Fragment> navigateTo() {

@@ -45,16 +45,22 @@
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             />
-
-        <View
-            android:id="@+id/iv_teumee_card"
+        
+        <com.teumteum.teumteum.util.custom.view.FrontCardView
+            android:id="@+id/cardview"
             android:layout_width="280dp"
             android:layout_height="400dp"
-            android:background="@color/error_100"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            app:name="@string/front_card_name"
+            app:company="@string/front_card_company"
+            app:job="안드로이드 개발"
+            app:level="@string/front_card_level"
+            app:area="@string/front_card_area"
+            app:mbti="@string/front_card_mbti"
+            app:image="@drawable/ic_card_penguin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+            android:layout_marginTop="12dp"
             />
 
         <TextView
@@ -66,7 +72,7 @@
             android:textAppearance="@style/ta.body.2"
             android:lineSpacingExtra="6sp"
             android:textColor="@color/grey_500"
-            app:layout_constraintTop_toBottomOf="@id/iv_teumee_card"
+            app:layout_constraintTop_toBottomOf="@id/cardview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
