@@ -103,7 +103,9 @@
 
     <string name="setting_pager1_title">내 모임</string>
     <string name="setting_pager1_top1">다가오는 모임</string>
+    <string name="setting_my_moim_badge">내가 주최한 모임</string>
     <string name="setting_pager1_no_moim_text">신청한 모임이 없어요!</string>
+    <string name="setting_pager1_no_moim_text2">참여한 모임이 없어요!</string>
     <string name="setting_pager1_go_to_moim">신청하기</string>
     <string name="setting_pager1_top2">참여 완료한 모임</string>
 
