@@ -113,12 +113,19 @@
     <string name="setting_service_guide_title1">서비스 이용 약관</string>
     <string name="setting_service_guide_title2">개인정보 처리 방침</string>
 
+    <string name="setting_my_info_edit_text">내 정보 수정하기</string>
+    <string name="setting_my_info_edit_title1">이름</string>
+    <string name="setting_my_info_edit_title2">생년월일</string>
+    <string name="setting_my_info_edit_title3">가입방법</string>
+    <string name="setting_my_info_edit_placeholder1">실명을 입력해주세요</string>
+
     <string name="setting_pager2_title">받은 리뷰</string>
     <string name="setting_pager2_very_good">최고예요!</string>
     <string name="setting_pager2_good">좋아요!</string>
     <string name="setting_pager2_sad">별로예요...</string>
 
     <string name="setting_pager3_title">북마크</string>
+    <string name="setting_version_text">앱 버전</string>
 
     <string name="setting_ddabong_friend">님을 추천한 친구</string>
 

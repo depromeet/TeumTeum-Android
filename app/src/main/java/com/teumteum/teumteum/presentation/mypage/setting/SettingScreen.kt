@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -20,11 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
@@ -43,18 +44,54 @@ fun SettingScreen() {
                 .fillMaxSize()
                 .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
         ) {
-            TmMarginVerticalSpacer(size = 50)
+            TmMarginVerticalSpacer(size = 60)
+            SettingAccountRow()
+            TmMarginVerticalSpacer(size = 8)
             SettingToggle(title = "푸시알림", viewModel = viewModel)
             SettingColumn2()
-
+            TmMarginVerticalSpacer(size = 14)
+            Text(
+                text = stringResource(id = R.string.setting_version_text),
+                style = TmTypo.current.Body2,
+                color= TmtmColorPalette.current.color_text_body_quinary,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
         }
 
     }
 }
 
 @Composable
+fun SettingAccountRow() {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .background(color = TmtmColorPalette.current.color_background)
+        .padding(horizontal = 20.dp)
+        .height(70.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier
+            .wrapContentWidth()
+            .wrapContentHeight(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(text = "정은아", style = TmTypo.current.HeadLine6, color= TmtmColorPalette.current.color_text_headline_primary)
+            TmMarginHorizontalSpacer(size = 4)
+            Text(text = stringResource(id = R.string.setting_my_info_edit_text), style = TmTypo.current.Body3, color= TmtmColorPalette.current.color_text_body_teritary)
+        }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_right_l ),
+            contentDescription = "right_arrow", tint= Color.Unspecified,
+            modifier = Modifier.size(20.dp)
+        )
+
+    }
+}
+
+@Composable
 fun SettingColumn2() {
-    val uriHandler = LocalUriHandler.current
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
