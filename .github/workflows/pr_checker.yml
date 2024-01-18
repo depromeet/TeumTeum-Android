@@ -41,8 +41,16 @@ jobs:
       - name: Access Local Properties
         env:
           base_url: ${{ secrets.BASE_URL }}
+          kakao_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
+          naver_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
+          kakao_api_key: ${{ secrets.KAKAO_API_KEY }}
+          naver_api_key: ${{ secrets.NAVER_API_KEY }}
         run: |
           echo base.url=\"$base_url\" >> local.properties
+          echo base.url=\"$kakao_redirect_url\" >> local.properties
+          echo base.url=\"$naver_redirect_url\" >> local.properties
+          echo base.url=\"$kakao_api_key\" >> local.properties
+          echo base.url=\"$naver_api_key\" >> local.properties
 
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
