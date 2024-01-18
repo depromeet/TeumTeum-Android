@@ -58,6 +58,7 @@ data class ColorPalette_Dark(
     val GreyWhite: Color = Color(0xFF1111111),
     val ColorDivider: Color = Color(0xFF212121),
     val elevation_color_elevation_level01: Color = Color(0xFF212121),
+    val elevation_color_elevation_level02: Color = Color(0xFFE9E9E9),
     val color_icon_level02_disabled: Color = Color(0xFF333333),
     val color_icon_level02_active: Color = Color(0xFF36B2FF),
     val color_icon_level01: Color = Color(0xFFF5F5F5),
@@ -120,6 +121,7 @@ data class ColorPalette_Light(
     val GreyWhite: Color = Color(0xFFFFFFFF),
     val ColorDivider: Color = Color(0xFFF0F0F0),
     val elevation_color_elevation_level01: Color = Color(0xFFF5F5F5),
+    val elevation_color_elevation_level02: Color = Color(0xFFE9E9E9),
     val color_background: Color = Color(0xFFFFFFFF)
 )
 

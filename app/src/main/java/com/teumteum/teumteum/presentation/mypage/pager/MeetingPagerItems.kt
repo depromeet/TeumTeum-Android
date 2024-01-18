@@ -148,7 +148,7 @@ fun myMoimItems() {
                     color = TmtmColorPalette.current.color_text_headline_primary
                 )
                 Row(modifier = Modifier
-                    .fillMaxWidth()
+                    .wrapContentWidth()
                     .wrapContentHeight(),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
@@ -158,7 +158,7 @@ fun myMoimItems() {
                         style = TmTypo.current.Body3,
                         color = TmtmColorPalette.current.color_text_body_quaternary
                     )
-                    TmMarginVerticalSpacer(size = 12)
+                    TmMarginHorizontalSpacer(size = 12)
                     MyMoimBadge()
                 }
             }
@@ -173,11 +173,11 @@ fun myMoimItems() {
 @Composable
 fun MyMoimBadge() {
     Box(modifier = Modifier
-        .width(109.dp)
+        .width(115.dp)
         .height(24.dp)
         .clickable { }
         .background(
-            color = TmtmColorPalette.current.elevation_color_elevation_level01,
+            color = TmtmColorPalette.current.elevation_color_elevation_level02,
             shape = RoundedCornerShape(4.dp)
         )
     ) {
@@ -189,9 +189,8 @@ fun MyMoimBadge() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_arrow_right_l),
+                painter = painterResource(id = R.drawable.ic_crown_fill),
                 contentDescription = null,
-                modifier = Modifier.size(16.dp)
             )
             TmMarginHorizontalSpacer(size = 4)
             Text(
