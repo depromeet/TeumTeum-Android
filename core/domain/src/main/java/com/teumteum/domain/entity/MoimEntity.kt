@@ -3,7 +3,7 @@ package com.teumteum.domain.entity
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 @Serializable
-data class MoimRequestModel(
+data class MoimEntity(
     val topic: String,
     val title: String,
     val introduction: String,
