@@ -38,7 +38,7 @@
             app:destination="@id/fragment_web_view" />
 
         <action
-            android:id="@+id/action_moimFragment_to_homeFragment"
+            android:id="@+id/action_fragment_moim_to_fragment_home"
             app:destination="@id/fragment_home" />
 
     </fragment>
@@ -76,5 +76,17 @@
         android:id="@+id/mainActivity"
         android:name="com.teumteum.teumteum.presentation.MainActivity"
         android:label="MainActivity" />
+
+    <fragment
+        android:id="@+id/fragment_setting"
+        android:name="com.teumteum.teumteum.presentation.mypage.setting.SettingFragment"
+        android:label="SettingFragment">
+
+        <action
+            android:id="@+id/action_fragment_setting_to_fragment_my_page"
+            app:destination="@id/fragment_my_page"/>
+
+
+    </fragment>
 
 </navigation>

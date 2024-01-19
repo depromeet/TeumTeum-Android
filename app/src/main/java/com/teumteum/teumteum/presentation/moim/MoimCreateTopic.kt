@@ -84,9 +84,12 @@ fun MoimCreateBtn(
             .padding(horizontal = 20.dp, vertical = 10.dp),
         enabled = isEnabled,
         onClick = {
-            if (screenState == ScreenState.Create) { (context as? FragmentActivity)?.supportFragmentManager?.popBackStack() }
-            else { viewModel.goToNextScreen() }
-                  },
+            if (screenState == ScreenState.Create) {
+                viewModel.createMoim()
+                Log.d("screenState", screenState.toString())
+            }
+            else {
+            viewModel.goToNextScreen() }},
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         shape = RoundedCornerShape(size = 4.dp)
     ) {
@@ -130,7 +133,7 @@ fun CreateTopicContent(viewModel: MoimViewModel, topicIndex: MutableState<Int>) 
                 isSelected = isSelected,
                 onItemSelected = {
                     topicIndex.value = index
-                    viewModel.updateTopic(topicType.title)
+                    viewModel.updateTopic(topicType)
                     Log.d("moim_topic", topicType.toString())
                 }
             )
