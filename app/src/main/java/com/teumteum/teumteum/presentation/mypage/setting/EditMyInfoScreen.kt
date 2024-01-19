@@ -1,7 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.setting
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 @Preview
 @Composable
-fun SettingEditScreen() {
+fun EditMyInfoScreen() {
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_my_info_edit_text)
     ) {

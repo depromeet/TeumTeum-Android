@@ -66,8 +66,8 @@
         android:title="@string/bottom_menu_my_page"
         tools:layout="@layout/fragment_my_page">
         <action
-            android:id="@+id/action_fragment_my_page_to_fragment_home"
-            app:destination="@id/fragment_home" />
+            android:id="@+id/action_fragment_my_page_to_fragment_setting"
+            app:destination="@id/fragment_setting" />
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_home2"
             app:destination="@id/fragment_home" />
@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/fragment_setting"
-        android:name="com.teumteum.teumteum.presentation.mypage.setting.SettingFragment"
+        android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SettingFragment"
         android:label="SettingFragment">
 
         <action
@@ -88,5 +88,9 @@
 
 
     </fragment>
+    <fragment
+        android:id="@+id/fragment_signout"
+        android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SignOutFragment"
+        android:label="SignOutFragment" />
 
 </navigation>

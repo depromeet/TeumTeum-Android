@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.mypage.setting
+package com.teumteum.teumteum.presentation.mypage.setting.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -10,8 +10,9 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSettingBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.moim.ScreenState
-import com.teumteum.teumteum.presentation.mypage.MyPageScreen
+import com.teumteum.teumteum.presentation.mypage.setting.SettingScreen
+import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
 class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
     private val viewModel: SettingViewModel by activityViewModels()
