@@ -37,13 +37,26 @@ class SettingViewModel @Inject constructor(): ViewModel() {
     private val _dialogEvent = MutableSharedFlow<DialogEvent>()
     val dialogEvent: SharedFlow<DialogEvent> = _dialogEvent.asSharedFlow()
 
+    private val _signoutReason = MutableStateFlow<List<String>>(emptyList())
+    val signoutReason: StateFlow<List<String>> = _signoutReason.asStateFlow()
+
+    fun addItem(item: String) {
+        if (_signoutReason.value.size < 3 && item !in _signoutReason.value) {
+            _signoutReason.value = _signoutReason.value + item
+        }
+    }
+    fun removeItem(item: String) {
+        _signoutReason.value = _signoutReason.value - item
+    }
+
+
     fun resetDialogEvent() {
         viewModelScope.launch {
             _dialogEvent.emit(DialogEvent.DEFAULT)
         }
     }
 
-    fun handleSettingStatusChange(status: SettingStatus) {
+    fun handleDialogChange(status: SettingStatus) {
         when (status) {
             SettingStatus.CANCEL -> {
                 _dialogEvent.tryEmit(DialogEvent.CANCEL)
@@ -55,6 +68,10 @@ class SettingViewModel @Inject constructor(): ViewModel() {
 
             else -> {}
         }
+    }
+
+    private fun sendSignOutReason() {
+
     }
 
     private fun logout() {

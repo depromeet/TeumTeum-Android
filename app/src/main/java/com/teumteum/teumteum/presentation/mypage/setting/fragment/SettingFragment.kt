@@ -50,6 +50,9 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
                 findNavController().navigate(R.id.action_fragment_setting_to_fragment_service)
                 (activity as MainActivity).hideBottomNavi()
             }
+            SettingStatus.LOGOUT -> {
+                viewModel.handleDialogChange(status)
+            }
             SettingStatus.LOGOUTCONFIRM -> {
                 // 로그인 화면 이동
             }

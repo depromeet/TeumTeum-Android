@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -27,9 +29,8 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 
-@Preview
 @Composable
-fun SettingSignOutConfirm() {
+fun SettingSignOutConfirm(viewModel: SettingViewModel) {
     TmScaffold(
     ) {
         Column(
@@ -62,7 +63,7 @@ fun SettingSignOutConfirm() {
             Spacer(modifier = Modifier.weight(1f))
             SignOutConfirmCheck()
             TeumDivider()
-            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn2))
+            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn2), viewModel)
             TmMarginVerticalSpacer(size = 24)
         }
 
