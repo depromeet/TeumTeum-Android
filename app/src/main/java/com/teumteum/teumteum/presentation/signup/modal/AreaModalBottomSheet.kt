@@ -68,7 +68,7 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
         streetRvAdapter = AreaStreetModalAdapter(streetItemClickListener)
         streetRvAdapter.setSelectedStreet(selectedCity, selectedStreet)
         if (selectedCity.isNotBlank()) setFocusedCity(selectedCity)
-        else setFocusedCity("서울특별시")
+        else setFocusedCity("서울")
         with(binding.rvDetailArea) {
             adapter = streetRvAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -99,9 +99,9 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
         focusedCity = city
         cityRvAdapter.setFocusedCity(focusedCity)
         when (focusedCity) {
-            "서울특별시" -> streetRvAdapter.submitList(resources.getStringArray(R.array.seoul_areas).toList())
-            "경기도" -> streetRvAdapter.submitList(resources.getStringArray(R.array.gyeonggi_areas).toList())
-            "인천광역시" -> streetRvAdapter.submitList(resources.getStringArray(R.array.incheon_areas).toList())
+            "서울" -> streetRvAdapter.submitList(resources.getStringArray(R.array.seoul_areas).toList())
+            "경기" -> streetRvAdapter.submitList(resources.getStringArray(R.array.gyeonggi_areas).toList())
+            "인천" -> streetRvAdapter.submitList(resources.getStringArray(R.array.incheon_areas).toList())
         }
         streetRvAdapter.setFocusedCity(focusedCity)
     }

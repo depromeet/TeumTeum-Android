@@ -19,7 +19,7 @@ class PreferredAreaFragment
 
     private val viewModel by activityViewModels<SignUpViewModel>()
     private var bottomSheet: AreaModalBottomSheet? = null
-    private var focusedCity: String = "서울특별시"
+    private var focusedCity: String = "서울"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
