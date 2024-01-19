@@ -43,6 +43,8 @@ val UserGradeDummy = listOf(
 val RecommendDummy = listOf(
     Recommend("김예은", "프로덕트 디자이너", R.drawable.ic_dog),
     Recommend("신민서", "AOS 개발자", R.drawable.ic_cat),
+    Recommend("신한별", "프로덕트 디자이너", R.drawable.ic_fox),
+    Recommend("정은아", "프로덕트 디자이너", R.drawable.ic_ghost),
 
 )
 
