@@ -8,6 +8,4 @@ data class SocialLoginResult (
     val refreshToken: String?,
     val oauthId: String?,
     val messages: String?
-) {
-    val isAlreadyMember: Boolean = oauthId.isNullOrEmpty()
-}
+)

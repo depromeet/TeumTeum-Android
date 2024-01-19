@@ -20,11 +20,9 @@ class SignInViewModel @Inject constructor(
     var oauthId = ""
 
     fun updateMemberState(socialLoginResult: SocialLoginResult) {
-//        Timber.tag("teum-signin").d("socialLoginResult: ${socialLoginResult.toString()}")
         if (socialLoginResult.messages == null) {
-            if (socialLoginResult.isAlreadyMember) {
+            if (socialLoginResult.oauthId.isNullOrEmpty()) {
                 // 기존 회원일 때
-                Timber.tag("teum-signin").d("isAlreadyMember")
                 repository.setAutoLogin(
                     socialLoginResult.accessToken!!,
                     socialLoginResult.refreshToken!!)
@@ -32,14 +30,12 @@ class SignInViewModel @Inject constructor(
             }
             else {
                 // 새로 가입해야 할 때
-                Timber.tag("teum-signin").d("isNotAlreadyMember")
                 oauthId = socialLoginResult.oauthId!!
                 _memberState.value = SignInUiState.UserNotRegistered
             }
         }
         else {
             // 통신 실패
-            Timber.tag("teum-signin").d("socialLoginResult: Faliure")
             _memberState.value = SignInUiState.Failure(socialLoginResult.messages!!)
         }
     }

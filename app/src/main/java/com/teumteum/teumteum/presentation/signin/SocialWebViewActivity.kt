@@ -133,7 +133,6 @@ class SocialWebViewActivity
         view?.evaluateJavascript(WEBVIEW_SCRIPT) { jsonString ->
             // jsonString에는 가져온 JSON 정보가 포함됩니다.
             // 이후에는 jsonString을 파싱하여 필요한 작업을 수행합니다.
-            Timber.tag("teum-login").d("jsonString: $jsonString")
             handleJsonString(jsonString)
         }
     }
@@ -175,19 +174,20 @@ class SocialWebViewActivity
     }
 
     private fun userInfoObserver() {
-        splashViewModel.myInfoState.flowWithLifecycle(lifecycle)
-            .onEach {
-                when (it) {
+        lifecycleScope.launchWhenStarted {
+            splashViewModel.myInfoState.collect { state ->
+                when (state) {
                     is MyInfoUiState.Success -> {
                         goToHomeScreen()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(it.msg)
-                        finish()
+                        toast(state.msg)
+                        goToTermsActivity()
                     }
                     else -> {}
                 }
             }
+        }
     }
 
     private fun goToTermsActivity() {
