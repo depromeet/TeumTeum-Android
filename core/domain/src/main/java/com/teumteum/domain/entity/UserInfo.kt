@@ -1,13 +1,14 @@
 package com.teumteum.domain.entity
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserInfo (
     val id: Long,
     val name: String,
-    val birth: String, // YYYY.MM.DD
-    val characterId: Int,
+    val birth: String, // YYYYMMDD
+    val characterId: Long,
     val mannerTemperature: Int,
     val authenticated: String,
     val activityArea: String,
@@ -21,6 +22,7 @@ data class UserInfo (
 @Serializable
 data class JobEntity(
     val name: String?,
-    val `class`: String,
+    @SerialName("class")
+    val jobClass: String,
     val detailClass: String
 )
