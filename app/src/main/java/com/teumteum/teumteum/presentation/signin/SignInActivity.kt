@@ -20,6 +20,7 @@ class SignInActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        splashViewModel.setIsFirstAfterInstall(false)
         setClickListener()
     }
 

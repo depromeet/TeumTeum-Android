@@ -6,11 +6,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.toast
-import com.teumteum.domain.entity.JobEntity
-import com.teumteum.domain.entity.UserInfo
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySplashBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -18,7 +16,7 @@ import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 import com.teumteum.teumteum.util.NetworkManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity
@@ -29,13 +27,11 @@ class SplashActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        observer()
-        initSplash()
         checkNetwork()
     }
 
     private fun checkNetwork() {
-        if (NetworkManager.checkNetworkState(this)) initSplash()
+        if (NetworkManager.checkNetworkState(this)) checkAutoLogin()
         else {
             AlertDialog.Builder(this)
                 .setTitle("인터넷 연결")
@@ -51,12 +47,23 @@ class SplashActivity
         }
     }
 
-    private fun initSplash() {
+    private fun checkAutoLogin() {
+        if (viewModel.getIsFirstAfterInstall()) initSplash(IS_FIRST_AFTER_INSTALL)
+        else if (viewModel.getIsAutoLogin()) {
+            viewModel.refreshUserInfo()
+            initSplash(IS_AUTO_LOGIN)
+        }
+        else {
+            initSplash(HAVE_TO_SIGN_IN)
+        }
+    }
+
+    private fun initSplash(state: Int) {
         Handler(Looper.getMainLooper()).postDelayed({
-            if (viewModel.getIsFirstAfterInstall()) startOnBoarding()
-            else if (!viewModel.getIsAutoLogin()) startSignIn()
-            else {
-                viewModel.refreshUserInfo()
+            when (state) {
+                IS_FIRST_AFTER_INSTALL -> startOnBoarding()
+                IS_AUTO_LOGIN -> observer()
+                else -> startSignIn()
             }
         }, 3000)
     }
@@ -67,41 +74,20 @@ class SplashActivity
     }
 
     private fun observer() {
-        viewModel.myInfoState.flowWithLifecycle(lifecycle)
-            .onEach {
-                when (it) {
+        lifecycleScope.launchWhenStarted {
+            viewModel.myInfoState.collect { state ->
+                when (state) {
                     is MyInfoUiState.Success -> {
                         startHomeScreen()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(it.msg)
+                        toast(state.msg)
                         startSignIn()
                     }
                     else -> {}
                 }
             }
-    }
-
-    private fun saveUserInfoExample() {
-        val userInfo = UserInfo(
-            id = 0L,
-            name = "테스트",
-            birth = "2000.01.01",
-            characterId = 0,
-            mannerTemperature = 36,
-            authenticated = "카카오",
-            activityArea = "서울특별시 강남구",
-            mbti = "ENFP",
-            status = "학생",
-            goal = "",
-            job = JobEntity(
-                name = "학교",
-                `class` = "개발",
-                detailClass = "AOS 개발자"
-            ),
-            interests = listOf("IT", "모여서 각자 일하기")
-        )
-        viewModel.saveUserInfo(userInfo)
+        }
     }
 
     private fun startSignIn() {
@@ -114,4 +100,9 @@ class SplashActivity
         finish()
     }
 
+    companion object {
+        const val IS_FIRST_AFTER_INSTALL = 0
+        const val IS_AUTO_LOGIN = 1
+        const val HAVE_TO_SIGN_IN = 2
+    }
 }
