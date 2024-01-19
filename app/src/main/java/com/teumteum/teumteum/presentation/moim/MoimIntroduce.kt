@@ -106,7 +106,7 @@ fun MoimIntroduce(
             TmSnackBar(snackbarHostState = snackbarHostState)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
-            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = introduce.isNotEmpty() && photo.isNotEmpty())
+            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel, isEnabled = photo.isNotEmpty() && introduce.length in 10..200)
             TmMarginVerticalSpacer(size = 24)
         }
     }

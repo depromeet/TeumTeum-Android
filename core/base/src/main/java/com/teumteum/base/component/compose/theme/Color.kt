@@ -41,6 +41,13 @@ data class ColorPalette_Dark(
 
     //outline
     val color_outline_level04_active: Color = Color(0xFF212121),
+    val color_outline_level03: Color = Color(0xFFE9E9E9),
+
+    //icon
+    val color_icon_level02_disabled: Color = Color(0xFFDFDFDF),
+    val color_icon_level02_active: Color = Color(0xFF44AEFF),
+    val color_icon_level01: Color = Color(0xFF212121),
+
 
     val Gray950: Color = Color(0xFF191919),
     val Gray900: Color = Color(0xFFF5F5F5),
@@ -62,9 +69,6 @@ data class ColorPalette_Dark(
     val ColorDivider: Color = Color(0xFF212121),
     val elevation_color_elevation_level01: Color = Color(0xFF212121),
     val elevation_color_elevation_level02: Color = Color(0xFFE9E9E9),
-    val color_icon_level02_disabled: Color = Color(0xFF333333),
-    val color_icon_level02_active: Color = Color(0xFF36B2FF),
-    val color_icon_level01: Color = Color(0xFFF5F5F5),
     val color_background: Color = Color(0x111111)
 )
 
@@ -130,5 +134,3 @@ data class ColorPalette_Light(
 )
 
 val TmtmColorPalette = staticCompositionLocalOf { ColorPalette_Light() }
-
-val TmtmColorPalette2 = staticCompositionLocalOf { ColorPalette_Dark() }

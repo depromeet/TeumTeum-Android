@@ -181,7 +181,7 @@ fun MoimInfoCard(viewModel: MoimViewModel) {
         ) {
             MoimCardRow(title = stringResource(id = R.string.moim_confirm_title1), text = "$date $time")
             TmMarginVerticalSpacer(size = 4)
-            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title2), text = "$topic")
+            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title2), text = viewModel.getTopicTitle(topic))
             TmMarginVerticalSpacer(size = 4)
             MoimCardRow(title = stringResource(id = R.string.moim_confirm_title3), text = "${people}명")
             TmMarginVerticalSpacer(size = 4)

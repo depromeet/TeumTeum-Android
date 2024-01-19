@@ -5,6 +5,8 @@ import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
 import com.teumteum.data.service.GroupService
 import com.teumteum.domain.entity.MoimRequestModel
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class RemoteGroupDataSource @Inject constructor(
@@ -22,7 +24,6 @@ class RemoteGroupDataSource @Inject constructor(
     ): ResponseGroup {
         return service.getGroups(size, page, sort, isOpen, topic, meetingAreaStreet, participantUserId, searchWord)
     }
-
     suspend fun postGroupJoin(
         meetingId: Long
     ): ResponseMeeting {
@@ -36,8 +37,9 @@ class RemoteGroupDataSource @Inject constructor(
     }
 
     suspend fun postMeeting(
-        requestMoim: MoimRequestModel
-    ): Boolean {
-        return service.postMoim(requestMoim).isSuccessful
+        moimRequestBody: RequestBody,
+        files: List<MultipartBody.Part>
+    ): ResponseMeeting {
+        return service.postMoim(moimRequestBody, files)
     }
 }

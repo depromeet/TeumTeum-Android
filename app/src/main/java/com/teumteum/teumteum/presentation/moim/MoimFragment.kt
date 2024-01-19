@@ -13,10 +13,14 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.TeumTeumTheme
+import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 
 class MoimFragment :
@@ -34,26 +38,28 @@ class MoimFragment :
         val navController = findNavController()
         observe()
 
+
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
             }
         }
+
         binding.composeMoim.setContent {
-            val screenState by viewModel.screenState.collectAsState()
-            when (screenState) {
-                ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen() }
-                ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
-                ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
-                ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
-                ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
-                ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
-                ScreenState.Create -> {
-                    binding.progressBar.visibility = View.GONE
-                    MoimConfirm(viewModel)
+                val screenState by viewModel.screenState.collectAsState()
+                when (screenState) {
+                    ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen() }
+                    ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
+                    ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
+                    ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
+                    ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
+                    ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
+                    ScreenState.Create -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(viewModel)
+                    }
+                    else ->  MoimConfirm(viewModel)
                 }
-                else -> {}
-            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
@@ -66,7 +72,7 @@ class MoimFragment :
 
     fun goFrontScreen() {
         if (viewModel.screenState.value == ScreenState.Topic) {
-            findNavController().navigate(R.id.action_moimFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_fragment_moim_to_fragment_home)
             (activity as MainActivity).showBottomNavi()
 
         } else {
@@ -78,15 +84,21 @@ class MoimFragment :
         viewModel.screenState.flowWithLifecycle(lifecycle)
             .onEach {
                 when(it) {
-                    ScreenState.Failure -> {
-                        Toast.makeText(context, "알 수 없는 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                    ScreenState.Server -> {
-                        Toast.makeText(context, "서버 통신에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    ScreenState.Failure -> { context?.toast("모임 신청에 오류가 발생했습니다") }
+                    ScreenState.Server -> { context?.toast("서버 통신에 실패했습니다") }
+                    ScreenState.Success -> {
+                        Log.d("success", "success navi 확인")
+                        val navController = findNavController()
+                        if (navController.currentDestination?.id == R.id.fragment_moim) {
+                            (activity as MainActivity).showBottomNavi()
+                            navController.navigate(R.id.action_fragment_moim_to_fragment_home)
+                            viewModel.resetScreenState()
+                        }
                     }
                     else -> {}
                 }
             }
+            .launchIn(lifecycleScope)
     }
 
     private fun animateProgressBar(targetStep: Int) {

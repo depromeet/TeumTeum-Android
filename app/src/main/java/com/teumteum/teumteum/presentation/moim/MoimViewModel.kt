@@ -10,6 +10,7 @@ import com.teumteum.domain.entity.MeetingArea
 import com.teumteum.domain.entity.MoimRequestModel
 import com.teumteum.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -29,7 +32,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoimViewModel @Inject constructor(
-    private val repository: GroupRepository
+    private val repository: GroupRepository,
+    @ApplicationContext private val context: Context
 ): ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Topic)
@@ -38,8 +42,8 @@ class MoimViewModel @Inject constructor(
     private val _currentStep = MutableStateFlow<Int>(0)
     val currentStep: StateFlow<Int> = _currentStep.asStateFlow()
 
-    private val _topic = MutableStateFlow("")
-    val topic: StateFlow<String> = _topic.asStateFlow()
+    private val _topic = MutableStateFlow<TopicType?>(null)
+    val topic: StateFlow<TopicType?> = _topic.asStateFlow()
 
     private val _title = MutableStateFlow("")
     val title : StateFlow<String> = _title.asStateFlow()
@@ -68,31 +72,24 @@ class MoimViewModel @Inject constructor(
     private val _snackbarEvent = MutableSharedFlow<SnackbarEvent>()
     val snackbarEvent : SharedFlow<SnackbarEvent> = _snackbarEvent.asSharedFlow()
 
-
-    fun updateTopic(topicType: String) {
-        _topic.value = topicType
+    fun initializeState() {
+        _screenState.value = ScreenState.Topic
+        _currentStep.value = 0
     }
 
+    fun updateTopic(topicType: TopicType) {
+        _topic.value = topicType
+    }
     fun updateTitle(title: String) {
         _title.value = title
     }
-
     fun updateIntroduce(introduce: String) {
         _introduction.value = introduce
     }
-
     fun updateDate(input: String) {
         if (input.length == 4) {
             _date.value = formatDateAndDay(input)
         }
-    }
-
-    fun updateAddress(address: String) {
-        _address.value = address
-    }
-
-    fun updateDetailAddress(address: String) {
-        _detailAddress.value = address
     }
 
     fun updateTime(input: String): String {
@@ -101,31 +98,24 @@ class MoimViewModel @Inject constructor(
         return formattedTime
     }
 
+    fun updateAddress(address: String) {
+        _address.value = address
+    }
+    fun updateDetailAddress(address: String) {
+        _detailAddress.value = address
+    }
 
     fun upPeople() {
-        if(_people.value < 6) {
-            _people.value +=1
-        }
+        if(_people.value < 6) { _people.value +=1 }
     }
-
     fun downPeople() {
-        if(_people.value > 1) {
-            _people.value -=1
-        }
+        if(_people.value > 1) { _people.value -=1 }
     }
-    fun emitSnackbarEvent(event: SnackbarEvent) {
-        viewModelScope.launch {
-            _snackbarEvent.emit(event)
-        }
-    }
-
     fun resetSnackbarEvent() {
         viewModelScope.launch {
             _snackbarEvent.emit(SnackbarEvent.DEFAULT)
         }
     }
-
-
     fun addImages(uris: List<Uri>, context: Context) {
         val currentList = _imageUri.value.toMutableList()
         var isOverSizeImageFound = false
@@ -171,64 +161,100 @@ class MoimViewModel @Inject constructor(
 
     private fun combineDateAndTime(): LocalDateTime? {
         return try {
-            val localDate = LocalDate.parse(date.value, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-            val localTime = LocalTime.parse(time.value, DateTimeFormatter.ofPattern("HH:mm"))
-            LocalDateTime.of(localDate, localTime)
+            val currentYear = Year.now().value
+            val dateInput = "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
+            val timeInput = _time.value.replace("오후", "PM").replace("오전", "AM")
+
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN)
+            val timeFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.ENGLISH)
+
+            val parsedDate = LocalDate.parse(dateInput, dateFormatter)
+            val parsedTime = LocalTime.parse(timeInput, timeFormatter)
+
+            LocalDateTime.of(parsedDate, parsedTime)
         } catch (e: Exception) {
-            null // 형식 오류 발생 시 null 반환
+            Timber.e(e, "Failed to combine date and time")
+            null
         }
     }
 
-    fun dateTimeToServer(): Pair<String, String>? {
-        return try {
-            // 날짜 format - "yyyy-MM-dd"
-            val localDate = LocalDate.parse(date.value, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-            val formattedDate = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
-
-            // 시간 format - "HH:mm:ss"
-            val localTime = LocalTime.parse(time.value, DateTimeFormatter.ofPattern("HH:mm"))
-            val formattedTime = localTime.format(DateTimeFormatter.ISO_LOCAL_TIME)
-
-            Pair(formattedDate, formattedTime)
-        } catch (e: Exception) {
-            null
+    private fun convertUrisToFile(uris: List<Uri>): List<File> {
+        return uris.mapNotNull { uri ->
+            context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                val fileName = getFileName(uri, context)
+                val file = File(context.cacheDir, fileName ?: "tempFile-${System.currentTimeMillis()}")
+                FileOutputStream(file).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+                file
+            }
         }
+    }
+
+    // Uri로부터 파일 이름을 추출하는 함수
+    private fun getFileName(uri: Uri, context: Context): String? {
+        var name: String? = null
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            // 컬럼 인덱스 유효성 확인
+            if (nameIndex != -1 && it.moveToFirst()) {
+                name = it.getString(nameIndex)
+            }
+        }
+        return name
     }
 
     fun createMoim() {
         viewModelScope.launch {
             val dateTime = combineDateAndTime()
+            val imageFiles = convertUrisToFile(imageUri.value)
             if(dateTime != null) {
-                val meetingArea = MeetingArea(
-                    mainStreet = address.value ?: "",
-                    address = address.value ?: "",
-                    addressDetail =  detailAddress.value ?: ""
-                )
-                val requestModel = MoimRequestModel(
-                    topic = topic.value,
-                    title = title.value,
-                    introduction = introduction.value,
-                    promiseDateTime = dateTime,
-                    numberOfRecruits = people.value,
-                    meetingArea = meetingArea
-                )
-                repository.postGroupMoim(requestModel)
-                    .onSuccess {
-                        if (it) {
+                val meetingArea = address.value?.let {
+                    MeetingArea(
+                        address = it,
+                        addressDetail = detailAddress.value
+                    )
+                }
+                val requestModel = topic.value?.let {
+                    if (meetingArea != null) {
+                        MoimRequestModel(
+                            topic = it.value,
+                            title = title.value,
+                            introduction = introduction.value,
+                            promiseDateTime = dateTime,
+                            numberOfRecruits = people.value,
+                            meetingArea = meetingArea
+                        )
+                    } else {
+                        null
+                    }
+                }
+                Log.d("requestModel", requestModel.toString())
+                if (requestModel != null) {
+                    repository.postGroupMoim(requestModel, imageFiles)
+                        .onSuccess { meeting ->
+                            Log.d("createMoim", "success")
                             _screenState.value = ScreenState.Success
-                        } else {
-                            _screenState.value = ScreenState.Failure
+                            Log.d("screenState_success", screenState.value.toString())
                         }
-                    }
-                    .onFailure {
-                        _screenState.value = ScreenState.Server
-                        Timber.e(it)
-
-                    }
+                        .onFailure { throwable ->
+                            Log.d("createMoim", "failure")
+                            Timber.e(throwable)
+                            _screenState.value = ScreenState.Server
+                        }
+                }
             } else {
+                Log.d("createMoim", "time is null")
                 _screenState.value = ScreenState.Failure
+                Log.d("sceenState after", _screenState.toString())
             }
         }
+    }
+
+    fun resetScreenState() {
+        _screenState.value = ScreenState.Topic
+        _currentStep.value = 0
     }
 
     fun goToNextScreen() {
@@ -240,6 +266,7 @@ class MoimViewModel @Inject constructor(
                 ScreenState.DateTime -> ScreenState.Address
                 ScreenState.Address -> ScreenState.People
                 ScreenState.People -> ScreenState.Create
+                ScreenState.Create -> ScreenState.Success
                 else -> _screenState.value
             }
         goToNextStep()
@@ -248,6 +275,7 @@ class MoimViewModel @Inject constructor(
     fun goPreviousScreen() {
         _screenState.value =
             when(_screenState.value) {
+                ScreenState.Failure -> ScreenState.Create
                 ScreenState.Create -> ScreenState.Address
                 ScreenState.Address -> ScreenState.DateTime
                 ScreenState.DateTime -> ScreenState.Introduce
@@ -265,7 +293,7 @@ class MoimViewModel @Inject constructor(
 
     fun goToPreviousStep() {
         val previousStep = _currentStep.value - 1
-        _currentStep.value = previousStep.coerceAtLeast(1)
+        _currentStep.value = previousStep.coerceAtLeast(0)
     }
 
     fun getFileSize(uri: Uri, context: Context): Long {
@@ -275,6 +303,10 @@ class MoimViewModel @Inject constructor(
         val size = sizeIndex?.let { cursor.getLong(it) } ?: 0L
         cursor?.close()
         return size
+    }
+
+    fun getTopicTitle(topicType: TopicType?): String {
+        return topicType?.title ?: ""
     }
 
     enum class SnackbarEvent {
@@ -291,8 +323,6 @@ class MoimViewModel @Inject constructor(
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server
 }
-
-
 enum class TopicType(val value: String, val title: String ,val subTitle: String) {
     SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
     STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
@@ -300,5 +330,3 @@ enum class TopicType(val value: String, val title: String ,val subTitle: String)
     SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
 
 }
-
-

@@ -38,7 +38,7 @@
             app:destination="@id/fragment_web_view" />
 
         <action
-            android:id="@+id/action_moimFragment_to_homeFragment"
+            android:id="@+id/action_fragment_moim_to_fragment_home"
             app:destination="@id/fragment_home" />
 
     </fragment>
