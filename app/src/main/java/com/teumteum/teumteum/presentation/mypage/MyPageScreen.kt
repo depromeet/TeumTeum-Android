@@ -23,15 +23,20 @@ import com.teumteum.base.component.compose.TmTabItem
 import com.teumteum.base.component.compose.TmTabRow
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
+import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 import com.teumteum.teumteum.util.custom.view.FrontCardView
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 
-@Preview
 @Composable
-fun MyPageScreen() {
+fun MyPageScreen(
+    viewModel: SettingViewModel,
+) {
     TmScaffold(
         isSetting = true,
+        onClick = { viewModel.updateSettingStatus(SettingStatus.SETTING) },
         topbarText = "정은아님의 소개서"
     ) {
         val scrollState = rememberScrollState()

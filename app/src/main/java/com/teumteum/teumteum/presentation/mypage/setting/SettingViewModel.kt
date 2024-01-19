@@ -80,7 +80,7 @@ fun getServiceGuide(): List<SettingUiItem> {
 }
 
 
-enum class SettingStatus { LOGOUT, SIGNOUT, SIGNOUTCONFIRM,  DEFAULT, NOTION, ERROR }
+enum class SettingStatus { LOGOUT, SIGNOUT, SIGNOUTCONFIRM,  DEFAULT, NOTION, ERROR, SETTING, EDIT }
 
 enum class DialogEvent {
     DEFAULT, LOGOUT, CANCEL;
