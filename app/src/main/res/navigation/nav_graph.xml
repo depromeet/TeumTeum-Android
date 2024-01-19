@@ -39,7 +39,9 @@
 
         <action
             android:id="@+id/action_fragment_moim_to_fragment_home"
-            app:destination="@id/fragment_home" />
+            app:destination="@id/fragment_home"
+            app:popUpTo="@id/fragment_moim"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
@@ -49,7 +51,10 @@
         android:label="WebviewFragment">
         <action
             android:id="@+id/action_webViewFragment_to_moimFragment"
-            app:destination="@id/fragment_moim" />
+            app:popUpTo="@id/fragment_web_view"
+            app:destination="@id/fragment_moim"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
     <fragment
@@ -69,8 +74,8 @@
             android:id="@+id/action_fragment_my_page_to_fragment_setting"
             app:destination="@id/fragment_setting" />
         <action
-            android:id="@+id/action_fragment_my_page_to_fragment_home2"
-            app:destination="@id/fragment_home" />
+            android:id="@+id/action_fragment_my_page_to_fragment_recommend"
+            app:destination="@id/fragment_recommend" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
@@ -81,16 +86,48 @@
         android:id="@+id/fragment_setting"
         android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SettingFragment"
         android:label="SettingFragment">
-
         <action
-            android:id="@+id/action_fragment_setting_to_fragment_my_page"
-            app:destination="@id/fragment_my_page"/>
+            android:id="@+id/action_fragment_setting_to_fragment_signout"
+            app:destination="@id/fragment_signout"/>
+        <action
+            android:id="@+id/action_fragment_setting_to_fragment_edit_myinfo"
+            app:destination="@id/fragment_edit_myinfo"/>
+        <action
+            android:id="@+id/action_fragment_setting_to_fragment_service"
+            app:destination="@id/fragment_service"/>
 
 
     </fragment>
+
     <fragment
         android:id="@+id/fragment_signout"
         android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SignOutFragment"
         android:label="SignOutFragment" />
+
+    <fragment
+        android:id="@+id/fragment_edit_myinfo"
+        android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.EditMyInfoFragment"
+        android:label="EditMyInfoFragment" />
+
+
+    <fragment
+        android:id="@+id/fragment_recommend_detail"
+        android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragment"
+        android:label="RecommendDetailFragment" />
+
+    <fragment
+        android:id="@+id/fragment_recommend"
+        android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragment"
+        android:label="RecommendFragment">
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_recommend_detail"
+            app:destination="@id/fragment_recommend_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_service"
+        android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.ServiceFragment"
+        android:label="ServiceFragment" />
 
 </navigation>

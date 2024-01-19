@@ -70,7 +70,6 @@ fun SettingSignOutBtn1(
     isEnabled: Boolean = true
 ) {
         val context = LocalContext.current
-
         val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
         val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
         androidx.compose.material3.Button(

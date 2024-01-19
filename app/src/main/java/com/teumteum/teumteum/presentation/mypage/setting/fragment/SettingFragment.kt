@@ -10,6 +10,7 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSettingBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.setting.DialogEvent
 import com.teumteum.teumteum.presentation.mypage.setting.SettingScreen
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
@@ -26,40 +27,42 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
         }
 
         binding.composeSetting.setContent {
-            SettingScreen(viewModel)
+            SettingScreen(viewModel) { findNavController().popBackStack() }
         }
 
     }
 
+
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            goMyPageScreen()
+            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
         }
     }
 
     fun goMyPageScreen() {
-        findNavController().navigate(R.id.action_fragment_moim_to_fragment_home)
+        findNavController().popBackStack()
             (activity as MainActivity).showBottomNavi()
     }
 
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
             SettingStatus.NOTION -> {
-                // 개인정보 약관 페이지로 이동
-
+                findNavController().navigate(R.id.action_fragment_setting_to_fragment_service)
+                (activity as MainActivity).hideBottomNavi()
             }
-            SettingStatus.LOGOUT -> {
-                // Sign out 페이지로 이동
-//                findNavController().navigate(R.id.action_settingFragment_to_signOutFragment)
+            SettingStatus.LOGOUTCONFIRM -> {
+                // 로그인 화면 이동
             }
             SettingStatus.SIGNOUT ->  {
-
+                findNavController().navigate(R.id.action_fragment_setting_to_fragment_signout)
+                    (activity as MainActivity).hideBottomNavi()
             }
             SettingStatus.DEFAULT -> {
                 goMyPageScreen()
             }
             SettingStatus.EDIT -> {
-
+                findNavController().navigate(R.id.action_fragment_setting_to_fragment_edit_myinfo)
+                (activity as MainActivity).hideBottomNavi()
             }
             else -> {}
         }

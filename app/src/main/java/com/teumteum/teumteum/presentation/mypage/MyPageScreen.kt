@@ -53,7 +53,7 @@ fun MyPageScreen(
             TmMarginVerticalSpacer(size = 88)
             FrontCardView(frontCard =  frontCardData)
             TmMarginVerticalSpacer(size = 22)
-            SettingBtn()
+            SettingBtn(viewModel)
             TmMarginVerticalSpacer(size = 5)
             TmTabRow(
                 modifier = Modifier
@@ -69,13 +69,13 @@ fun MyPageScreen(
 
 
 @Composable
-fun SettingBtn() {
+fun SettingBtn(viewModel: SettingViewModel) {
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(76.dp)
             .padding(horizontal = 40.dp, vertical = 10.dp),
-        onClick = {},
+        onClick = { viewModel.updateSettingStatus(SettingStatus.RECOMMEND)},
         colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
         shape = RoundedCornerShape(size = 4.dp)
     ) {

@@ -35,11 +35,25 @@ class SettingViewModel @Inject constructor(): ViewModel() {
     }
 
     private val _dialogEvent = MutableSharedFlow<DialogEvent>()
-    val dialogEvent : SharedFlow<DialogEvent> = _dialogEvent.asSharedFlow()
+    val dialogEvent: SharedFlow<DialogEvent> = _dialogEvent.asSharedFlow()
 
     fun resetDialogEvent() {
         viewModelScope.launch {
             _dialogEvent.emit(DialogEvent.DEFAULT)
+        }
+    }
+
+    fun handleSettingStatusChange(status: SettingStatus) {
+        when (status) {
+            SettingStatus.CANCEL -> {
+                _dialogEvent.tryEmit(DialogEvent.CANCEL)
+            }
+
+            SettingStatus.LOGOUT -> {
+                _dialogEvent.tryEmit(DialogEvent.LOGOUT)
+            }
+
+            else -> {}
         }
     }
 
@@ -56,13 +70,16 @@ class SettingViewModel @Inject constructor(): ViewModel() {
             DialogEvent.LOGOUT -> {
                 logout()
             }
+
             DialogEvent.CANCEL -> {
                 cancelMeeting()
             }
+
             else -> {}
         }
     }
 }
+
 
 fun getMemberSetting(viewModel: SettingViewModel): List<SettingUiItem> {
     return listOf(
@@ -80,7 +97,9 @@ fun getServiceGuide(): List<SettingUiItem> {
 }
 
 
-enum class SettingStatus { LOGOUT, SIGNOUT, SIGNOUTCONFIRM,  DEFAULT, NOTION, ERROR, SETTING, EDIT }
+enum class SettingStatus {
+    LOGOUT, LOGOUTCONFIRM, SIGNOUT, SIGNOUTCONFIRM,  DEFAULT, NOTION, ERROR, SETTING, EDIT, CANCEL, RECOMMEND
+}
 
 enum class DialogEvent {
     DEFAULT, LOGOUT, CANCEL;

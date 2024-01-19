@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.View
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.FragmentRecommendBinding
-import com.teumteum.teumteum.presentation.mypage.recommend.RecommendScreen
+import com.teumteum.teumteum.databinding.FragmentServiceBinding
+import com.teumteum.teumteum.presentation.mypage.setting.SettingServiceScreen
 
-class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.fragment_recommend) {
+class ServiceFragment: BindingFragment<FragmentServiceBinding>(R.layout.fragment_service) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.composeRecommend.setContent {
-            RecommendScreen()
+        binding.composeService.setContent {
+            SettingServiceScreen()
         }
-
     }
 
     companion object {

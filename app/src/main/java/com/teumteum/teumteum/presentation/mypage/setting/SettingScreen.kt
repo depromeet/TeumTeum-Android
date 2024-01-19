@@ -40,7 +40,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 
 @Composable
-fun SettingScreen(viewModel: SettingViewModel) {
+fun SettingScreen(viewModel: SettingViewModel, onClick: () -> Unit) {
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
     val dialogTitle = remember { mutableStateOf(context.getString(R.string.setting_dialog_default)) }
@@ -74,16 +74,18 @@ fun SettingScreen(viewModel: SettingViewModel) {
             },
             onCancel = {
                 showDialog.value = false
+                viewModel.resetDialogEvent()
             },
             onDismiss = {
                 showDialog.value = false
+                viewModel.resetDialogEvent()
             }
         )
     }
 
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_service_guide_topbar),
-        onClick = { viewModel.updateSettingStatus(SettingStatus.DEFAULT) }
+        onClick = { onClick() }
     ){
         Column(
             modifier = Modifier
@@ -91,7 +93,7 @@ fun SettingScreen(viewModel: SettingViewModel) {
                 .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
         ) {
             TmMarginVerticalSpacer(size = 60)
-            SettingAccountRow()
+            SettingAccountRow(viewModel)
             TmMarginVerticalSpacer(size = 8)
             SettingToggle(title = "푸시알림", viewModel = viewModel)
             SettingColumn2(viewModel)
@@ -108,7 +110,7 @@ fun SettingScreen(viewModel: SettingViewModel) {
 }
 
 @Composable
-fun SettingAccountRow() {
+fun SettingAccountRow(viewModel: SettingViewModel) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .background(color = TmtmColorPalette.current.color_background)
@@ -125,7 +127,11 @@ fun SettingAccountRow() {
         ) {
             Text(text = "정은아", style = TmTypo.current.HeadLine6, color= TmtmColorPalette.current.color_text_headline_primary)
             TmMarginHorizontalSpacer(size = 4)
-            Text(text = stringResource(id = R.string.setting_my_info_edit_text), style = TmTypo.current.Body3, color= TmtmColorPalette.current.color_text_body_teritary)
+            Text(text = stringResource(id = R.string.setting_my_info_edit_text),
+                style = TmTypo.current.Body3,
+                color= TmtmColorPalette.current.color_text_body_teritary,
+                modifier = Modifier.clickable { viewModel.updateSettingStatus(SettingStatus.EDIT) }
+            )
         }
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_right_l ),

@@ -3,13 +3,11 @@ package com.teumteum.teumteum.presentation.mypage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMyPageBinding
-import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
@@ -31,11 +29,13 @@ class MyPageFragment :
         }
     }
 
-
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
             SettingStatus.SETTING -> {
-//               findNavController().navigate(R.id.action_settingFragment_to_signOutFragment)
+                findNavController().navigate(R.id.action_fragment_my_page_to_fragment_setting)
+            }
+            SettingStatus.RECOMMEND -> {
+                findNavController().navigate(R.id.action_fragment_my_page_to_fragment_recommend)
             }
             else -> {}
         }
