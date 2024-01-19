@@ -154,37 +154,37 @@ class SignUpActivity
     }
 
     private fun observer() {
-        viewModel.userInfoState.flowWithLifecycle(lifecycle)
-            .onEach {
-                when (it) {
+        lifecycleScope.launchWhenStarted {
+            viewModel.userInfoState.collect { state ->
+                when (state) {
                     is UserInfoUiState.Success -> {
                         splashViewModel.refreshUserInfo()
                     }
                     is UserInfoUiState.Failure -> {
-                        toast(it.msg)
+                        toast(state.msg)
                         finish()
-                    }
-                    else -> {
-                        Timber.tag("teum-login").d("userInfoState: ${it.toString()}")
-                    }
+                        }
+                    else -> {}
                 }
             }
+        }
     }
 
     private fun userInfoObserver() {
-        splashViewModel.myInfoState.flowWithLifecycle(lifecycle)
-            .onEach {
-                when (it) {
+        lifecycleScope.launchWhenStarted {
+            splashViewModel.myInfoState.collect { state ->
+                when (state) {
                     is MyInfoUiState.Success -> {
                         goToSignUpFinishActivity()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(it.msg)
+                        toast(state.msg)
                         finish()
                     }
                     else -> {}
                 }
             }
+        }
     }
 
     private fun registerUserInfo() {
