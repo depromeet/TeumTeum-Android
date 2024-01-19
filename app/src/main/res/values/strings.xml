@@ -140,6 +140,16 @@
 
     <string name="setting_ddabong_friend">님을 추천한 친구</string>
 
+    <string name="setting_dialog_logout">정말 로그아웃 하시겠습니까?</string>
+    <string name="setting_dialog_logout_btn1">취소</string>
+    <string name="setting_dialog_logout_btn2">로그아웃</string>
+
+    <string name="setting_dialog_cancel">참여를 정말 취소하시겠어요?</string>
+
+    <string name="setting_dialog_default" />
+    <string name="setting_dialog_cancel_btn1">돌아가기</string>
+    <string name="setting_dialog_cancel_btn2">취소할래요</string>
+
     <string name="setting_signout_title">탈퇴하는 이유가 무엇인가요?</string>
     <string name="setting_signout_btn1">선택 완료</string>
     <string name="setting_signout_title1">탈퇴하기 전에 확인해주세요</string>

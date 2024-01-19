@@ -57,18 +57,3 @@ val SignOutList = listOf(
     "기타"
 )
 
-
-fun getMemberSetting(): List<SettingUiItem> {
-    return listOf(
-        SettingUiItem(title = "약관 및 개인정보 처리 동의", onClick = { }),
-        SettingUiItem(title = "탈퇴하기", onClick = {  }),
-        SettingUiItem(title = "로그아웃", onClick = { })
-    )
-}
-
-fun getServiceGuide(): List<SettingUiItem> {
-    return listOf(
-        SettingUiItem(title = "서비스 이용약관", url = "https://sheer-billboard-d63.notion.site/KUSITMS-9e6619383bcd4ce68b6ba4b2b6ef0d40?pvs=4"),
-        SettingUiItem(title = "개인정보 처리방침", url = "https://sheer-billboard-d63.notion.site/24a4639559d4433cb89c8f1abb889726?pvs=4")
-    )
-}

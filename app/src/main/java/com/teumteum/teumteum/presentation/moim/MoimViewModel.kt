@@ -226,9 +226,7 @@ class MoimViewModel @Inject constructor(
                             numberOfRecruits = people.value,
                             meetingArea = meetingArea
                         )
-                    } else {
-                        null
-                    }
+                    } else { null }
                 }
                 Log.d("requestModel", requestModel.toString())
                 if (requestModel != null) {
