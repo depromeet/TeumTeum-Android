@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -349,7 +350,7 @@ class SignUpViewModel @Inject constructor(
                 id = 0L,
                 name = userName.value,
                 birth = combineDateStrings(),
-                characterId = characterId.value,
+                characterId = characterId.value.toLong(),
                 mannerTemperature = 36,
                 authenticated = provider,
                 activityArea = preferredArea.value,

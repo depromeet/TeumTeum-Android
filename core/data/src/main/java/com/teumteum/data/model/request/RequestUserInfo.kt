@@ -1,8 +1,6 @@
 package com.teumteum.data.model.request
 
-import com.teumteum.domain.entity.JobEntity
 import com.teumteum.domain.entity.UserInfo
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,12 +9,12 @@ data class RequestUserInfoWithOAuthId (
     val terms: AgreedTerms,
     val name: String,
     val birth: String,
-    val characterId: Int,
+    val characterId: Long,
     val authenticated: String,
     val activityArea: String,
     val mbti: String,
     val status: String,
-    @Contextual
+    @Serializable
     val job: JobEntity,
     val interests: List<String>,
     val goal: String
@@ -29,9 +27,7 @@ data class RequestUserInfoWithOAuthId (
     )
 }
 
-@Serializable
 data class RequestUserInfo(
-    @Contextual
     val userInfo: UserInfo,
     val oauthId: String,
     val serviceAgreed: Boolean,
@@ -39,7 +35,7 @@ data class RequestUserInfo(
 ) {
     fun getRequestUserInfoWithOAuthId()
     : RequestUserInfoWithOAuthId {
-        return RequestUserInfoWithOAuthId(
+        val result = RequestUserInfoWithOAuthId(
             id = oauthId,
             terms = RequestUserInfoWithOAuthId.AgreedTerms(serviceAgreed, privatePolicyAgreed),
             name = userInfo.name,
@@ -49,9 +45,17 @@ data class RequestUserInfo(
             activityArea = userInfo.activityArea,
             mbti = userInfo.mbti,
             status = userInfo.status,
-            job = userInfo.job,
+            job = JobEntity(userInfo.job.name, userInfo.job.jobClass, userInfo.job.detailClass),
             interests = userInfo.interests,
             goal = userInfo.goal
         )
+        return result
     }
 }
+
+@Serializable
+data class JobEntity(
+    val name: String?,
+    val `class`: String,
+    val detailClass: String
+)

@@ -16,8 +16,6 @@ class RemoteUserDataSource @Inject constructor(
     suspend fun postUserInfo(
         userInfo: RequestUserInfoWithOAuthId
     ): SignUpResult {
-        val result = service.postUserInfo(userInfo)
-//        Timber.tag("teum-login").d("result: ${result}")
-        return result
+        return service.postUserInfo(userInfo)
     }
 }

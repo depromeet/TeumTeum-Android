@@ -188,11 +188,18 @@ class SignUpActivity
     }
 
     private fun registerUserInfo() {
-        viewModel.postSignUp(
-            oauthId,
-            provider,
-            serviceAgreed = true,
-            privatePolicyAgreed = true)
+        if (provider == "kakao")
+            viewModel.postSignUp(
+                oauthId,
+                "카카오",
+                serviceAgreed = true,
+                privatePolicyAgreed = true)
+        else if (provider == "naver")
+            viewModel.postSignUp(
+                oauthId,
+                "네이버",
+                serviceAgreed = true,
+                privatePolicyAgreed = true)
     }
 
     private fun setProgressBar() {
