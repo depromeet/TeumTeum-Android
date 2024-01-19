@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +27,7 @@ import com.teumteum.base.R
 fun TmScaffold(
     topbarText: String = "",
     onClick: (() -> Unit)? = null,
+    isSetting: Boolean = false,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
@@ -61,6 +63,7 @@ fun TmScaffold(
                         Icon(
                             painter = painterResource(R.drawable.ic_arrow_left_l),
                             contentDescription = "Localized description",
+                            tint = if (isSetting) Color.Transparent else TmtmColorPalette.current.color_icon_level01,
                         )
                     }
                 },
@@ -69,8 +72,9 @@ fun TmScaffold(
                             onClick = { if (onClick != null) { onClick() } },
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_arrow_left_l),
+                                painter = painterResource(R.drawable.ic_setting),
                                 contentDescription = "Localized description",
+                                tint = if (isSetting) Color.Unspecified else Color.Transparent
                             )
                         }
                 }

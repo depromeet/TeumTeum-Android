@@ -19,7 +19,6 @@ class MyPageViewModel @Inject constructor(
     val sampleState: LiveData<UiState>
         get() = _sampleState
 
-
     fun getSample() {
         viewModelScope.launch {
             runCatching {
