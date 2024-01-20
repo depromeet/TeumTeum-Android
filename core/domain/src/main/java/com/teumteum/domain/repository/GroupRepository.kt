@@ -6,7 +6,7 @@ import java.io.File
 
 interface GroupRepository {
     suspend fun postGroupMoim(moimRequestModel:MoimRequestModel, imageFiles: List<File>): Result<Meeting>
-    suspend fun getSearchGroup(page: Int, keyword: String): Result<List<Meeting>>
+    suspend fun getSearchGroup(page: Int, keyword: String? = null, location: String? = null, topic: String? = null): Result<List<Meeting>>
     suspend fun postGroupJoin(meetingId: Long): Result<Meeting>
     suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean>
 }

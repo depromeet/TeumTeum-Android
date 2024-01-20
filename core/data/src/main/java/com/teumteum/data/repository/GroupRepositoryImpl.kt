@@ -33,14 +33,17 @@ class GroupRepositoryImpl @Inject constructor(
             dataSource.postMeeting(moimRequestBody, imageParts).toMeeting()
         }
     }
-    override suspend fun getSearchGroup(page: Int, keyword: String): Result<List<Meeting>> {
+
+    override suspend fun getSearchGroup(page: Int, keyword: String?, location: String?, topic: String?): Result<List<Meeting>> {
         return runCatching {
             dataSource.getGroups(
                 size = 20,
                 page = page,
-                sort = "id,desc",
+                sort = "promiseDateTime,desc",
                 isOpen = true,
-                searchWord = keyword
+                searchWord = keyword,
+                meetingAreaStreet = location,
+                topic = topic
             ).data.meetings.map { it.toMeeting() }
         }
     }
