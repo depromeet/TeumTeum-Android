@@ -120,6 +120,8 @@
     <string name="setting_pager1_go_to_moim">신청하기</string>
     <string name="setting_pager1_top2">참여 완료한 모임</string>
 
+    <string name="setting_topbar">설정</string>
+
     <string name="setting_service_guide_topbar">약관 및 개인정보 처리 동의</string>
     <string name="setting_service_guide_title1">서비스 이용 약관</string>
     <string name="setting_service_guide_title2">개인정보 처리 방침</string>

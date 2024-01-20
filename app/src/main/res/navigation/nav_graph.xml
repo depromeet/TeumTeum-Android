@@ -102,7 +102,13 @@
     <fragment
         android:id="@+id/fragment_signout"
         android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SignOutFragment"
-        android:label="SignOutFragment" />
+        android:label="SignOutFragment">
+
+        <action
+            android:id="@+id/action_fragment_signout_to_fragment_signout_confirm"
+            app:destination="@id/signOutConfrimFragment"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_edit_myinfo"
@@ -129,5 +135,10 @@
         android:id="@+id/fragment_service"
         android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.ServiceFragment"
         android:label="ServiceFragment" />
+
+    <fragment
+        android:id="@+id/signOutConfrimFragment"
+        android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SignOutConfirmFragment"
+        android:label="SignOutConfrimFragment" />
 
 </navigation>

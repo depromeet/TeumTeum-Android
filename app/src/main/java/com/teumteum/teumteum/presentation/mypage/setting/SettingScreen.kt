@@ -84,7 +84,7 @@ fun SettingScreen(viewModel: SettingViewModel) {
     }
 
     TmScaffold(
-        topbarText = stringResource(id = R.string.setting_service_guide_topbar),
+        topbarText = stringResource(id = R.string.setting_topbar),
         onClick = {
             viewModel.updateSettingStatus(SettingStatus.DEFAULT)
         }
@@ -138,7 +138,7 @@ fun SettingAccountRow(viewModel: SettingViewModel) {
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_right_l ),
             contentDescription = "right_arrow", tint= Color.Unspecified,
-            modifier = Modifier.size(20.dp)
+            modifier = Modifier.size(20.dp).clickable { viewModel.updateSettingStatus(SettingStatus.EDIT) }
         )
 
     }

@@ -23,11 +23,11 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
-@Preview
 @Composable
-fun EditMyInfoScreen() {
+fun EditMyInfoScreen(viewModel: SettingViewModel) {
     TmScaffold(
-        topbarText = stringResource(id = R.string.setting_my_info_edit_text)
+        topbarText = stringResource(id = R.string.setting_my_info_edit_text),
+        onClick = {viewModel.updateSettingStatus(SettingStatus.SETTING)}
     ) {
         Column(
             modifier = Modifier

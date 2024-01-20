@@ -20,9 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+
 
 @Composable
 fun TmDialog(
@@ -44,8 +46,7 @@ fun TmDialog(
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = CardDefaults.cardColors(
-                containerColor = TmtmColorPalette.current.elevation_color_elevation_level01,
-                contentColor = TmtmColorPalette.current.color_text_headline_primary
+                containerColor = TmtmColorPalette.current.elevation_color_elevation_level01
             )
         ) {
             Column(
@@ -71,8 +72,8 @@ fun TmDialog(
                             .weight(1f)
                             .height(56.dp),
                         onClick = onCancel,
-                        colors = ButtonDefaults.buttonColors(containerColor = cancelColor),
-                        border = BorderStroke(1.dp, cancelColor),
+                        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
+                        border = BorderStroke(1.dp, TmtmColorPalette.current.color_button_alternative),
                         shape = RoundedCornerShape(size = 4.dp)
                     ) {
                         Text(text = cancelText, style = TmTypo.current.HeadLine6, color = TmtmColorPalette.current.color_text_button_alternative)
@@ -85,7 +86,7 @@ fun TmDialog(
                         onClick = onOk,
                         colors = ButtonDefaults.buttonColors(containerColor = okColor),
                         border = BorderStroke(1.dp, okColor),
-                        shape = RoundedCornerShape(size = 12.dp)
+                        shape = RoundedCornerShape(size = 4.dp)
                     ) {
                         Text(text = okText, style = TmTypo.current.HeadLine6, color = TmtmColorPalette.current.color_text_button_primary_default)
                     }

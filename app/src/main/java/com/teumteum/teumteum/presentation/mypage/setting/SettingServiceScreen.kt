@@ -20,11 +20,11 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 
-@Preview
 @Composable
-fun SettingServiceScreen() {
+fun SettingServiceScreen(viewModel: SettingViewModel) {
     TmScaffold(
-        topbarText = stringResource(id = R.string.setting_service_guide_topbar)
+        topbarText = stringResource(id = R.string.setting_service_guide_topbar),
+        onClick = { viewModel.updateSettingStatus(SettingStatus.SETTING) }
     ) {
         Column(
             modifier = Modifier

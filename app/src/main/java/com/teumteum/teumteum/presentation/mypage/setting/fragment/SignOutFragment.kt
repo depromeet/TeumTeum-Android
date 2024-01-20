@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSignoutBinding
@@ -16,6 +18,12 @@ class SignOutFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.settingStatus.collect { status ->
+                handleSettingStatus(status)
+            }
+        }
+
         binding.composeSignout.setContent {
             SettingSignOutScreen(viewModel)
         }
@@ -25,6 +33,15 @@ class SignOutFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             viewModel.updateSettingStatus(SettingStatus.SETTING)
+
+        }
+    }
+    private fun handleSettingStatus(status: SettingStatus) {
+        when (status) {
+            SettingStatus.SETTING -> {
+                findNavController().popBackStack()
+            }
+            else -> {}
         }
     }
 

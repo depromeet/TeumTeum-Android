@@ -9,14 +9,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.FragmentSettingBinding
+import com.teumteum.teumteum.databinding.FragmentSignoutBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.setting.SettingScreen
+import com.teumteum.teumteum.presentation.mypage.setting.SettingSignOutConfirm
+import com.teumteum.teumteum.presentation.mypage.setting.SettingSignOutScreen
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 
-class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
+class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment_signout) {
     private val viewModel: SettingViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,21 +28,17 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
             }
         }
 
-        binding.composeSetting.setContent {
-            SettingScreen(viewModel)
+        binding.composeSignout.setContent {
+            SettingSignOutConfirm(viewModel = viewModel)
         }
 
     }
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
-        }
-    }
+            viewModel.updateSettingStatus(SettingStatus.SIGNOUT)
 
-    fun goMyPageScreen() {
-        findNavController().popBackStack()
-            (activity as MainActivity).showBottomNavi()
+        }
     }
 
     private fun navigateToSignInActivity() {
@@ -50,31 +47,15 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
         startActivity(intent)
         activity?.finish()
     }
-
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
-            SettingStatus.NOTION -> {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_service)
-                (activity as MainActivity).hideBottomNavi()
+            SettingStatus.SIGNOUT -> {
+                findNavController().popBackStack()
             }
-            SettingStatus.LOGOUT -> {
-                viewModel.handleDialogChange(status)
-            }
-            SettingStatus.LOGOUT_CONFIRM -> {
+            SettingStatus.SIGNOUT_CONFIRM -> {
                 (activity as MainActivity).hideBottomNavi()
                 navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
-            }
-            SettingStatus.SIGNOUT ->  {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_signout)
-                    (activity as MainActivity).hideBottomNavi()
-            }
-            SettingStatus.DEFAULT -> {
-                goMyPageScreen()
-            }
-            SettingStatus.EDIT -> {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_edit_myinfo)
-                (activity as MainActivity).hideBottomNavi()
             }
             else -> {}
         }
@@ -82,5 +63,4 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
 
     companion object {
     }
-
 }

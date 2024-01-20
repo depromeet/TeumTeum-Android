@@ -32,6 +32,7 @@ import com.teumteum.teumteum.R
 @Composable
 fun SettingSignOutConfirm(viewModel: SettingViewModel) {
     TmScaffold(
+        onClick = { viewModel.updateSettingStatus(SettingStatus.SIGNOUT)}
     ) {
         Column(
             modifier = Modifier
