@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data></data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:theme="@style/Theme.TeumTeum">
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/ta.headline.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="모두가 관심 있어 할 만\n주제를 골랐어요"
+            android:textColor="@color/text_headline_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            style="@style/ta.body.1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="20dp"
+            android:text="카드를 뒤집어 대화 주제 확인해 보세요."
+            android:textColor="@color/text_body_quaternary"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/tl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl"
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"
+            android:layout_marginBottom="40dp"
+            android:clickable="false"
+            android:contextClickable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabBackground="@drawable/sel_viewpager_dot"
+            app:tabGravity="center"
+            app:tabIndicatorGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMaxWidth="20dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
