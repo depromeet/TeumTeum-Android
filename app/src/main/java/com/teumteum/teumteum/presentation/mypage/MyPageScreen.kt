@@ -1,15 +1,20 @@
 package com.teumteum.teumteum.presentation.mypage
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import com.teumteum.teumteum.R
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -54,7 +60,6 @@ fun MyPageScreen(
         onClick = { viewModel.updateSettingStatus(SettingStatus.SETTING) },
         topbarText = topbarText
     ) {
-        val frontCardData = FrontCard()
         val list = listOf("내 모임", "받은 리뷰")
         val selectedTab = remember { mutableStateOf(list[0]) }
 
@@ -67,7 +72,16 @@ fun MyPageScreen(
         ) {
             item {
                 TmMarginVerticalSpacer(size = 78)
-                FrontCardView(frontCard = frontCardState)
+                Box {
+                    MyPageFrontCard(frontCard = frontCardState)
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_floating_edit),
+                        contentDescription = "Character Image",
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .offset(x = (-54).dp, y = (-22).dp)
+                    )
+                }
                 TmMarginVerticalSpacer(size = 22)
                 SettingBtn(viewModel)
                 TmMarginVerticalSpacer(size = 10)
@@ -97,6 +111,10 @@ fun MyPageScreen(
     }
 }
 
+@Composable
+fun MyPageFrontCard(frontCard: FrontCard) {
+    FrontCardView(frontCard = frontCard)
+}
 
 
 @Composable
