@@ -6,8 +6,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,8 +18,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -33,66 +29,17 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.VerticalPagerIndicator
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
+import com.teumteum.base.component.compose.theme.TmInputField
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 
-@Composable
-fun TmInputField(
-    @StringRes text:Int,
-    @StringRes text_error: Int? = null,
-    value:String = "",
-    onValueChange: (String) -> Unit = {},
-    isError:Boolean = false,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    modifier: Modifier = Modifier
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isFocused = interactionSource.collectIsFocusedAsState().value
-
-    OutlinedTextField(
-        modifier = modifier
-            .then(Modifier.fillMaxWidth())
-            .height(54.dp),
-        value = value,
-        onValueChange = onValueChange,
-        interactionSource = interactionSource,
-        placeholder = {
-            Text(
-                text= stringResource(text),
-                color= TmtmColorPalette.current.color_text_body_quinary,
-                style = TmTypo.current.Body1,
-            )
-        },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = TmtmColorPalette.current.color_text_body_primary,
-            focusedBorderColor = if(isError)TmtmColorPalette.current.color_outline_level01_error else TmtmColorPalette.current.color_background,
-            unfocusedBorderColor = if(isError) TmtmColorPalette.current.color_outline_level01_error else TmtmColorPalette.current.color_background,
-            unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
-            focusedLabelColor = TmtmColorPalette.current.color_text_body_primary,
-            cursorColor = TmtmColorPalette.current.TMTMBlue500,
-            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
-        ),
-        shape = RoundedCornerShape(4.dp),
-        visualTransformation = visualTransformation,
-
-    )
-    TmMarginVerticalSpacer(size = 8)
-    if (isError && text_error != null) {
-        Text(
-            text = stringResource(text_error),
-            color = TmtmColorPalette.current.Error300,
-            style = TmTypo.current.Caption2
-        )
-    }
-    TmMarginVerticalSpacer(size = 12)
-}
 
 @Preview
 @Composable
 fun EditCardScreen() {
-    TmScaffold(topbarText = stringResource(id = R.string.setting_topbar)){
+    TmScaffold(topbarText = stringResource(id = R.string.setting_edit_card_topbar)){
         val scrollState = rememberScrollState()
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -156,9 +103,7 @@ fun EditCardScreen() {
                     .fillMaxWidth()
                     .height(134.dp)
             )
-
         }
-
     }
 }
 
