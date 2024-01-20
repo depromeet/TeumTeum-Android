@@ -43,7 +43,7 @@ fun MyPageScreen(
     myPageViewModel: MyPageViewModel
 ) {
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
-
+    val frontCardState by myPageViewModel.frontCardState.collectAsState()
     val topbarText = when (userInfoState) {
         is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님의 소개서"
         else -> "로딩 중..."
@@ -58,9 +58,6 @@ fun MyPageScreen(
         val list = listOf("내 모임", "받은 리뷰")
         val selectedTab = remember { mutableStateOf(list[0]) }
 
-        when (userInfoState) {
-            is UserInfoUiState.Loading
-        }
 
         LazyColumn(
             modifier = Modifier
@@ -70,7 +67,7 @@ fun MyPageScreen(
         ) {
             item {
                 TmMarginVerticalSpacer(size = 78)
-                FrontCardView(frontCard = frontCardData)
+                FrontCardView(frontCard = frontCardState)
                 TmMarginVerticalSpacer(size = 22)
                 SettingBtn(viewModel)
                 TmMarginVerticalSpacer(size = 10)
