@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,19 +36,31 @@ import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 import com.teumteum.teumteum.util.custom.view.FrontCardView
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
-@Preview
+
 @Composable
 fun MyPageScreen(
-    viewModel: SettingViewModel = SettingViewModel(),
+    viewModel: SettingViewModel,
+    myPageViewModel: MyPageViewModel
 ) {
+    val userInfoState by myPageViewModel.userInfoState.collectAsState()
+
+    val topbarText = when (userInfoState) {
+        is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님의 소개서"
+        else -> "로딩 중..."
+    }
+
     TmScaffold(
         isSetting = true,
         onClick = { viewModel.updateSettingStatus(SettingStatus.SETTING) },
-        topbarText = "정은아님의 소개서"
+        topbarText = topbarText
     ) {
         val frontCardData = FrontCard()
         val list = listOf("내 모임", "받은 리뷰")
         val selectedTab = remember { mutableStateOf(list[0]) }
+
+        when (userInfoState) {
+            is UserInfoUiState.Loading
+        }
 
         LazyColumn(
             modifier = Modifier

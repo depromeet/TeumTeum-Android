@@ -96,7 +96,6 @@
             android:id="@+id/action_fragment_setting_to_fragment_service"
             app:destination="@id/fragment_service"/>
 
-
     </fragment>
 
     <fragment
