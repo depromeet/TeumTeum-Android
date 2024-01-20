@@ -4,6 +4,9 @@
     <style name="Theme.TeumTeum" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@color/background</item>
+
+        <item name="colorPrimary">@color/tmtm_blue_500</item>
+        <item name="colorAccent">@color/tmtm_blue_500</item>
         <!-- TEXT -->
         <!-- headline -->
         <item name="color_text_headline_primary">@color/text_headline_primary</item>
