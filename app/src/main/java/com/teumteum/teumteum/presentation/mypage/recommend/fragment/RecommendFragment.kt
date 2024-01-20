@@ -17,7 +17,7 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
         super.onViewCreated(view, savedInstanceState)
 
         binding.composeRecommend.setContent {
-            RecommendScreen()
+            RecommendScreen(viewModel)
         }
 
     }

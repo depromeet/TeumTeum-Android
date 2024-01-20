@@ -28,6 +28,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
+import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager3Content
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 import com.teumteum.teumteum.util.custom.view.FrontCardView
@@ -53,10 +54,11 @@ fun MyPageScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            TmMarginVerticalSpacer(size = 88)
+            TmMarginVerticalSpacer(size = 78)
             FrontCardView(frontCard =  frontCardData)
             TmMarginVerticalSpacer(size = 22)
             SettingBtn(viewModel)
+            TmMarginVerticalSpacer(size = 10)
             TmTabRow(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -73,7 +75,7 @@ fun MyPageScreen(
             when(selectedTab.value) {
                 "내 모임" -> MyPagePager1Content()
                 "받은 리뷰" -> MyPagePager2Content()
-                "북마크" -> MyPagePager
+                "북마크" -> MyPagePager3Content()
             }
         }
     }

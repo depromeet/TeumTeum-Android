@@ -48,15 +48,15 @@ fun SettingScreen(viewModel: SettingViewModel) {
     val cancelText = remember { mutableStateOf(context.getString(android.R.string.cancel)) }
     val currentEvent = remember { mutableStateOf(DialogEvent.DEFAULT) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel.dialogEvent) {
         viewModel.dialogEvent.collect { event ->
             when(event) {
                 DialogEvent.LOGOUT, DialogEvent.CANCEL -> {
+                    showDialog.value = true
                     dialogTitle.value = context.getString(event.getTitleResId())
                     okText.value = context.getString(event.getOkTextResId())
                     cancelText.value = context.getString(event.getCancelTextResId())
                     currentEvent.value = event
-                    showDialog.value = true
                 }
                 else -> showDialog.value = false
             }

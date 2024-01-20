@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.setting.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -13,6 +14,7 @@ import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.SettingScreen
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.signin.SignInActivity
 
 class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
     private val viewModel: SettingViewModel by activityViewModels()
@@ -42,6 +44,13 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
             (activity as MainActivity).showBottomNavi()
     }
 
+    private fun navigateToSignInActivity() {
+        val intent = Intent(requireContext(), SignInActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        activity?.finish()
+    }
+
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
             SettingStatus.NOTION -> {
@@ -52,7 +61,7 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
                 viewModel.handleDialogChange(status)
             }
             SettingStatus.LOGOUT_CONFIRM -> {
-                // 로그인 화면 이동
+                navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
             }
             SettingStatus.SIGNOUT ->  {

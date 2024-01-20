@@ -32,6 +32,7 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.Meeting
+import com.teumteum.teumteum.presentation.mypage.MeetingDummy1
 
 @Composable
 fun MeetingItem(meeting: Meeting) {
@@ -113,9 +114,9 @@ fun NoMoimItems(
         }
     }
 }
-
+@Preview
 @Composable
-fun myMoimItems(metting: Meeting) {
+fun MyMoimItems(metting: Meeting = MeetingDummy1) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)

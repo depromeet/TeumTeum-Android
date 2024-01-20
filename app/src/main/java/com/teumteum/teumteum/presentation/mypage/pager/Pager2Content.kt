@@ -30,14 +30,12 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.UserGrade
 import com.teumteum.teumteum.presentation.mypage.UserGradeDummy
 
-@Preview
 @Composable
 fun MyPagePager2Content() {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .wrapContentHeight(),
+            .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement =  Arrangement.Top
     ) {

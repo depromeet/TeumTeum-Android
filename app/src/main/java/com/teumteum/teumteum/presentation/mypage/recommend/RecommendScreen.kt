@@ -28,13 +28,15 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.mypage.Recommend
 import com.teumteum.teumteum.presentation.mypage.RecommendDummy
+import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
 
-@Preview
 @Composable
-fun RecommendScreen() {
+fun RecommendScreen(viewModel: SettingViewModel) {
     TmScaffold(
-        topbarText = "정은아님을 추천한 친구"
+        topbarText = "정은아님을 추천한 친구",
+        onClick = { viewModel.updateSettingStatus(SettingStatus.DEFAULT) }
     ) {
         Spacer(modifier = Modifier.height(68.dp))
             LazyColumn(

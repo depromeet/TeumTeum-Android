@@ -57,11 +57,15 @@ class SettingViewModel @Inject constructor(): ViewModel() {
     fun handleDialogChange(status: SettingStatus) {
         when (status) {
             SettingStatus.CANCEL -> {
-                _dialogEvent.tryEmit(DialogEvent.CANCEL)
+                viewModelScope.launch {
+                    _dialogEvent.emit(DialogEvent.CANCEL)
+                }
             }
 
             SettingStatus.LOGOUT -> {
-                _dialogEvent.tryEmit(DialogEvent.LOGOUT)
+                viewModelScope.launch {
+                    _dialogEvent.emit(DialogEvent.LOGOUT)
+                }
             }
 
             else -> {}
