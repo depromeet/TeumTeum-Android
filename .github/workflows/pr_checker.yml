@@ -41,12 +41,14 @@ jobs:
       - name: Access Local Properties
         env:
           base_url: ${{ secrets.BASE_URL }}
+          image_url: ${{ secrets.IMAGE_URL }}
           kakao_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
           naver_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
           kakao_api_key: ${{ secrets.KAKAO_API_KEY }}
           naver_api_key: ${{ secrets.NAVER_API_KEY }}
         run: |
           echo base.url=\"$base_url\" >> local.properties
+          echo image.url=\"$image_url\" >> local.properties
           echo kakao.redirect=\"$kakao_redirect_url\" >> local.properties
           echo naver.redirect=\"$naver_redirect_url\" >> local.properties
           echo kakao.key=\"$kakao_api_key\" >> local.properties

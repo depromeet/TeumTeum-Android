@@ -33,6 +33,11 @@ android {
                 "NAVER_API_KEY",
                 gradleLocalProperties(rootDir).getProperty("naver.key"),
             )
+            buildConfigField(
+                "String",
+                "IMAGE_URL",
+                gradleLocalProperties(rootDir).getProperty("image.url"),
+            )
         }
 
         release {
@@ -60,6 +65,12 @@ android {
                 "String",
                 "NAVER_API_KEY",
                 gradleLocalProperties(rootDir).getProperty("naver.key"),
+            )
+
+            buildConfigField(
+                "String",
+                "IMAGE_URL",
+                gradleLocalProperties(rootDir).getProperty("image.url"),
             )
         }
     }
