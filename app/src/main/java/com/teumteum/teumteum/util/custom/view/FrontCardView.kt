@@ -374,6 +374,13 @@ class FrontCardView : CardView {
         addView(imageView)
     }
 
+    /**
+     * 추가한 View들에 대한 터치 리스너
+     */
+    fun setClickListener(viewId: Int, listener: View.OnClickListener) {
+        findViewById<View>(viewId)?.setOnClickListener(listener)
+    }
+
     companion object {
         const val clCardFront = 0
         const val tvName = 1
