@@ -38,7 +38,7 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
 
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
-            SettingStatus.SETTING -> {
+            SettingStatus.DEFAULT -> {
                 findNavController().popBackStack()
             }
             else -> {}
