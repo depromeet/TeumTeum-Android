@@ -12,10 +12,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class TermsActivity
     : BindingActivity<ActivityTermsBinding>(R.layout.activity_terms) {
 
+    private var oauthId = ""
+    private var provider = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        getIdProvider()
         initView()
+    }
+
+    private fun getIdProvider() {
+        oauthId = intent.getStringExtra("oauthId").toString()
+        provider = intent.getStringExtra("provider").toString()
     }
 
     private fun initView() {
@@ -38,7 +47,10 @@ class TermsActivity
             }
             btnStart.setOnClickListener {
                 if (btnTermsAll.isSelected) {
-                    startActivity(Intent(this@TermsActivity, CardIntroActivity::class.java))
+                    val intent = Intent(this@TermsActivity, CardIntroActivity::class.java)
+                    intent.putExtra("oauthId", oauthId)
+                    intent.putExtra("provider", provider)
+                    startActivity(intent)
                 }
             }
         }

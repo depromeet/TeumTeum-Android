@@ -6,6 +6,7 @@
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -29,11 +30,6 @@
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
@@ -62,13 +58,19 @@
             android:exported="false" />
         <activity android:name=".presentation.group.join.GroupMeetCheckActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
-            android:exported="false" />
         <activity android:name=".presentation.signup.finish.SignUpFinishActivity"
             android:exported="false" />
+        <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
+            android:exported="false" />
         <activity android:name=".presentation.splash.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".presentation.signin.SocialWebViewActivity"
+            android:exported="false" />
 
     </application>
 

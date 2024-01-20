@@ -7,80 +7,77 @@
     </string-array>
 
     <string-array name="seoul_areas">
-        <item>서울 전체</item>
-        <item>강남</item>
-        <item>강동</item>
-        <item>강북</item>
-        <item>강서</item>
-        <item>관악</item>
-        <item>광진</item>
-        <item>구로</item>
-        <item>금천</item>
-        <item>노원</item>
-        <item>도봉</item>
-        <item>동대문</item>
-        <item>동작</item>
-        <item>마포</item>
-        <item>서대문</item>
-        <item>서초</item>
-        <item>성동</item>
-        <item>성북</item>
-        <item>송파</item>
-        <item>양천</item>
-        <item>영등포</item>
-        <item>용산</item>
-        <item>은평</item>
-        <item>종로</item>
+        <item>강남구</item>
+        <item>강동구</item>
+        <item>강북구</item>
+        <item>강서구</item>
+        <item>관악구</item>
+        <item>광진구</item>
+        <item>구로구</item>
+        <item>금천구</item>
+        <item>노원구</item>
+        <item>도봉구</item>
+        <item>동대문구</item>
+        <item>동작구</item>
+        <item>마포구</item>
+        <item>서대문구</item>
+        <item>서초구</item>
+        <item>성동구</item>
+        <item>성북구</item>
+        <item>송파구</item>
+        <item>양천구</item>
+        <item>영등포구</item>
+        <item>용산구</item>
+        <item>은평구</item>
+        <item>종로구</item>
         <item>중구</item>
-        <item>중랑</item>
+        <item>중랑구</item>
     </string-array>
 
     <string-array name="gyeonggi_areas">
-        <item>경기 전체</item>
-        <item>수원</item>
-        <item>성남</item>
-        <item>고양</item>
-        <item>용인</item>
-        <item>부천</item>
-        <item>안산</item>
-        <item>안양</item>
-        <item>남양주</item>
-        <item>화성</item>
-        <item>의정부</item>
-        <item>시흥</item>
-        <item>평택</item>
-        <item>광명</item>
-        <item>파주</item>
-        <item>군포</item>
-        <item>광주</item>
-        <item>김포</item>
-        <item>이천</item>
-        <item>양주</item>
-        <item>구리</item>
-        <item>오산</item>
-        <item>안성</item>
-        <item>의왕</item>
-        <item>하남</item>
-        <item>포천</item>
-        <item>동두천</item>
-        <item>과천</item>
-        <item>여주</item>
-        <item>양평</item>
-        <item>가평</item>
-        <item>연천</item>
+        <item>수원시</item>
+        <item>성남시</item>
+        <item>고양시</item>
+        <item>용인시</item>
+        <item>부천시</item>
+        <item>안산시</item>
+        <item>안양시</item>
+        <item>남양주시</item>
+        <item>화성시</item>
+        <item>의정부시</item>
+        <item>시흥시</item>
+        <item>평택시</item>
+        <item>광명시</item>
+        <item>파주시</item>
+        <item>군포시</item>
+        <item>광주시</item>
+        <item>김포시</item>
+        <item>이천시</item>
+        <item>양주시</item>
+        <item>구리시</item>
+        <item>오산시</item>
+        <item>안성시</item>
+        <item>의왕시</item>
+        <item>하남시</item>
+        <item>포천시</item>
+        <item>동두천시</item>
+        <item>과천시</item>
+        <item>여주시</item>
+        <item>양평군</item>
+        <item>가평군</item>
+        <item>연천군</item>
     </string-array>
 
     <string-array name="incheon_areas">
-        <item>인천 전체</item>
-        <item>강화</item>
-        <item>계양</item>
-        <item>남동</item>
+        <item>강화군</item>
+        <item>계양구</item>
+        <item>남동구</item>
         <item>동구</item>
-        <item>미추홀</item>
-        <item>부평</item>
+        <item>미추홀구</item>
+        <item>부평구</item>
         <item>서구</item>
-        <item>옹진</item>
-        <item>연수</item>
+        <item>옹진군</item>
+        <item>연수구</item>
     </string-array>
 
     <string-array name="community_status">

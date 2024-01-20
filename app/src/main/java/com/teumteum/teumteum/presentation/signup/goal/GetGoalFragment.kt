@@ -44,7 +44,7 @@ class GetGoalFragment
     private fun checkValidInput() {
         lifecycleScope.launch {
             viewModel.goalText.collect { goal ->
-                if (goal.trim().length <= 50)
+                if (goal.trim().length in 1..50)
                     (activity as SignUpActivity).activateNextButton()
                 else
                     (activity as SignUpActivity).disableNextButton()
