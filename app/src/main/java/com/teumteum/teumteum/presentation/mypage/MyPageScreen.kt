@@ -12,6 +12,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,14 +27,15 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
+import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 import com.teumteum.teumteum.util.custom.view.FrontCardView
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
-
+@Preview
 @Composable
 fun MyPageScreen(
-    viewModel: SettingViewModel,
+    viewModel: SettingViewModel = SettingViewModel(),
 ) {
     TmScaffold(
         isSetting = true,
@@ -42,7 +45,7 @@ fun MyPageScreen(
         val scrollState = rememberScrollState()
         val frontCardData = FrontCard()
         val list = listOf("내 모임", "받은 리뷰", "북마크")
-        val selectedList = listOf("")
+        val selectedTab = remember { mutableStateOf(list[0]) }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,15 +57,24 @@ fun MyPageScreen(
             FrontCardView(frontCard =  frontCardData)
             TmMarginVerticalSpacer(size = 22)
             SettingBtn(viewModel)
-            TmMarginVerticalSpacer(size = 5)
             TmTabRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(46.dp),
                 tabItemList =list,
-                tabContent = { TmTabItem(text = it, isSelected = true) }
+                tabContent = { item ->
+                    TmTabItem(
+                        text = item,
+                        isSelected = item == selectedTab.value,
+                        onSelect = { selectedTab.value = item}
+                    )
+                }
             )
-            MyPagePager1Content()
+            when(selectedTab.value) {
+                "내 모임" -> MyPagePager1Content()
+                "받은 리뷰" -> MyPagePager2Content()
+                "북마크" -> MyPagePager
+            }
         }
     }
 }
@@ -100,7 +112,7 @@ fun FrontCardView(frontCard: FrontCard) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .height(420.dp)
+            .height(400.dp)
             .padding(horizontal = 40.dp)
     )
 }

@@ -40,7 +40,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 
 
 @Composable
-fun SettingScreen(viewModel: SettingViewModel, onClick: () -> Unit) {
+fun SettingScreen(viewModel: SettingViewModel) {
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
     val dialogTitle = remember { mutableStateOf(context.getString(R.string.setting_dialog_default)) }
@@ -85,7 +85,9 @@ fun SettingScreen(viewModel: SettingViewModel, onClick: () -> Unit) {
 
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_service_guide_topbar),
-        onClick = { onClick() }
+        onClick = {
+            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
+        }
     ){
         Column(
             modifier = Modifier

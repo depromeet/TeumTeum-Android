@@ -1,12 +1,10 @@
 package com.teumteum.teumteum.presentation.mypage.setting
 
-import android.app.Application
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.SettingUiItem
-import dagger.hilt.android.internal.Contexts.getApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -115,7 +113,7 @@ fun getServiceGuide(): List<SettingUiItem> {
 
 
 enum class SettingStatus {
-    LOGOUT, LOGOUTCONFIRM, SIGNOUT, SIGNOUTCONFIRM,  DEFAULT, NOTION, ERROR, SETTING, EDIT, CANCEL, RECOMMEND
+    LOGOUT, LOGOUT_CONFIRM, SIGNOUT, SIGNOUT_CONFIRM,  DEFAULT, NOTION, ERROR, SETTING, EDIT, CANCEL, RECOMMEND, RECOMMEND_DETAIL
 }
 
 enum class DialogEvent {

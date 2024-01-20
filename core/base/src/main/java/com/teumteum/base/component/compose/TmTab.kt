@@ -45,18 +45,13 @@ fun <T> TmTabRow(
 fun TmTabItem(
     text: String,
     isSelected: Boolean = true,
-    onSelect: (()-> Unit)? = null
+    onSelect: ()-> Unit
 ){
     Box(
         modifier = Modifier
             .height(48.dp)
             .fillMaxWidth()
-            .clickable {
-                if (onSelect != null) {
-                    onSelect()
-                }
-            }
-
+            .clickable { onSelect() }
     ){
         Text(
             modifier = Modifier.align(Alignment.Center).padding(horizontal = 12.dp),

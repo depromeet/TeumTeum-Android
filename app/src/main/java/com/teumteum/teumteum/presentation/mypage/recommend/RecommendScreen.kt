@@ -34,7 +34,7 @@ import com.teumteum.teumteum.presentation.mypage.RecommendDummy
 @Composable
 fun RecommendScreen() {
     TmScaffold(
-        topbarText = "디프만님을 추천한 친구"
+        topbarText = "정은아님을 추천한 친구"
     ) {
         Spacer(modifier = Modifier.height(68.dp))
             LazyColumn(

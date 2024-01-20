@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMyPageBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
@@ -33,9 +34,11 @@ class MyPageFragment :
         when (status) {
             SettingStatus.SETTING -> {
                 findNavController().navigate(R.id.action_fragment_my_page_to_fragment_setting)
+                    (activity as MainActivity).hideBottomNavi()
             }
             SettingStatus.RECOMMEND -> {
                 findNavController().navigate(R.id.action_fragment_my_page_to_fragment_recommend)
+                    (activity as MainActivity).hideBottomNavi()
             }
             else -> {}
         }
