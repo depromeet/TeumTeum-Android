@@ -41,7 +41,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
             btnE.isSelected = extrovert
             btnI.isSelected = !extrovert
         }
-        mbtiText[0] = if (extrovert) 'e' else 'i'
+        mbtiText[0] = if (extrovert) 'E' else 'I'
     }
 
     private fun setIntuitive(intuitive: Boolean) {
@@ -49,7 +49,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
             btnN.isSelected = intuitive
             btnS.isSelected = !intuitive
         }
-        mbtiText[1] = if (intuitive) 'n' else 's'
+        mbtiText[1] = if (intuitive) 'N' else 'S'
     }
 
     private fun setFeeler(feeler: Boolean) {
@@ -59,7 +59,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
             btnT.isSelected = !feeler
         }
         Log.d("teum-mbti", "check: ${binding.btnF.isSelected} ${binding.btnT.isSelected}")
-        mbtiText[2] = if (feeler) 'f' else 't'
+        mbtiText[2] = if (feeler) 'F' else 'T'
     }
 
     private fun setPerceiver(perceiver: Boolean) {
@@ -67,7 +67,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
             btnP.isSelected = perceiver
             btnJ.isSelected = !perceiver
         }
-        mbtiText[3] = if (perceiver) 'p' else 'j'
+        mbtiText[3] = if (perceiver) 'P' else 'J'
     }
 
     fun initMbti() {

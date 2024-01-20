@@ -2,6 +2,8 @@ plugins {
     id("java-library")
     kotlin("jvm")
     kotlin("kapt")
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.6.10"
+
 }
 
 java {

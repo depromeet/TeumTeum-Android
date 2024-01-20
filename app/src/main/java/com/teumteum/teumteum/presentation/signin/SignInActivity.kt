@@ -20,19 +20,22 @@ class SignInActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        splashViewModel.setIsFirstAfterInstall(false)
         setClickListener()
     }
 
     private fun setClickListener() {
         with(binding) {
             btnKakao.setOnClickListener {
-                startActivity(Intent(this@SignInActivity, TermsActivity::class.java))
-                finish()
+                val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
+                intent.putExtra("provider", "kakao")
+                startActivity(intent)
             }
 
             btnNaver.setOnClickListener {
-                startActivity(Intent(this@SignInActivity, TermsActivity::class.java))
-                finish()
+                val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
+                intent.putExtra("provider", "naver")
+                startActivity(intent)
             }
         }
     }

@@ -21,6 +21,10 @@ class TeumTeumDataStoreImpl @Inject constructor(
         get() = userPref.getBoolean(PREF_IS_LOGIN, false)
         set(value) = userPref.edit { putBoolean(PREF_IS_LOGIN, value) }
 
+    override var isFirstAfterInstall: Boolean
+        get() = userPref.getBoolean(PREF_IS_FIRST_AFTER_INSTALL, true)
+        set(value) = userPref.edit { putBoolean(PREF_IS_FIRST_AFTER_INSTALL, value)}
+
     override var userInfo: String
         get() = userPref.getString(PREF_USER_INFO, "") ?: ""
         set(value) = userPref.edit { putString(PREF_USER_INFO, value) }
@@ -32,5 +36,6 @@ class TeumTeumDataStoreImpl @Inject constructor(
         private const val PREF_REFRESH_TOKEN = "REFRESH_TOKEN"
         private const val PREF_IS_LOGIN = "IS_LOGIN"
         private const val PREF_USER_INFO = "USER_INFO"
+        private const val PREF_IS_FIRST_AFTER_INSTALL = "IS_FIRST_AFTER_INSTALL"
     }
 }

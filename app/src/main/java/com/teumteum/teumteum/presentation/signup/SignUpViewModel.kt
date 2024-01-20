@@ -1,8 +1,11 @@
 package com.teumteum.teumteum.presentation.signup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teumteum.domain.entity.JobEntity
+import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.repository.AuthRepository
+import com.teumteum.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -10,11 +13,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-//    private val authRepository: AuthRepository,
+    private val repository: UserRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _signUpProgress = MutableStateFlow<SignUpProgress>(SignUpProgress.Character)
@@ -28,7 +34,6 @@ class SignUpViewModel @Inject constructor(
 
     fun updateCharacterId(characterId: Int) {
         _characterId.value = characterId
-        Log.d("teum-card", "characterId updated $characterId")
     }
 
     private val _userName = MutableStateFlow<String>("")
@@ -145,10 +150,8 @@ class SignUpViewModel @Inject constructor(
         preferredCity,
         preferredStreet
     ) { preferredCity, preferredStreet ->
-        if (preferredStreet.isNotBlank() && preferredCity.isNotBlank()) {
-            if (preferredStreet.split(" ").last().equals("전체")) preferredStreet
-            else "$preferredCity $preferredStreet"
-        }
+        if (preferredStreet.isNotBlank() && preferredCity.isNotBlank())
+            "$preferredCity $preferredStreet"
         else ""
     }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, "")
 
@@ -279,6 +282,86 @@ class SignUpViewModel @Inject constructor(
         _currentStep.value = previousStep.coerceAtLeast(0)
     }
 
+    private var _userInfoState = MutableStateFlow<UserInfoUiState>(UserInfoUiState.Init)
+    val userInfoState: StateFlow<UserInfoUiState> = _userInfoState.asStateFlow()
+
+    fun postSignUp(oauthId: String, provider: String, serviceAgreed: Boolean, privatePolicyAgreed: Boolean) {
+        val userInfo = getUserInfo(provider)
+        if (userInfo == null) {
+            _userInfoState.value = UserInfoUiState.Failure("유저 정보 만들기 실패")
+        }
+        else {
+            viewModelScope.launch {
+                repository.postUserInfo(
+                    userInfo, oauthId, serviceAgreed, privatePolicyAgreed
+                )
+                    .onSuccess {
+                        // setAutoLogin에 회원가입 이후 유저토큰 전달
+                        authRepository.setAutoLogin(it.accessToken, it.refreshToken)
+                        // userInfo에 임시로 넣어뒀던 아이디 -> 서버에서 받은 id 값으로 변경 -> 필요 시 사용
+                        // it.id로 아이디 사용해서 내 정보 얻어오기
+                        _userInfoState.value = UserInfoUiState.Success
+                    }
+                    .onFailure {
+                        _userInfoState.value = UserInfoUiState.Failure("유저 정보 업로드 실패")
+                    }
+            }
+        }
+    }
+
+    private fun combineDateStrings(): String {
+        // 숫자를 두 자리로 맞추기 위해 %02d 형식을 사용
+        val formattedMonth = String.format("%02d", birthMonth.value.toInt())
+        val formattedDate = String.format("%02d", birthDate.value.toInt())
+
+        // "YYYYMMDD" 형태의 문자열로 합치기
+        val combinedString = "${birthYear.value.toInt()}$formattedMonth$formattedDate"
+
+        return combinedString
+    }
+
+    private fun getUserInfo(provider: String): UserInfo? {
+        val jobEntity =
+            when (community.value) {
+                COMMUNITY_WORKER -> JobEntity(
+                    companyName.value,
+                    jobClass.value,
+                    jobDetailClass.value
+                )
+                COMMUNITY_STUDENT -> JobEntity(
+                    schoolName.value,
+                    readyJobClass.value,
+                    readyJobDetailClass.value
+                )
+                COMMUNITY_TRAINEE -> JobEntity(
+                    null,
+                    readyJobClass.value,
+                    readyJobDetailClass.value
+                )
+                else -> null
+            }
+
+        val interests = ArrayList<String>()
+        interests.addAll(interestField.value)
+        interests.addAll(interestSelf.value)
+
+        return if (jobEntity != null) {
+            UserInfo(
+                id = 0L,
+                name = userName.value,
+                birth = combineDateStrings(),
+                characterId = characterId.value.toLong(),
+                mannerTemperature = 36,
+                authenticated = provider,
+                activityArea = preferredArea.value,
+                mbti =  mbtiText.value,
+                status = community.value,
+                goal = goalText.value,
+                job = jobEntity,
+                interests = interests)
+        } else null
+    }
+
     companion object {
         private const val REGEX_ID_PATTERN = "^([A-Za-z0-9_.]*)\$"
         private const val COMMUNITY_WORKER = "직장인"
@@ -290,4 +373,10 @@ class SignUpViewModel @Inject constructor(
 enum class SignUpProgress {
     Character, Name, Birthday, Community, CurrentJob, School, ReadyJob, Area, Mbti, Interests, Goal,
     Complete, Fix
+}
+
+sealed interface UserInfoUiState {
+    object Init: UserInfoUiState
+    object Success: UserInfoUiState
+    data class Failure(val msg: String): UserInfoUiState
 }

@@ -54,10 +54,10 @@ class GetMbtiFragment:
         val mbtiBoolean = BooleanArray(4)
         val mbtiCharArray = viewModel.mbtiText.value.toCharArray()
         if (mbtiCharArray.size == 4) {
-            mbtiBoolean[0] = mbtiCharArray[0] == 'e'
-            mbtiBoolean[1] = mbtiCharArray[1] == 'n'
-            mbtiBoolean[2] = mbtiCharArray[2] == 'f'
-            mbtiBoolean[3] = mbtiCharArray[3] == 'p'
+            mbtiBoolean[0] = mbtiCharArray[0] == 'E'
+            mbtiBoolean[1] = mbtiCharArray[1] == 'N'
+            mbtiBoolean[2] = mbtiCharArray[2] == 'F'
+            mbtiBoolean[3] = mbtiCharArray[3] == 'P'
             bottomSheet?.setSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
         }
         else bottomSheet?.initMbti()
