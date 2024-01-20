@@ -1,9 +1,7 @@
 package com.teumteum.data.model.request
 
 import com.teumteum.domain.entity.MeetingArea
-import com.teumteum.domain.entity.MoimRequestModel
-import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
+import com.teumteum.domain.entity.MoimEntity
 import java.time.format.DateTimeFormatter
 
 data class RequestMoim(
@@ -15,7 +13,7 @@ data class RequestMoim(
     val meetingArea: MeetingArea,
 )
 
-fun MoimRequestModel.toBody() =
+fun MoimEntity.toBody() =
     RequestMoim(
         topic,
         title,

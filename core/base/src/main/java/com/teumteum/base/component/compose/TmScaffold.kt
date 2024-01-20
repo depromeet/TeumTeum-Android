@@ -53,8 +53,8 @@ fun TmScaffold(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = TmtmColorPalette.current.color_background,
                     titleContentColor = TmtmColorPalette.current.color_text_headline_primary,
-                    navigationIconContentColor = TmtmColorPalette.current.color_icon_level01,
-                    actionIconContentColor = TmtmColorPalette.current.color_background
+                    navigationIconContentColor = TmtmColorPalette.current.color_text_headline_primary,
+                    actionIconContentColor = TmtmColorPalette.current.color_icon_level01
                 ),
                 navigationIcon = {
                     IconButton(

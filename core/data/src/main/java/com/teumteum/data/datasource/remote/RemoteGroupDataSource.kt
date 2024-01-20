@@ -1,10 +1,8 @@
 package com.teumteum.data.datasource.remote
 
-import com.teumteum.data.model.request.RequestMoim
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
 import com.teumteum.data.service.GroupService
-import com.teumteum.domain.entity.MoimRequestModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject

@@ -12,7 +12,6 @@ interface UserRepository {
         ): Result<SignUpResult>
 
     suspend fun getMyInfoFromServer(): Result<UserInfo>
-
     fun saveUserInfo(userInfo: UserInfo)
     fun getUserInfo(): UserInfo?
 }
