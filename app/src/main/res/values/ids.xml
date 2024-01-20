@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="cl" type="id"/>
+    <item name="tvName" type="id"/>
+    <item name="tvCompany" type="id"/>
+    <item name="tvJob" type="id"/>
+    <item name="tvLevel" type="id"/>
+    <item name="tvArea" type="id"/>
+    <item name="tvMbti" type="id"/>
+    <item name="ivCharacter" type="id"/>
+    <item name="ivFloat" type="id"/>
+    <item name="ivEditName" type="id"/>
+    <item name="ivEditCompany" type="id"/>
+    <item name="ivEditJob" type="id"/>
+    <item name="ivEditArea" type="id"/>
+</resources>
