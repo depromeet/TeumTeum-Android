@@ -1,5 +1,6 @@
 package com.teumteum.data.model.response
 
+import com.teumteum.data.BuildConfig.IMAGE_URL
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.entity.MeetingArea
 import kotlinx.serialization.Serializable
@@ -29,7 +30,10 @@ data class ResponseMeeting(
     val topic: String
 ) {
     fun toMeeting(): Meeting {
-        return Meeting(id, hostId, topic, title, introduction, photoUrls, promiseDateTime)
+        val photoUrlList = photoUrls.map {
+            IMAGE_URL + it
+        }
+        return Meeting(id, hostId, topic, title, introduction, photoUrlList, promiseDateTime)
     }
 }
 

@@ -10,12 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@color/grey_50"
-        android:fontFamily="@font/pretendard_medium"
-        android:paddingHorizontal="6dp"
-        android:paddingVertical="4dp"
-        android:textColor="@color/grey_700"
-        android:textSize="10sp"
+        android:background="@drawable/shape_elevation_level2_4dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="2dp"
+        android:textAppearance="@style/ta.body.3"
+        android:textColor="@color/text_body_secondary"
         app:layout_constraintStart_toStartOf="@id/tv_group_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="모각일" />
@@ -26,10 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/pretendard_medium"
-        android:textColor="@color/grey_black"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/ta.headline.6"
+        android:textColor="@color/text_headline_primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_badge"
         tools:text="모여서 각자 일하기!" />
@@ -40,23 +37,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="20dp"
-        android:textColor="@color/grey_700"
-        android:textSize="11sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/ta.body.3"
+        android:textColor="@color/text_body_teritary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_group_name"
         app:layout_constraintTop_toBottomOf="@id/tv_group_name"
         tools:text="12월 10일 오후 7:00" />
 
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/grey_500"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.6">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+    </androidx.cardview.widget.CardView>
 
     <View
         android:id="@+id/view_division_button"
