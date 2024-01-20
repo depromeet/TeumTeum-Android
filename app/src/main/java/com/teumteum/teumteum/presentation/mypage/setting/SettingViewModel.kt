@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.mypage.setting
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.SettingUiItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -100,10 +101,10 @@ class SettingViewModel @Inject constructor(): ViewModel() {
 }
 
 
-fun getMemberSetting(viewModel: SettingViewModel): List<SettingUiItem> {
+fun getMemberSetting(viewModel: SettingViewModel, navController: NavController): List<SettingUiItem> {
     return listOf(
-        SettingUiItem(title = "약관 및 개인정보 처리 동의", onClick = { viewModel.updateSettingStatus(SettingStatus.NOTION) }),
-        SettingUiItem(title = "탈퇴하기", onClick = { viewModel.updateSettingStatus(SettingStatus.SIGNOUT) }),
+        SettingUiItem(title = "약관 및 개인정보 처리 동의", onClick = { navController.navigate(R.id.fragment_service) }),
+        SettingUiItem(title = "탈퇴하기", onClick = { navController.navigate(R.id.fragment_signout) }),
         SettingUiItem(title = "로그아웃", onClick = { viewModel.updateSettingStatus(SettingStatus.LOGOUT) })
     )
 }

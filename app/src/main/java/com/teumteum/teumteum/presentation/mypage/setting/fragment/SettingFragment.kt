@@ -21,27 +21,26 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as MainActivity).hideBottomNavi()
+
         lifecycleScope.launchWhenStarted {
             viewModel.settingStatus.collect { status ->
                 handleSettingStatus(status)
             }
         }
 
+        val navController = findNavController()
+
         binding.composeSetting.setContent {
-            SettingScreen(viewModel)
+            SettingScreen(viewModel, navController)
         }
 
     }
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
-        }
-    }
-
-    fun goMyPageScreen() {
-        findNavController().popBackStack()
             (activity as MainActivity).showBottomNavi()
+        }
     }
 
     private fun navigateToSignInActivity() {
@@ -53,10 +52,6 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
 
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
-            SettingStatus.NOTION -> {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_service)
-                (activity as MainActivity).hideBottomNavi()
-            }
             SettingStatus.LOGOUT -> {
                 viewModel.handleDialogChange(status)
             }
@@ -64,17 +59,6 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
                 (activity as MainActivity).hideBottomNavi()
                 navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
-            }
-            SettingStatus.SIGNOUT ->  {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_signout)
-                    (activity as MainActivity).hideBottomNavi()
-            }
-            SettingStatus.DEFAULT -> {
-                goMyPageScreen()
-            }
-            SettingStatus.EDIT -> {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_edit_myinfo)
-                (activity as MainActivity).hideBottomNavi()
             }
             else -> {}
         }

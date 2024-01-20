@@ -19,31 +19,26 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingStatus.collect { status ->
-                handleSettingStatus(status)
-            }
-        }
+        val navController = findNavController()
+        (activity as MainActivity).hideBottomNavi()
+
         binding.composeRecommend.setContent {
-            RecommendScreen(viewModel)
+            RecommendScreen(viewModel, navController)
         }
 
     }
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
+            (activity as MainActivity).showBottomNavi()
         }
     }
 
-    private fun handleSettingStatus(status: SettingStatus) {
-        when (status) {
-            SettingStatus.DEFAULT -> {
-                findNavController().popBackStack()
-            }
-            else -> {}
-        }
+    fun goMyPageScreen() {
+        findNavController().popBackStack()
+        (activity as MainActivity).showBottomNavi()
     }
+
 
     companion object {
     }

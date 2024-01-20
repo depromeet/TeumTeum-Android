@@ -130,7 +130,7 @@
         android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragment"
         android:label="RecommendFragment">
         <action
-            android:id="@+id/action_fragment_my_page_to_fragment_recommend_detail"
+            android:id="@+id/action_fragment_recommend_to_fragment_recommend_detail"
             app:destination="@id/fragment_recommend_detail" />
 
     </fragment>

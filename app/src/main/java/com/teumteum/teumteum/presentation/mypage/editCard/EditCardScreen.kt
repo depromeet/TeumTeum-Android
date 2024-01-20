@@ -33,13 +33,20 @@ import com.teumteum.base.component.compose.theme.TmInputField
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
-
-@Preview
 @Composable
-fun EditCardScreen() {
-    TmScaffold(topbarText = stringResource(id = R.string.setting_edit_card_topbar)){
+fun EditCardScreen(
+    MyPageViewModel: MyPageViewModel,
+    viewModel: SettingViewModel
+) {
+    TmScaffold(
+        topbarText = stringResource(id = R.string.setting_edit_card_topbar),
+        onClick = { viewModel.updateSettingStatus(SettingStatus.DEFAULT) }
+    ){
+
         val scrollState = rememberScrollState()
         Column(modifier = Modifier
             .fillMaxWidth()

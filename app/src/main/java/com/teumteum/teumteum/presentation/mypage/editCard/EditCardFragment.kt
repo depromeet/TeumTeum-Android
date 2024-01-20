@@ -11,11 +11,13 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
 class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragment_edit_card) {
     private val viewModel: SettingViewModel by activityViewModels()
+    private val myPageViewModel: MyPageViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -26,7 +28,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         }
 
         binding.composeEditCard.setContent {
-            EditCardScreen()
+            EditCardScreen(myPageViewModel, viewModel)
         }
 
     }

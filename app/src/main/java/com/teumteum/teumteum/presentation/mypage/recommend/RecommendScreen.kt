@@ -19,13 +19,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.Recommend
 import com.teumteum.teumteum.presentation.mypage.RecommendDummy
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
@@ -33,10 +36,14 @@ import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
 
 @Composable
-fun RecommendScreen(viewModel: SettingViewModel) {
+fun RecommendScreen(viewModel: SettingViewModel, navController: NavController) {
+    val activity = LocalContext.current as? MainActivity
     TmScaffold(
         topbarText = "정은아님을 추천한 친구",
-        onClick = { viewModel.updateSettingStatus(SettingStatus.DEFAULT) }
+        onClick = {
+            navController.popBackStack()
+            activity?.showBottomNavi()
+        }
     ) {
         Spacer(modifier = Modifier.height(68.dp))
             LazyColumn(

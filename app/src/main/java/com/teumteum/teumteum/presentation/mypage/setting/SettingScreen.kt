@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmDialog
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -37,16 +38,18 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.MainActivity
 
 
 @Composable
-fun SettingScreen(viewModel: SettingViewModel) {
+fun SettingScreen(viewModel: SettingViewModel, navController: NavController) {
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
     val dialogTitle = remember { mutableStateOf(context.getString(R.string.setting_dialog_default)) }
     val okText = remember { mutableStateOf(context.getString(android.R.string.ok)) }
     val cancelText = remember { mutableStateOf(context.getString(android.R.string.cancel)) }
     val currentEvent = remember { mutableStateOf(DialogEvent.DEFAULT) }
+    val activity = LocalContext.current as? MainActivity
 
     LaunchedEffect(viewModel.dialogEvent) {
         viewModel.dialogEvent.collect { event ->
@@ -86,7 +89,8 @@ fun SettingScreen(viewModel: SettingViewModel) {
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_topbar),
         onClick = {
-            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
+            navController.popBackStack()
+            activity?.showBottomNavi()
         }
     ){
         Column(
@@ -95,10 +99,10 @@ fun SettingScreen(viewModel: SettingViewModel) {
                 .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
         ) {
             TmMarginVerticalSpacer(size = 60)
-            SettingAccountRow(viewModel)
+            SettingAccountRow(viewModel, navController)
             TmMarginVerticalSpacer(size = 8)
             SettingToggle(title = "푸시알림", viewModel = viewModel)
-            SettingColumn2(viewModel)
+            SettingColumn2(viewModel, navController)
             TmMarginVerticalSpacer(size = 14)
             Text(
                 text = stringResource(id = R.string.setting_version_text),
@@ -112,7 +116,7 @@ fun SettingScreen(viewModel: SettingViewModel) {
 }
 
 @Composable
-fun SettingAccountRow(viewModel: SettingViewModel) {
+fun SettingAccountRow(viewModel: SettingViewModel, navController: NavController) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .background(color = TmtmColorPalette.current.color_background)
@@ -132,20 +136,20 @@ fun SettingAccountRow(viewModel: SettingViewModel) {
             Text(text = stringResource(id = R.string.setting_my_info_edit_text),
                 style = TmTypo.current.Body3,
                 color= TmtmColorPalette.current.color_text_body_teritary,
-                modifier = Modifier.clickable { viewModel.updateSettingStatus(SettingStatus.EDIT) }
+                modifier = Modifier.clickable { navController.navigate(R.id.fragment_edit_myinfo) }
             )
         }
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_right_l ),
             contentDescription = "right_arrow", tint= Color.Unspecified,
-            modifier = Modifier.size(20.dp).clickable { viewModel.updateSettingStatus(SettingStatus.EDIT) }
+            modifier = Modifier.size(20.dp).clickable { navController.navigate(R.id.fragment_edit_myinfo) }
         )
 
     }
 }
 
 @Composable
-fun SettingColumn2(viewModel: SettingViewModel) {
+fun SettingColumn2(viewModel: SettingViewModel, navController: NavController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -154,7 +158,7 @@ fun SettingColumn2(viewModel: SettingViewModel) {
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        items(getMemberSetting(viewModel)) { item->
+        items(getMemberSetting(viewModel, navController)) { item->
             SettingTitle(
                 title = item.title,
                 onClick = {

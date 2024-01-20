@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
@@ -22,35 +23,14 @@ class MyPageFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingStatus.collect { status ->
-                handleSettingStatus(status)
-            }
-        }
+        val navController = findNavController()
 
         binding.composeMypage.setContent {
-            MyPageScreen(viewModel = viewModel, myPageViewModel = myPageViewModel)
+            MyPageScreen(navController = navController, viewModel = viewModel, myPageViewModel = myPageViewModel)
         }
     }
 
-    private fun handleSettingStatus(status: SettingStatus) {
-        when (status) {
-            SettingStatus.SETTING -> {
-                findNavController().navigate(R.id.action_fragment_my_page_to_fragment_setting)
-                    (activity as MainActivity).hideBottomNavi()
-            }
-            SettingStatus.RECOMMEND -> {
-                findNavController().navigate(R.id.action_fragment_my_page_to_fragment_recommend)
-                    (activity as MainActivity).hideBottomNavi()
-            }
 
-            SettingStatus.EDIT_CARD -> {
-                findNavController().navigate(R.id.action_fragment_my_page_to_fragment_recommend)
-                (activity as MainActivity).hideBottomNavi()
-            }
-            else -> {}
-        }
-    }
 
     companion object {
     }

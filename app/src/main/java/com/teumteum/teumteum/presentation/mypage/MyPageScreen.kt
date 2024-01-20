@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.TmTabItem
@@ -46,6 +48,7 @@ import com.teumteum.teumteum.util.custom.view.model.FrontCard
 
 @Composable
 fun MyPageScreen(
+    navController: NavController,
     viewModel: SettingViewModel,
     myPageViewModel: MyPageViewModel
 ) {
@@ -58,12 +61,11 @@ fun MyPageScreen(
 
     TmScaffold(
         isSetting = true,
-        onClick = { viewModel.updateSettingStatus(SettingStatus.SETTING) },
+        onClick = { navController.navigate(R.id.fragment_setting)},
         topbarText = topbarText
     ) {
         val list = listOf("내 모임", "받은 리뷰")
         val selectedTab = remember { mutableStateOf(list[0]) }
-
 
         LazyColumn(
             modifier = Modifier
@@ -81,11 +83,11 @@ fun MyPageScreen(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .offset(x = (-54).dp, y = (-22).dp)
-                            .clickable {  }
+                            .clickable { navController.navigate(R.id.fragment_edit_card) }
                     )
                 }
                 TmMarginVerticalSpacer(size = 22)
-                SettingBtn(viewModel)
+                SettingBtn(viewModel, navController)
                 TmMarginVerticalSpacer(size = 10)
             }
 
@@ -120,13 +122,21 @@ fun MyPageFrontCard(frontCard: FrontCard) {
 
 
 @Composable
-fun SettingBtn(viewModel: SettingViewModel) {
+fun SettingBtn(viewModel: SettingViewModel, navController: NavController) {
+    val settingStatus by viewModel.settingStatus.collectAsState()
+//    val userInfoState by myPageViewModel.userInfoState.collectAsState()
+//    val btnText = when (userInfoState) {
+//        is UserInfoUiState.Success -> "추천한 친구 ${(userInfoState as UserInfoUiState.Success).data.friend}명"
+//        else -> "로딩 중..."
+//    }
+
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(76.dp)
             .padding(horizontal = 40.dp, vertical = 10.dp),
-        onClick = { viewModel.updateSettingStatus(SettingStatus.RECOMMEND)},
+        onClick = { navController.navigate(R.id.fragment_recommend)
+        },
         colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
         shape = RoundedCornerShape(size = 4.dp)
     ) {
