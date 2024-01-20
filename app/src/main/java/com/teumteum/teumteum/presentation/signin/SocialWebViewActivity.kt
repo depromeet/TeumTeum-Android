@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import android.webkit.CookieManager
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -46,6 +47,7 @@ class SocialWebViewActivity
 
         provider = intent.getStringExtra("provider").toString()
         initProvider(provider)
+        initCookieManager()
         initAppBarLayout()
         initWebView()
         observer()
@@ -86,6 +88,12 @@ class SocialWebViewActivity
             }
         }
     }
+
+    private fun initCookieManager() {
+        val cookieManager = CookieManager.getInstance()
+        cookieManager.removeAllCookies(null)
+    }
+
 
     private fun initWebView() {
         with(binding) {
