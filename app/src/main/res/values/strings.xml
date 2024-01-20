@@ -159,6 +159,32 @@
     <string name="setting_signout_text2">모두 다 꼼꼼히 확인했어요</string>
     <string name="setting_signout_btn2">탈퇴하기</string>
 
+    <string name="setting_edit_card_label1">이름</string>
+    <string name="setting_edit_card_label2">생년월일</string>
+    <string name="setting_edit_card_label3">상태</string>
+    <string name="setting_edit_card_label4">직장명</string>
+    <string name="setting_edit_card_label5">직군</string>
+    <string name="setting_edit_card_label6">직무</string>
+    <string name="setting_edit_card_label7">MBTI</string>
+    <string name="setting_edit_card_label8">관심 지역</string>
+    <string name="setting_edit_card_label9">자기개발/관심분야</string>
+    <string name="setting_edit_card_label10">틈틈 목표</string>
+    <string name="setting_edit_card_btn">수정 완료</string>
+
+    <string name="setting_edit_card_topbar">소개서 수정하기</string>
+    <string name="setting_edit_card_placeholder1">실명을 입력해주세요</string>
+    <string name="setting_edit_card_placeholder2">생년월일을 입력해주세요. (20000101)</string>
+    <string name="setting_edit_card_placeholder3">선택해 주세요</string>
+    <string name="setting_edit_card_placeholder4">직장명을 입력해 주세요</string>
+    <string name="setting_edit_card_placeholder5">선택해 주세요</string>
+    <string name="setting_edit_card_placeholder6">선택해 주세요</string>
+    <string name="setting_edit_card_placeholder7">선택해 주세요</string>
+    <string name="setting_edit_card_placeholder8">선택해 주세요</string>
+    <string name="setting_edit_card_placeholder10">틈틈 목표를 입력해주세요</string>
+
+    <string name="setting_edit_card_error1">형식이 올바르지 않아요</string>
+    <string name="setting_edit_card_error2">생년월일 형식이 올바르지 않아요</string>
+    <string name="setting_edit_card_error4">형식이 올바르지 않아요</string>
 
     <string name="group_search_hint">검색어를 입력해 주세요</string>
     <string name="group_search_recommend_keyword">추천 검색어</string>
