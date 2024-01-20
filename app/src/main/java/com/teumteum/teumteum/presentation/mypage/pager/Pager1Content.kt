@@ -16,10 +16,11 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.MeetingDummy
+import com.teumteum.teumteum.presentation.mypage.MeetingDummy1
 
 @Composable
 fun MyPagePager1Content() {
-    val moim1: Int = 0;
+    val moim1: Int = 1;
     val moim2: Int = 0;
     Column(
         modifier = Modifier
@@ -39,7 +40,7 @@ fun MyPagePager1Content() {
         if(moim1 == 0) {
             NoMoimItems()
         } else {
-
+            MyMoimItems(MeetingDummy1)
         }
         TmMarginVerticalSpacer(size = 27)
 
@@ -52,9 +53,9 @@ fun MyPagePager1Content() {
         if (moim2 == 0) {
             NoMoimItems(false)
         } else {
-
+            MyMoimBadge()
         }
-
+        TmMarginVerticalSpacer(size = 20)
     }
 }
 

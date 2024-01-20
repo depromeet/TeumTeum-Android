@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
@@ -33,18 +34,19 @@ import com.teumteum.teumteum.presentation.mypage.UserGradeDummy
 @Preview
 @Composable
 fun MyPagePager2Content() {
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement =  Arrangement.Top
     ) {
-        items(UserGradeDummy) { userGrade ->
-            MyPager2Item(userGrade = userGrade)
-        }
-
+        TmMarginVerticalSpacer(size = 20)
+       MyPager2Item(userGrade = UserGradeDummy.get(0))
+        MyPager2Item(userGrade = UserGradeDummy.get(1))
+        MyPager2Item(userGrade = UserGradeDummy.get(2))
+        TmMarginVerticalSpacer(size = 20)
     }
 }
 

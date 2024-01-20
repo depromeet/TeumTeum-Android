@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.MeetingArea
-import com.teumteum.domain.entity.MoimRequestModel
+import com.teumteum.domain.entity.MoimEntity
 import com.teumteum.domain.repository.GroupRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -218,7 +218,7 @@ class MoimViewModel @Inject constructor(
                 }
                 val requestModel = topic.value?.let {
                     if (meetingArea != null) {
-                        MoimRequestModel(
+                        MoimEntity(
                             topic = it.value,
                             title = title.value,
                             introduction = introduction.value,
@@ -226,9 +226,7 @@ class MoimViewModel @Inject constructor(
                             numberOfRecruits = people.value,
                             meetingArea = meetingArea
                         )
-                    } else {
-                        null
-                    }
+                    } else { null }
                 }
                 Log.d("requestModel", requestModel.toString())
                 if (requestModel != null) {
