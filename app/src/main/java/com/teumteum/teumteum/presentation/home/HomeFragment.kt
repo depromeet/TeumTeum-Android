@@ -15,13 +15,11 @@ import com.teumteum.base.util.extension.toast
 import com.teumteum.domain.enumSet.EnumTopic
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
-import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.group.GroupListActivity
 import com.teumteum.teumteum.presentation.group.GroupListAdapter
 import com.teumteum.teumteum.presentation.group.GroupListUiState
 import com.teumteum.teumteum.presentation.group.GroupListViewModel
 import com.teumteum.teumteum.presentation.group.search.SearchActivity
-import com.teumteum.teumteum.presentation.moim.MoimFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
