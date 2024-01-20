@@ -43,6 +43,11 @@ class MyPageFragment :
                 findNavController().navigate(R.id.action_fragment_my_page_to_fragment_recommend)
                     (activity as MainActivity).hideBottomNavi()
             }
+
+            SettingStatus.EDIT_CARD -> {
+                findNavController().navigate(R.id.action_fragment_my_page_to_fragment_recommend)
+                (activity as MainActivity).hideBottomNavi()
+            }
             else -> {}
         }
     }

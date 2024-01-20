@@ -76,6 +76,11 @@
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_recommend"
             app:destination="@id/fragment_recommend" />
+
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_edit_card"
+            app:destination="@id/fragment_edit_card" />
+
     </fragment>
     <activity
         android:id="@+id/mainActivity"
@@ -105,7 +110,7 @@
 
         <action
             android:id="@+id/action_fragment_signout_to_fragment_signout_confirm"
-            app:destination="@id/signOutConfrimFragment"/>
+            app:destination="@id/fragment_signout_confirm"/>
 
     </fragment>
 
@@ -136,8 +141,15 @@
         android:label="ServiceFragment" />
 
     <fragment
-        android:id="@+id/signOutConfrimFragment"
+        android:id="@+id/fragment_signout_confirm"
         android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.SignOutConfirmFragment"
-        android:label="SignOutConfrimFragment" />
+        android:label="SignOutConfirmFragment" />
+
+    <fragment
+        android:id="@+id/fragment_edit_card"
+        android:name="com.teumteum.teumteum.presentation.mypage.editCard.EditCardFragment"
+        android:label="EditCardFragment">
+
+    </fragment>
 
 </navigation>
