@@ -23,12 +23,45 @@ class FrontCardView : CardView {
     private val layoutParent = ConstraintLayout.LayoutParams.PARENT_ID
     private var frontCard = FrontCard()
 
+    val tvName: TextView by lazy { findViewById(R.id.tvName) }
+    val tvCompany: TextView by lazy { findViewById(R.id.tvCompany) }
+    val tvJob: TextView by lazy { findViewById(R.id.tvJob) }
+    val tvLevel: TextView by lazy { findViewById(R.id.tvLevel) }
+    val tvArea: TextView by lazy { findViewById(R.id.tvArea) }
+    val tvMbti: TextView by lazy { findViewById(R.id.tvMbti) }
+    val ivCharacter: ImageView by lazy { findViewById(R.id.ivCharacter) }
+    val ivFloat: ImageView by lazy { findViewById(R.id.ivFloat) }
+
+    val ivEditName: ImageView by lazy { findViewById(R.id.ivEditName) }
+    val ivEditCompany: ImageView by lazy { findViewById(R.id.ivEditCompany) }
+    val ivEditJob: ImageView by lazy { findViewById(R.id.ivEditJob) }
+    val ivEditArea: ImageView by lazy { findViewById(R.id.ivEditArea) }
+
+    var isModify: Boolean = false
+        set(value) {
+            field = value
+            ivFloat.visibility = if (value) View.VISIBLE else View.INVISIBLE
+        }
+
+    var isModifyDetail: Boolean = false
+        set(value) {
+            field = value
+            ivEditName.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            ivEditCompany.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            ivEditJob.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            ivEditArea.visibility = if (value) View.VISIBLE else View.INVISIBLE
+        }
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs)
     }
 
     constructor(context: Context) : super(context) {
         init(context, null)
+    }
+
+    override fun setOnClickListener(listener: OnClickListener?) {
+        super.setOnClickListener(listener)
     }
 
     /**
@@ -79,9 +112,14 @@ class FrontCardView : CardView {
                     level = getString(com.teumteum.base.R.styleable.CardFrontView_level) ?: ""
                     area = getString(com.teumteum.base.R.styleable.CardFrontView_area) ?: ""
                     mbti = getString(com.teumteum.base.R.styleable.CardFrontView_mbti) ?: ""
-                    characterResId = getResourceId(com.teumteum.base.R.styleable.CardFrontView_characterImage, 0)
-                    isModify = getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModify, false)
-                    isModifyDetail = getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModifyDetail, false)
+                    characterResId =
+                        getResourceId(com.teumteum.base.R.styleable.CardFrontView_characterImage, 0)
+                    isModify =
+                        getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModify, false)
+                    isModifyDetail = getBoolean(
+                        com.teumteum.base.R.styleable.CardFrontView_isModifyDetail,
+                        false
+                    )
                 }
             } finally {
                 recycle()
@@ -91,48 +129,32 @@ class FrontCardView : CardView {
     }
 
     private fun setUpViews() {
-        setTextView(tvName, frontCard.name)
-        setTextView(tvCompany, frontCard.company)
-        setTextView(tvJob, frontCard.job)
-        setTextView(tvLevel, frontCard.level)
-        setTextView(tvArea, frontCard.area)
-        setTextView(tvMbti, frontCard.mbti)
+        tvName.text = frontCard.name
+        tvCompany.text = frontCard.company
+        tvJob.text = frontCard.job
+        tvLevel.text = frontCard.level
+        tvArea.text = frontCard.area
+        tvMbti.text = frontCard.mbti
+        ivCharacter.setImageResource(frontCard.characterResId)
 
-        val ivFloatVisibility = if (frontCard.isModify == true) View.VISIBLE else View.INVISIBLE
-        val ivEditVisibility = if (frontCard.isModifyDetail == true) View.VISIBLE else View.INVISIBLE
-
-        // 이미지 뷰 프로퍼티 설정을 위한 공통 함수 호출
-        setImageViewProperties(ivFloat, ivFloatVisibility, frontCard.floatResId)
-        setImageViewProperties(ivEditName, ivEditVisibility, frontCard.editNameResId)
-        setImageViewProperties(ivEditCompany, ivEditVisibility, frontCard.editCompanyResId)
-        setImageViewProperties(ivEditJob, ivEditVisibility, frontCard.editJobResId)
-        setImageViewProperties(ivEditArea, ivEditVisibility, frontCard.editAreaResId)
-    }
-
-    private fun setImageViewProperties(viewId: Int, visibility: Int, resId: Int?) {
-        val imageView = findViewById<ImageView>(viewId)
-        imageView?.let {
-            it.visibility = visibility
-            resId?.let { imageResId -> it.setImageResource(imageResId) }
-        }
-    }
-
-    private fun setTextView(viewId: Int, text: String) {
-        val textView = findViewById<TextView>(viewId)
-        textView?.text = text
+        ivFloat.setImageResource(frontCard.floatResId)
+        ivEditName.setImageResource(frontCard.editNameResId)
+        ivEditCompany.setImageResource(frontCard.editCompanyResId)
+        ivEditJob.setImageResource(frontCard.editJobResId)
+        ivEditArea.setImageResource(frontCard.editAreaResId)
     }
 
     /**
      * layout과 그 안에 포함시킬 뷰 추가
      */
     private fun createLayoutAndViews(context: Context) = ConstraintLayout(context).apply {
-        id = clCardFront
+        id = R.id.cl
         layoutParams =
             ConstraintLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
         addTextView(
             context,
-            id = tvName,
+            id = R.id.tvName,
             text = context.getString(R.string.front_card_name),
             textColor = com.teumteum.base.R.color.text_headline_primary,
             textSizeSp = 30f,
@@ -145,31 +167,31 @@ class FrontCardView : CardView {
         )
         addTextView(
             context,
-            id = tvCompany,
+            id = R.id.tvCompany,
             text = context.getString(R.string.front_card_company),
             textColor = com.teumteum.base.R.color.text_body_teritary,
             textSizeSp = 16f,
             fontFamily = com.teumteum.base.R.font.pretendard_semibold,
             lineHeightDp = 22,
-            startToStartOf = tvName,
+            startToStartOf = R.id.tvName,
             marginTop = 20,
-            topToBottomOf = tvName
+            topToBottomOf = R.id.tvName
         )
         addTextView(
             context,
-            id = tvJob,
+            id = R.id.tvJob,
             text = context.getString(R.string.front_card_job),
             textColor = com.teumteum.base.R.color.text_headline_primary,
             textSizeSp = 18f,
             fontFamily = com.teumteum.base.R.font.pretendard_bold,
             lineHeightDp = 24,
-            startToStartOf = tvName,
+            startToStartOf = R.id.tvName,
             marginTop = 6,
-            topToBottomOf = tvCompany
+            topToBottomOf = R.id.tvCompany
         )
         addTextView(
             context,
-            id = tvLevel,
+            id = R.id.tvLevel,
             text = context.getString(R.string.front_card_level),
             textColor = com.teumteum.base.R.color.text_body_secondary,
             textSizeSp = 12f,
@@ -180,44 +202,44 @@ class FrontCardView : CardView {
             paddingEnd = 8,
             paddingTop = 2,
             paddingBottom = 2,
-            startToStartOf = tvName,
-            topToBottomOf = tvJob,
+            startToStartOf = R.id.tvName,
+            topToBottomOf = R.id.tvJob,
             background = R.drawable.shape_rect4_elevation_level02
         )
         addTextView(
             context,
-            id = tvArea,
+            id = R.id.tvArea,
             text = context.getString(R.string.front_card_area),
             textColor = com.teumteum.base.R.color.text_body_teritary,
             textSizeSp = 12f,
             fontFamily = com.teumteum.base.R.font.pretendard_regular,
             lineHeightDp = 18,
             marginTop = 6,
-            startToStartOf = tvName,
-            bottomToTopOf = tvMbti
+            startToStartOf = R.id.tvName,
+            bottomToTopOf = R.id.tvMbti
         )
         addTextView(
             context,
-            id = tvMbti,
+            id = R.id.tvMbti,
             text = context.getString(R.string.front_card_mbti),
             textColor = com.teumteum.base.R.color.text_headline_primary,
             textSizeSp = 20f,
             fontFamily = com.teumteum.base.R.font.pretendard_bold,
             lineHeightDp = 28,
             marginBottom = 32,
-            startToStartOf = tvName,
+            startToStartOf = R.id.tvName,
             bottomToBottomOf = layoutParent
         )
         addImageView(
             context,
-            id = ivCharacter,
+            id = R.id.ivCharacter,
             drawableRes = R.drawable.ic_card_penguin,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent
         )
         addImageView(
             context,
-            id = ivFloat,
+            id = R.id.ivFloat,
             drawableRes = R.drawable.ic_card_float,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent,
@@ -226,38 +248,38 @@ class FrontCardView : CardView {
         )
         addImageView( //todo - 하나의 id값으로 일괄 관리 가능 여부 확인
             context,
-            id = ivEditName,
+            id = R.id.ivEditName,
             drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = tvName,
-            topToTopOf = tvName,
-            bottomToBottomOf = tvName,
+            startToEndOf = R.id.tvName,
+            topToTopOf = R.id.tvName,
+            bottomToBottomOf = R.id.tvName,
             marginStart = 4
         )
         addImageView(
             context,
-            id = ivEditCompany,
+            id = R.id.ivEditCompany,
             drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = tvCompany,
-            topToTopOf = tvCompany,
-            bottomToBottomOf = tvCompany,
+            startToEndOf = R.id.tvCompany,
+            topToTopOf = R.id.tvCompany,
+            bottomToBottomOf = R.id.tvCompany,
             marginStart = 4
         )
         addImageView(
             context,
-            id = ivEditJob,
+            id = R.id.ivEditJob,
             drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = tvJob,
-            topToTopOf = tvJob,
-            bottomToBottomOf = tvJob,
+            startToEndOf = R.id.tvJob,
+            topToTopOf = R.id.tvJob,
+            bottomToBottomOf = R.id.tvJob,
             marginStart = 4
         )
         addImageView(
             context,
-            id = ivEditArea,
+            id = R.id.ivEditArea,
             drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = tvArea,
-            topToTopOf = tvArea,
-            bottomToBottomOf = tvArea,
+            startToEndOf = R.id.tvArea,
+            topToTopOf = R.id.tvArea,
+            bottomToBottomOf = R.id.tvArea,
             marginStart = 4
         )
     }
@@ -372,21 +394,5 @@ class FrontCardView : CardView {
             setImageResource(drawableRes)
         }
         addView(imageView)
-    }
-
-    companion object {
-        const val clCardFront = 0
-        const val tvName = 1
-        const val tvCompany = 2
-        const val tvJob = 3
-        const val tvLevel = 4
-        const val tvArea = 5
-        const val tvMbti = 6
-        const val ivCharacter = 7
-        const val ivFloat = 8
-        const val ivEditName = 9
-        const val ivEditCompany = 10
-        const val ivEditJob = 11
-        const val ivEditArea = 12
     }
 }
