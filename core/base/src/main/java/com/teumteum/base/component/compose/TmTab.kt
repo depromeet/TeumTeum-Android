@@ -45,18 +45,14 @@ fun <T> TmTabRow(
 fun TmTabItem(
     text: String,
     isSelected: Boolean = true,
-    onSelect: (()-> Unit)? = null
+    onSelect: ()-> Unit
 ){
+    val dividerColor = if (isSelected) TmtmColorPalette.current.color_outline_level04_active else TmtmColorPalette.current.color_outline_level04_disabled
     Box(
         modifier = Modifier
             .height(48.dp)
             .fillMaxWidth()
-            .clickable {
-                if (onSelect != null) {
-                    onSelect()
-                }
-            }
-
+            .clickable { onSelect() }
     ){
         Text(
             modifier = Modifier.align(Alignment.Center).padding(horizontal = 12.dp),
@@ -64,14 +60,12 @@ fun TmTabItem(
             style = TmTypo.current.HeadLine6,
             color =  if(isSelected) TmtmColorPalette.current.color_text_headline_primary else TmtmColorPalette.current.color_text_body_teritary
         )
-        if(isSelected)
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(2.dp)
-                    .align(Alignment.BottomCenter),
-                color = TmtmColorPalette.current.color_outline_level04_active
-            )
-
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+                .align(Alignment.BottomCenter),
+            color = dividerColor
+        )
     }
 }

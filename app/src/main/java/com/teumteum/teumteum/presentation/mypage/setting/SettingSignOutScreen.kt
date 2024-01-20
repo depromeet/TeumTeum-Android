@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.mypage.setting
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,25 +22,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.moim.MoimViewModel
-import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.SignOutList
 
-@Preview
 @Composable
-fun SettingSignOutScreen() {
+fun SettingSignOutScreen(viewModel: SettingViewModel) {
     TmScaffold(
     ) {
         Column(
@@ -55,10 +50,10 @@ fun SettingSignOutScreen() {
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
             TmMarginVerticalSpacer(size = 64)
-            SettingSignOutColumn()
+            SettingSignOutColumn(viewModel)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
-            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn1))
+            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn1), viewModel)
             TmMarginVerticalSpacer(size = 24)
         }
     }
@@ -67,19 +62,25 @@ fun SettingSignOutScreen() {
 @Composable
 fun SettingSignOutBtn1(
     text: String,
-    isEnabled: Boolean = true
+    viewModel: SettingViewModel
 ) {
-        val context = LocalContext.current
-
-        val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
-        val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+    val screenState by viewModel.settingStatus.collectAsState()
+    val selectedReasonsCount by viewModel.signoutReason.collectAsState()
+    val isEnabled = selectedReasonsCount.isNotEmpty()
+    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
+    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
         androidx.compose.material3.Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(76.dp)
                 .padding(horizontal = 20.dp, vertical = 10.dp),
             enabled = isEnabled,
-            onClick = {},
+            onClick = {
+                if(screenState == SettingStatus.SIGNOUT)
+                    viewModel.updateSettingStatus(SettingStatus.SIGNOUT_CONFIRM)
+//                else if (screenState == SettingStatus.SIGNOUTCONFIRM)
+                    //탈퇴 이유 전송
+                      },
             colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
@@ -93,7 +94,8 @@ fun SettingSignOutBtn1(
 
 
 @Composable
-fun SettingSignOutColumn() {
+fun SettingSignOutColumn(viewModel: SettingViewModel) {
+    val selectedItems by viewModel.signoutReason.collectAsState()
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,19 +105,26 @@ fun SettingSignOutColumn() {
         verticalArrangement = Arrangement.Top
     ) {
         items(SignOutList) { item ->
-            SettingSignOutItem(string = item)
+            val isSelected = item in selectedItems
+            SettingSignOutItem(string = item, isSelected = isSelected) {
+                if (isSelected) {
+                    viewModel.removeItem(item)
+                } else {
+                    viewModel.addItem(item)
+                }
+            }
         }
-
     }
 }
 
 @Composable
-fun SettingSignOutItem(string: String) {
+fun SettingSignOutItem(string: String, isSelected: Boolean, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 9.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -124,7 +133,9 @@ fun SettingSignOutItem(string: String) {
             style = TmTypo.current.HeadLine7,
             color= TmtmColorPalette.current.color_text_body_secondary,
         )
-        Image(painter = painterResource(id = R.drawable.ic_check_box_default),
+        Image(
+            painter = if (isSelected) painterResource(id = R.drawable.ic_check_box_select)
+            else painterResource(id = R.drawable.ic_check_box_default),
             contentDescription = null
         )
     }

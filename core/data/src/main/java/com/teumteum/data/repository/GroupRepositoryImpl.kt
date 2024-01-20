@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.teumteum.data.datasource.remote.RemoteGroupDataSource
 import com.teumteum.data.model.request.toBody
 import com.teumteum.domain.entity.Meeting
-import com.teumteum.domain.entity.MoimRequestModel
+import com.teumteum.domain.entity.MoimEntity
 
 import com.teumteum.domain.repository.GroupRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -18,11 +18,11 @@ import javax.inject.Inject
 class GroupRepositoryImpl @Inject constructor(
     private val dataSource: RemoteGroupDataSource
 ) : GroupRepository {
-    override suspend fun postGroupMoim(moimRequestModel: MoimRequestModel, imageFiles: List<File>): Result<Meeting> {
+    override suspend fun postGroupMoim(moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting> {
         return runCatching {
             Log.d("postGroupMoim", "돌아감")
             val gson = Gson()
-            val moimJson = gson.toJson(moimRequestModel.toBody())
+            val moimJson = gson.toJson(moimEntity.toBody())
             val moimRequestBody = moimJson.toRequestBody("application/json".toMediaTypeOrNull())
 
             val imageParts = imageFiles.map { file ->
