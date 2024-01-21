@@ -16,12 +16,14 @@ data class UserInfo (
     val status: String,
     val goal: String,
     val job: JobEntity,
-    val interests: List<String>
+    val interests: List<String>,
+    val friends: Int
 )
 
 @Serializable
 data class JobEntity(
     val name: String?,
+    val certificated: Boolean,
     @SerialName("class")
     val jobClass: String,
     val detailClass: String

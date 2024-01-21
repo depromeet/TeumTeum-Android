@@ -325,16 +325,19 @@ class SignUpViewModel @Inject constructor(
             when (community.value) {
                 COMMUNITY_WORKER -> JobEntity(
                     companyName.value,
+                    false,
                     jobClass.value,
                     jobDetailClass.value
                 )
                 COMMUNITY_STUDENT -> JobEntity(
                     schoolName.value,
+                    false,
                     readyJobClass.value,
                     readyJobDetailClass.value
                 )
                 COMMUNITY_TRAINEE -> JobEntity(
                     null,
+                    false,
                     readyJobClass.value,
                     readyJobDetailClass.value
                 )
@@ -357,8 +360,10 @@ class SignUpViewModel @Inject constructor(
                 mbti =  mbtiText.value,
                 status = community.value,
                 goal = goalText.value,
-                job = jobEntity,
-                interests = interests)
+                job = com.teumteum.domain.entity.JobEntity(jobEntity.name, false, jobEntity.jobClass, jobEntity.detailClass),
+                interests = interests,
+                friends = 0
+            )
         } else null
     }
 

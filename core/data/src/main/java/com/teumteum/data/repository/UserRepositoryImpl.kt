@@ -53,4 +53,8 @@ class UserRepositoryImpl @Inject constructor(
             dataSource.postUserInfo(requestObject)
         }
     }
+
+    override fun deleteUserInfo() {
+        dataStore.userInfo = ""
+    }
 }
