@@ -10,8 +10,13 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
+import com.teumteum.teumteum.util.custom.view.model.Interest
 import com.teumteum.teumteum.util.extension.dpToPx
 
 /**
@@ -26,7 +31,6 @@ class BackCardView : CardView {
     val tvGoalTitle: TextView by lazy { findViewById(R.id.tvGoalTitle) }
     val tvGoalContent: TextView by lazy { findViewById(R.id.tvGoalContent) }
 
-    //    var rvInterests: RecyclerView by lazy {findViewById(R.id.rvInterests)}
     val ivCharacter: ImageView by lazy { findViewById(R.id.ivCharacter) }
     val ivFloat: ImageView by lazy { findViewById(R.id.ivFloat) }
 
@@ -37,6 +41,15 @@ class BackCardView : CardView {
             field = value
             ivFloat.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
+
+    // 공개 속성으로 RecyclerView와 Adapter 제공
+    val interestAdapter = InterestAdapter()
+    lateinit var rvInterests: RecyclerView
+        private set
+
+    fun submitInterestList(interests: List<Interest>) {
+        interestAdapter.submitList(interests)
+    }
 
     var isModifyDetail: Boolean = false
         set(value) {
@@ -83,7 +96,7 @@ class BackCardView : CardView {
             context,
             R.drawable.shape_rect12_elevation_level01_outline_level03
         )
-        layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
 
     /**
@@ -121,27 +134,6 @@ class BackCardView : CardView {
         ivCharacter.setImageResource(backCard.characterResId)
         ivFloat.setImageResource(backCard.floatResId)
     }
-
-//    private fun initRecyclerView(context: Context) {
-//        rvInterests = RecyclerView(context).apply {
-//            // RecyclerView의 id 설정
-//            id = R.id.rvInterests
-//            val spanCount = 2 // For example, 2 columns
-//            // LayoutManager 설정
-//            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
-//
-//            // Adapter 설정
-//            adapter = InterestsAdapter() // 여기서 CustomAdapter는 사용자가 정의한 어댑터입니다.
-//
-//            // 기타 설정 (예: ItemDecoration, Animator 등)
-//        }
-//
-//        // RecyclerView를 ConstraintLayout에 추가
-//        (findViewById<ConstraintLayout>(R.id.cl)).addView(recyclerView)
-//
-//        // RecyclerView의 제약 조건 설정
-//        setRecyclerViewConstraints()
-//    }
 
     /**
      * layout과 그 안에 포함시킬 뷰 추가
@@ -202,6 +194,16 @@ class BackCardView : CardView {
             topToBottomOf = R.id.tvGoalContent,
             marginTop = 4
         )
+        addRecyclerView(
+            context,
+            id = R.id.rvInterest,
+            spanCount = 2,
+            bottomToBottomOf = layoutParent,
+            startToStartOf = layoutParent,
+            marginBottom = 32,
+            marginStart = 32,
+            marginEnd = 32
+        )
     }
 
     private fun ConstraintLayout.addTextView(
@@ -233,7 +235,7 @@ class BackCardView : CardView {
         val textView = TextView(context).apply {
             this.id = id
             layoutParams = ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, //MATCH_CONTSRAINT로 설정해야 startToStartOf 등 걸어놓은 constraint가 반영됨
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             ).apply {
                 topToTopOf?.let { topToTop = it }
@@ -314,5 +316,61 @@ class BackCardView : CardView {
             setImageResource(drawableRes)
         }
         addView(imageView)
+    }
+
+    private fun ConstraintLayout.addRecyclerView(
+        context: Context,
+        spanCount: Int = 2,
+        id: Int = R.id.rvInterest,
+        marginTop: Int = 0,
+        marginBottom: Int = 0,
+        marginStart: Int = 0,
+        marginEnd: Int = 0,
+        paddingStart: Int = 0,
+        paddingEnd: Int = 0,
+        paddingTop: Int = 0,
+        paddingBottom: Int = 0,
+        topToTopOf: Int? = null,
+        topToBottomOf: Int? = null,
+        bottomToTopOf: Int? = null,
+        bottomToBottomOf: Int? = null,
+        startToStartOf: Int? = null,
+        startToEndOf: Int? = null,
+        endToEndOf: Int? = null,
+        endToStartOf: Int? = null,
+        background: Int? = null
+    ) {
+        rvInterests = RecyclerView(context).apply {
+            this.id = id
+            layoutManager = StaggeredGridLayoutManager(spanCount,LinearLayoutManager.VERTICAL)
+            adapter = interestAdapter // 사용 중인 어댑터 참조
+            background?.let { setBackgroundResource(it) }
+        }
+        setPadding(
+            paddingStart.dpToPx(context),
+            paddingTop.dpToPx(context),
+            paddingEnd.dpToPx(context),
+            paddingBottom.dpToPx(context)
+        )
+        val layoutParams = ConstraintLayout.LayoutParams( //새로운 constraintLayout을 생성하여 별도로 배치
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            topToTopOf?.let { topToTop = it }
+            topToBottomOf?.let { topToBottom = it }
+            bottomToTopOf?.let { bottomToTop = it }
+            bottomToBottomOf?.let { bottomToBottom = it }
+            startToStartOf?.let { startToStart = it }
+            startToEndOf?.let { startToEnd = it }
+            endToEndOf?.let { endToEnd = it }
+            endToStartOf?.let { endToStart = it }
+
+            this.topMargin = marginTop.dpToPx(context)
+            this.bottomMargin = marginBottom.dpToPx(context)
+            this.marginStart = marginStart.dpToPx(context)
+            this.marginEnd = marginEnd.dpToPx(context)
+        }
+        rvInterests.layoutParams = layoutParams
+        this.addView(rvInterests)
     }
 }
