@@ -58,6 +58,10 @@ fun MyPageScreen(
         is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님의 소개서"
         else -> "로딩 중..."
     }
+    val friend = when (userInfoState) {
+        is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님의 소개서"
+        else -> "로딩 중..."
+    }
 
     TmScaffold(
         isSetting = true,

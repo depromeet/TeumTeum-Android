@@ -19,31 +19,32 @@ class ServiceFragment: BindingFragment<FragmentServiceBinding>(R.layout.fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingStatus.collect { status ->
-                handleSettingStatus(status)
-            }
-        }
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.settingStatus.collect { status ->
+//                handleSettingStatus(status)
+//            }
+//        }
+        val navController = findNavController()
 
         binding.composeService.setContent {
-            SettingServiceScreen(viewModel)
+            SettingServiceScreen(viewModel, navController)
         }
     }
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.SETTING)
+            (activity as MainActivity).showBottomNavi()
         }
     }
 
-    private fun handleSettingStatus(status: SettingStatus) {
-        when (status) {
-            SettingStatus.SETTING -> {
-                findNavController().popBackStack()
-            }
-            else -> {}
-        }
-    }
+//    private fun handleSettingStatus(status: SettingStatus) {
+//        when (status) {
+//            SettingStatus.SETTING -> {
+//                findNavController().popBackStack()
+//            }
+//            else -> {}
+//        }
+//    }
 
     companion object {
     }

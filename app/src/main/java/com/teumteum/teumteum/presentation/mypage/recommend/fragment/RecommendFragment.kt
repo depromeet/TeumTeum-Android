@@ -10,20 +10,21 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentRecommendBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.recommend.RecommendScreen
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
 class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.fragment_recommend) {
     private val viewModel: SettingViewModel by activityViewModels()
+    private val myPageViewModel: MyPageViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
-        (activity as MainActivity).hideBottomNavi()
 
         binding.composeRecommend.setContent {
-            RecommendScreen(viewModel, navController)
+            RecommendScreen(viewModel, myPageViewModel,  navController)
         }
 
     }
@@ -33,12 +34,6 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
             (activity as MainActivity).showBottomNavi()
         }
     }
-
-    fun goMyPageScreen() {
-        findNavController().popBackStack()
-        (activity as MainActivity).showBottomNavi()
-    }
-
 
     companion object {
     }

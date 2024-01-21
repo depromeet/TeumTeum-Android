@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,17 +31,26 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.Recommend
 import com.teumteum.teumteum.presentation.mypage.RecommendDummy
+import com.teumteum.teumteum.presentation.mypage.UserInfoUiState
 import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
 
 
 @Composable
-fun RecommendScreen(viewModel: SettingViewModel, navController: NavController) {
+fun RecommendScreen(viewModel: SettingViewModel, myPageViewModel: MyPageViewModel, navController: NavController) {
     val activity = LocalContext.current as? MainActivity
+    val userInfoState by myPageViewModel.userInfoState.collectAsState()
+    val topbarText = when (userInfoState) {
+        is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님을 추천한 친구"
+        else -> "로딩 중..."
+    }
+
+
     TmScaffold(
-        topbarText = "정은아님을 추천한 친구",
+        topbarText = topbarText,
         onClick = {
             navController.popBackStack()
             activity?.showBottomNavi()

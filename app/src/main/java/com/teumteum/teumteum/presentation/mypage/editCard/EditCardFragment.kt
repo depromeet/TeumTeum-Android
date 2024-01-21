@@ -21,6 +21,8 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val navController = findNavController()
+
         lifecycleScope.launchWhenStarted {
             viewModel.settingStatus.collect { status ->
                 handleSettingStatus(status)
@@ -35,21 +37,14 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.DEFAULT)
+            (activity as MainActivity).showBottomNavi()
         }
     }
 
-    fun goMyPageScreen() {
-        findNavController().popBackStack()
-        (activity as MainActivity).showBottomNavi()
-    }
 
 
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
-            SettingStatus.DEFAULT -> {
-                goMyPageScreen()
-            }
             else -> {}
         }
     }

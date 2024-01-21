@@ -18,25 +18,10 @@ class EditMyInfoFragment: BindingFragment<FragmentEditMyinfoBinding>(R.layout.fr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val navController = findNavController()
+
         binding.composeEditMyinfo.setContent {
-            EditMyInfoScreen(viewModel)
-        }
-    }
-
-    val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.SETTING)
-        }
-    }
-
-    private fun handleSettingStatus(status: SettingStatus) {
-        when (status) {
-            SettingStatus.NOTION -> {
-                findNavController().navigate(R.id.action_fragment_setting_to_fragment_service)
-                (activity as MainActivity).hideBottomNavi()
-            }
-
-            else -> {}
+            EditMyInfoScreen(viewModel, navController)
         }
     }
 
