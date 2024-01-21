@@ -1,11 +1,14 @@
-package com.teumteum.teumteum.presentation.mypage.setting
+package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.teumteum.domain.entity.WithDrawReasons
+import com.teumteum.domain.repository.AuthRepository
+import com.teumteum.domain.repository.SettingRepository
+import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.mypage.SettingUiItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +21,11 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(): ViewModel() {
+class SettingViewModel @Inject constructor(
+    private val settingRepository: SettingRepository,
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
+): ViewModel() {
 
     private val _alarmState = MutableStateFlow(false)
     val alarmState: StateFlow<Boolean> = _alarmState.asStateFlow()
@@ -39,8 +46,11 @@ class SettingViewModel @Inject constructor(): ViewModel() {
     private val _signoutReason = MutableStateFlow<List<String>>(emptyList())
     val signoutReason: StateFlow<List<String>> = _signoutReason.asStateFlow()
 
+    private val _message = MutableSharedFlow<String>()
+    val message: SharedFlow<String> = _message.asSharedFlow()
+
     fun addItem(item: String) {
-        if (_signoutReason.value.size < 3 && item !in _signoutReason.value) {
+        if (item !in _signoutReason.value) {
             _signoutReason.value = _signoutReason.value + item
         }
     }
@@ -77,11 +87,36 @@ class SettingViewModel @Inject constructor(): ViewModel() {
 
     }
 
-    private fun logout() {
-
+    fun logout() {
+        viewModelScope.launch {
+            val logOutResult = settingRepository.logOut()
+            logOutResult.onSuccess {
+                userRepository.deleteUserInfo()
+                authRepository.disableAutoLogin()
+                updateSettingStatus(SettingStatus.LOGOUT_CONFIRM)
+            }
+            logOutResult.onFailure {
+                updateSettingStatus(SettingStatus.ERROR)
+            }
+        }
     }
 
-    private fun cancelMeeting() {
+    fun signout() {
+        viewModelScope.launch {
+            val signOutReasons = WithDrawReasons(_signoutReason.value)
+            val signOutResult = settingRepository.signOut(signOutReasons)
+            signOutResult.onSuccess {
+                userRepository.deleteUserInfo()
+                authRepository.disableAutoLogin()
+                updateSettingStatus(SettingStatus.SIGNOUT)
+            }
+            signOutResult.onFailure {
+                updateSettingStatus(SettingStatus.ERROR)
+            }
+        }
+    }
+
+    fun cancelMeeting() {
 
     }
 
@@ -118,10 +153,11 @@ fun getServiceGuide(): List<SettingUiItem> {
 
 
 enum class SettingStatus {
-    LOGOUT, LOGOUT_CONFIRM, SIGNOUT, SIGNOUT_CONFIRM,
+    LOGOUT, LOGOUT_CONFIRM, SIGNOUT,
     DEFAULT, NOTION, ERROR, SETTING,
-    EDIT, EDIT_CARD, CANCEL, RECOMMEND, RECOMMEND_DETAIL
+    CANCEL, RECOMMEND, RECOMMEND_DETAIL
 }
+
 
 enum class DialogEvent {
     DEFAULT, LOGOUT, CANCEL;

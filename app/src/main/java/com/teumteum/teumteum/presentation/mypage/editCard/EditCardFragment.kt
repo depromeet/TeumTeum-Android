@@ -1,6 +1,5 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -11,9 +10,9 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.MyPageViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragment_edit_card) {
     private val viewModel: SettingViewModel by activityViewModels()
@@ -22,6 +21,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
+        (activity as MainActivity).hideBottomNavi()
 
         lifecycleScope.launchWhenStarted {
             viewModel.settingStatus.collect { status ->
@@ -30,7 +30,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         }
 
         binding.composeEditCard.setContent {
-            EditCardScreen(myPageViewModel, viewModel)
+            EditCardScreen(myPageViewModel, viewModel, navController)
         }
 
     }

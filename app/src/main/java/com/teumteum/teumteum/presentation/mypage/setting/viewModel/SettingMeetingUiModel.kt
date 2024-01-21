@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.mypage
+package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 import androidx.annotation.DrawableRes
 import com.teumteum.teumteum.R

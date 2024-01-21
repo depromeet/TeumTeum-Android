@@ -3,16 +3,13 @@ package com.teumteum.teumteum.presentation.mypage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMyPageBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 
 class MyPageFragment :
@@ -24,6 +21,7 @@ class MyPageFragment :
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
+        (activity as MainActivity).showBottomNavi()
 
         binding.composeMypage.setContent {
             MyPageScreen(navController = navController, viewModel = viewModel, myPageViewModel = myPageViewModel)

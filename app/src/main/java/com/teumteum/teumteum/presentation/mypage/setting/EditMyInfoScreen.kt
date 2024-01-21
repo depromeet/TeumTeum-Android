@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -24,6 +23,8 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
+
 @Composable
 fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) {
     TmScaffold(

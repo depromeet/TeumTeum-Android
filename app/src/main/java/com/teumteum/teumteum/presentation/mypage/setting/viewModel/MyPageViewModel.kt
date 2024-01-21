@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.mypage
+package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.util.custom.uistate.UiState
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

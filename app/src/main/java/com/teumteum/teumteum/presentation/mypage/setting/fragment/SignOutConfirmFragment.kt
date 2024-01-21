@@ -12,9 +12,8 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSignoutBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.SettingSignOutConfirm
-import com.teumteum.teumteum.presentation.mypage.setting.SettingSignOutScreen
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 
 class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment_signout) {

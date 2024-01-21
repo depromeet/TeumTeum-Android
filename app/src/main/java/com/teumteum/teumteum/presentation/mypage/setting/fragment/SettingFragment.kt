@@ -12,16 +12,14 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSettingBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.SettingScreen
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 
 class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
     private val viewModel: SettingViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (activity as MainActivity).hideBottomNavi()
 
         lifecycleScope.launchWhenStarted {
             viewModel.settingStatus.collect { status ->
@@ -30,6 +28,7 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
         }
 
         val navController = findNavController()
+        (activity as MainActivity).hideBottomNavi()
 
         binding.composeSetting.setContent {
             SettingScreen(viewModel, navController)

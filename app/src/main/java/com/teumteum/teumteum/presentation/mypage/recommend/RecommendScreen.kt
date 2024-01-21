@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
@@ -31,12 +30,11 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.MyPageViewModel
-import com.teumteum.teumteum.presentation.mypage.Recommend
-import com.teumteum.teumteum.presentation.mypage.RecommendDummy
-import com.teumteum.teumteum.presentation.mypage.UserInfoUiState
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDummy
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 
 @Composable
