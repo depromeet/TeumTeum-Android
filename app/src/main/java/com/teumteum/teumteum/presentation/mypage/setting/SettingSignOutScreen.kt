@@ -81,7 +81,7 @@ fun SettingSignOutBtn1(
                 .height(76.dp)
                 .padding(horizontal = 20.dp, vertical = 10.dp),
             enabled = isEnabled,
-            onClick = {  },
+            onClick = { navController.navigate(R.id.fragment_signout_confirm) },
             colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
             shape = RoundedCornerShape(size = 4.dp)
         ) {

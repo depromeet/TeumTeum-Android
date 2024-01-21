@@ -10,13 +10,13 @@ import javax.inject.Inject
 class SettingRepositoryImpl @Inject constructor(
     private val dataSource: RemoteSettingDataSource
 ): SettingRepository {
-    override suspend fun logOut(): Result<Boolean> {
+    override suspend fun logOut(): Result<Unit> {
         return runCatching {
             dataSource.logOut()
         }
     }
 
-    override suspend fun signOut(withDrawReasons: WithDrawReasons): Result<Boolean> {
+    override suspend fun signOut(withDrawReasons: WithDrawReasons): Result<Unit> {
         return runCatching {
             dataSource.signOut(withDrawReasons)
         }

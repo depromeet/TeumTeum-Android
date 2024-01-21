@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -46,8 +47,12 @@ class SettingViewModel @Inject constructor(
     private val _signoutReason = MutableStateFlow<List<String>>(emptyList())
     val signoutReason: StateFlow<List<String>> = _signoutReason.asStateFlow()
 
-    private val _message = MutableSharedFlow<String>()
-    val message: SharedFlow<String> = _message.asSharedFlow()
+    private val _isCheckboxChecked = MutableStateFlow(false)
+    val isCheckboxChecked: StateFlow<Boolean> = _isCheckboxChecked.asStateFlow()
+
+    fun toggleCheckbox() {
+        _isCheckboxChecked.value = !_isCheckboxChecked.value
+    }
 
     fun addItem(item: String) {
         if (item !in _signoutReason.value) {
@@ -83,10 +88,6 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    private fun sendSignOutReason() {
-
-    }
-
     fun logout() {
         viewModelScope.launch {
             val logOutResult = settingRepository.logOut()
@@ -97,6 +98,7 @@ class SettingViewModel @Inject constructor(
             }
             logOutResult.onFailure {
                 updateSettingStatus(SettingStatus.ERROR)
+                Timber.e(it)
             }
         }
     }
@@ -112,6 +114,7 @@ class SettingViewModel @Inject constructor(
             }
             signOutResult.onFailure {
                 updateSettingStatus(SettingStatus.ERROR)
+                Timber.e(it)
             }
         }
     }
