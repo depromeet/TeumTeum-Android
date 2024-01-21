@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.base.util.extension.stringExtra
@@ -23,6 +25,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
     private val viewModel by viewModels<GroupListViewModel>()
     private val title by stringExtra()
     private val type by intExtra()
+    private var isScrolled: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,6 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
 
     private fun initView() {
         title?.let {
-
             binding.tvTitle.text = it.replace("_", " ")
             if (type == LOCATION) {
                 viewModel.initCurrentPage(location = title)
@@ -47,6 +49,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
             Toast.makeText(this, it.photoUrls.first(), Toast.LENGTH_SHORT).show()
         }
         binding.rvGroupList.adapter = adapter
+        infinityScroll()
     }
 
     private fun initEvent() {
@@ -59,8 +62,12 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
         viewModel.groupData.flowWithLifecycle(lifecycle)
             .onEach {
                 when (it) {
-                    is GroupListUiState.Success -> {
+                    is GroupListUiState.SetMeetings -> {
                         adapter.setItems(it.data)
+                    }
+
+                    is GroupListUiState.AddMeetings -> {
+                        adapter.addItems(it.data)
                     }
 
                     is GroupListUiState.Failure -> {
@@ -71,6 +78,28 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
                 }
 
             }.launchIn(lifecycleScope)
+    }
+
+    private fun infinityScroll() {
+        binding.rvGroupList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && !binding.rvGroupList.canScrollVertically(1) && (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() == adapter.itemCount - 1) {
+                    if (type == LOCATION) {
+                        viewModel.getGroupList(location = title)
+                    } else if (type == TOPIC) {
+                        viewModel.getGroupList(topic = title)
+                    }
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && !isScrolled) {
+                    isScrolled = true
+                }
+            }
+        })
     }
 
     companion object {

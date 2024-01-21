@@ -6,11 +6,14 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.hideKeyboard
 import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySearchBinding
+import com.teumteum.teumteum.presentation.group.GroupListActivity
 import com.teumteum.teumteum.presentation.group.GroupListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -21,6 +24,8 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
     private val viewModel by viewModels<SearchViewModel>()
     private lateinit var keywordAdapter: KeywordAdapter
     private lateinit var groupListAdapter: GroupListAdapter
+    private var isScrolled: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +55,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
             //TODO 그룹 상세보기로 이동하는 로직 들어가야 함
         }
         binding.rvGroupList.adapter = groupListAdapter
+        infinityScroll()
     }
 
     private fun initEvent() {
@@ -82,8 +88,12 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                 binding.rvGroupList.isGone = it is SearchUiState.Init || it is SearchUiState.Empty
                 binding.clEmpty.isVisible = it is SearchUiState.Empty
                 when (it) {
-                    is SearchUiState.Success -> {
+                    is SearchUiState.SetMeetings -> {
                         groupListAdapter.setItems(it.data)
+                    }
+
+                    is SearchUiState.AddMeetings -> {
+                        groupListAdapter.addItems(it.data)
                     }
 
                     is SearchUiState.Empty -> {
@@ -98,5 +108,23 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                     else -> {}
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    private fun infinityScroll() {
+        binding.rvGroupList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && !binding.rvGroupList.canScrollVertically(1) && (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() == groupListAdapter.itemCount - 1) {
+                    viewModel.getSearchGroup()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && !isScrolled) {
+                    isScrolled = true
+                }
+            }
+        })
     }
 }
