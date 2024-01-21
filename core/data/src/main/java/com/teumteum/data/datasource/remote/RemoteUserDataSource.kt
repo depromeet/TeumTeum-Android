@@ -1,5 +1,6 @@
 package com.teumteum.data.datasource.remote
 
+import com.teumteum.data.model.request.RequestUserInfo
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.entity.Friend
@@ -22,5 +23,11 @@ class RemoteUserDataSource @Inject constructor(
 
     suspend fun getUserFriend(userId: Long): List<Friend> {
         return service.getUserFriends(userId)
+    }
+
+    suspend fun updateUserInfo(
+        userInfo: UserInfo
+    ): Boolean {
+        return service.updateUserInfo(userInfo).isSuccessful
     }
 }

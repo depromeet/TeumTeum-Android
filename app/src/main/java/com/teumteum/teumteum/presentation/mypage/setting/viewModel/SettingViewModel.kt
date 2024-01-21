@@ -1,9 +1,11 @@
 package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.entity.WithDrawReasons
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.SettingRepository
@@ -27,6 +29,63 @@ class SettingViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository
 ): ViewModel() {
+
+    private val _userName = MutableStateFlow("")
+    val userName = _userName.asStateFlow()
+
+    private val _userBirthDate = MutableStateFlow("")
+    val userBirthDate = _userBirthDate.asStateFlow()
+
+    private val originalUserInfo = MutableStateFlow<UserInfo?>(null)
+
+    init {
+        loadUserInfo()
+    }
+    private fun loadUserInfo() = viewModelScope.launch {
+        originalUserInfo.value = userRepository.getUserInfo()
+        originalUserInfo.value?.let {
+            _userName.value = it.name
+            _userBirthDate.value = it.birth
+        }
+    }
+
+    fun updateUserName(newName: String) {
+        _userName.value = newName
+    }
+
+    fun updateUserBirthDate(newBirthDate: String) {
+        _userBirthDate.value = newBirthDate
+    }
+
+    fun updateUserInfo() = viewModelScope.launch {
+        if (isUserInfoChanged()) {
+            originalUserInfo.value?.let { original ->
+                val updatedUserInfo = original.copy(
+                    name = _userName.value,
+                    birth = _userBirthDate.value
+                )
+                userRepository.updateUserInfo(updatedUserInfo)
+                    .onSuccess {
+                        Log.d("업데이트 성공", "성공")
+                    }
+                    .onFailure {
+                        updateSettingStatus(SettingStatus.ERROR)
+                        Timber.e(it)
+                    }
+            }
+        }
+    }
+
+    fun isUserInfoChanged(): Boolean {
+        originalUserInfo.value?.let { original ->
+            val currentInfo = original.copy(
+                name = _userName.value,
+                birth = _userBirthDate.value
+            )
+            return currentInfo != original
+        }
+        return false
+    }
 
     private val _alarmState = MutableStateFlow(false)
     val alarmState: StateFlow<Boolean> = _alarmState.asStateFlow()

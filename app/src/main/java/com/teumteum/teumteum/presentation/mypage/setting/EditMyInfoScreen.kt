@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -29,7 +33,10 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewMo
 fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) {
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_my_info_edit_text),
-        onClick = { navController.navigate(R.id.fragment_setting)}
+        onClick = {
+            viewModel.updateUserInfo()
+            navController.navigate(R.id.fragment_setting)
+        }
     ) {
         Column(
             modifier = Modifier
@@ -44,7 +51,7 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
                 color= TmtmColorPalette.current.color_text_body_quaternary,
             )
             TmMarginVerticalSpacer(size = 8)
-            EditNameField()
+            EditNameField(viewModel)
             TmMarginVerticalSpacer(size = 20)
 
             Text(
@@ -53,7 +60,7 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
                 color= TmtmColorPalette.current.color_text_body_quaternary,
             )
             TmMarginVerticalSpacer(size = 8)
-            EditNameField()
+            EditBirthField(viewModel)
             TmMarginVerticalSpacer(size = 20)
             Text(
                 text = stringResource(id = R.string.setting_my_info_edit_title3),
@@ -89,18 +96,19 @@ fun EditSignUpBox() {
 }
 
 @Composable
-fun EditNameField() {
-    val maxChar = 32
+fun EditNameField(viewModel: SettingViewModel) {
+    val maxChar = 10
+    val userName by viewModel.userName.collectAsState()
 
     OutlinedTextField(
-        value = "정은아",
+        value = userName,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         placeholder = { Text(text = stringResource(id = R.string.setting_my_info_edit_placeholder1), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
         onValueChange = { newText ->
             if (newText.length <= maxChar) {
-//                viewModel.updateTitle(newText)
+                viewModel.updateUserName(newText)
             }
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -112,4 +120,48 @@ fun EditNameField() {
             backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
         ),
     )
+}
+
+@Composable
+fun EditBirthField(viewModel: SettingViewModel) {
+    val maxChar = 10
+    val userBirth by viewModel.userBirthDate.collectAsState()
+
+    OutlinedTextField(
+        value = userBirth,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        placeholder = { Text(text = stringResource(id = R.string.setting_my_info_edit_placeholder1), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
+        onValueChange = { newText ->
+            val formattedText = formatBirthDate(newText)
+            if (formattedText.length <= maxChar) {
+                viewModel.updateUserBirthDate(formattedText)
+            }
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor = TmtmColorPalette.current.color_text_body_primary,
+            focusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            unfocusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
+            focusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
+            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
+        ),
+    )
+}
+fun formatBirthDate(input: String): String {
+    var newText = input.filter { it.isDigit() || it == '.' }
+    val parts = newText.split('.')
+
+    newText = parts.joinToString(".") { part ->
+        part.take(4) // 최대 4자리까지
+    }.take(10) // 전체 길이: 최대 10자리
+
+    // 점(.) 추가 로직
+    if (newText.length == 4 || newText.length == 7) {
+        newText += '.'
+    }
+
+    return newText
 }

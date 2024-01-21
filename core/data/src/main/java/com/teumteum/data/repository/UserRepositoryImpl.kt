@@ -64,4 +64,11 @@ class UserRepositoryImpl @Inject constructor(
             dataSource.getUserFriend(userId)
         }
     }
+
+    override suspend fun updateUserInfo(userInfo: UserInfo): Result<Unit> {
+        return runCatching {
+            dataSource.updateUserInfo(userInfo)
+            saveUserInfo(userInfo)
+        }
+    }
 }
