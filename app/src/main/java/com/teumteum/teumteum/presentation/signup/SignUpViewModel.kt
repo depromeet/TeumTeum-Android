@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -280,6 +279,22 @@ class SignUpViewModel @Inject constructor(
         if (isWorkerInArea || isTraineeInArea) _currentStep.value--
         val previousStep = _currentStep.value - 1
         _currentStep.value = previousStep.coerceAtLeast(0)
+    }
+
+
+    private var presentUserInfo: UserInfo = UserInfo()
+
+    fun savePresentUserInfo(provider: String) {
+        val userInfo = getUserInfo(provider)
+        if (userInfo != null) presentUserInfo = userInfo
+    }
+
+    fun checkUserInfoChanged(): Boolean {
+        val provider = presentUserInfo.authenticated
+        val userInfo = getUserInfo(provider)
+
+        return if (userInfo != null) !userInfo.isIdentical(presentUserInfo)
+        else false
     }
 
     private var _userInfoState = MutableStateFlow<UserInfoUiState>(UserInfoUiState.Init)
