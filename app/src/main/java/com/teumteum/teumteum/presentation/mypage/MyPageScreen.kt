@@ -90,7 +90,7 @@ fun MyPageScreen(
                     )
                 }
                 TmMarginVerticalSpacer(size = 22)
-                SettingBtn(friends, navController)
+                SettingBtn(friends, navController, myPageViewModel)
                 TmMarginVerticalSpacer(size = 10)
             }
 
@@ -125,14 +125,15 @@ fun MyPageFrontCard(frontCard: FrontCard) {
 
 
 @Composable
-fun SettingBtn(text: String, navController: NavController) {
-
+fun SettingBtn(text: String, navController: NavController, viewModel: MyPageViewModel) {
     androidx.compose.material3.Button(
         modifier = Modifier
             .width(280.dp)
             .height(76.dp)
             .padding(vertical = 10.dp),
-        onClick = { navController.navigate(R.id.fragment_recommend)
+        onClick = {
+            viewModel.loadFriends()
+            navController.navigate(R.id.fragment_recommend)
         },
         colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
         shape = RoundedCornerShape(size = 4.dp)

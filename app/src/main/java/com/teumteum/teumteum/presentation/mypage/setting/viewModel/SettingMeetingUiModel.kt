@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 import androidx.annotation.DrawableRes
+import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 
 data class Meeting(
@@ -9,10 +10,21 @@ data class Meeting(
 )
 
 data class Recommend(
+    val id: Int,
     val name: String,
-    val jobName: String,
-    @DrawableRes val image: Int
+    val jobName: String? = null,
+    val characterId: Int,
 )
+
+fun Friend.toRecommend(): Recommend {
+    return Recommend(
+        id = this.id,
+        characterId = this.characterId,
+        name =  this.name,
+        jobName = this.job.name
+    )
+}
+
 
 data class UserGrade(
     val grade: String,
@@ -40,14 +52,6 @@ val UserGradeDummy = listOf(
     UserGrade("Excellent", "최고에요!", 3, R.drawable.ic_grade_exel),
     UserGrade("Good", "좋아요!", 2, R.drawable.ic_grade_good),
     UserGrade("Bad", "별로에요...",1, R.drawable.ic_grade_bad),
-)
-
-val RecommendDummy = listOf(
-    Recommend("김예은", "프로덕트 디자이너", R.drawable.ic_dog),
-    Recommend("신민서", "AOS 개발자", R.drawable.ic_cat),
-    Recommend("신한별", "프로덕트 디자이너", R.drawable.ic_fox),
-    Recommend("정은아", "프로덕트 디자이너", R.drawable.ic_ghost),
-
 )
 
 val SignOutList = listOf(

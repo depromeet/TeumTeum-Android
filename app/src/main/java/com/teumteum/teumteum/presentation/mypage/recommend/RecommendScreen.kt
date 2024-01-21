@@ -29,16 +29,18 @@ import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDummy
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.toRecommend
 
 
 @Composable
 fun RecommendScreen(viewModel: SettingViewModel, myPageViewModel: MyPageViewModel, navController: NavController) {
+    val friends by myPageViewModel.friendsList.collectAsState()
     val activity = LocalContext.current as? MainActivity
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
     val topbarText = when (userInfoState) {
@@ -64,15 +66,15 @@ fun RecommendScreen(viewModel: SettingViewModel, myPageViewModel: MyPageViewMode
                 item {
                     Spacer(modifier = Modifier.height(68.dp))
                 }
-                items(RecommendDummy) { recommend ->
-                    RecommendItem(recommend = recommend)
+                items(friends) { friend ->
+                    RecommendItem(recommend = friend.toRecommend(), myPageViewModel)
                 }
             }
     }
 }
 
 @Composable
-fun RecommendItem(recommend: Recommend) {
+fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp, end = 20.dp, bottom = 12.dp)
@@ -89,24 +91,28 @@ fun RecommendItem(recommend: Recommend) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RecommendRow(recommend = recommend)
-            Text(
-                text = "${recommend.jobName}",
-                style = TmTypo.current.Body2,
-                color= TmtmColorPalette.current.color_text_body_teritary,
-            )
+            RecommendRow(recommend = recommend, list= myPageViewModel.characterList)
+            recommend.jobName?.let {
+                Text(
+                    text = it,
+                    style = TmTypo.current.Body2,
+                    color= TmtmColorPalette.current.color_text_body_teritary,
+                )
+            }
 
         }
     }
 }
 @Composable
-fun RecommendRow(recommend: Recommend) {
+fun RecommendRow(recommend: Recommend, list: HashMap<Int, Int>) {
+    val imageResId = list[recommend.characterId] ?: R.drawable.ic_penguin
+
     Row(modifier = Modifier
         .wrapContentSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start) {
         Image(
-            painter = painterResource(id = recommend.image),
+            painter = painterResource(id = imageResId),
             contentDescription =null,
             modifier = Modifier
                 .size(32.dp)
@@ -114,7 +120,7 @@ fun RecommendRow(recommend: Recommend) {
         )
         TmMarginHorizontalSpacer(size = 8)
         Text(
-            text = "${recommend.name}",
+            text = recommend.name,
             style = TmTypo.current.HeadLine3,
             color= TmtmColorPalette.current.color_text_headline_primary,
         )

@@ -3,7 +3,9 @@ package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
@@ -11,11 +13,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val _userInfoState = MutableStateFlow<UserInfoUiState>(UserInfoUiState.Init)
     val userInfoState: StateFlow<UserInfoUiState> = _userInfoState
@@ -23,8 +27,27 @@ class MyPageViewModel @Inject constructor(
     private val _frontCardState = MutableStateFlow(FrontCard())
     val frontCardState: StateFlow<FrontCard> = _frontCardState
 
+    private val _friendsList = MutableStateFlow<List<Friend>>(emptyList())
+    val friendsList : StateFlow<List<Friend>> = _friendsList
+
+
     init {
         loadUserInfo()
+    }
+
+    fun loadFriends() {
+        val userId = authRepository.getUserId()
+        if (userId != -1L) {
+            viewModelScope.launch {
+                userRepository.getUserFriends(userId)
+                    .onSuccess {friend ->
+                        _friendsList.value = friend
+                    }
+                    .onFailure {
+                        Timber.e(it)
+                    }
+            }
+        }
     }
 
     private fun loadUserInfo() {
@@ -43,7 +66,7 @@ class MyPageViewModel @Inject constructor(
                 }
         }
     }
-    private val characterList: HashMap<Int, Int> = hashMapOf(
+    val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_card_ghost,
         1 to R.drawable.ic_card_star,
         2 to R.drawable.ic_card_bear,

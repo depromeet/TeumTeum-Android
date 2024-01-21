@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.data.datasource.remote.RemoteUserDataSource
 import com.teumteum.data.model.request.RequestUserInfo
+import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.UserRepository
@@ -56,5 +57,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override fun deleteUserInfo() {
         dataStore.userInfo = ""
+    }
+
+    override suspend fun getUserFriends(userId: Long): Result<List<Friend>> {
+        return runCatching {
+            dataSource.getUserFriend(userId)
+        }
     }
 }
