@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentGetInterestBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -69,12 +71,18 @@ class GetInterestFragment:
             val chip = makeChip(interest)
             if (interest in interestSelf) chip.isChecked = true
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    // Chip이 선택되었을 때 실행되는 코드
-                    viewModel.addInterestSelf(buttonView.text.toString())
-                } else {
-                    // Chip이 해제되었을 때 실행되는 코드
-                    viewModel.removeInterestSelf(buttonView.text.toString())
+                if (viewModel.interestCount.value < 3) {
+                    if (isChecked) {
+                        // Chip이 선택되었을 때 실행되는 코드
+                        viewModel.addInterestSelf(buttonView.text.toString())
+                    } else {
+                        // Chip이 해제되었을 때 실행되는 코드
+                        viewModel.removeInterestSelf(buttonView.text.toString())
+                    }
+                }
+                else {
+                    context?.toast(getString(R.string.signup_tv_interset_toast))
+                    buttonView.isChecked = false
                 }
             }
             binding.cgInterest1.addView(chip)
@@ -88,12 +96,18 @@ class GetInterestFragment:
             val chip = makeChip(interest)
             if (interest in interestField) chip.isChecked = true
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    // Chip이 선택되었을 때 실행되는 코드
-                    viewModel.addInterestField(buttonView.text.toString())
-                } else {
-                    // Chip이 해제되었을 때 실행되는 코드
-                    viewModel.removeInterestField(buttonView.text.toString())
+                if (viewModel.interestCount.value < 3) {
+                    if (isChecked) {
+                        // Chip이 선택되었을 때 실행되는 코드
+                        viewModel.addInterestField(buttonView.text.toString())
+                    } else {
+                        // Chip이 해제되었을 때 실행되는 코드
+                        viewModel.removeInterestField(buttonView.text.toString())
+                    }
+                }
+                else {
+                    context?.toast(getString(R.string.signup_tv_interset_toast))
+                    buttonView.isChecked = false
                 }
             }
             binding.cgInterest2.addView(chip)

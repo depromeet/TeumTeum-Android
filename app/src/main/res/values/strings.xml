@@ -84,6 +84,7 @@
     <string name="signup_tv_interest_title">카드의 뒷면을 완성해\n나를 표현해 주세요!</string>
     <string name="signup_tv_interest_1">자기계발</string>
     <string name="signup_tv_interest_2">관심분야</string>
+    <string name="signup_tv_interset_toast">최대 3개까지 선택할 수 있어요</string>
 
     <string name="signup_tv_area_modal_title">관심 지역</string>
     <string name="signup_tv_goal_title">틈틈을 이용해 달성하고\n싶은 목표를 알려주세요!</string>
