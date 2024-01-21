@@ -49,7 +49,9 @@ class HomeFragment :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_logo_title,
                 useRippleEffect = false,
-                clickEvent = null
+                clickEvent = {
+                    binding.scrollView.smoothScrollTo(0,0)
+                }
             )
         )
         addMenuToRight(
@@ -106,7 +108,7 @@ class HomeFragment :
         viewModel.groupData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
                 when (it) {
-                    is GroupListUiState.Success -> {
+                    is GroupListUiState.SetMeetings -> {
                         adapter?.setItems(it.data)
                     }
 
