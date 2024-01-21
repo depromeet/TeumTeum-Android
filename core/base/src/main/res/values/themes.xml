@@ -4,6 +4,9 @@
     <style name="Theme.TeumTeum" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:statusBarColor">@color/background</item>
+
+        <item name="colorPrimary">@color/tmtm_blue_500</item>
+        <item name="colorAccent">@color/tmtm_blue_500</item>
         <!-- TEXT -->
         <!-- headline -->
         <item name="color_text_headline_primary">@color/text_headline_primary</item>
@@ -89,6 +92,9 @@
         <item name="color_graphic_naver">@color/graphic_naver</item>
 
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialogTheme</item>
+
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">

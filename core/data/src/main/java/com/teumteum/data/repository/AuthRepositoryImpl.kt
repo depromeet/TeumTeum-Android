@@ -16,6 +16,12 @@ class AuthRepositoryImpl @Inject constructor(
         dataStore.refreshToken = refreshToken
     }
 
+    override fun disableAutoLogin() {
+        dataStore.isLogin = false
+        dataStore.userToken = ""
+        dataStore.refreshToken = ""
+    }
+
     override fun getIsFirstAfterInstall(): Boolean = dataStore.isFirstAfterInstall
 
     override fun setIsFirstAfterInstall(isFirst: Boolean) {
