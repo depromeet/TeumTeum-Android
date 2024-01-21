@@ -44,6 +44,7 @@ class HomeFragment :
 
     override fun initAppBarLayout() {
         setAppBarHeight(48)
+        setAppBarBackgroundColor(com.teumteum.base.R.color.background)
 
         addMenuToLeft(
             AppBarMenu.IconStyle(
@@ -63,7 +64,7 @@ class HomeFragment :
                 }
             ),
             AppBarMenu.IconStyle(
-                resourceId = R.drawable.ic_alarm_active,
+                resourceId = R.drawable.ic_bell,
                 useRippleEffect = false,
                 clickEvent = null
             )
@@ -76,8 +77,8 @@ class HomeFragment :
 
         }
         binding.rvRecommendMeet.adapter = adapter
-
-        binding.tvRecommendTitle.text = "${viewModel.getLocation().split(" ").last()} 추천 모임🔥"
+        binding.tvRecommendTitle.text =
+            getString(R.string.home_recommend_meet_title, viewModel.getLocation().split(" ").last())
     }
 
     private fun initEvent() {
