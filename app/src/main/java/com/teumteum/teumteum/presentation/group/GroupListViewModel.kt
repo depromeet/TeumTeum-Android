@@ -20,17 +20,26 @@ class GroupListViewModel @Inject constructor(
     val groupData: StateFlow<GroupListUiState> = _groupData
 
     private var currentPage = 0
+    private var isPagingFinish = false
 
     fun initCurrentPage(location: String? = null, topic: String? = null) {
         currentPage = 0
+        isPagingFinish = false
         getGroupList(location, topic)
     }
 
     fun getGroupList(location: String? = null, topic: String? = null) {
+        if (isPagingFinish) return
+
         viewModelScope.launch {
-            groupRepository.getSearchGroup(currentPage, location = location, topic = topic)
+            groupRepository.getSearchGroup(currentPage++, location = location, topic = topic)
                 .onSuccess {
-                    _groupData.value = GroupListUiState.Success(it)
+                    if (currentPage == 1) {
+                        _groupData.value = GroupListUiState.SetMeetings(it.second)
+                    } else if (currentPage > 1) {
+                        _groupData.value = GroupListUiState.AddMeetings(it.second)
+                    }
+                    if (!it.first) isPagingFinish = true
                 }.onFailure {
                     _groupData.value = GroupListUiState.Failure("모임 리스트 서버 통신 싪패")
                 }
@@ -44,6 +53,7 @@ class GroupListViewModel @Inject constructor(
 
 sealed interface GroupListUiState {
     object Init : GroupListUiState
-    data class Success(val data: List<Meeting>) : GroupListUiState
+    data class SetMeetings(val data: List<Meeting>) : GroupListUiState
+    data class AddMeetings(val data: List<Meeting>) : GroupListUiState
     data class Failure(val msg: String) : GroupListUiState
 }

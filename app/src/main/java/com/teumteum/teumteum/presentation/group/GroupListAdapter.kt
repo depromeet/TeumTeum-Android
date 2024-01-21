@@ -33,6 +33,11 @@ class GroupListAdapter(private val itemClick: (Meeting) -> (Unit)) :
         notifyDataSetChanged()
     }
 
+    fun addItems(newItems: List<Meeting>) {
+        groupList.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
     class GroupListViewHolder(
         private val binding: ItemGroupListBinding,
         private val itemClick: (Meeting) -> (Unit)
