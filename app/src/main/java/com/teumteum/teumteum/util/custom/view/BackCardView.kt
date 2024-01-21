@@ -320,7 +320,7 @@ class BackCardView : CardView {
 
     private fun ConstraintLayout.addRecyclerView(
         context: Context,
-        spanCount: Int = 2,
+        spanCount: Int = 2, // Assuming you want to keep using a 2-column layout
         id: Int = R.id.rvInterest,
         marginTop: Int = 0,
         marginBottom: Int = 0,
@@ -342,8 +342,10 @@ class BackCardView : CardView {
     ) {
         rvInterests = RecyclerView(context).apply {
             this.id = id
-            layoutManager = StaggeredGridLayoutManager(spanCount,LinearLayoutManager.VERTICAL)
-            adapter = interestAdapter // 사용 중인 어댑터 참조
+            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL).apply {
+                reverseLayout = true // Set items to stack from bottom up
+            }
+            adapter = interestAdapter // Use the existing adapter
             background?.let { setBackgroundResource(it) }
         }
         setPadding(
@@ -352,7 +354,7 @@ class BackCardView : CardView {
             paddingEnd.dpToPx(context),
             paddingBottom.dpToPx(context)
         )
-        val layoutParams = ConstraintLayout.LayoutParams( //새로운 constraintLayout을 생성하여 별도로 배치
+        val layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.MATCH_PARENT,
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         ).apply {
