@@ -12,7 +12,7 @@
 
     <application
         android:name=".MyApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
-            android:exported="true"></activity>
+            android:exported="false" />
         <activity
             android:name=".presentation.group.GroupListActivity"
             android:exported="false" />
@@ -71,7 +71,7 @@
             android:exported="false" />
         <activity
             android:name=".presentation.splash.SplashActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".presentation.signin.SocialWebViewActivity"
             android:exported="false" />

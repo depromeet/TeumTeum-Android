@@ -11,31 +11,26 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.util.custom.view.model.FrontCard
+import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.extension.dpToPx
 
 /**
- * 카드 전면 뷰
+ * 카드 후면 뷰
  *
  * xml, compose 모든 환경에서 뷰를 재활용 할 수 있게 커스텀뷰로 제작
  */
-class FrontCardView : CardView {
+class BackCardView : CardView {
     private val layoutParent = ConstraintLayout.LayoutParams.PARENT_ID
-    private var frontCard = FrontCard()
+    private var backCard = BackCard()
 
-    val tvName: TextView by lazy { findViewById(R.id.tvName) }
-    val tvCompany: TextView by lazy { findViewById(R.id.tvCompany) }
-    val tvJob: TextView by lazy { findViewById(R.id.tvJob) }
-    val tvLevel: TextView by lazy { findViewById(R.id.tvLevel) }
-    val tvArea: TextView by lazy { findViewById(R.id.tvArea) }
-    val tvMbti: TextView by lazy { findViewById(R.id.tvMbti) }
+    val tvGoalTitle: TextView by lazy { findViewById(R.id.tvGoalTitle) }
+    val tvGoalContent: TextView by lazy { findViewById(R.id.tvGoalContent) }
+
+    //    var rvInterests: RecyclerView by lazy {findViewById(R.id.rvInterests)}
     val ivCharacter: ImageView by lazy { findViewById(R.id.ivCharacter) }
     val ivFloat: ImageView by lazy { findViewById(R.id.ivFloat) }
 
-    val ivEditName: ImageView by lazy { findViewById(R.id.ivEditName) }
-    val ivEditCompany: ImageView by lazy { findViewById(R.id.ivEditCompany) }
-    val ivEditJob: ImageView by lazy { findViewById(R.id.ivEditJob) }
-    val ivEditArea: ImageView by lazy { findViewById(R.id.ivEditArea) }
+    val ivEditGoalContent: ImageView by lazy { findViewById(R.id.ivEditGoalContent) }
 
     var isModify: Boolean = false
         set(value) {
@@ -46,10 +41,7 @@ class FrontCardView : CardView {
     var isModifyDetail: Boolean = false
         set(value) {
             field = value
-            ivEditName.visibility = if (value) View.VISIBLE else View.INVISIBLE
-            ivEditCompany.visibility = if (value) View.VISIBLE else View.INVISIBLE
-            ivEditJob.visibility = if (value) View.VISIBLE else View.INVISIBLE
-            ivEditArea.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -67,8 +59,8 @@ class FrontCardView : CardView {
     /**
      * 컴포즈 환경에서 FrontCard 객체 생성
      */
-    fun getInstance(frontCard: FrontCard) {
-        this.frontCard = frontCard
+    fun getInstance(backCard: BackCard) {
+        this.backCard = backCard
         setUpViews()
     }
 
@@ -77,7 +69,7 @@ class FrontCardView : CardView {
      * 뷰가 생성되어 layout에 추가된 후 xml의 값이 뷰에 적용
      */
     private fun init(context: Context, attrs: AttributeSet?) {
-        setFrontCardBackground(context)
+        setBackCardBackground(context)
         addView(createLayoutAndViews(context))
         applyXmlAttributes(context, attrs)
     }
@@ -85,7 +77,7 @@ class FrontCardView : CardView {
     /**
      * 카드 배경 설정
      */
-    private fun setFrontCardBackground(context: Context) {
+    private fun setBackCardBackground(context: Context) {
         elevation = 0F
         background = ContextCompat.getDrawable(
             context,
@@ -100,26 +92,21 @@ class FrontCardView : CardView {
     private fun applyXmlAttributes(context: Context, attrs: AttributeSet?) {
         context.theme.obtainStyledAttributes(
             attrs,
-            com.teumteum.base.R.styleable.CardFrontView,
+            com.teumteum.base.R.styleable.CardBackView,
             0,
             0
         ).apply {
             try {
-                with(frontCard) {
-                    name = getString(com.teumteum.base.R.styleable.CardFrontView_name) ?: ""
-                    company = getString(com.teumteum.base.R.styleable.CardFrontView_company) ?: ""
-                    job = getString(com.teumteum.base.R.styleable.CardFrontView_job) ?: ""
-                    level = getString(com.teumteum.base.R.styleable.CardFrontView_level) ?: ""
-                    area = getString(com.teumteum.base.R.styleable.CardFrontView_area) ?: ""
-                    mbti = getString(com.teumteum.base.R.styleable.CardFrontView_mbti) ?: ""
+                with(backCard) {
+                    goalTitle =
+                        getString(com.teumteum.base.R.styleable.CardBackView_goalTitle) ?: ""
+                    goalContent =
+                        getString(com.teumteum.base.R.styleable.CardBackView_goalContent) ?: ""
                     characterResId =
-                        getResourceId(com.teumteum.base.R.styleable.CardFrontView_characterImage, 0)
+                        getResourceId(com.teumteum.base.R.styleable.CardBackView_characterImage, 0)
                     isModify =
-                        getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModify, false)
-                    isModifyDetail = getBoolean(
-                        com.teumteum.base.R.styleable.CardFrontView_isModifyDetail,
-                        false
-                    )
+                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
+//                    isModifyDetail = getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModifyDetail, false)
                 }
             } finally {
                 recycle()
@@ -129,20 +116,32 @@ class FrontCardView : CardView {
     }
 
     private fun setUpViews() {
-        tvName.text = frontCard.name
-        tvCompany.text = frontCard.company
-        tvJob.text = frontCard.job
-        tvLevel.text = frontCard.level
-        tvArea.text = frontCard.area
-        tvMbti.text = frontCard.mbti
-        ivCharacter.setImageResource(frontCard.characterResId)
-
-        ivFloat.setImageResource(frontCard.floatResId)
-        ivEditName.setImageResource(frontCard.editNameResId)
-        ivEditCompany.setImageResource(frontCard.editCompanyResId)
-        ivEditJob.setImageResource(frontCard.editJobResId)
-        ivEditArea.setImageResource(frontCard.editAreaResId)
+        tvGoalTitle.text = backCard.goalTitle
+        tvGoalContent.text = backCard.goalContent
+        ivCharacter.setImageResource(backCard.characterResId)
+        ivFloat.setImageResource(backCard.floatResId)
     }
+
+//    private fun initRecyclerView(context: Context) {
+//        rvInterests = RecyclerView(context).apply {
+//            // RecyclerView의 id 설정
+//            id = R.id.rvInterests
+//            val spanCount = 2 // For example, 2 columns
+//            // LayoutManager 설정
+//            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL)
+//
+//            // Adapter 설정
+//            adapter = InterestsAdapter() // 여기서 CustomAdapter는 사용자가 정의한 어댑터입니다.
+//
+//            // 기타 설정 (예: ItemDecoration, Animator 등)
+//        }
+//
+//        // RecyclerView를 ConstraintLayout에 추가
+//        (findViewById<ConstraintLayout>(R.id.cl)).addView(recyclerView)
+//
+//        // RecyclerView의 제약 조건 설정
+//        setRecyclerViewConstraints()
+//    }
 
     /**
      * layout과 그 안에 포함시킬 뷰 추가
@@ -154,86 +153,35 @@ class FrontCardView : CardView {
 
         addTextView(
             context,
-            id = R.id.tvName,
-            text = context.getString(R.string.front_card_name),
-            textColor = com.teumteum.base.R.color.text_headline_primary,
-            textSizeSp = 30f,
+            id = R.id.tvGoalTitle,
+            text = context.getString(R.string.back_card_goal_title),
+            textColor = com.teumteum.base.R.color.graphic_skyblue,
+            textSizeSp = 14f,
             fontFamily = com.teumteum.base.R.font.pretendard_bold,
-            lineHeightDp = 36,
+            lineHeightDp = 24,
             topToTopOf = layoutParent,
             startToStartOf = layoutParent,
-            marginTop = 40,
+            marginTop = 32,
             marginStart = 32
         )
         addTextView(
             context,
-            id = R.id.tvCompany,
-            text = context.getString(R.string.front_card_company),
-            textColor = com.teumteum.base.R.color.text_body_teritary,
-            textSizeSp = 16f,
-            fontFamily = com.teumteum.base.R.font.pretendard_semibold,
-            lineHeightDp = 22,
-            startToStartOf = R.id.tvName,
-            marginTop = 20,
-            topToBottomOf = R.id.tvName
-        )
-        addTextView(
-            context,
-            id = R.id.tvJob,
-            text = context.getString(R.string.front_card_job),
+            id = R.id.tvGoalContent,
+            text = "가고싶은 회사에 취업해 프로덕트 디자이너로 일하고 싶어요 안녕하세요 저는 사십구자에요", //동적 할당 예정
             textColor = com.teumteum.base.R.color.text_headline_primary,
             textSizeSp = 18f,
-            fontFamily = com.teumteum.base.R.font.pretendard_bold,
+            fontFamily = com.teumteum.base.R.font.pretendard_semibold,
             lineHeightDp = 24,
-            startToStartOf = R.id.tvName,
-            marginTop = 6,
-            topToBottomOf = R.id.tvCompany
-        )
-        addTextView(
-            context,
-            id = R.id.tvLevel,
-            text = context.getString(R.string.front_card_level),
-            textColor = com.teumteum.base.R.color.text_body_secondary,
-            textSizeSp = 12f,
-            fontFamily = com.teumteum.base.R.font.pretendard_regular,
-            lineHeightDp = 18,
-            marginTop = 6,
-            paddingStart = 8,
-            paddingEnd = 8,
-            paddingTop = 2,
-            paddingBottom = 2,
-            startToStartOf = R.id.tvName,
-            topToBottomOf = R.id.tvJob,
-            background = R.drawable.shape_rect4_elevation_level02
-        )
-        addTextView(
-            context,
-            id = R.id.tvArea,
-            text = context.getString(R.string.front_card_area),
-            textColor = com.teumteum.base.R.color.text_body_teritary,
-            textSizeSp = 12f,
-            fontFamily = com.teumteum.base.R.font.pretendard_regular,
-            lineHeightDp = 18,
-            marginTop = 6,
-            startToStartOf = R.id.tvName,
-            bottomToTopOf = R.id.tvMbti
-        )
-        addTextView(
-            context,
-            id = R.id.tvMbti,
-            text = context.getString(R.string.front_card_mbti),
-            textColor = com.teumteum.base.R.color.text_headline_primary,
-            textSizeSp = 20f,
-            fontFamily = com.teumteum.base.R.font.pretendard_bold,
-            lineHeightDp = 28,
-            marginBottom = 32,
-            startToStartOf = R.id.tvName,
-            bottomToBottomOf = layoutParent
+            startToStartOf = R.id.tvGoalTitle,
+            endToEndOf = layoutParent,
+            marginTop = 16,
+            marginEnd = 32,
+            topToBottomOf = R.id.tvGoalTitle
         )
         addImageView(
             context,
             id = R.id.ivCharacter,
-            drawableRes = R.drawable.ic_card_front_penguin,
+            drawableRes = R.drawable.ic_card_back_penguin,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent
         )
@@ -248,39 +196,11 @@ class FrontCardView : CardView {
         )
         addImageView( //todo - 하나의 id값으로 일괄 관리 가능 여부 확인
             context,
-            id = R.id.ivEditName,
+            id = R.id.ivEditGoalContent,
             drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = R.id.tvName,
-            topToTopOf = R.id.tvName,
-            bottomToBottomOf = R.id.tvName,
-            marginStart = 4
-        )
-        addImageView(
-            context,
-            id = R.id.ivEditCompany,
-            drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = R.id.tvCompany,
-            topToTopOf = R.id.tvCompany,
-            bottomToBottomOf = R.id.tvCompany,
-            marginStart = 4
-        )
-        addImageView(
-            context,
-            id = R.id.ivEditJob,
-            drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = R.id.tvJob,
-            topToTopOf = R.id.tvJob,
-            bottomToBottomOf = R.id.tvJob,
-            marginStart = 4
-        )
-        addImageView(
-            context,
-            id = R.id.ivEditArea,
-            drawableRes = R.drawable.ic_card_edit,
-            startToEndOf = R.id.tvArea,
-            topToTopOf = R.id.tvArea,
-            bottomToBottomOf = R.id.tvArea,
-            marginStart = 4
+            startToStartOf = R.id.tvGoalContent,
+            topToBottomOf = R.id.tvGoalContent,
+            marginTop = 4
         )
     }
 

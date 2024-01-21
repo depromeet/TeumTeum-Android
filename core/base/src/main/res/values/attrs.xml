@@ -84,6 +84,11 @@
     <attr name="color_graphic_kakao" format="reference|color" />
     <attr name="color_graphic_naver" format="reference|color" />
 
+    <!-- CardFront/Back -->
+    <attr name="characterImage" format="integer" />
+    <attr name="isModify" format="boolean" />
+    <attr name="isModifyDetail" format="boolean" />
+
     <!-- CardFront -->
     <declare-styleable name="CardFrontView">
         <attr name="name" format="string" />
@@ -92,9 +97,18 @@
         <attr name="level" format="string" />
         <attr name="area" format="string" />
         <attr name="mbti" format="string" />
-        <attr name="characterImage" format="integer" />
-        <attr name="isModify" format="boolean" />
-        <attr name="isModifyDetail" format="boolean" />
+        <attr name="characterImage" />
+        <attr name="isModify" />
+        <attr name="isModifyDetail"  />
+    </declare-styleable>
+
+    <!-- CardBack -->
+    <declare-styleable name="CardBackView">
+        <attr name="goalTitle" format="string" />
+        <attr name="goalContent" format="string" />
+        <attr name="characterImage" />
+        <attr name="isModify" />
+        <attr name="isModifyDetail" />
     </declare-styleable>
 
 </resources>

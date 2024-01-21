@@ -13,4 +13,8 @@
     <item name="ivEditCompany" type="id"/>
     <item name="ivEditJob" type="id"/>
     <item name="ivEditArea" type="id"/>
+    <item name="tvGoalTitle" type="id" />
+    <item name="tvGoalContent" type="id" />
+    <item name="rvInterests" type="id" />
+    <item name="ivEditGoalContent" type="id" />
 </resources>
