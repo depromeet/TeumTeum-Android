@@ -15,6 +15,7 @@ import com.teumteum.base.util.extension.stringExtra
 import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupListBinding
+import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,8 +47,9 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
         }
 
         adapter = GroupListAdapter {
-            Toast.makeText(this, it.photoUrls.first(), Toast.LENGTH_SHORT).show()
+            startActivity(GroupDetailActivity.getIntent(this, it.id))
         }
+
         binding.rvGroupList.adapter = adapter
         infinityScroll()
     }
