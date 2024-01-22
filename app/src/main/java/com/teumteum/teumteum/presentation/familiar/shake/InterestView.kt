@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.shake.custom
+package com.teumteum.teumteum.presentation.familiar.shake
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.teumteum.base.util.TransformUtils
-import com.teumteum.teumteum.presentation.teumteum.shake.model.InterestViewConfig
+import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import java.lang.Float.max
 import java.lang.Float.min
 

@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.location
+package com.teumteum.teumteum.presentation.familiar.location
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TeumTeumViewModel @Inject constructor(
+class LocationViewModel @Inject constructor(
     val sampleRepository: SampleRepository,
 ) : ViewModel() {
 

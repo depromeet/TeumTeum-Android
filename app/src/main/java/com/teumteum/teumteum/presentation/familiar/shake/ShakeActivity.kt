@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.shake
+package com.teumteum.teumteum.presentation.familiar.shake
 
 import ShakeDetector
 import android.content.Context
@@ -20,9 +20,8 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityShakeBinding
-import com.teumteum.teumteum.presentation.teumteum.shake.custom.InterestView
-import com.teumteum.teumteum.presentation.teumteum.shake.model.InterestViewConfig
-import com.teumteum.teumteum.presentation.teumteum.shake.model.InterestViewData
+import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
+import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewData
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint

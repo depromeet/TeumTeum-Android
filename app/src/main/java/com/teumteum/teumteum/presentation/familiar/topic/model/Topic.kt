@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.topic.model
+package com.teumteum.teumteum.presentation.familiar.topic.model
 
 import android.graphics.drawable.Drawable
 

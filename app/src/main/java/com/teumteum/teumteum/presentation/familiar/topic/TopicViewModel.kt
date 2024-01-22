@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.topic
+package com.teumteum.teumteum.presentation.familiar.topic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

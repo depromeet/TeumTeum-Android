@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.topic
+package com.teumteum.teumteum.presentation.familiar.topic
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teumteum.teumteum.databinding.ItemTopicBinding
-import com.teumteum.teumteum.presentation.teumteum.topic.model.Topic
+import com.teumteum.teumteum.presentation.familiar.topic.model.Topic
 
 class TopicAdapter() :
     ListAdapter<Topic, TopicAdapter.ItemViewHolder>(

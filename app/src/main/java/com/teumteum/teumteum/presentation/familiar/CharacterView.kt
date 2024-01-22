@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.location.custom
+package com.teumteum.teumteum.presentation.familiar
 
 import android.content.Context
 import android.util.AttributeSet

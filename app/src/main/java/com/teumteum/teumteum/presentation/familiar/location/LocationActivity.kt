@@ -1,41 +1,37 @@
-package com.teumteum.teumteum.presentation.teumteum.location
+package com.teumteum.teumteum.presentation.familiar.location
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
-import android.view.View
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.teumteum.base.BindingFragment
+import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.FragmentTeumTeumBinding
-import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.teumteum.shake.onboarding.ShakeOnBoardingActivity
+import com.teumteum.teumteum.databinding.ActivityLocationBinding
+import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class TeumTeumFragment :
-    BindingFragment<FragmentTeumTeumBinding>(R.layout.fragment_teum_teum), AppBarLayout {
-
+class LocationActivity : BindingActivity<ActivityLocationBinding>(R.layout.activity_location),
+    AppBarLayout {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         initAppBarLayout()
-        (activity as MainActivity).hideBottomNavi()
 
         binding.btnStart.setOnClickListener {
-            val intent = Intent(requireActivity(), ShakeOnBoardingActivity::class.java)
+            val intent = Intent(this, ShakeActivity::class.java)
             startActivity(intent)
         }
     }
@@ -56,28 +52,25 @@ class TeumTeumFragment :
         )
     }
 
+
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // 위치 요청 interval
         val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 1000
+            fastestInterval = 1000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
-        // 위치 콜백 정의
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
-                    Timber.tag("위치").d("${location.latitude}, ${location.longitude}")
+                    Timber.tag("Location").d("${location.latitude}, ${location.longitude}")
                 }
             }
         }
 
-        // 위치 업데이트 요청
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
