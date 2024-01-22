@@ -3,6 +3,7 @@ package com.teumteum.data.service
 import com.teumteum.data.model.request.RequestMoim
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
+import com.teumteum.data.model.response.ResponseMyMeeting
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.Response
@@ -47,4 +48,5 @@ interface GroupService {
     suspend fun deleteGroupJoin(
         @Path("meetingId") meetingId: Long
     ): Response
+
 }

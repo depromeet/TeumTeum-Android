@@ -30,13 +30,15 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 
 @Composable
 fun EditCardScreen(
     MyPageViewModel: MyPageViewModel,
-    viewModel: SettingViewModel,
+    viewModel: EditCardViewModel,
     navController: NavController
 ) {
     val activity = LocalContext.current as? MainActivity
@@ -72,7 +74,11 @@ fun EditCardScreen(
             //상태
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label3))
             TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(text = R.string.setting_edit_card_placeholder3)
+            EditCardBottomBox(
+                text = R.string.setting_edit_card_placeholder3,
+                viewModel = viewModel,
+                sheetEvent = SheetEvent.Status
+            )
 
             //직장명
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label4))
@@ -82,22 +88,38 @@ fun EditCardScreen(
             //직군
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label5))
             TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(text = R.string.setting_edit_card_placeholder5)
+            EditCardBottomBox(
+                text = R.string.setting_edit_card_placeholder3,
+                viewModel = viewModel,
+                sheetEvent = SheetEvent.JobClass
+            )
 
             //직무
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label6))
             TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(text = R.string.setting_edit_card_placeholder6)
+            EditCardBottomBox(
+                text = R.string.setting_edit_card_placeholder3,
+                viewModel = viewModel,
+                sheetEvent = SheetEvent.JobDetail
+            )
 
             //MBTI
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label7))
             TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(text = R.string.setting_edit_card_placeholder7)
+            EditCardBottomBox(
+                text = R.string.setting_edit_card_placeholder3,
+                viewModel = viewModel,
+                sheetEvent = SheetEvent.Mbti
+            )
 
             //관심 지역
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label8))
             TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(text = R.string.setting_edit_card_placeholder8)
+            EditCardBottomBox(
+                text = R.string.setting_edit_card_placeholder3,
+                viewModel = viewModel,
+                sheetEvent = SheetEvent.Area
+            )
 
             //자기 개발
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
@@ -116,20 +138,28 @@ fun EditCardScreen(
 }
 
 @Composable
-fun EditCardBottomBox(@StringRes text: Int ) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .background(
-            color = TmtmColorPalette.current.elevation_color_elevation_level01,
-            shape = RoundedCornerShape(4.dp)
-        )
-        .clickable {}
-    ) {
-        Row(modifier = Modifier
+fun EditCardBottomBox(
+    @StringRes text: Int,
+    viewModel: EditCardViewModel,
+    sheetEvent: SheetEvent
+) {
+    Box(
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .background(
+                color = TmtmColorPalette.current.elevation_color_elevation_level01,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .clickable {
+                viewModel.triggerSheetEvent(sheetEvent)
+            }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -138,7 +168,8 @@ fun EditCardBottomBox(@StringRes text: Int ) {
                 color = TmtmColorPalette.current.color_text_body_quinary,
                 style = TmTypo.current.Body1,
             )
-            Image(painter = painterResource(id = R.drawable.ic_arrow_down_l),
+            Image(
+                painter = painterResource(id = R.drawable.ic_arrow_down_l),
                 contentDescription = null
             )
         }

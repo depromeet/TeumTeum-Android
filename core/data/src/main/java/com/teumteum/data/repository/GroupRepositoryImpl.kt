@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.teumteum.data.datasource.remote.RemoteGroupDataSource
 import com.teumteum.data.model.request.toBody
+import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.entity.MoimEntity
 import com.teumteum.domain.repository.GroupRepository
@@ -15,8 +16,8 @@ import java.io.File
 import javax.inject.Inject
 
 class GroupRepositoryImpl @Inject constructor(
-    private val dataSource: RemoteGroupDataSource
-) : GroupRepository {
+    private val dataSource: RemoteGroupDataSource,
+    ) : GroupRepository {
     override suspend fun postGroupMoim(moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting> {
         return runCatching {
             Log.d("postGroupMoim", "돌아감")
@@ -58,4 +59,5 @@ class GroupRepositoryImpl @Inject constructor(
             dataSource.deleteGroupJoin(meetingId)
         }
     }
+
 }

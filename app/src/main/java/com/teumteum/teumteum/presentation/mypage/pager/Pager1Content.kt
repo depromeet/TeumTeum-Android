@@ -57,8 +57,3 @@ fun MyPagePager1Content() {
         TmMarginVerticalSpacer(size = 20)
     }
 }
-
-@Composable
-fun MeetingColumn() {
-
-}

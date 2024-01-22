@@ -1,9 +1,12 @@
 package com.teumteum.data.service
 
 import com.teumteum.data.model.request.RequestSignOut
+import com.teumteum.data.model.response.ResponseMyMeeting
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface SettingService {
     @POST("users/logouts")
@@ -12,4 +15,22 @@ interface SettingService {
 
     @POST("users/withdraw")
     suspend fun signOut(@Body request: RequestSignOut): Response<Unit>
+
+    @GET("meetings")
+    suspend fun getMyPageOpenMeeting(
+        @Query("size") size: Int = 20,
+        @Query("page") page: Int,
+        @Query("sort") sort: String = "promiseDateTime",
+        @Query("isOpen") isOpen: Boolean,
+        @Query("participantUserId") participantUserId: Long? = 16,
+    ): ResponseMyMeeting
+
+    @GET("meetings")
+    suspend fun getMyPageClosedMeeting(
+        @Query("size") size: Int = 20,
+        @Query("page") page: Int,
+        @Query("sort") sort: String = "promiseDateTime",
+        @Query("isOpen") isOpen: Boolean,
+        @Query("participantUserId") participantUserId: Long? = 16,
+    ): ResponseMyMeeting
 }
