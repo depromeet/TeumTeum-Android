@@ -14,7 +14,7 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
@@ -189,7 +189,7 @@ class SignUpActivity
                         splashViewModel.refreshUserInfo()
                     }
                     is UserInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         finish()
                     }
                     else -> {}
@@ -206,7 +206,7 @@ class SignUpActivity
                         goToSignUpFinishActivity()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         finish()
                     }
                     else -> {}

@@ -17,13 +17,12 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.data.BuildConfig
 import com.teumteum.domain.entity.SocialLoginResult
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySocialWebviewBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.terms.TermsActivity
 import com.teumteum.teumteum.presentation.splash.MyInfoUiState
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
@@ -83,7 +82,7 @@ class SocialWebViewActivity
                         "&redirect_uri=${BuildConfig.NAVER_REDIRECT_URL}"
             }
             else -> {
-                toast("소셜 로그인에 실패했습니다")
+                defaultSnackBar(binding.root, "소셜 로그인에 실패했습니다")
                 finish()
             }
         }
@@ -172,7 +171,7 @@ class SocialWebViewActivity
                         goToTermsActivity()
                     }
                     is SignInUiState.Failure -> {
-                        toast(it.msg)
+                        defaultSnackBar(binding.root, it.msg)
                         finish()
                     }
 
@@ -189,7 +188,7 @@ class SocialWebViewActivity
                         goToHomeScreen()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         goToTermsActivity()
                     }
                     else -> {}
