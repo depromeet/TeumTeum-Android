@@ -35,7 +35,7 @@ class ShakeOnBoardingActivity
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         when {
-            permissions[OnBoardingActivity.ACCESS_FINE_LOCATION] == true && permissions[OnBoardingActivity.ACCESS_COARSE_LOCATION] == true -> {
+            permissions[ACCESS_FINE_LOCATION] == true && permissions[ACCESS_COARSE_LOCATION] == true -> {
                 // 권한 허용 시
             }
 
@@ -139,11 +139,11 @@ class ShakeOnBoardingActivity
     private fun isLocationPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
-            OnBoardingActivity.ACCESS_FINE_LOCATION
+            ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(
                     this,
-                    OnBoardingActivity.ACCESS_COARSE_LOCATION
+                    ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
     }
 
