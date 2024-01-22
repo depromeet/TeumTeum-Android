@@ -1,7 +1,9 @@
 package com.teumteum.teumteum.presentation.signup
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
@@ -31,6 +33,7 @@ import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import com.teumteum.teumteum.presentation.splash.MyInfoUiState
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
+import com.teumteum.teumteum.util.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -272,6 +275,20 @@ class SignUpActivity
         navigateTo<CardFixFragment>()
         setPreviousButtonOnCardFix()
         changeToCtaButton()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val focusView = currentFocus
+        if (focusView != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev!!.x.toInt()
+            val y = ev.y.toInt()
+            if (!rect.contains(x, y))
+                hideKeyboard(focusView)
+
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     inline fun <reified T : Fragment> navigateTo() {
