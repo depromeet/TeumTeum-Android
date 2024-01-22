@@ -33,6 +33,7 @@
     <string name="signup_tv_terms_agree_all">전체동의</string>
     <string name="signup_tv_terms_agree_1">서비스 이용약관</string>
     <string name="signup_tv_terms_agree_2">개인정보 처리방침</string>
+    <string name="signup_tv_terms_agree_3">위치 기반 서비스 이용 동의</string>
     <string name="signup_tv_terms_mandatory">(필수)</string>
     <string name="signup_btn_start">시작하기</string>
     <string name="signup_tv_card_intro_title">나만의 소개서를 만들어 봐요</string>

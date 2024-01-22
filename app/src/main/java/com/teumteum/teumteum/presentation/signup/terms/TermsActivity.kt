@@ -20,6 +20,7 @@ class TermsActivity
 
         getIdProvider()
         initView()
+        initTermsDetail()
     }
 
     private fun getIdProvider() {
@@ -33,6 +34,7 @@ class TermsActivity
                 btnTermsAll.isSelected = !btnTermsAll.isSelected
                 btnTerms1.isSelected = btnTermsAll.isSelected
                 btnTerms2.isSelected = btnTermsAll.isSelected
+                btnTerms3.isSelected = btnTermsAll.isSelected
                 btnStart.isEnabled = btnTermsAll.isSelected
             }
             btnTerms1.setOnClickListener {
@@ -42,6 +44,11 @@ class TermsActivity
             }
             btnTerms2.setOnClickListener {
                 btnTerms2.isSelected = !btnTerms2.isSelected
+                btnTermsAll.isSelected = checkAllSelected()
+                btnStart.isEnabled = btnTermsAll.isSelected
+            }
+            btnTerms3.setOnClickListener {
+                btnTerms3.isSelected = !btnTerms3.isSelected
                 btnTermsAll.isSelected = checkAllSelected()
                 btnStart.isEnabled = btnTermsAll.isSelected
             }
@@ -56,12 +63,39 @@ class TermsActivity
         }
     }
 
+    private fun initTermsDetail() {
+        with(binding) {
+            btnTermsDetail1.setOnClickListener {
+                goToTermsWebView(1)
+            }
+            btnTermsDetail2.setOnClickListener {
+                goToTermsWebView(2)
+            }
+            btnTermsDetail3.setOnClickListener {
+                goToTermsWebView(3)
+            }
+        }
+    }
+
+    private fun goToTermsWebView(termsIndex: Int) {
+        val intent = Intent(this@TermsActivity, TermsWebViewActivity::class.java)
+        when (termsIndex) {
+            1 -> intent.putExtra("url", TERMS_URL_1)
+            2 -> intent.putExtra("url", TERMS_URL_2)
+            3 -> intent.putExtra("url", TERMS_URL_3)
+        }
+        startActivity(intent)
+    }
+
     private fun checkAllSelected(): Boolean {
         with (binding) {
-            return btnTerms1.isSelected && btnTerms2.isSelected
+            return btnTerms1.isSelected && btnTerms2.isSelected && btnTerms3.isSelected
         }
     }
 
     companion object {
+        const val TERMS_URL_1 = ""
+        const val TERMS_URL_2 = ""
+        const val TERMS_URL_3 = ""
     }
 }
