@@ -19,7 +19,7 @@ fun Application.setUpFlipper() {
         val client = AndroidFlipperClient.getInstance(this).apply {
             addPlugin(InspectorFlipperPlugin(this@setUpFlipper, DescriptorMapping.withDefaults()))
             addPlugin(flipperNetworkPlugin)
-            addPlugin(SharedPreferencesFlipperPlugin(this@setUpFlipper, packageName))
+            addPlugin(SharedPreferencesFlipperPlugin(this@setUpFlipper, "USER_DATA"))
         }
         client.start()
     }

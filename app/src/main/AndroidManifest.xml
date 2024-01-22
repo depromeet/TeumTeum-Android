@@ -12,7 +12,7 @@
 
     <application
         android:name=".MyApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,10 +25,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".presentation.teumteum.topic.TopicActivity"
+            android:name=".presentation.familiar.topic.TopicActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.teumteum.shake.ShakeActivity"
+            android:name=".presentation.familiar.shake.ShakeActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"
@@ -36,16 +36,19 @@
         </activity>
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".presentation.group.GroupListActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.teumteum.shake.onboarding.ShakeOnBoardingActivity"
+            android:name=".presentation.familiar.onboarding.FamiliarOnBoardingActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.signin.SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.familiar.location.LocationActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.signup.terms.TermsActivity"
@@ -75,6 +78,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.signin.SocialWebViewActivity"
+            android:exported="false" />
+        <activity android:name=".presentation.onboarding.AccessLocationActivity"
+            android:exported="false" />
+        <activity android:name=".presentation.signup.terms.TermsWebViewActivity"
             android:exported="false" />
 
     </application>

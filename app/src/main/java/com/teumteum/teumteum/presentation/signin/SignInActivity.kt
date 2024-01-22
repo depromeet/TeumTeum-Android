@@ -2,8 +2,10 @@ package com.teumteum.teumteum.presentation.signin
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.buttonSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySigninBinding
 import com.teumteum.teumteum.presentation.signup.terms.TermsActivity
