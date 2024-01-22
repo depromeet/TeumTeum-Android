@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.shake.onboarding
+package com.teumteum.teumteum.presentation.familiar.onboarding
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teumteum.teumteum.databinding.ItemShakeOnboardingBinding
-import com.teumteum.teumteum.presentation.teumteum.shake.model.ShakeOnBoarding
+import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
 
-class ShakeOnBoardingAdapter() :
-    ListAdapter<ShakeOnBoarding, ShakeOnBoardingAdapter.ItemViewHolder>(
+class FamiliarOnBoardingAdapter() :
+    ListAdapter<FamiliarOnBoarding, FamiliarOnBoardingAdapter.ItemViewHolder>(
         ItemListDiffCallback
     ) {
     private lateinit var binding: ItemShakeOnboardingBinding
@@ -31,7 +31,7 @@ class ShakeOnBoardingAdapter() :
 
     class ItemViewHolder(private val binding: ItemShakeOnboardingBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ShakeOnBoarding) {
+        fun bind(item: FamiliarOnBoarding) {
             with(binding) {
                 tvTitle.text = item.title
                 tvSubtitle.text = item.subtitle
@@ -44,14 +44,14 @@ class ShakeOnBoardingAdapter() :
         }
     }
 
-    object ItemListDiffCallback : DiffUtil.ItemCallback<ShakeOnBoarding>() {
-        override fun areItemsTheSame(oldItem: ShakeOnBoarding, newItem: ShakeOnBoarding): Boolean {
+    object ItemListDiffCallback : DiffUtil.ItemCallback<FamiliarOnBoarding>() {
+        override fun areItemsTheSame(oldItem: FamiliarOnBoarding, newItem: FamiliarOnBoarding): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: ShakeOnBoarding,
-            newItem: ShakeOnBoarding
+            oldItem: FamiliarOnBoarding,
+            newItem: FamiliarOnBoarding
         ): Boolean {
             return oldItem.title == newItem.title
         }

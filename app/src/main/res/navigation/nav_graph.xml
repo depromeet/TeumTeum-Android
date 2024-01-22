@@ -59,9 +59,9 @@
 
     <fragment
         android:id="@+id/fragment_teum_teum"
-        android:name="com.teumteum.teumteum.presentation.teumteum.location.TeumTeumFragment"
+        android:name="com.teumteum.teumteum.presentation.familiar.FamiliarFragment"
         android:label="TeumTeumFragment"
-        tools:layout="@layout/fragment_teum_teum"/>
+        tools:layout="@layout/fragment_familiar"/>
 
 
     <fragment

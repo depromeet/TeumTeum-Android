@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.topic
+package com.teumteum.teumteum.presentation.familiar.topic
 
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -11,7 +11,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTopicBinding
-import com.teumteum.teumteum.presentation.teumteum.topic.model.Topic
+import com.teumteum.teumteum.presentation.familiar.topic.model.Topic
 import dagger.hilt.android.AndroidEntryPoint
 
 

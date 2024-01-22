@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.teumteum.shake.onboarding
+package com.teumteum.teumteum.presentation.familiar.onboarding
 
 import android.Manifest
 import android.app.AlertDialog
@@ -18,18 +18,21 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
+import com.teumteum.teumteum.presentation.familiar.SharedPreferencesManager
+import com.teumteum.teumteum.presentation.familiar.location.LocationActivity
+import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
 import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
-import com.teumteum.teumteum.presentation.teumteum.shake.ShakeActivity
-import com.teumteum.teumteum.presentation.teumteum.shake.model.ShakeOnBoarding
+import com.teumteum.teumteum.util.PermissionUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class ShakeOnBoardingActivity
+class FamiliarOnBoardingActivity
     : BindingActivity<ActivityOnboardingBinding>(R.layout.activity_onboarding), AppBarLayout {
 
-    private val shakeOnboardingAdapter = ShakeOnBoardingAdapter()
-    private val viewpagerList = ArrayList<ShakeOnBoarding>()
+    private val familiarOnboardingAdapter = FamiliarOnBoardingAdapter()
+    private val viewpagerList = ArrayList<FamiliarOnBoarding>()
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     private val locationLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -37,6 +40,7 @@ class ShakeOnBoardingActivity
         when {
             permissions[OnBoardingActivity.ACCESS_FINE_LOCATION] == true && permissions[OnBoardingActivity.ACCESS_COARSE_LOCATION] == true -> {
                 // 권한 허용 시
+                startLocationActivity()
             }
 
             else -> {
@@ -48,6 +52,9 @@ class ShakeOnBoardingActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferencesManager = SharedPreferencesManager(this).apply {
+            this.setOnboardingCompleted(completed = true)
+        }
 
         initAppBarLayout()
         initViewPagerItem()
@@ -57,17 +64,18 @@ class ShakeOnBoardingActivity
 
     private fun setUpListener() {
         binding.btnStart.setOnClickListener {
-            if (isLocationPermissionGranted()) startToShakeActivity()
+            if (PermissionUtils.isLocationPermissionGranted(this)) startLocationActivity() else showPermissionDeniedDialog()
         }
     }
 
-    private fun startToShakeActivity() {
+    private fun startLocationActivity() {
         startActivity(
             Intent(
-                this@ShakeOnBoardingActivity,
-                ShakeActivity::class.java
+                this@FamiliarOnBoardingActivity,
+                LocationActivity::class.java
             )
         )
+        finish()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -89,31 +97,31 @@ class ShakeOnBoardingActivity
     private fun initViewPagerItem() {
         with(viewpagerList) {
             add(
-                ShakeOnBoarding(
+                FamiliarOnBoarding(
                     getString(R.string.shake_onboarding_location_title),
                     getString(R.string.shake_onboarding_location_subtitle),
                     ContextCompat.getDrawable(
-                        this@ShakeOnBoardingActivity,
+                        this@FamiliarOnBoardingActivity,
                         R.drawable.ic_shake_onboarding_location
                     )
                 )
             )
             add(
-                ShakeOnBoarding(
+                FamiliarOnBoarding(
                     getString(R.string.shake_onboarding_card_title),
                     getString(R.string.shake_onboarding_card_subtitle),
                     ContextCompat.getDrawable(
-                        this@ShakeOnBoardingActivity,
+                        this@FamiliarOnBoardingActivity,
                         R.drawable.ic_shake_onboarding_card
                     )
                 )
             )
             add(
-                ShakeOnBoarding(
+                FamiliarOnBoarding(
                     getString(R.string.shake_onboarding_interst_title),
                     getString(R.string.shake_onboarding_interest_subtitle),
                     ContextCompat.getDrawable(
-                        this@ShakeOnBoardingActivity,
+                        this@FamiliarOnBoardingActivity,
                         R.drawable.ic_shake_onboarding_interest
                     )
                 )
@@ -122,9 +130,9 @@ class ShakeOnBoardingActivity
     }
 
     private fun initViewPager() {
-        shakeOnboardingAdapter.submitList(viewpagerList)
+        familiarOnboardingAdapter.submitList(viewpagerList)
         with(binding) {
-            vp.adapter = shakeOnboardingAdapter
+            vp.adapter = familiarOnboardingAdapter
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             tl.clearOnTabSelectedListeners()
             btnStart.setOnClickListener {
@@ -136,16 +144,6 @@ class ShakeOnBoardingActivity
         }.attach()
     }
 
-    private fun isLocationPermissionGranted(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            OnBoardingActivity.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(
-                    this,
-                    OnBoardingActivity.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-    }
 
     //TODO 임시 디자인
     private fun showPermissionDeniedDialog() {
@@ -163,7 +161,7 @@ class ShakeOnBoardingActivity
     }
 
     private fun checkLocationPermission() {
-        if (!isLocationPermissionGranted()) {
+        if (!PermissionUtils.isLocationPermissionGranted(this)) {
             locationLauncher.launch(
                 arrayOf(
                     ACCESS_FINE_LOCATION,
