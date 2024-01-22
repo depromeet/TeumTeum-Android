@@ -8,5 +8,6 @@ interface GroupRepository {
     suspend fun postGroupMoim(moimEntity:MoimEntity, imageFiles: List<File>): Result<Meeting>
     suspend fun getSearchGroup(page: Int, keyword: String? = null, location: String? = null, topic: String? = null): Result<Pair<Boolean, List<Meeting>>>
     suspend fun postGroupJoin(meetingId: Long): Result<Meeting>
+    suspend fun getGroup(meetingId: Long): Result<Meeting>
     suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean>
 }

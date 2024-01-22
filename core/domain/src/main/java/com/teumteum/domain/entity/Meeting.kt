@@ -10,5 +10,9 @@ data class Meeting(
     val name: String,
     val introduction: String,
     val photoUrls: List<String>,
-    val date: String
+    val numberOfRecruits: Int,
+    val date: String,
+    val participantIds: List<Int>,
+    val address: String,
+    val addressDetail: String
 )

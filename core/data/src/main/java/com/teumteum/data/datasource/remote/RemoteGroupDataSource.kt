@@ -40,4 +40,10 @@ class RemoteGroupDataSource @Inject constructor(
     ): ResponseMeeting {
         return service.postMoim(moimRequestBody, files)
     }
+
+    suspend fun getGroup(
+        meetingId: Long
+    ): ResponseMeeting {
+        return service.getGroup(meetingId)
+    }
 }

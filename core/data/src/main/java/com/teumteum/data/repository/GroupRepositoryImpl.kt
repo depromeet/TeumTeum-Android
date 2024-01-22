@@ -54,6 +54,13 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getGroup(meetingId: Long): Result<Meeting> {
+        return runCatching {
+            Log.d("kangmi", "d")
+            dataSource.getGroup(meetingId).toMeeting()
+        }
+    }
+
     override suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean> {
         return runCatching {
             dataSource.deleteGroupJoin(meetingId)

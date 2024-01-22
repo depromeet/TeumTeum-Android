@@ -47,4 +47,9 @@ interface GroupService {
     suspend fun deleteGroupJoin(
         @Path("meetingId") meetingId: Long
     ): Response
+
+    @GET("meetings/{meetingsId}")
+    suspend fun getGroup(
+        @Path("meetingsId") meetingsId: Long
+    ): ResponseMeeting
 }
