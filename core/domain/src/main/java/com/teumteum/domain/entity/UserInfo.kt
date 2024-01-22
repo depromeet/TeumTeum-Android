@@ -18,7 +18,26 @@ data class UserInfo (
     val job: JobEntity,
     val interests: List<String>,
     val friends: Int
-)
+) {
+    constructor() : this(0, "", "", 0, 0, "", "",
+        "", "", "", JobEntity(), listOf(), 0)
+
+    fun isInvaild(): Boolean = name.isBlank()
+
+    fun isIdentical(other: UserInfo): Boolean {
+        return (name == other.name
+                && birth == other.birth
+                && characterId == other.characterId
+                && activityArea == other.activityArea
+                && mbti == other.mbti
+                && status == other.status
+                && goal == other.goal
+                && job.detailClass == other.job.detailClass
+                && job.name == other.job.name
+                && interests.containsAll(other.interests)
+                && other.interests.containsAll(interests))
+    }
+}
 
 @Serializable
 data class JobEntity(
@@ -27,7 +46,7 @@ data class JobEntity(
     @SerialName("class")
     val jobClass: String,
     val detailClass: String
-)
+
 
 @Serializable
 data class updatedUserInfo(
@@ -62,6 +81,7 @@ fun UserInfo.toUpdatedUserInfo(): updatedUserInfo {
         newInterests = this.interests,
         friends = this.friends
     )
+ {
+    constructor() : this("null", false, "", "")
 }
-
 

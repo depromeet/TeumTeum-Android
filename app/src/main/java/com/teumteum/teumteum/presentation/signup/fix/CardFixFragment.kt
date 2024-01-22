@@ -6,7 +6,13 @@ import androidx.fragment.app.activityViewModels
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCardFixBinding
+import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
+import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
+import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
+import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
+import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
+import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -21,6 +27,12 @@ class CardFixFragment
         super.onViewCreated(view, savedInstanceState)
 
         initCard()
+        initCardListener()
+    }
+
+    override fun onResume() {
+        checkValidInput()
+        super.onResume()
     }
 
     private fun initCard() {
@@ -38,6 +50,60 @@ class CardFixFragment
             }
             if (fc != null) binding.cardview.getInstance(fc)
         }
+    }
+
+    private fun initCardListener() {
+        with(binding.cardview) {
+            ivEditName.setOnClickListener{
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetNameFragment>()
+                }
+            }
+            ivEditCompany.setOnClickListener {
+                (activity as SignUpActivity).apply {
+                    when (viewModel.community.value) {
+                        COMMUNITY_WORKER -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentJobFragment>()
+                        }
+                        COMMUNITY_STUDENT -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentSchoolFragment>()
+                        }
+                    }
+                }
+            }
+            ivEditJob.setOnClickListener {
+                (activity as SignUpActivity).apply {
+                    when (viewModel.community.value) {
+                        COMMUNITY_WORKER -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentJobFragment>()
+                        }
+                        COMMUNITY_STUDENT -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<ReadyJobFragment>()
+                        }
+                        COMMUNITY_TRAINEE -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<ReadyJobFragment>()
+                        }
+                    }
+                }
+            }
+            ivEditArea.setOnClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<PreferredAreaFragment>()
+                }
+            }
+        }
+    }
+
+    private fun checkValidInput() {
+        if (viewModel.checkUserInfoChanged()) (activity as SignUpActivity).activateFixFinishButton()
+        else (activity as SignUpActivity).disableFixFinishButton()
     }
 
     companion object {

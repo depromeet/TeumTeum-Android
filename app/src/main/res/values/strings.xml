@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">TeumTeum</string>
     <string name="bottom_menu_home">홈</string>
-    <string name="bottom_menu_teum_teum">틈틈</string>
-    <string name="bottom_menu_my_page">마이페이지</string>
+    <string name="bottom_menu_familar">친해지기</string>
+    <string name="bottom_menu_mypage">마이페이지</string>
     <string name="more">더보기</string>
     <string name="home_share_concern_title">고민 나누기</string>
     <string name="home_share_concern_sub">직무, 커리어 고민을\n나눠보세요</string>
@@ -12,7 +12,6 @@
     <string name="home_study_sub">관심 분야 스터디로\n목표를 달성해요</string>
     <string name="home_project_title">사이드 프로젝트</string>
     <string name="home_project_sub">사이드 프로젝트\n팀을 구해보세요</string>
-    <string name="home_recommend_meet_title">판교 추천 모임</string>
     <string name="home_floating_btn">모임생성으로 이동하는 버튼</string>
 
     <string name="webview_floating_btn">원래의 프래그먼트로 이동하는 버튼</string>
@@ -26,6 +25,11 @@
     <string name="onboarding_tv_networking_subtitle">회사/학교 인증, 지인 인증, 리뷰 등으로\n안전한 네트워킹을 즐겨보세요</string>
     <string name="shake_title">세 분의 관심사의 틈을 채워\n대화 주제를 조합하는 중이에요</string>
 
+    <string name="onboarding_tv_access_location_title">위치 권한을 허용해주세요</string>
+    <string name="onboarding_tv_access_location_subtitle">지역 기반 기능 사용 시 위치 권한이 필요합니다.</string>
+    <string name="onboarding_tv_access_location_allow">허용</string>
+    <string name="onboarding_tv_access_location_decline">허용 안함</string>
+
     <string name="signin_tv_kakao">카카오톡으로 시작하기</string>
     <string name="signin_tv_naver">네이버로 시작하기</string>
 
@@ -34,6 +38,7 @@
     <string name="signup_tv_terms_agree_all">전체동의</string>
     <string name="signup_tv_terms_agree_1">서비스 이용약관</string>
     <string name="signup_tv_terms_agree_2">개인정보 처리방침</string>
+    <string name="signup_tv_terms_agree_3">위치 기반 서비스 이용 동의</string>
     <string name="signup_tv_terms_mandatory">(필수)</string>
     <string name="signup_btn_start">시작하기</string>
     <string name="signup_tv_card_intro_title">나만의 소개서를 만들어 봐요</string>
@@ -85,6 +90,7 @@
     <string name="signup_tv_interest_title">카드의 뒷면을 완성해\n나를 표현해 주세요!</string>
     <string name="signup_tv_interest_1">자기계발</string>
     <string name="signup_tv_interest_2">관심분야</string>
+    <string name="signup_tv_interset_toast">최대 3개까지 선택할 수 있어요</string>
 
     <string name="signup_tv_area_modal_title">관심 지역</string>
     <string name="signup_tv_goal_title">틈틈을 이용해 달성하고\n싶은 목표를 알려주세요!</string>
@@ -246,5 +252,6 @@
     <string name="location_title">근처에 틈틈을 켠 사람을\n찾고 있어요!</string>
     <string name="character_name">김프만</string>
     <string name="character_job">AOS 개발자</string>
+    <string name="home_recommend_meet_title">%1$s 추천 모임 🔥</string>
 
 </resources>

@@ -1,19 +1,20 @@
 package com.teumteum.teumteum.presentation.signup
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
@@ -32,10 +33,9 @@ import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import com.teumteum.teumteum.presentation.splash.MyInfoUiState
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
+import com.teumteum.teumteum.util.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SignUpActivity
@@ -95,21 +95,27 @@ class SignUpActivity
         binding.seekBar.visibility = View.GONE
     }
 
+    private fun hideAppbar() {
+        binding.appBar.clAppBar.visibility = View.INVISIBLE
+    }
+
+    private fun showAppbar() {
+        binding.appBar.clAppBar.visibility = View.VISIBLE
+    }
+
     private fun changeToTwoCallButton() {
         with(binding) {
             btnNextSignup.visibility = View.GONE
+            btnFinishSignup.visibility = View.GONE
             btnTwocallSignup.visibility = View.VISIBLE
         }
     }
 
+    // fix 화면 나타날 때
     private fun changeToCtaButton() {
         with(binding) {
             btnTwocallSignup.visibility = View.GONE
-            btnNextSignup.apply {
-                visibility = View.VISIBLE
-                text = getString(R.string.signup_tv_go_home)
-                setOnClickListener { registerUserInfo() }
-            }
+            btnFinishSignup.visibility = View.VISIBLE
         }
     }
 
@@ -127,12 +133,31 @@ class SignUpActivity
         }
     }
 
-    private fun setPreviousButtonOnCardComplete() {
+    // card fix 시 특정 필드를 수정하는 화면의 하단 버튼
+    fun showNextButtonOnFixingField() {
+        binding.appBar.clAppBar.visibility = View.INVISIBLE
+        binding.btnFinishSignup.visibility = View.GONE
+        binding.btnNextSignup.visibility = View.VISIBLE
+    }
+
+    fun activateFixFinishButton() {
+        binding.btnFinishSignup.isEnabled = true
+    }
+
+    fun disableFixFinishButton() {
+        binding.btnFinishSignup.isEnabled = false
+    }
+
+    private fun setButtonListenersOnCardComplete() {
         binding.btnFix.setOnClickListener {
+            savePresentUserInfo()
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
         binding.btnKeep.setOnClickListener {
+            registerUserInfo()
+        }
+        binding.btnFinishSignup.setOnClickListener {
             registerUserInfo()
         }
         getLeftMenuChildAt(0).setOnClickListener {
@@ -144,6 +169,9 @@ class SignUpActivity
         getLeftMenuChildAt(0).setOnClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
+        }
+        binding.btnNextSignup.setOnClickListener {
+            fixCard()
         }
     }
 
@@ -161,9 +189,9 @@ class SignUpActivity
                         splashViewModel.refreshUserInfo()
                     }
                     is UserInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         finish()
-                        }
+                    }
                     else -> {}
                 }
             }
@@ -178,13 +206,17 @@ class SignUpActivity
                         goToSignUpFinishActivity()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         finish()
                     }
                     else -> {}
                 }
             }
         }
+    }
+
+    private fun savePresentUserInfo() {
+        viewModel.savePresentUserInfo(provider)
     }
 
     private fun registerUserInfo() {
@@ -233,14 +265,30 @@ class SignUpActivity
     private fun completeCard() {
         navigateTo<CardCompleteFragment>()
         hideProgressBar()
-        setPreviousButtonOnCardComplete()
+        hideAppbar()
+        setButtonListenersOnCardComplete()
         changeToTwoCallButton()
     }
 
     private fun fixCard() {
+        showAppbar()
         navigateTo<CardFixFragment>()
         setPreviousButtonOnCardFix()
         changeToCtaButton()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val focusView = currentFocus
+        if (focusView != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev!!.x.toInt()
+            val y = ev.y.toInt()
+            if (!rect.contains(x, y))
+                hideKeyboard(focusView)
+
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     inline fun <reified T : Fragment> navigateTo() {

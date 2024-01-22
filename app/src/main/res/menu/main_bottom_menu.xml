@@ -4,23 +4,23 @@
     <item
         android:id="@+id/fragment_home"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
-        android:title="@string/bottom_menu_home"
+        android:icon="@drawable/ic_bottom_navi_home"
         android:menuCategory="secondary"
+        android:title="@string/bottom_menu_home"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/fragment_teum_teum"
         android:enabled="true"
-        android:icon="@drawable/ic_teum_teum"
-        android:title="@string/bottom_menu_teum_teum"
+        android:icon="@drawable/ic_bottom_navi_familiar"
         android:menuCategory="secondary"
+        android:title="@string/bottom_menu_familar"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/fragment_my_page"
         android:enabled="true"
-        android:icon="@drawable/ic_my_page"
-        android:title="@string/bottom_menu_my_page"
+        android:icon="@drawable/ic_bottom_navi_mypage"
         android:menuCategory="secondary"
+        android:title="@string/bottom_menu_mypage"
         app:showAsAction="ifRoom" />
 
 </menu>

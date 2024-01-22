@@ -40,6 +40,7 @@ class SplashViewModel @Inject constructor(
                     _myInfoState.value = MyInfoUiState.Success
                 }
                 .onFailure {
+                    authRepository.disableAutoLogin()
                     _myInfoState.value = MyInfoUiState.Failure("회원 정보 로딩 실패")
                 }
         }

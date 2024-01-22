@@ -34,17 +34,18 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSearchGroup(page: Int, keyword: String?, location: String?, topic: String?): Result<List<Meeting>> {
+    override suspend fun getSearchGroup(page: Int, keyword: String?, location: String?, topic: String?): Result<Pair<Boolean,List<Meeting>>> {
+        val groupData = dataSource.getGroups(
+        size = 20,
+        page = page,
+        sort = "promiseDateTime,desc",
+        isOpen = true,
+        searchWord = keyword,
+        meetingAreaStreet = location,
+        topic = topic
+        )
         return runCatching {
-            dataSource.getGroups(
-                size = 20,
-                page = page,
-                sort = "promiseDateTime,desc",
-                isOpen = true,
-                searchWord = keyword,
-                meetingAreaStreet = location,
-                topic = topic
-            ).data.meetings.map { it.toMeeting() }
+            Pair(groupData.hasNext, groupData.data.meetings.map { it.toMeeting() })
         }
     }
 

@@ -35,9 +35,10 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_signup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="-6dp"
             app:layout_constraintTop_toBottomOf="@id/seekBar"
+            app:layout_constraintBottom_toTopOf="@id/divider"
             tools:layout="@layout/fragment_character"
             />
 
@@ -62,6 +63,23 @@
             android:stateListAnimator="@null"
             android:enabled="true"
             android:text="@string/signup_btn_next"
+            android:textAppearance="@style/ta.headline.6"
+            android:textColor="@color/color_text_button_primary_selector"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_finish_signup"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/sel_button_cta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:elevation="0dp"
+            android:stateListAnimator="@null"
+            android:enabled="false"
+            android:visibility="gone"
+            android:text="@string/signup_tv_fix_finish"
             android:textAppearance="@style/ta.headline.6"
             android:textColor="@color/color_text_button_primary_selector"
             />

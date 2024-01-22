@@ -20,6 +20,7 @@ class SearchViewModel @Inject constructor(
         get() = etSearch.value.isBlank()
 
     private var currentPage = 0
+    private var isPagingFinish = false
 
     val keywordList =
         listOf<String>("스터디", "독서", "외주", "모여서 각자 일하기", "커리어", "직무 고민", "사이드 프로젝트", "N잡")
@@ -33,14 +34,21 @@ class SearchViewModel @Inject constructor(
     }
 
     fun getSearchGroup(keyword: String? = null) {
+        if (isPagingFinish) return
+
         viewModelScope.launch {
             repository.getSearchGroup(currentPage++, keyword ?: etSearch.value)
                 .onSuccess {
-                    if (it.isEmpty()) {
-                        _searchData.value = SearchUiState.Empty(keyword ?: etSearch.value)
-                    } else {
-                        _searchData.value = SearchUiState.Success(it)
+                    if (currentPage == 1) {
+                        if (it.second.isEmpty()) {
+                            _searchData.value = SearchUiState.Empty(keyword ?: etSearch.value)
+                        } else {
+                            _searchData.value = SearchUiState.SetMeetings(it.second)
+                        }
+                    } else if (currentPage > 1) {
+                        _searchData.value = SearchUiState.AddMeetings(it.second)
                     }
+                    if (!it.first) isPagingFinish = true
                 }.onFailure {
                     _searchData.value = SearchUiState.Failure("친구 검색 서버 통신에 실패했습니다.")
                 }
@@ -51,6 +59,7 @@ class SearchViewModel @Inject constructor(
 sealed interface SearchUiState {
     object Init : SearchUiState
     data class Empty(val keyword: String) : SearchUiState
-    data class Success(val data: List<Meeting>) : SearchUiState
+    data class SetMeetings(val data: List<Meeting>) : SearchUiState
+    data class AddMeetings(val data: List<Meeting>) : SearchUiState
     data class Failure(val msg: String) : SearchUiState
 }
