@@ -78,7 +78,7 @@ fun RecommendDetailScreen(
             item {
                 TmMarginVerticalSpacer(size = 78)
                 Box {
-                    MyPageFrontCard(frontCard = frontCardState)
+                    MyFriendFrontCard(viewModel)
                     Image(
                         painter = painterResource(id = R.drawable.ic_floating_edit),
                         contentDescription = "Character Image",
@@ -119,7 +119,7 @@ fun RecommendDetailScreen(
 }
 
 @Composable
-fun MyPageFrontCard(viewModel: RecommendDetailViewModel) {
+fun MyFriendFrontCard(viewModel: RecommendDetailViewModel) {
     val frontCard = viewModel.getFrontCardFromInfo()
     FrontCardView(frontCard = frontCard)
 }
