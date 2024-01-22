@@ -3,7 +3,6 @@ package com.teumteum.teumteum.presentation.familiar.onboarding
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -19,7 +18,7 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.familiar.SharedPreferencesManager
-import com.teumteum.teumteum.presentation.familiar.location.LocationActivity
+import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity
 import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
 import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.util.PermissionUtils
@@ -72,7 +71,7 @@ class FamiliarOnBoardingActivity
         startActivity(
             Intent(
                 this@FamiliarOnBoardingActivity,
-                LocationActivity::class.java
+                NeighborActivity::class.java
             )
         )
         finish()

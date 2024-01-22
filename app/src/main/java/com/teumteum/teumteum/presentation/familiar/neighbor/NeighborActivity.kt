@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.familiar.location
+package com.teumteum.teumteum.presentation.familiar.neighbor
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,13 +14,13 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.ActivityLocationBinding
+import com.teumteum.teumteum.databinding.ActivityNeighborBinding
 import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class LocationActivity : BindingActivity<ActivityLocationBinding>(R.layout.activity_location),
+class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activity_neighbor),
     AppBarLayout {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
@@ -31,8 +31,7 @@ class LocationActivity : BindingActivity<ActivityLocationBinding>(R.layout.activ
         initAppBarLayout()
 
         binding.btnStart.setOnClickListener {
-            val intent = Intent(this, ShakeActivity::class.java)
-            startActivity(intent)
+            startShakeActivity()
         }
     }
 
@@ -50,6 +49,10 @@ class LocationActivity : BindingActivity<ActivityLocationBinding>(R.layout.activ
                 clickEvent = {}
             )
         )
+    }
+
+    private fun startShakeActivity() {
+        startActivity(Intent(this, ShakeActivity::class.java))
     }
 
 
