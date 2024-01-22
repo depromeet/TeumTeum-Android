@@ -49,6 +49,7 @@ fun MyPageScreen(
     myPageViewModel: MyPageViewModel
 ) {
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
+
     val frontCardState by myPageViewModel.frontCardState.collectAsState()
     val userName by viewModel.userName.collectAsState()
     val friends = when (userInfoState) {
@@ -106,7 +107,8 @@ fun MyPageScreen(
                 )
             }
             when (selectedTab.value) {
-                "내 모임" -> item { MyPagePager1Content() }
+                "내 모임" -> item {
+                    MyPagePager1Content(viewModel) }
                 "받은 리뷰" -> item { MyPagePager2Content() }
 //                "북마크" -> item { MyPagePager3Content() }
             }

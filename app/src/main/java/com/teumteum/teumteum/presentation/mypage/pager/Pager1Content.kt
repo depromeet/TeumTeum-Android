@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,11 +18,17 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 @Composable
-fun MyPagePager1Content() {
-    val moim1: Int = 1;
-    val moim2: Int = 0;
+fun MyPagePager1Content(
+    viewModel: SettingViewModel
+) {
+    val userOpen by viewModel.userOpenMeetingList.collectAsState()
+    val userHostOpen by viewModel.userHostMeetingList.collectAsState()
+
+    val userClosed by viewModel.userClosedMeetingList.collectAsState()
+    val userHostClosed by viewModel.userHostClosedMeetingList.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,11 +44,19 @@ fun MyPagePager1Content() {
             color = TmtmColorPalette.current.color_text_headline_primary
         )
         TmMarginVerticalSpacer(size = 20)
-        if(moim1 == 0) {
+        // open이 모두 비어있을때
+        if(userOpen.isEmpty() && userHostOpen.isEmpty()) {
             NoMoimItems()
-        } else {
-            MyMoimItems(MeetingDummy1)
         }
+        else {
+            userOpen.forEach { meeting ->
+                MeetingItem(meeting)
+            }
+            userHostOpen.forEach { meeting ->  
+                MyMoimItems(meeting = meeting)
+            }
+        }
+        
         TmMarginVerticalSpacer(size = 27)
 
         Text(
@@ -49,11 +65,18 @@ fun MyPagePager1Content() {
             color = TmtmColorPalette.current.color_text_headline_primary
         )
         TmMarginVerticalSpacer(size = 20)
-        if (moim2 == 0) {
-            NoMoimItems(false)
-        } else {
-            MyMoimBadge()
+        if(userClosed.isEmpty() && userHostClosed.isEmpty()) {
+            NoMoimItems()
         }
+        else  {
+            userClosed.forEach {
+                MeetingItem(meeting = it)
+            }
+            userHostClosed.forEach { 
+                MyMoimItems(meeting = it)
+            }
+        }
+        
         TmMarginVerticalSpacer(size = 20)
     }
 }
