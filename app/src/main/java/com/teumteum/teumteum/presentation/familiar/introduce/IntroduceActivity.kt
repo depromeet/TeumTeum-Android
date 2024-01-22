@@ -71,7 +71,7 @@ class IntroduceActivity
                 Introduce(
                     ContextCompat.getDrawable(
                         this@IntroduceActivity,
-                        R.drawable.ic_shake_onboarding_location
+                        R.drawable.ic_shake_onboarding_card
                     )
                 )
             )
@@ -87,7 +87,7 @@ class IntroduceActivity
                 Introduce(
                     ContextCompat.getDrawable(
                         this@IntroduceActivity,
-                        R.drawable.ic_shake_onboarding_interest
+                        R.drawable.ic_shake_onboarding_card
                     )
                 )
             )

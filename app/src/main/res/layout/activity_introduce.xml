@@ -22,7 +22,7 @@
             android:layout_marginTop="20dp"
             android:lineSpacingExtra="3sp"
             android:text="@string/introduce_title"
-            android:textAppearance="@style/ta.headline.2"
+            android:textAppearance="@style/ta.headline.3"
             android:textColor="?attr/color_text_headline_primary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBar" />

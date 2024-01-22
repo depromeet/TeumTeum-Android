@@ -15,6 +15,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
+import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
 import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -31,7 +32,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         initAppBarLayout()
 
         binding.btnStart.setOnClickListener {
-            startShakeActivity()
+            startIntroduceActivity()
         }
     }
 
@@ -51,8 +52,8 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         )
     }
 
-    private fun startShakeActivity() {
-        startActivity(Intent(this, ShakeActivity::class.java))
+    private fun startIntroduceActivity() {
+        startActivity(Intent(this, IntroduceActivity::class.java))
     }
 
 
