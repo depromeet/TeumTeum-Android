@@ -6,6 +6,9 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTermsBinding
 import com.teumteum.teumteum.presentation.signup.intro.CardIntroActivity
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_OAUTHID
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_URL
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,8 +27,8 @@ class TermsActivity
     }
 
     private fun getIdProvider() {
-        oauthId = intent.getStringExtra("oauthId").toString()
-        provider = intent.getStringExtra("provider").toString()
+        oauthId = intent.getStringExtra(EXTRA_KEY_OAUTHID).toString()
+        provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
     }
 
     private fun initView() {
@@ -55,8 +58,8 @@ class TermsActivity
             btnStart.setOnClickListener {
                 if (btnTermsAll.isSelected) {
                     val intent = Intent(this@TermsActivity, CardIntroActivity::class.java)
-                    intent.putExtra("oauthId", oauthId)
-                    intent.putExtra("provider", provider)
+                    intent.putExtra(EXTRA_KEY_OAUTHID, oauthId)
+                    intent.putExtra(EXTRA_KEY_PROVIDER, provider)
                     startActivity(intent)
                 }
             }
@@ -80,9 +83,9 @@ class TermsActivity
     private fun goToTermsWebView(termsIndex: Int) {
         val intent = Intent(this@TermsActivity, TermsWebViewActivity::class.java)
         when (termsIndex) {
-            1 -> intent.putExtra("url", TERMS_URL_1)
-            2 -> intent.putExtra("url", TERMS_URL_2)
-            3 -> intent.putExtra("url", TERMS_URL_3)
+            1 -> intent.putExtra(EXTRA_KEY_URL, TERMS_URL_1)
+            2 -> intent.putExtra(EXTRA_KEY_URL, TERMS_URL_2)
+            3 -> intent.putExtra(EXTRA_KEY_URL, TERMS_URL_3)
         }
         startActivity(intent)
     }

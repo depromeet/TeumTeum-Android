@@ -32,6 +32,7 @@
 
     <string name="signin_tv_kakao">카카오톡으로 시작하기</string>
     <string name="signin_tv_naver">네이버로 시작하기</string>
+    <string name="signin_tv_fail_snackbar">소셜 로그인에 실패했습니다</string>
 
     <string name="signup_tv_terms_title">틈틈에 오신 것을 환영합니다</string>
     <string name="signup_tv_terms_subtitle">서비스 시작 및 가입을 위해서 먼저\n가입 및 정보 제공에 동의해 주세요.</string>

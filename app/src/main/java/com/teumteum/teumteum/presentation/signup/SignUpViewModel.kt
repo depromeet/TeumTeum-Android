@@ -6,6 +6,9 @@ import com.teumteum.domain.entity.JobEntity
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
+import com.teumteum.teumteum.util.SignupUtils.STATUS_STUDENT
+import com.teumteum.teumteum.util.SignupUtils.STATUS_TRAINEE
+import com.teumteum.teumteum.util.SignupUtils.STATUS_WORKER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -210,9 +213,9 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.Birthday -> SignUpProgress.Community
                 SignUpProgress.Community -> {
                     when (_community.value) {
-                        COMMUNITY_WORKER -> SignUpProgress.CurrentJob
-                        COMMUNITY_STUDENT -> SignUpProgress.School
-                        COMMUNITY_TRAINEE -> SignUpProgress.ReadyJob
+                        STATUS_WORKER -> SignUpProgress.CurrentJob
+                        STATUS_STUDENT -> SignUpProgress.School
+                        STATUS_TRAINEE -> SignUpProgress.ReadyJob
                         else -> _signUpProgress.value
                     }
                 }
@@ -239,16 +242,16 @@ class SignUpViewModel @Inject constructor(
                 SignUpProgress.School -> SignUpProgress.Community
                 SignUpProgress.ReadyJob -> {
                     when (_community.value) {
-                        COMMUNITY_STUDENT -> SignUpProgress.School
-                        COMMUNITY_TRAINEE -> SignUpProgress.Community
+                        STATUS_STUDENT -> SignUpProgress.School
+                        STATUS_TRAINEE -> SignUpProgress.Community
                         else -> _signUpProgress.value
                     }
                 }
                 SignUpProgress.Area -> {
                     when (_community.value) {
-                        COMMUNITY_WORKER -> SignUpProgress.CurrentJob
-                        COMMUNITY_STUDENT -> SignUpProgress.ReadyJob
-                        COMMUNITY_TRAINEE -> SignUpProgress.ReadyJob
+                        STATUS_WORKER -> SignUpProgress.CurrentJob
+                        STATUS_STUDENT -> SignUpProgress.ReadyJob
+                        STATUS_TRAINEE -> SignUpProgress.ReadyJob
                         else -> _signUpProgress.value
                     }
                 }
@@ -263,9 +266,9 @@ class SignUpViewModel @Inject constructor(
 
     fun goToNextStep() {
         val isWorkerInCurrentJob = _signUpProgress.value == SignUpProgress.CurrentJob
-                && _community.value == COMMUNITY_WORKER
+                && _community.value == STATUS_WORKER
         val isTraineeInReadyJob = _signUpProgress.value == SignUpProgress.ReadyJob
-                && _community.value == COMMUNITY_TRAINEE
+                && _community.value == STATUS_TRAINEE
         if (isWorkerInCurrentJob || isTraineeInReadyJob) _currentStep.value++
         val nextStep = _currentStep.value + 1
         _currentStep.value = nextStep.coerceIn(1, 10)
@@ -273,9 +276,9 @@ class SignUpViewModel @Inject constructor(
 
     fun goToPreviousStep() {
         val isWorkerInArea = _signUpProgress.value == SignUpProgress.Area
-                && _community.value == COMMUNITY_WORKER
+                && _community.value == STATUS_WORKER
         val isTraineeInArea = _signUpProgress.value == SignUpProgress.Area
-                && _community.value == COMMUNITY_TRAINEE
+                && _community.value == STATUS_TRAINEE
         if (isWorkerInArea || isTraineeInArea) _currentStep.value--
         val previousStep = _currentStep.value - 1
         _currentStep.value = previousStep.coerceAtLeast(0)
@@ -338,19 +341,19 @@ class SignUpViewModel @Inject constructor(
     private fun getUserInfo(provider: String): UserInfo? {
         val jobEntity =
             when (community.value) {
-                COMMUNITY_WORKER -> JobEntity(
+                STATUS_WORKER -> JobEntity(
                     companyName.value,
                     false,
                     jobClass.value,
                     jobDetailClass.value
                 )
-                COMMUNITY_STUDENT -> JobEntity(
+                STATUS_STUDENT -> JobEntity(
                     schoolName.value,
                     false,
                     readyJobClass.value,
                     readyJobDetailClass.value
                 )
-                COMMUNITY_TRAINEE -> JobEntity(
+                STATUS_TRAINEE -> JobEntity(
                     null,
                     false,
                     readyJobClass.value,
@@ -384,9 +387,6 @@ class SignUpViewModel @Inject constructor(
 
     companion object {
         private const val REGEX_ID_PATTERN = "^([A-Za-z0-9_.]*)\$"
-        private const val COMMUNITY_WORKER = "직장인"
-        private const val COMMUNITY_STUDENT = "학생"
-        private const val COMMUNITY_TRAINEE = "취업준비생"
     }
 }
 

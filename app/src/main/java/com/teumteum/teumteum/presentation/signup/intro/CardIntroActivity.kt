@@ -9,6 +9,8 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityCardIntroBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_OAUTHID
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
 
 class CardIntroActivity
     : BindingActivity<ActivityCardIntroBinding>(R.layout.activity_card_intro), AppBarLayout {
@@ -40,16 +42,16 @@ class CardIntroActivity
     }
 
     private fun getIdProvider() {
-        oauthId = intent.getStringExtra("oauthId").toString()
-        provider = intent.getStringExtra("provider").toString()
+        oauthId = intent.getStringExtra(EXTRA_KEY_OAUTHID).toString()
+        provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
     }
 
     private fun initView() {
         with (binding) {
             btnStart.setOnClickListener {
                 val intent = Intent(this@CardIntroActivity, SignUpActivity::class.java)
-                intent.putExtra("oauthId", oauthId)
-                intent.putExtra("provider", provider)
+                intent.putExtra(EXTRA_KEY_OAUTHID, oauthId)
+                intent.putExtra(EXTRA_KEY_PROVIDER, provider)
                 startActivity(intent)
             }
             getLeftMenuChildAt(0).setOnClickListener {

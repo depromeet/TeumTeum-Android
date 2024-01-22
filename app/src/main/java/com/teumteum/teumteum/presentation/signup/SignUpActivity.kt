@@ -33,6 +33,12 @@ import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import com.teumteum.teumteum.presentation.splash.MyInfoUiState
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_OAUTHID
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
+import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_ENG
+import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_KOR
+import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_ENG
+import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_KOR
 import com.teumteum.teumteum.util.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -53,8 +59,7 @@ class SignUpActivity
         initAppBarLayout()
         setProgressBar()
         setStartingFragment()
-        initNextButton()
-        initPreviousButton()
+        setUpInitialListener()
         observer()
         userInfoObserver()
     }
@@ -75,8 +80,8 @@ class SignUpActivity
     }
 
     private fun getIdProvider() {
-        oauthId = intent.getStringExtra("oauthId").toString()
-        provider = intent.getStringExtra("provider").toString()
+        oauthId = intent.getStringExtra(EXTRA_KEY_OAUTHID).toString()
+        provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
     }
 
     private fun setStartingFragment() {
@@ -119,14 +124,11 @@ class SignUpActivity
         }
     }
 
-    private fun initNextButton() {
+    private fun setUpInitialListener() {
         binding.btnNextSignup.setOnClickListener {
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
-    }
-
-    private fun initPreviousButton() {
         getLeftMenuChildAt(0).setOnClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
@@ -148,7 +150,7 @@ class SignUpActivity
         binding.btnFinishSignup.isEnabled = false
     }
 
-    private fun setButtonListenersOnCardComplete() {
+    private fun setUpListenersOnCardComplete() {
         binding.btnFix.setOnClickListener {
             savePresentUserInfo()
             viewModel.goToNextScreen()
@@ -165,7 +167,7 @@ class SignUpActivity
         }
     }
 
-    private fun setPreviousButtonOnCardFix() {
+    private fun setUpListenersOnCardFix() {
         getLeftMenuChildAt(0).setOnClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
@@ -220,16 +222,16 @@ class SignUpActivity
     }
 
     private fun registerUserInfo() {
-        if (provider == "kakao")
+        if (provider == KAKAO_PROVIDER_ENG)
             viewModel.postSignUp(
                 oauthId,
-                "카카오",
+                KAKAO_PROVIDER_KOR,
                 serviceAgreed = true,
                 privatePolicyAgreed = true)
-        else if (provider == "naver")
+        else if (provider == NAVER_PROVIDER_ENG)
             viewModel.postSignUp(
                 oauthId,
-                "네이버",
+                NAVER_PROVIDER_KOR,
                 serviceAgreed = true,
                 privatePolicyAgreed = true)
     }
@@ -266,14 +268,14 @@ class SignUpActivity
         navigateTo<CardCompleteFragment>()
         hideProgressBar()
         hideAppbar()
-        setButtonListenersOnCardComplete()
+        setUpListenersOnCardComplete()
         changeToTwoCallButton()
     }
 
     private fun fixCard() {
         showAppbar()
         navigateTo<CardFixFragment>()
-        setPreviousButtonOnCardFix()
+        setUpListenersOnCardFix()
         changeToCtaButton()
     }
 

@@ -1,6 +1,5 @@
 package com.teumteum.teumteum.presentation.onboarding
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,6 +7,7 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityAccessLocationBinding
 import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.util.PermissionUtils
 
 class AccessLocationActivity
     : BindingActivity<ActivityAccessLocationBinding>(R.layout.activity_access_location) {
@@ -28,7 +28,7 @@ class AccessLocationActivity
     private fun checkLocationPermission() {
         locationPermissionRequest.launch(
             arrayOf(
-                ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+                PermissionUtils.ACCESS_FINE_LOCATION, PermissionUtils.ACCESS_COARSE_LOCATION
             )
         )
     }
@@ -45,7 +45,5 @@ class AccessLocationActivity
     }
 
     companion object {
-        const val ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
-        const val ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
     }
 }
