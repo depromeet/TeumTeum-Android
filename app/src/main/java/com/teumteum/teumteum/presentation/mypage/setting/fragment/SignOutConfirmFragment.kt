@@ -12,13 +12,14 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSignoutBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.SettingSignOutConfirm
-import com.teumteum.teumteum.presentation.mypage.setting.SettingSignOutScreen
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 
 class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment_signout) {
     private val viewModel: SettingViewModel by activityViewModels()
+    private val myPageViewModel: MyPageViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -28,17 +29,12 @@ class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.f
             }
         }
 
+        (activity as MainActivity).hideBottomNavi()
+
         binding.composeSignout.setContent {
-            SettingSignOutConfirm(viewModel = viewModel)
+            SettingSignOutConfirm(viewModel = viewModel, myPageViewModel =  myPageViewModel)
         }
 
-    }
-
-    val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.SIGNOUT)
-
-        }
     }
 
     private fun navigateToSignInActivity() {
@@ -50,9 +46,6 @@ class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.f
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
             SettingStatus.SIGNOUT -> {
-                findNavController().popBackStack()
-            }
-            SettingStatus.SIGNOUT_CONFIRM -> {
                 (activity as MainActivity).hideBottomNavi()
                 navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)

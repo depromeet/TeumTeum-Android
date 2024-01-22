@@ -87,7 +87,6 @@ class MoimFragment :
                     ScreenState.Failure -> { context?.toast("모임 신청에 오류가 발생했습니다") }
                     ScreenState.Server -> { context?.toast("서버 통신에 실패했습니다") }
                     ScreenState.Success -> {
-                        Log.d("success", "success navi 확인")
                         val navController = findNavController()
                         if (navController.currentDestination?.id == R.id.fragment_moim) {
                             (activity as MainActivity).showBottomNavi()

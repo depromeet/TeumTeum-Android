@@ -1,10 +1,14 @@
-package com.teumteum.teumteum.presentation.mypage.setting
+package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.teumteum.domain.entity.WithDrawReasons
+import com.teumteum.domain.repository.AuthRepository
+import com.teumteum.domain.repository.SettingRepository
+import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.mypage.SettingUiItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,11 +17,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
 @HiltViewModel
-class SettingViewModel @Inject constructor(): ViewModel() {
+class SettingViewModel @Inject constructor(
+    private val settingRepository: SettingRepository,
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
+): ViewModel() {
 
     private val _alarmState = MutableStateFlow(false)
     val alarmState: StateFlow<Boolean> = _alarmState.asStateFlow()
@@ -38,8 +47,15 @@ class SettingViewModel @Inject constructor(): ViewModel() {
     private val _signoutReason = MutableStateFlow<List<String>>(emptyList())
     val signoutReason: StateFlow<List<String>> = _signoutReason.asStateFlow()
 
+    private val _isCheckboxChecked = MutableStateFlow(false)
+    val isCheckboxChecked: StateFlow<Boolean> = _isCheckboxChecked.asStateFlow()
+
+    fun toggleCheckbox() {
+        _isCheckboxChecked.value = !_isCheckboxChecked.value
+    }
+
     fun addItem(item: String) {
-        if (_signoutReason.value.size < 3 && item !in _signoutReason.value) {
+        if (item !in _signoutReason.value) {
             _signoutReason.value = _signoutReason.value + item
         }
     }
@@ -72,15 +88,38 @@ class SettingViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    private fun sendSignOutReason() {
-
+    fun logout() {
+        viewModelScope.launch {
+            val logOutResult = settingRepository.logOut()
+            logOutResult.onSuccess {
+                userRepository.deleteUserInfo()
+                authRepository.disableAutoLogin()
+                updateSettingStatus(SettingStatus.LOGOUT_CONFIRM)
+            }
+            logOutResult.onFailure {
+                updateSettingStatus(SettingStatus.ERROR)
+                Timber.e(it)
+            }
+        }
     }
 
-    private fun logout() {
-
+    fun signout() {
+        viewModelScope.launch {
+            val signOutReasons = WithDrawReasons(_signoutReason.value)
+            val signOutResult = settingRepository.signOut(signOutReasons)
+            signOutResult.onSuccess {
+                userRepository.deleteUserInfo()
+                authRepository.disableAutoLogin()
+                updateSettingStatus(SettingStatus.SIGNOUT)
+            }
+            signOutResult.onFailure {
+                updateSettingStatus(SettingStatus.ERROR)
+                Timber.e(it)
+            }
+        }
     }
 
-    private fun cancelMeeting() {
+    fun cancelMeeting() {
 
     }
 
@@ -100,10 +139,10 @@ class SettingViewModel @Inject constructor(): ViewModel() {
 }
 
 
-fun getMemberSetting(viewModel: SettingViewModel): List<SettingUiItem> {
+fun getMemberSetting(viewModel: SettingViewModel, navController: NavController): List<SettingUiItem> {
     return listOf(
-        SettingUiItem(title = "약관 및 개인정보 처리 동의", onClick = { viewModel.updateSettingStatus(SettingStatus.NOTION) }),
-        SettingUiItem(title = "탈퇴하기", onClick = { viewModel.updateSettingStatus(SettingStatus.SIGNOUT) }),
+        SettingUiItem(title = "약관 및 개인정보 처리 동의", onClick = { navController.navigate(R.id.fragment_service) }),
+        SettingUiItem(title = "탈퇴하기", onClick = { navController.navigate(R.id.fragment_signout) }),
         SettingUiItem(title = "로그아웃", onClick = { viewModel.updateSettingStatus(SettingStatus.LOGOUT) })
     )
 }
@@ -117,8 +156,11 @@ fun getServiceGuide(): List<SettingUiItem> {
 
 
 enum class SettingStatus {
-    LOGOUT, LOGOUT_CONFIRM, SIGNOUT, SIGNOUT_CONFIRM,  DEFAULT, NOTION, ERROR, SETTING, EDIT, CANCEL, RECOMMEND, RECOMMEND_DETAIL
+    LOGOUT, LOGOUT_CONFIRM, SIGNOUT,
+    DEFAULT, NOTION, ERROR, SETTING,
+    CANCEL, RECOMMEND, RECOMMEND_DETAIL
 }
+
 
 enum class DialogEvent {
     DEFAULT, LOGOUT, CANCEL;

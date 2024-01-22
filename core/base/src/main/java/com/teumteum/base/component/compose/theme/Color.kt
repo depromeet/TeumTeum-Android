@@ -72,6 +72,8 @@ data class ColorPalette_Dark(
     val color_background: Color = Color(0x111111),
     val color_outline_level04_disabled: Color = Color(0xFFE9E9E9),
     val color_button_alternative : Color = Color(0xFFE9E9E9),
+
+    val color_outline_level01_error: Color = Color(0xFFFC4E6D),
 )
 
 data class ColorPalette_Light(
@@ -135,6 +137,8 @@ data class ColorPalette_Light(
     val color_background: Color = Color(0xFFFFFFFF),
     val color_outline_level04_disabled: Color = Color(0xFFE9E9E9),
     val color_button_alternative : Color = Color(0xFFE9E9E9),
+
+    val color_outline_level01_error: Color = Color(0xFFFC4E6D),
 )
 
 val TmtmColorPalette = staticCompositionLocalOf { ColorPalette_Light() }

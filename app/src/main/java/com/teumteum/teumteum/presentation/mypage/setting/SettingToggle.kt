@@ -13,14 +13,14 @@ import com.teumteum.teumteum.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 
 @Composable
-fun SettingToggle(title:String, viewModel:SettingViewModel) {
+fun SettingToggle(title:String, viewModel: SettingViewModel) {
     val isToggle by viewModel.alarmState.collectAsState()
     val toggleImage : Int = if (isToggle) R.drawable.ic_toggle_active else R.drawable.ic_toggle
     Box(modifier = Modifier

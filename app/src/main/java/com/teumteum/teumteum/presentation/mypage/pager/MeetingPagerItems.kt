@@ -21,18 +21,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
-import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.mypage.Meeting
-import com.teumteum.teumteum.presentation.mypage.MeetingDummy1
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
 
 @Composable
 fun MeetingItem(meeting: Meeting) {

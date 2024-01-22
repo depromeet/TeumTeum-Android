@@ -3,6 +3,7 @@ package com.teumteum.teumteum.di
 import com.teumteum.data.service.GroupService
 import com.teumteum.data.service.HomeService
 import com.teumteum.data.service.SampleService
+import com.teumteum.data.service.SettingService
 import com.teumteum.data.service.UserService
 import dagger.Module
 import dagger.Provides
@@ -33,4 +34,9 @@ object ServiceModule {
     @Provides
     fun provideUserService(retrofit: Retrofit) =
         retrofit.create(UserService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideSettingService(retrofit: Retrofit) =
+        retrofit.create(SettingService::class.java)
 }
