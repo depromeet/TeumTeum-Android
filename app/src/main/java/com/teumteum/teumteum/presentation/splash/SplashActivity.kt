@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySplashBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -16,7 +16,6 @@ import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.presentation.signin.SignInActivity
 import com.teumteum.teumteum.util.NetworkManager
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity
@@ -81,7 +80,7 @@ class SplashActivity
                         startHomeScreen()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         startSignIn()
                     }
                     else -> {}

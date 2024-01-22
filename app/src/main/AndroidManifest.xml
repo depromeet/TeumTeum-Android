@@ -36,7 +36,7 @@
         </activity>
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".presentation.group.GroupListActivity"
@@ -78,6 +78,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.signin.SocialWebViewActivity"
+            android:exported="false" />
+        <activity android:name=".presentation.onboarding.AccessLocationActivity"
+            android:exported="false" />
+        <activity android:name=".presentation.signup.terms.TermsWebViewActivity"
             android:exported="false" />
 
     </application>

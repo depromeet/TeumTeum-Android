@@ -184,6 +184,62 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_terms_3"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@id/ll_terms_2"
+            >
+            <ImageView
+                android:id="@+id/btn_terms_3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_check_bold"
+                app:tint="@color/selector_button_terms_single"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <TextView
+                android:id="@+id/tv_terms_mandatory_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_tv_terms_mandatory"
+                android:textAppearance="@style/ta.headline.6"
+                android:lineSpacingExtra="3sp"
+                android:textColor="?attr/color_text_button_secondary_default"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@id/btn_terms_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+            <TextView
+                android:id="@+id/tv_terms_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_tv_terms_agree_3"
+                android:textAppearance="@style/ta.headline.6"
+                android:lineSpacingExtra="3sp"
+                android:textColor="?attr/color_text_body_secondary"
+                app:layout_constraintStart_toEndOf="@id/tv_terms_mandatory_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/btn_terms_detail_3"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_right_l"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="?attr/color_icon_level03" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"

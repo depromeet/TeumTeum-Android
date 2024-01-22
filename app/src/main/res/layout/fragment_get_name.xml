@@ -66,6 +66,7 @@
             android:layout_marginTop="8dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"
+            android:maxLength="10"
             android:background="@drawable/shape_rect4_elevation_level01"
             android:textAppearance="@style/ta.body.1"
             android:letterSpacing="-0.03125"

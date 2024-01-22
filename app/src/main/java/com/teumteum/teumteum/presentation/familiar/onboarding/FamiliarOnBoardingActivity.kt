@@ -3,7 +3,6 @@ package com.teumteum.teumteum.presentation.familiar.onboarding
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -21,7 +20,6 @@ import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.familiar.SharedPreferencesManager
 import com.teumteum.teumteum.presentation.familiar.location.LocationActivity
 import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
-import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.util.PermissionUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,7 +36,7 @@ class FamiliarOnBoardingActivity
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         when {
-            permissions[OnBoardingActivity.ACCESS_FINE_LOCATION] == true && permissions[OnBoardingActivity.ACCESS_COARSE_LOCATION] == true -> {
+            permissions[ACCESS_FINE_LOCATION] == true && permissions[ACCESS_COARSE_LOCATION] == true -> {
                 // 권한 허용 시
                 startLocationActivity()
             }
