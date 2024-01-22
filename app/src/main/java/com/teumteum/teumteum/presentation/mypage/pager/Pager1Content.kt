@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
@@ -22,7 +23,8 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewMo
 
 @Composable
 fun MyPagePager1Content(
-    viewModel: SettingViewModel
+    viewModel: SettingViewModel,
+    navController: NavController
 ) {
     val userOpen by viewModel.userOpenMeetingList.collectAsState()
     val userHostOpen by viewModel.userHostMeetingList.collectAsState()
@@ -46,7 +48,8 @@ fun MyPagePager1Content(
         TmMarginVerticalSpacer(size = 20)
         // open이 모두 비어있을때
         if(userOpen.isEmpty() && userHostOpen.isEmpty()) {
-            NoMoimItems()
+            NoMoimItems(true, navController)
+
         }
         else {
             userOpen.forEach { meeting ->
@@ -56,8 +59,7 @@ fun MyPagePager1Content(
                 MyMoimItems(meeting = meeting)
             }
         }
-        
-        TmMarginVerticalSpacer(size = 27)
+        TmMarginVerticalSpacer(size = 9)
 
         Text(
             text = stringResource(id = R.string.setting_pager1_top2),
@@ -66,7 +68,7 @@ fun MyPagePager1Content(
         )
         TmMarginVerticalSpacer(size = 20)
         if(userClosed.isEmpty() && userHostClosed.isEmpty()) {
-            NoMoimItems()
+            NoMoimItems(true, navController)
         }
         else  {
             userClosed.forEach {

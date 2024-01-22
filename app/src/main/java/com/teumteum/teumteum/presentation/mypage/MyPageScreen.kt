@@ -108,7 +108,7 @@ fun MyPageScreen(
             }
             when (selectedTab.value) {
                 "내 모임" -> item {
-                    MyPagePager1Content(viewModel) }
+                    MyPagePager1Content(viewModel, navController) }
                 "받은 리뷰" -> item { MyPagePager2Content() }
 //                "북마크" -> item { MyPagePager3Content() }
             }

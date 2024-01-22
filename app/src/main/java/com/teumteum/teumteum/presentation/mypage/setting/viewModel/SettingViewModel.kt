@@ -69,8 +69,8 @@ class SettingViewModel @Inject constructor(
     }
 
     fun getUserOpenMeeting() {
-//        val userId = authRepository.getUserId()
-        val userId = 16.toLong()
+        val userId = authRepository.getUserId()
+//        val userId = 16.toLong()
         if (userId != -1L) {
             viewModelScope.launch {
                 settingRepository.getMyPageOpenMeeting(userId)
@@ -96,8 +96,8 @@ class SettingViewModel @Inject constructor(
     }
 
     fun getUserClosedMeeting() {
-        //        val userId = authRepository.getUserId()
-        val userId = 16.toLong()
+                val userId = authRepository.getUserId()
+//        val userId = 16.toLong()
         if (userId != -1L) {
             viewModelScope.launch {
                 settingRepository.getMyPageOpenMeeting(userId)

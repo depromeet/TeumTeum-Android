@@ -25,7 +25,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
@@ -91,12 +93,13 @@ fun formatDateTime(dateTime: String): String {
 @Composable
 fun NoMoimItems(
     commingMoim: Boolean = true,
+    navController: NavController
 ) {
     val textId = if(commingMoim) R.string.setting_pager1_no_moim_text else R.string.setting_pager1_no_moim_text2
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
-        .clickable { }
+        .clickable { navController.navigate(R.id.fragment_home)}
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)
@@ -119,9 +122,9 @@ fun NoMoimItems(
                 style = TmTypo.current.Body1,
                 color = TmtmColorPalette.current.color_text_button_secondary_default
             )
-
         }
     }
+    TmMarginVerticalSpacer(size = 16)
 }
 @Composable
 fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting) {
@@ -175,6 +178,7 @@ fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting) {
             )
         }
     }
+    TmMarginVerticalSpacer(size = 16)
 }
 
 @Composable
