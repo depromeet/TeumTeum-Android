@@ -49,7 +49,6 @@ data class JobEntity(
 ) {
     constructor() : this("null", false, "", "")
 }
-)
 
 @Serializable
 data class updatedUserInfo(
