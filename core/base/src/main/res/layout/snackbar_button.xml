@@ -12,18 +12,32 @@
         android:layout_marginHorizontal="20dp"
         >
         <TextView
-            android:id="@+id/tv_snackbar_default"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_snackbar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:textColor="@color/text_body_quinary"
             style="@style/ta.body.1"
             android:text="텍스트"
             android:paddingVertical="6dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_snackbar_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/tv_snackbar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/text_button_secondary_default"
+            style="@style/ta.headline.6"
+            android:text="버튼"
+            android:paddingVertical="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
