@@ -22,7 +22,7 @@ interface SettingService {
         @Query("page") page: Int,
         @Query("sort") sort: String = "promiseDateTime",
         @Query("isOpen") isOpen: Boolean,
-        @Query("participantUserId") participantUserId: Long? = 16,
+        @Query("participantUserId") participantUserId: Long?,
     ): ResponseMyMeeting
 
     @GET("meetings")
@@ -31,6 +31,6 @@ interface SettingService {
         @Query("page") page: Int,
         @Query("sort") sort: String = "promiseDateTime",
         @Query("isOpen") isOpen: Boolean,
-        @Query("participantUserId") participantUserId: Long? = 16,
+        @Query("participantUserId") participantUserId: Long?,
     ): ResponseMyMeeting
 }

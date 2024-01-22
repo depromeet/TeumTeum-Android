@@ -13,8 +13,6 @@ import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.modal.AreaModalBottomSheet

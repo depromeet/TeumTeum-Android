@@ -48,7 +48,6 @@ fun MyPageScreen(
     viewModel: SettingViewModel,
     myPageViewModel: MyPageViewModel
 ) {
-    val activity = LocalContext.current as? MainActivity
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
     val frontCardState by myPageViewModel.frontCardState.collectAsState()
     val userName by viewModel.userName.collectAsState()
