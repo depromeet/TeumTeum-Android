@@ -3,6 +3,7 @@ package com.teumteum.data.service
 import com.teumteum.data.model.request.RequestUserInfo
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import retrofit2.Response
@@ -21,10 +22,10 @@ interface UserService {
         @Body userInfo: RequestUserInfoWithOAuthId
     ): SignUpResult
 
-    @GET("users/{userId}/friends")
+    @GET("users/16/friends")
     suspend fun getUserFriends(
-        @Path("userId") userId: Long
-    ): List<Friend>
+//        @Path("userId") userId: Long
+    ): Friends
 
     @PUT("users")
     suspend fun updateUserInfo(

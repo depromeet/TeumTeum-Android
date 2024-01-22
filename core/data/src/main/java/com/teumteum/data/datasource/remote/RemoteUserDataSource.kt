@@ -4,8 +4,10 @@ import com.teumteum.data.model.request.RequestUserInfo
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import retrofit2.Response
 import javax.inject.Inject
 
 class RemoteUserDataSource @Inject constructor(
@@ -21,8 +23,8 @@ class RemoteUserDataSource @Inject constructor(
         return service.postUserInfo(userInfo)
     }
 
-    suspend fun getUserFriend(userId: Long): List<Friend> {
-        return service.getUserFriends(userId)
+    suspend fun getUserFriend(): Friends {
+        return service.getUserFriends()
     }
 
     suspend fun updateUserInfo(

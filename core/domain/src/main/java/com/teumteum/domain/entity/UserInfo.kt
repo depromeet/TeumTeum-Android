@@ -28,3 +28,4 @@ data class JobEntity(
     val jobClass: String,
     val detailClass: String
 )
+

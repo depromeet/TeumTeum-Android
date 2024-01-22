@@ -124,7 +124,7 @@ fun EditNameField(viewModel: SettingViewModel) {
 
 @Composable
 fun EditBirthField(viewModel: SettingViewModel) {
-    val maxChar = 10
+    val maxChar = 8
     val userBirth by viewModel.userBirthDate.collectAsState()
 
     OutlinedTextField(
@@ -134,9 +134,8 @@ fun EditBirthField(viewModel: SettingViewModel) {
             .wrapContentHeight(),
         placeholder = { Text(text = stringResource(id = R.string.setting_my_info_edit_placeholder1), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
         onValueChange = { newText ->
-            val formattedText = formatBirthDate(newText)
-            if (formattedText.length <= maxChar) {
-                viewModel.updateUserBirthDate(formattedText)
+            if (newText.length <= maxChar) {
+                viewModel.updateUserBirthDate(newText)
             }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -149,19 +148,4 @@ fun EditBirthField(viewModel: SettingViewModel) {
             backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
         ),
     )
-}
-fun formatBirthDate(input: String): String {
-    var newText = input.filter { it.isDigit() || it == '.' }
-    val parts = newText.split('.')
-
-    newText = parts.joinToString(".") { part ->
-        part.take(4) // 최대 4자리까지
-    }.take(10) // 전체 길이: 최대 10자리
-
-    // 점(.) 추가 로직
-    if (newText.length == 4 || newText.length == 7) {
-        newText += '.'
-    }
-
-    return newText
 }

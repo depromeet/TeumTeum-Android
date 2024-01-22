@@ -10,3 +10,11 @@ data class Friend(
     val name: String,
     val job: JobEntity
 )
+
+@Serializable
+data class Friends(
+    val friends: List<Friend>
+)
+
+
+

@@ -39,16 +39,16 @@ class MyPageViewModel @Inject constructor(
         val userId = authRepository.getUserId()
         if (userId != -1L) {
             viewModelScope.launch {
-                userRepository.getUserFriends(userId)
-                    .onSuccess {friend ->
-                        _friendsList.value = friend
+                userRepository.getUserFriends()
+                    .onSuccess {
+                        _friendsList.value = it.friends
                     }
                     .onFailure {
                         Timber.e(it)
                     }
+                }
             }
         }
-    }
 
     private fun loadUserInfo() {
         viewModelScope.launch {
