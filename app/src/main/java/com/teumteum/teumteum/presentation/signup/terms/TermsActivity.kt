@@ -94,8 +94,8 @@ class TermsActivity
     }
 
     companion object {
-        const val TERMS_URL_1 = ""
-        const val TERMS_URL_2 = ""
-        const val TERMS_URL_3 = ""
+        const val TERMS_URL_1 = "file:///android_asset/docs_terms_service.html"
+        const val TERMS_URL_2 = "file:///android_asset/docs_terms_private.html"
+        const val TERMS_URL_3 = "file:///android_asset/docs_terms_location.html"
     }
 }

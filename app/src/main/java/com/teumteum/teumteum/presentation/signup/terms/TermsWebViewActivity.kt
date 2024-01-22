@@ -46,6 +46,7 @@ class TermsWebViewActivity
 
     private fun initWebView(url: String) {
         with(binding) {
+            termsWebview.settings.javaScriptEnabled = true
             termsWebview.loadUrl(url)
         }
     }
