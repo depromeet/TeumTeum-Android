@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,6 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.teumteum.base.component.compose.TeumDivider
+import com.teumteum.base.component.compose.TeumDividerHorizontalThick
 import com.teumteum.base.component.compose.TeumDividerThick
 import com.teumteum.base.component.compose.TmIndicator
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
@@ -66,8 +70,11 @@ fun MoimConfirm(viewModel: MoimViewModel) {
             TmMarginVerticalSpacer(size = 32)
             TeumDividerThick(int = 8)
             TmMarginVerticalSpacer(size = 20)
-            MoimHostRow()
+            MoimHostRow(viewModel)
             TmMarginVerticalSpacer(size = 20)
+            TeumDividerHorizontalThick(int = 1, 20)
+            TmMarginVerticalSpacer(size = 20)
+            MoimJoinUserRow(viewModel)
             TeumDividerThick(int = 8)
             MoimConfirmIntroColumn(viewModel)
             Spacer(modifier = Modifier.weight(1f))
@@ -216,7 +223,10 @@ fun MoimCardRow(title: String, text: String) {
 }
 
 @Composable
-fun MoimHostRow() {
+fun MoimHostRow(viewModel: MoimViewModel) {
+    val characterId by viewModel.moinCreateUserCharacterId.collectAsState()
+    val name by viewModel.moinCreateUserName.collectAsState()
+    val job by viewModel.moinCreateUserJob.collectAsState()
     Row(
         modifier = Modifier
             .width(147.dp)
@@ -232,7 +242,7 @@ fun MoimHostRow() {
                 .clip(CircleShape)
                 .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
         ) {
-            Image(painter = painterResource(id = R.drawable.ic_dog),
+            Image(painter = painterResource(id = characterId),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -247,16 +257,43 @@ fun MoimHostRow() {
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                text = "주최자 이름",
+                text = name,
                 style = TmTypo.current.HeadLine6,
                 color = TmtmColorPalette.current.color_text_body_primary
             )
             Text(
-                text = "주최자 직업",
+                text = job,
                 style = TmTypo.current.Caption1,
                 color = TmtmColorPalette.current.color_text_body_secondary,
                 modifier = Modifier.padding(start = 1.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun MoimJoinUserRow(viewModel: MoimViewModel) {
+    val moinJoinUserList by viewModel.moinJoinUsers.collectAsState()
+    LazyRow {
+        items(moinJoinUserList) { item ->
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .aspectRatio(1f)
+                    .clip(CircleShape)
+                    .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
+                    .offset(8.dp)
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = viewModel.characterList[item.characterId] ?: R.drawable.ic_penguin
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                )
+            }
         }
     }
 }
