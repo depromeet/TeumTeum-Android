@@ -16,7 +16,6 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
-import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -30,7 +29,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
-
+        initCharacterViews()
         binding.btnStart.setOnClickListener {
             startIntroduceActivity()
         }
@@ -50,6 +49,56 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                 clickEvent = {}
             )
         )
+    }
+
+    private fun initCharacterViews() {
+        with(binding) {
+            setCharacterView(
+                view = cvMe,
+                imageRes = R.drawable.ic_bear,
+                job = "AOS 개발자",
+                name = "나"
+            )
+            setCharacterView(
+                view = cv1,
+                imageRes = R.drawable.ic_cat,
+                job = "AOS 개발자",
+                name = "신민서"
+            )
+            setCharacterView(
+                view = cv2,
+                imageRes = R.drawable.ic_rabbit,
+                job = "프로덕트 디자이너",
+                name = "김예은"
+            )
+            setCharacterView(
+                view = cv3,
+                imageRes = R.drawable.ic_star,
+                job = "프로덕트 디자이너",
+                name = "신한별"
+            )
+            setCharacterView(
+                view = cv4,
+                imageRes = R.drawable.ic_ghost,
+                job = "서버 개발자",
+                name = "최동근"
+            )
+            setCharacterView(
+                view = cv5,
+                imageRes = R.drawable.ic_panda,
+                job = "서버 개발자",
+                name = "강성민"
+            )
+
+        }
+    }
+
+    private fun setCharacterView(view: CharacterView, imageRes: Int, job: String, name: String) {
+        with(view) {
+            characterImage.setImageResource(imageRes)
+            characterJob.text = job
+            characterName.text = name
+        }
     }
 
     private fun startIntroduceActivity() {
