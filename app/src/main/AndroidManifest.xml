@@ -51,6 +51,9 @@
             android:name=".presentation.familiar.neighbor.NeighborActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.familiar.introduce.IntroduceActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.signup.terms.TermsActivity"
             android:exported="false" />
         <activity

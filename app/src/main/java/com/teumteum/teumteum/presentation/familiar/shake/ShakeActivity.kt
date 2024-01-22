@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.familiar.shake
 
 import ShakeDetector
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -20,6 +21,7 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityShakeBinding
+import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewData
 import com.teumteum.teumteum.util.extension.getScreenHeight
@@ -41,7 +43,8 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
 
         initAppBarLayout()
 
-        shakeDetector = ShakeDetector(this, ::triggerVibration, ::stopVibration)
+        shakeDetector =
+            ShakeDetector(this, ::triggerVibration, ::stopVibration, ::startIntroduceActivity)
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -61,6 +64,10 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         )
 
         addUserInterestView(userInterests)
+    }
+
+    private fun startIntroduceActivity() {
+        startActivity(Intent(this, IntroduceActivity::class.java))
     }
 
     override fun initAppBarLayout() {

@@ -3,12 +3,14 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import timber.log.Timber
 import kotlin.math.sqrt
 
 class ShakeDetector(
     private val context: Context,
     private val onShake: (Context) -> Unit,
-    private val onStop: () -> Unit
+    private val onStop: () -> Unit,
+    private val onShakeDurationExceeded: () -> Unit
 ) : SensorEventListener {
     private var sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -29,6 +31,7 @@ class ShakeDetector(
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
     }
 
+    private var cumulativeShakeTime: Long = 0 // 흔들림 누적 시간을 저장하는 변수
     override fun onSensorChanged(event: SensorEvent) {
         val curTime = System.currentTimeMillis()
 
@@ -40,18 +43,26 @@ class ShakeDetector(
             val y = event.values[1]
             val z = event.values[2]
 
-            val speed =
-                sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY) + (z - lastZ) * (z - lastZ)) / diffTime * 10000
+            val speed = sqrt((x - lastX) * (x - lastX) + (y - lastY) * (y - lastY) + (z - lastZ) * (z - lastZ)) / diffTime * 10000
 
             if (speed > SHAKE_THRESHOLD) {
                 onShake(context)
+
+                // Accumulate the shake duration
+                cumulativeShakeTime += diffTime
+                Timber.tag("누적 흔들기 시작").d("$cumulativeShakeTime ms")
+
+                // Check if cumulative shake duration exceeds 3 seconds (3000 milliseconds)
+                if (cumulativeShakeTime >= 3000) {
+                    onShakeDurationExceeded() // Trigger the action when duration exceeds
+                    cumulativeShakeTime = 0 // Reset the shake duration ONLY when the action is triggered
+                }
+
                 lastMovementTime = curTime
             }
 
-            // 사용자가 멈추었는지 확인 (여기서는 2초 동안 움직임이 없으면 멈춤으로 간주)
-            if ((curTime - lastMovementTime) > 2000) {
-                onStop()
-            }
+            // Do not reset cumulativeShakeTime here
+            // Else block removed
 
             lastX = x
             lastY = y

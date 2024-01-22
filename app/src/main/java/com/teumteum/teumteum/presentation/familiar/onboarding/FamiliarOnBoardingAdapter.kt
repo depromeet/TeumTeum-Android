@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teumteum.teumteum.databinding.ItemShakeOnboardingBinding
+import com.teumteum.teumteum.presentation.familiar.introduce.model.Introduce
 import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
 
 class FamiliarOnBoardingAdapter() :

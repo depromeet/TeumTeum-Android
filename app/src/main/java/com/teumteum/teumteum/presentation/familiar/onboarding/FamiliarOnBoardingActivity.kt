@@ -135,7 +135,7 @@ class FamiliarOnBoardingActivity
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             tl.clearOnTabSelectedListeners()
             btnStart.setOnClickListener {
-                checkLocationPermission()
+                checkLocationPermission() //todo - setUpListener로 분리
             }
         }
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->

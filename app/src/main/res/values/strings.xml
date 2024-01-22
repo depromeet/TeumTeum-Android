@@ -246,5 +246,7 @@
     <string name="character_name">김프만</string>
     <string name="character_job">AOS 개발자</string>
     <string name="home_recommend_meet_title">%1$s 추천 모임 🔥</string>
+    <string name="introduce_more_familiar">더 가까워지기</string>
+    <string name="introduce_title">소개서를 살펴보며 서로를\n소개해 보세요</string>
 
 </resources>
