@@ -17,26 +17,44 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
-import com.teumteum.teumteum.presentation.mypage.Recommend
-import com.teumteum.teumteum.presentation.mypage.RecommendDummy
-import com.teumteum.teumteum.presentation.mypage.setting.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.SettingViewModel
+import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.toRecommend
 
 
 @Composable
-fun RecommendScreen(viewModel: SettingViewModel) {
+fun RecommendScreen(viewModel: SettingViewModel, myPageViewModel: MyPageViewModel, navController: NavController) {
+    val friends by myPageViewModel.friendsList.collectAsState()
+    val activity = LocalContext.current as? MainActivity
+    val userInfoState by myPageViewModel.userInfoState.collectAsState()
+    val topbarText = when (userInfoState) {
+        is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님을 추천한 친구"
+        else -> "로딩 중..."
+    }
+
+
     TmScaffold(
-        topbarText = "정은아님을 추천한 친구",
-        onClick = { viewModel.updateSettingStatus(SettingStatus.DEFAULT) }
+        topbarText = topbarText,
+        onClick = {
+            navController.popBackStack()
+            activity?.showBottomNavi()
+        }
     ) {
         Spacer(modifier = Modifier.height(68.dp))
             LazyColumn(
@@ -48,15 +66,15 @@ fun RecommendScreen(viewModel: SettingViewModel) {
                 item {
                     Spacer(modifier = Modifier.height(68.dp))
                 }
-                items(RecommendDummy) { recommend ->
-                    RecommendItem(recommend = recommend)
+                items(friends) { friend ->
+                    RecommendItem(recommend = friend.toRecommend(), myPageViewModel)
                 }
             }
     }
 }
 
 @Composable
-fun RecommendItem(recommend: Recommend) {
+fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .padding(start = 20.dp, end = 20.dp, bottom = 12.dp)
@@ -73,24 +91,28 @@ fun RecommendItem(recommend: Recommend) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RecommendRow(recommend = recommend)
-            Text(
-                text = "${recommend.jobName}",
-                style = TmTypo.current.Body2,
-                color= TmtmColorPalette.current.color_text_body_teritary,
-            )
+            RecommendRow(recommend = recommend, list= myPageViewModel.characterList)
+            recommend.jobName?.let {
+                Text(
+                    text = it,
+                    style = TmTypo.current.Body2,
+                    color= TmtmColorPalette.current.color_text_body_teritary,
+                )
+            }
 
         }
     }
 }
 @Composable
-fun RecommendRow(recommend: Recommend) {
+fun RecommendRow(recommend: Recommend, list: HashMap<Int, Int>) {
+    val imageResId = list[recommend.characterId] ?: R.drawable.ic_penguin
+
     Row(modifier = Modifier
         .wrapContentSize(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start) {
         Image(
-            painter = painterResource(id = recommend.image),
+            painter = painterResource(id = imageResId),
             contentDescription =null,
             modifier = Modifier
                 .size(32.dp)
@@ -98,7 +120,7 @@ fun RecommendRow(recommend: Recommend) {
         )
         TmMarginHorizontalSpacer(size = 8)
         Text(
-            text = "${recommend.name}",
+            text = recommend.name,
             style = TmTypo.current.HeadLine3,
             color= TmtmColorPalette.current.color_text_headline_primary,
         )

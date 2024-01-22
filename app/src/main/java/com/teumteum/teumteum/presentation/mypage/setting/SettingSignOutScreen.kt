@@ -25,16 +25,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.mypage.SignOutList
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SignOutList
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 @Composable
-fun SettingSignOutScreen(viewModel: SettingViewModel) {
+fun SettingSignOutScreen(
+    viewModel: SettingViewModel,
+    navController: NavController
+) {
     TmScaffold(
     ) {
         Column(
@@ -53,7 +59,7 @@ fun SettingSignOutScreen(viewModel: SettingViewModel) {
             SettingSignOutColumn(viewModel)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
-            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn1), viewModel)
+            SettingSignOutBtn1(text = stringResource(id = R.string.setting_signout_btn1), viewModel, navController)
             TmMarginVerticalSpacer(size = 24)
         }
     }
@@ -62,9 +68,9 @@ fun SettingSignOutScreen(viewModel: SettingViewModel) {
 @Composable
 fun SettingSignOutBtn1(
     text: String,
-    viewModel: SettingViewModel
+    viewModel: SettingViewModel,
+    navController: NavController
 ) {
-    val screenState by viewModel.settingStatus.collectAsState()
     val selectedReasonsCount by viewModel.signoutReason.collectAsState()
     val isEnabled = selectedReasonsCount.isNotEmpty()
     val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
@@ -75,12 +81,7 @@ fun SettingSignOutBtn1(
                 .height(76.dp)
                 .padding(horizontal = 20.dp, vertical = 10.dp),
             enabled = isEnabled,
-            onClick = {
-                if(screenState == SettingStatus.SIGNOUT)
-                    viewModel.updateSettingStatus(SettingStatus.SIGNOUT_CONFIRM)
-//                else if (screenState == SettingStatus.SIGNOUTCONFIRM)
-                    //탈퇴 이유 전송
-                      },
+            onClick = { navController.navigate(R.id.fragment_signout_confirm) },
             colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
