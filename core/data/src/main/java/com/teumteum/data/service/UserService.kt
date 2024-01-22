@@ -33,5 +33,10 @@ interface UserService {
         @Body userInfo: updatedUserInfo
     ): Response<Unit>
 
+    @GET("users/{userId}")
+    suspend fun getFriendInfo(
+        @Path("userId") userId: Long
+    ): UserInfo
+
 }
 

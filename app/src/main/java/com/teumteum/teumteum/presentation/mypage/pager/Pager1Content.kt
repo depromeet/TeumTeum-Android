@@ -68,7 +68,7 @@ fun MyPagePager1Content(
         )
         TmMarginVerticalSpacer(size = 20)
         if(userClosed.isEmpty() && userHostClosed.isEmpty()) {
-            NoMoimItems(true, navController)
+            NoMoimItems(false, navController)
         }
         else  {
             userClosed.forEach {

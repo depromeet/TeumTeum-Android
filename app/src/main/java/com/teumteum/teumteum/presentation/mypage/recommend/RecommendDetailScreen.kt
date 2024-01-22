@@ -60,9 +60,9 @@ fun RecommendDetailScreen(
     val userInfo by viewModel.friendInfo.collectAsState()
 
     TmScaffold(
-        isSetting = true,
+        isSetting = false,
         onClick = {
-            navController.navigate(R.id.fragment_setting)
+            navController.popBackStack()
         },
         topbarText = "${userInfo?.name}님의 소개서"
     ) {
@@ -79,14 +79,6 @@ fun RecommendDetailScreen(
                 TmMarginVerticalSpacer(size = 78)
                 Box {
                     MyFriendFrontCard(viewModel)
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_floating_edit),
-                        contentDescription = "Character Image",
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .offset(x = (-24).dp, y = (-22).dp)
-                            .clickable { navController.navigate(R.id.fragment_edit_card) }
-                    )
                 }
                 TmMarginVerticalSpacer(size = 22)
                 FriendBtn(text = "추천한 친구 ${userInfo?.friends}명", viewModel = viewModel)
@@ -130,13 +122,13 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel) {
     var isFriend by remember { mutableStateOf(true) }
     Row(
         modifier = Modifier
-            .fillMaxWidth() ,// 상하 간격 조절
-        horizontalArrangement = Arrangement.spacedBy(8.dp) // 버튼들 사이의 간격 조절
+            .width(280.dp) ,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Button(
             modifier = Modifier
-                .weight(1f) // 버튼이 Row의 반을 차지하도록
-                .height(76.dp),
+                .weight(1f)
+                .height(46.dp),
             onClick = {
                 !isFriend
             },
@@ -156,14 +148,14 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel) {
         Button(
             modifier = Modifier
                 .weight(1f)
-                .height(76.dp),
+                .height(46.dp),
             onClick = {
             },
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
             Text(
-                text = "두 번째 버튼",
+                text = text,
                 style = TmTypo.current.HeadLine6,
                 color = TmtmColorPalette.current.color_text_button_primary_default
             )

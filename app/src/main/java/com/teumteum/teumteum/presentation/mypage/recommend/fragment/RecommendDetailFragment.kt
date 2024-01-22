@@ -12,42 +12,31 @@ import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentRecommendDetailBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.recommend.RecommendDetailScreen
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
-
+import com.teumteum.teumteum.presentation.mypage.RecommendDetailScreen
+import com.teumteum.teumteum.presentation.mypage.recommend.RecommendDetailViewModel
 class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R.layout.fragment_recommend_detail) {
-    private val viewModel: SettingViewModel by activityViewModels()
+    private val viewModel: RecommendDetailViewModel by activityViewModels()
+    private var userId: Int = -1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).hideBottomNavi()
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingStatus.collect { status ->
-                handleSettingStatus(status)
-            }
+        userId = arguments?.getInt("id") ?: -1
+        if (userId != -1) {
+            viewModel.loadFriendInfo(userId.toLong())
         }
+
+        (activity as MainActivity).showBottomNavi()
+        val navController = findNavController()
 
         binding.composeRecommendDetail.setContent {
-            RecommendDetailScreen()
+            RecommendDetailScreen(navController, viewModel)
         }
 
     }
 
-    val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.RECOMMEND)
-        }
-    }
-    private fun handleSettingStatus(status: SettingStatus) {
-        when (status) {
-            SettingStatus.ERROR -> {
-                requireActivity().toast("서버 통신에 실패했습니다")
-                viewModel.updateSettingStatus(SettingStatus.DEFAULT)
-            }
-            else -> {}
-        }
+    override fun onResume() {
+        super.onResume()
+//        viewModel.loadUserInfo()
     }
 
     companion object {

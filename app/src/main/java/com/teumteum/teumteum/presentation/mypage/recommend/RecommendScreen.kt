@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.mypage.recommend
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
@@ -67,16 +69,20 @@ fun RecommendScreen(myPageViewModel: MyPageViewModel, navController: NavControll
                     Spacer(modifier = Modifier.height(68.dp))
                 }
                 items(friends) { friend ->
-                    RecommendItem(recommend = friend.toRecommend(), myPageViewModel)
+                    RecommendItem(recommend = friend.toRecommend(), myPageViewModel, navController)
                 }
             }
     }
 }
 
 @Composable
-fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel) {
+fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel, navController: NavController) {
     Box(modifier = Modifier
         .fillMaxWidth()
+        .clickable {
+            val action = RecommendFragmentDirections.actionFragmentRecommendToFragmentRecommendDetail(recommend.id)
+            navController.navigate(action)
+        }
         .padding(start = 20.dp, end = 20.dp, bottom = 12.dp)
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,

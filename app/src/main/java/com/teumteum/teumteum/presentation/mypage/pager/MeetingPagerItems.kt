@@ -105,7 +105,7 @@ fun NoMoimItems(
             shape = RoundedCornerShape(4.dp)
         )
     ) {
-        if(!commingMoim) {
+        if(commingMoim) {
             Row(
                 modifier = Modifier
                     .fillMaxSize()

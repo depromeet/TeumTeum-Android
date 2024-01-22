@@ -81,4 +81,9 @@ class UserRepositoryImpl @Inject constructor(
             saveUserInfo(userInfo)
         }
     }
+
+    override suspend fun getFriendInfo(userId: Long): UserInfo? {
+        return dataSource.getFriendInfo(userId)
+    }
+
 }
