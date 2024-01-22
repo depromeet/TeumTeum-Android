@@ -39,7 +39,7 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.toRecommend
 
 
 @Composable
-fun RecommendScreen(viewModel: SettingViewModel, myPageViewModel: MyPageViewModel, navController: NavController) {
+fun RecommendScreen(myPageViewModel: MyPageViewModel, navController: NavController) {
     val friends by myPageViewModel.friendsList.collectAsState()
     val activity = LocalContext.current as? MainActivity
     val userInfoState by myPageViewModel.userInfoState.collectAsState()

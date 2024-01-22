@@ -105,23 +105,39 @@ fun NoMoimItems(
             shape = RoundedCornerShape(4.dp)
         )
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = textId),
-                style = TmTypo.current.HeadLine7,
-                color = TmtmColorPalette.current.color_text_headline_primary
-            )
-            Text(
-                text = stringResource(id = R.string.setting_pager1_go_to_moim),
-                style = TmTypo.current.Body1,
-                color = TmtmColorPalette.current.color_text_button_secondary_default
-            )
+        if(!commingMoim) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = textId),
+                    style = TmTypo.current.HeadLine7,
+                    color = TmtmColorPalette.current.color_text_headline_primary
+                )
+                Text(
+                    text = stringResource(id = R.string.setting_pager1_go_to_moim),
+                    style = TmTypo.current.Body1,
+                    color = TmtmColorPalette.current.color_text_button_secondary_default
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = textId),
+                    style = TmTypo.current.HeadLine7,
+                    color = TmtmColorPalette.current.color_text_headline_primary,
+                )
+            }
         }
     }
     TmMarginVerticalSpacer(size = 16)
