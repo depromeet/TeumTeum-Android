@@ -8,6 +8,7 @@ import com.teumteum.data.model.request.RequestUserInfo
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.entity.Users
 import com.teumteum.domain.repository.UserRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -62,6 +63,18 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserFriends(userId: Long): Result<List<Friend>> {
         return runCatching {
             dataSource.getUserFriend(userId)
+        }
+    }
+
+    override suspend fun getUser(userId: Long): Result<Friend> {
+        return runCatching {
+            dataSource.getUser(userId)
+        }
+    }
+
+    override suspend fun getUsers(id: String): Result<Users> {
+        return runCatching {
+            dataSource.getUsers(id)
         }
     }
 }
