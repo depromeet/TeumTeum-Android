@@ -8,6 +8,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTermsWebviewBinding
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_URL
 
 class TermsWebViewActivity
     : BindingActivity<ActivityTermsWebviewBinding>(R.layout.activity_terms_webview), AppBarLayout {
@@ -15,7 +16,7 @@ class TermsWebViewActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val termsUrl = intent.getStringExtra("url")
+        val termsUrl = intent.getStringExtra(EXTRA_KEY_URL)
         initCookieManager()
         initAppBarLayout()
         if (termsUrl != null) {

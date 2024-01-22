@@ -9,8 +9,10 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCommunityBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
-import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment.Companion.JOB_PLANNING
 import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
+import com.teumteum.teumteum.util.SignupUtils.STATUS_STUDENT
+import com.teumteum.teumteum.util.SignupUtils.STATUS_TRAINEE
+import com.teumteum.teumteum.util.SignupUtils.STATUS_WORKER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,7 +38,7 @@ class CommunityFragment
             bottomSheet?.dismiss()
         }
 
-        bottomSheet = SingleModalBottomSheet.newInstance("상태 입력", communitySort, listener)
+        bottomSheet = SingleModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, communitySort, listener)
 
         with(binding) {
             llStatus.setOnClickListener {
@@ -58,11 +60,8 @@ class CommunityFragment
     }
 
     companion object {
-        private const val COMMUNITY_WORKER = "직장인"
-        private const val COMMUNITY_STUDENT = "학생"
-        private const val COMMUNITY_TRAINEE = "취업준비생"
-
-        val communitySort = arrayListOf(COMMUNITY_WORKER, COMMUNITY_STUDENT, COMMUNITY_TRAINEE)
+        const val BOTTOM_SHEET_TITLE = "상태 입력"
+        val communitySort = arrayListOf(STATUS_WORKER, STATUS_STUDENT, STATUS_TRAINEE)
     }
 
 }

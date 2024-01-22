@@ -34,7 +34,7 @@ class GetMbtiFragment:
             bottomSheet?.dismiss()
         }
 
-        bottomSheet = MbtiModalBottomSheet.newInstance("MBTI", listener)
+        bottomSheet = MbtiModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, listener)
 
         with(binding) {
             llStatus.setOnClickListener {
@@ -73,5 +73,6 @@ class GetMbtiFragment:
     }
 
     companion object {
+        const val BOTTOM_SHEET_TITLE = "MBTI"
     }
 }
