@@ -63,9 +63,9 @@ class UserRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun getUserFriends(): Result<Friends> {
+    override suspend fun getUserFriends(userId: Long): Result<Friends> {
             return runCatching {
-                dataSource.getUserFriend()
+                dataSource.getUserFriend(userId)
             }
     }
 

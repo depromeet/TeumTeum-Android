@@ -22,9 +22,9 @@ interface UserService {
         @Body userInfo: RequestUserInfoWithOAuthId
     ): SignUpResult
 
-    @GET("users/16/friends")
+    @GET("users/{userId}/friends")
     suspend fun getUserFriends(
-//        @Path("userId") userId: Long
+        @Path("userId") userId: Long
     ): Friends
 
     @PUT("users")

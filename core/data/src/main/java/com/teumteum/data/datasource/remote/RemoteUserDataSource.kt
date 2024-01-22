@@ -23,8 +23,8 @@ class RemoteUserDataSource @Inject constructor(
         return service.postUserInfo(userInfo)
     }
 
-    suspend fun getUserFriend(): Friends {
-        return service.getUserFriends()
+    suspend fun getUserFriend(userId: Long): Friends {
+        return service.getUserFriends(userId)
     }
 
     suspend fun updateUserInfo(

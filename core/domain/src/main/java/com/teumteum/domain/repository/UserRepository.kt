@@ -17,7 +17,7 @@ interface UserRepository {
     fun saveUserInfo(userInfo: UserInfo)
     fun getUserInfo(): UserInfo?
     fun deleteUserInfo()
-    suspend fun getUserFriends():Result<Friends>
+    suspend fun getUserFriends(userId: Long):Result<Friends>
 
     suspend fun updateUserInfo(user: UserInfo): Result<Unit>
 
