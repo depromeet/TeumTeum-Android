@@ -9,6 +9,7 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.entity.toUpdatedUserInfo
 import com.teumteum.domain.repository.UserRepository
 import retrofit2.Response
 import timber.log.Timber
@@ -71,9 +72,12 @@ class UserRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun updateUserInfo(userInfo: UserInfo): Result<Unit> {
+    override suspend fun updateUserInfo(
+        userInfo: UserInfo
+    ): Result<Unit> {
         return runCatching {
-            dataSource.updateUserInfo(userInfo)
+            val request = userInfo.toUpdatedUserInfo()
+            dataSource.updateUserInfo(request)
             saveUserInfo(userInfo)
         }
     }

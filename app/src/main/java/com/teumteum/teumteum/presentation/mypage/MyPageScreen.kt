@@ -51,10 +51,7 @@ fun MyPageScreen(
     val activity = LocalContext.current as? MainActivity
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
     val frontCardState by myPageViewModel.frontCardState.collectAsState()
-    val topbarText = when (userInfoState) {
-        is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님의 소개서"
-        else -> "로딩 중..."
-    }
+    val userName by viewModel.userName.collectAsState()
     val friends = when (userInfoState) {
         is UserInfoUiState.Success -> "추천한 친구 ${(userInfoState as UserInfoUiState.Success).data.friends}명"
         else -> "로딩 중..."
@@ -65,7 +62,7 @@ fun MyPageScreen(
         onClick = {
             navController.navigate(R.id.fragment_setting)
                   },
-        topbarText = topbarText
+        topbarText = "${userName}님의 소개서"
     ) {
         val list = listOf("내 모임", "받은 리뷰")
         val selectedTab = remember { mutableStateOf(list[0]) }

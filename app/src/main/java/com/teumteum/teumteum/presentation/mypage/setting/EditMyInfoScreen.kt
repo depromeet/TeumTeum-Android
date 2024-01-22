@@ -35,7 +35,7 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
         topbarText = stringResource(id = R.string.setting_my_info_edit_text),
         onClick = {
             viewModel.updateUserInfo()
-            navController.navigate(R.id.fragment_setting)
+            navController.popBackStack()
         }
     ) {
         Column(
@@ -68,14 +68,15 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
                 color= TmtmColorPalette.current.color_text_body_quaternary,
             )
             TmMarginVerticalSpacer(size = 8)
-            EditSignUpBox()
+            EditSignUpBox(viewModel)
 
         }
     }
 }
 
 @Composable
-fun EditSignUpBox() {
+fun EditSignUpBox(viewModel: SettingViewModel) {
+    val text by viewModel.userAuth.collectAsState()
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(56.dp)
@@ -85,7 +86,7 @@ fun EditSignUpBox() {
         )
     ) {
         Text(
-            text = "네이버",
+            text = text,
             color = TmtmColorPalette.current.color_text_body_quinary,
             style = TmTypo.current.Body1,
             modifier = Modifier

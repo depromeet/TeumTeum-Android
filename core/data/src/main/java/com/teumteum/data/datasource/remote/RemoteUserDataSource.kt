@@ -7,6 +7,7 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.entity.updatedUserInfo
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ class RemoteUserDataSource @Inject constructor(
     }
 
     suspend fun updateUserInfo(
-        userInfo: UserInfo
+        userInfo: updatedUserInfo
     ): Boolean {
         return service.updateUserInfo(userInfo).isSuccessful
     }

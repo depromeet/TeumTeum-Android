@@ -12,6 +12,7 @@ import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,6 +31,16 @@ class MyPageViewModel @Inject constructor(
     private val _friendsList = MutableStateFlow<List<Friend>>(emptyList())
     val friendsList : StateFlow<List<Friend>> = _friendsList
 
+    private val _isUserInfoUpdated = MutableStateFlow(false)
+    val isUserInfoUpdated: StateFlow<Boolean> = _isUserInfoUpdated.asStateFlow()
+
+    fun notifyUserInfoUpdated() {
+        _isUserInfoUpdated.value = true
+    }
+
+    fun resetUserInfoUpdatedFlag() {
+        _isUserInfoUpdated.value = false
+    }
 
     init {
         loadUserInfo()
@@ -50,7 +61,7 @@ class MyPageViewModel @Inject constructor(
             }
         }
 
-    private fun loadUserInfo() {
+    fun loadUserInfo() {
         viewModelScope.launch {
             _userInfoState.value = UserInfoUiState.Loading
             userRepository.getMyInfoFromServer()

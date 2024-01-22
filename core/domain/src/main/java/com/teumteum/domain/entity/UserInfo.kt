@@ -29,3 +29,39 @@ data class JobEntity(
     val detailClass: String
 )
 
+@Serializable
+data class updatedUserInfo(
+    val id: Long,
+    val newName: String,
+    val newBirth: String, // YYYYMMDD
+    val newCharacterId: Long,
+    val newMannerTemperature: Int,
+    val authenticated: String,
+    val newActivityArea: String,
+    val newMbti: String,
+    val newStatus: String,
+    val newGoal: String,
+    val newJob: JobEntity,
+    val newInterests: List<String>,
+    val friends: Int
+)
+
+fun UserInfo.toUpdatedUserInfo(): updatedUserInfo {
+    return updatedUserInfo(
+        id = this.id,
+        newName = this.name,
+        newBirth = this.birth,
+        newCharacterId = this.characterId,
+        newMannerTemperature = this.mannerTemperature,
+        authenticated = this.authenticated,
+        newActivityArea = this.activityArea,
+        newMbti = this.mbti,
+        newStatus = this.status,
+        newGoal = this.goal,
+        newJob = this.job,
+        newInterests = this.interests,
+        friends = this.friends
+    )
+}
+
+

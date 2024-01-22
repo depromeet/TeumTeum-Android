@@ -36,6 +36,9 @@ class SettingViewModel @Inject constructor(
     private val _userBirthDate = MutableStateFlow("")
     val userBirthDate = _userBirthDate.asStateFlow()
 
+    private val _userAuth = MutableStateFlow("")
+    val userAuth = _userAuth.asStateFlow()
+
     private val originalUserInfo = MutableStateFlow<UserInfo?>(null)
 
     init {
@@ -46,6 +49,7 @@ class SettingViewModel @Inject constructor(
         originalUserInfo.value?.let {
             _userName.value = it.name
             _userBirthDate.value = it.birth
+            _userAuth.value = it.authenticated
         }
     }
 
@@ -56,6 +60,7 @@ class SettingViewModel @Inject constructor(
     fun updateUserBirthDate(newBirthDate: String) {
         _userBirthDate.value = newBirthDate
     }
+
 
     fun updateUserInfo() = viewModelScope.launch {
         if (isUserInfoChanged()) {

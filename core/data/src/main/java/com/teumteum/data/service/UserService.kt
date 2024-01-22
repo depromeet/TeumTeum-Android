@@ -6,6 +6,7 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.entity.updatedUserInfo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -29,7 +30,7 @@ interface UserService {
 
     @PUT("users")
     suspend fun updateUserInfo(
-        @Body userInfo: UserInfo
+        @Body userInfo: updatedUserInfo
     ): Response<Unit>
 
 }
