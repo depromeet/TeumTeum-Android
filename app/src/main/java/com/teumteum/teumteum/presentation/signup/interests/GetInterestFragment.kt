@@ -69,7 +69,7 @@ class GetInterestFragment:
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     // Chip이 선택되었을 때 실행되는 코드
-                    if (viewModel.interestCount.value < 3) {
+                    if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
                         viewModel.addInterestSelf(buttonView.text.toString())
                         viewModel.updateInterestCount()
                     }
@@ -97,7 +97,7 @@ class GetInterestFragment:
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     // Chip이 선택되었을 때 실행되는 코드
-                    if (viewModel.interestCount.value < 3) {
+                    if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
                         viewModel.addInterestField(buttonView.text.toString())
                         viewModel.updateInterestCount()
                     }
@@ -124,5 +124,9 @@ class GetInterestFragment:
                 else (activity as SignUpActivity).disableNextButton()
             }
         }
+    }
+
+    companion object {
+        const val MAXIMUM_CHIP_COUNT = 3
     }
 }
