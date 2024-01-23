@@ -17,6 +17,18 @@ data class ResponseGroup(
         val meetings: List<ResponseMeeting>
     )
 }
+
+@Serializable
+data class ResponseMyMeeting(
+    val data: ResponseMyMeetingData
+) {
+    @Serializable
+    data class ResponseMyMeetingData(
+        val meetings: List<ResponseMeeting>
+    )
+}
+
+
 @Serializable
 data class ResponseMeeting(
     val hostId: Long,

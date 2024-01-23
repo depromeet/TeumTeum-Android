@@ -6,8 +6,10 @@ import androidx.activity.viewModels
 import com.teumteum.base.BindingActivity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySigninBinding
-import com.teumteum.teumteum.presentation.signup.terms.TermsActivity
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
+import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_ENG
+import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_ENG
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -28,13 +30,13 @@ class SignInActivity
         with(binding) {
             btnKakao.setOnClickListener {
                 val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
-                intent.putExtra("provider", "kakao")
+                intent.putExtra(EXTRA_KEY_PROVIDER, KAKAO_PROVIDER_ENG)
                 startActivity(intent)
             }
 
             btnNaver.setOnClickListener {
                 val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
-                intent.putExtra("provider", "naver")
+                intent.putExtra(EXTRA_KEY_PROVIDER, NAVER_PROVIDER_ENG)
                 startActivity(intent)
             }
         }

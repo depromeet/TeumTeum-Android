@@ -25,20 +25,13 @@ class OnBoardingActivity
 
     private val viewpagerList = ArrayList<CommonViewPagerEntity>()
 
-    private val locationPermissionRequest = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) {
-        startActivity(Intent(this@OnBoardingActivity, SignInActivity::class.java))
-        finish()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
         initViewPagerItem()
         initViewPager()
-//        setUpListener()
+        setUpListener()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -50,7 +43,7 @@ class OnBoardingActivity
 
     private fun setUpListener() {
         binding.btnStart.setOnClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
+            startActivity(Intent(this, AccessLocationActivity::class.java))
         }
     }
 
@@ -86,25 +79,11 @@ class OnBoardingActivity
             vp.adapter = onBoardingViewPagerAdapter
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             tl.clearOnTabSelectedListeners()
-            btnStart.setOnClickListener {
-                checkLocationPermission()
-            }
         }
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
             tab.view.isClickable = false
         }.attach()
     }
 
-    private fun checkLocationPermission() {
-        locationPermissionRequest.launch(
-            arrayOf(
-                ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
-            )
-        )
-    }
-
-    companion object {
-        const val ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
-        const val ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
-    }
+    companion object {}
 }

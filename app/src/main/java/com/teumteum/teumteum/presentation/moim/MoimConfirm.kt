@@ -185,7 +185,6 @@ fun MoimInfoCard(viewModel: MoimViewModel) {
     val people by viewModel.people.collectAsState()
     val date by viewModel.date.collectAsState()
     val time by viewModel.time.collectAsState()
-    val address by viewModel.address.collectAsState()
     val detailAddress by viewModel.detailAddress.collectAsState()
 
     Box(
@@ -211,7 +210,7 @@ fun MoimInfoCard(viewModel: MoimViewModel) {
             TmMarginVerticalSpacer(size = 4)
             MoimCardRow(title = stringResource(id = R.string.moim_confirm_title3), text = "${people}명")
             TmMarginVerticalSpacer(size = 4)
-            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title4), text = "$address $detailAddress")
+            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title4), text = detailAddress)
 
         }
 

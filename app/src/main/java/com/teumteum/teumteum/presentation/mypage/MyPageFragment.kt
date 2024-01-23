@@ -28,6 +28,10 @@ class MyPageFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        myPageViewModel.loadUserInfo()
+    }
 
 
     companion object {
