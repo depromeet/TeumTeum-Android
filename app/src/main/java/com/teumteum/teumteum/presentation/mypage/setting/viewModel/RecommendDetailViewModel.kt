@@ -21,6 +21,10 @@ class RecommendDetailViewModel @Inject constructor(
     private val settingRepository: SettingRepository
 
 ): ViewModel() {
+
+    private val _userInfoState = MutableStateFlow<UserInfoUiState>(UserInfoUiState.Init)
+    val userInfoState: StateFlow<UserInfoUiState> = _userInfoState
+
     private val _friendInfo = MutableStateFlow<UserInfo?>(null)
     val friendInfo : StateFlow<UserInfo?> = _friendInfo.asStateFlow()
 
@@ -72,8 +76,10 @@ class RecommendDetailViewModel @Inject constructor(
     fun loadFriendInfo(userId: Long) {
         if(userId != -1L) {
             viewModelScope.launch {
+                _userInfoState.value = UserInfoUiState.Loading
                 try {
                     val userInfo = userRepository.getFriendInfo(userId)
+                    _userInfoState.value = userInfo?.let { UserInfoUiState.Success(it) }!!
                     _friendInfo.value = userInfo
                     getFrontCardFromInfo()
                 } catch (e: Exception) {
@@ -108,6 +114,7 @@ class RecommendDetailViewModel @Inject constructor(
                     }
                     .onFailure {
                         Timber.e(it)
+                        _userInfoState.value = UserInfoUiState.Failure(it.message ?: "정보 불러오기 실패")
                     }
             }
         }

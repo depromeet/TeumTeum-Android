@@ -83,7 +83,11 @@
             app:destination="@id/fragment_setting" />
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_recommend"
-            app:destination="@id/fragment_recommend" />
+            app:destination="@id/fragment_recommend">
+            <argument
+                android:name="id"
+                app:argType="integer"/>
+        </action>
 
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_edit_card"

@@ -39,6 +39,7 @@ import com.teumteum.teumteum.presentation.mypage.pager.NoMoimItems
 import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
 import timber.log.Timber
 
 @Composable
@@ -49,13 +50,20 @@ fun RecommendDetailScreen(
 ) {
     val userInfo by viewModel.friendInfo.collectAsState()
     val friendsCount by viewModel.friendsList.collectAsState()
+    val userInfoState by viewModel.userInfoState.collectAsState()
+
+    val topbarText = when (val state = userInfoState) {
+        is UserInfoUiState.Success -> "${state.data.name}의 소개서"
+        is UserInfoUiState.Loading -> "로딩 중..."
+        else -> "" // 또는 다른 기본 텍스트
+    }
 
     TmScaffold(
         isSetting = false,
         onClick = {
             navController.popBackStack()
         },
-        topbarText = "${userInfo?.name}님의 소개서"
+        topbarText = topbarText
     ) {
         val list = listOf("참여 모임", "받은 리뷰")
 
