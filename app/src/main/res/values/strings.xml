@@ -205,6 +205,7 @@
     <string name="group_meet_check_warning">무단으로 불참하거나, 함께하는 멤버들을\n존중하지 않고 피해를 주는 경우\n신고 제도를 통해 이용에 제재를 받게 됩니다.</string>
     <string name="group_meet_check_box_text">확인했습니다!</string>
     <string name="group_meet_complete">참여가 완료되었어요!</string>
+    <string name="group_meet_cancel">모임 신청이 취소되었습니다</string>
     <string name="group_join">참여하기</string>
     <string name="group_home">홈으로 가기</string>
     <string name="group_cancel">취소할래요</string>

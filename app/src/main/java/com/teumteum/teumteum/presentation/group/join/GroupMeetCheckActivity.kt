@@ -10,8 +10,8 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.base.util.extension.longExtra
-import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupMeetCheckBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +69,7 @@ class GroupMeetCheckActivity :
                         startActivity(GroupMeetCompleteActivity.getIntent(this, it.data.id))
                     }
                     is MeetCheckUiState.Failure -> {
-                        toast(it.msg)
+                        defaultSnackBar(binding.root, it.msg)
                     }
 
                     else -> {}

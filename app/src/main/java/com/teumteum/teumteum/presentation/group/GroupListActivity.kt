@@ -3,16 +3,15 @@ package com.teumteum.teumteum.presentation.group
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.base.util.extension.stringExtra
-import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupListBinding
 import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
@@ -73,7 +72,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
                     }
 
                     is GroupListUiState.Failure -> {
-                        toast(it.msg)
+                        defaultSnackBar(binding.root, it.msg)
                     }
 
                     else -> {}
