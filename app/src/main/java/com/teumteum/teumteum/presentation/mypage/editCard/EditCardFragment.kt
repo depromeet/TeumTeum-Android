@@ -65,6 +65,8 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                 // 결과 처리
                 val data: Intent? = result.data
                 // data에서 결과를 추출하고 처리
+
+                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
             }
         }
 
@@ -101,7 +103,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             else -> ArrayList()
         }
 
-        // Assuming your SingleModalBottomSheet class has a method to update its list
         jobDetailClassBottomSheet?.updateList(jobDetailList)
     }
 
@@ -116,6 +117,8 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                     SheetEvent.Status -> showStatusSheet()
                     SheetEvent.SignUp -> {
                         val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
+                            val interests = viewModel.interestField.value
+                            putExtra("interests", ArrayList(interests))
                             putExtra("navigateTo", "fragment_get_interest")
                         }
                         resultLauncher.launch(intent)

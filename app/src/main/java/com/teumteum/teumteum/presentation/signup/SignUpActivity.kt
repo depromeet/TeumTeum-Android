@@ -91,7 +91,18 @@ class SignUpActivity
 
     private fun navigateToFragment(fragmentName: String) {
         when (fragmentName) {
-            "fragment_get_interest" -> navigateTo<GetInterestFragment>()
+            "fragment_get_interest" -> {
+                val fragment = GetInterestFragment().apply {
+                    arguments = Bundle().apply {
+                        putBoolean("isFromSpecialPath", true)
+                        val interests = intent.getStringArrayListExtra("interests")
+                        putStringArrayList("selectedInterests", interests)
+                    }
+                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fcv_signup, fragment)
+                    .commit()
+            }
             else -> {
                 setStartingFragment()
             }
