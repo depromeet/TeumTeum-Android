@@ -24,6 +24,14 @@
             android:id="@+id/action_homeFragment_to_fragment_teum_teum"
             app:destination="@id/fragment_teum_teum" />
 
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_recommend_detail"
+            app:destination="@id/fragment_recommend_detail">
+            <argument
+                android:name="id"
+                app:argType="integer"/>
+        </action>
+
     </fragment>
 
 
@@ -123,7 +131,12 @@
     <fragment
         android:id="@+id/fragment_recommend_detail"
         android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragment"
-        android:label="RecommendDetailFragment" />
+        android:label="RecommendDetailFragment">
+        <argument
+            android:name="id"
+            app:argType="integer"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_recommend"
@@ -131,7 +144,11 @@
         android:label="RecommendFragment">
         <action
             android:id="@+id/action_fragment_recommend_to_fragment_recommend_detail"
-            app:destination="@id/fragment_recommend_detail" />
+            app:destination="@id/fragment_recommend_detail">
+            <argument
+                android:name="id"
+                app:argType="integer"/>
+        </action>
 
     </fragment>
 

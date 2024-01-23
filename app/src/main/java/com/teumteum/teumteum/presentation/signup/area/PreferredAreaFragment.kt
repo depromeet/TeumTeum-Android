@@ -19,7 +19,7 @@ class PreferredAreaFragment
 
     private val viewModel by activityViewModels<SignUpViewModel>()
     private var bottomSheet: AreaModalBottomSheet? = null
-    private var focusedCity: String = "서울"
+    private var focusedCity: String = INITIAL_FOCUSED_CITY
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +41,7 @@ class PreferredAreaFragment
             bottomSheet?.dismiss()
         }
 
-        bottomSheet = AreaModalBottomSheet.newInstance("관심 지역", cityListener, streetListener)
+        bottomSheet = AreaModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, cityListener, streetListener)
 
         with(binding) {
             llStatus.setOnClickListener {
@@ -63,5 +63,7 @@ class PreferredAreaFragment
     }
 
     companion object {
+        const val BOTTOM_SHEET_TITLE = "관심 지역"
+        const val INITIAL_FOCUSED_CITY = "서울"
     }
 }

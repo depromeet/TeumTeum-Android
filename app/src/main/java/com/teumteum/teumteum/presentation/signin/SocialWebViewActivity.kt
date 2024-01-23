@@ -17,16 +17,19 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.data.BuildConfig
 import com.teumteum.domain.entity.SocialLoginResult
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySocialWebviewBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.terms.TermsActivity
 import com.teumteum.teumteum.presentation.splash.MyInfoUiState
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_OAUTHID
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
+import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_ENG
+import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_ENG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -45,7 +48,7 @@ class SocialWebViewActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        provider = intent.getStringExtra("provider").toString()
+        provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
         initProvider(provider)
         initCookieManager()
         initAppBarLayout()
@@ -72,18 +75,18 @@ class SocialWebViewActivity
     private fun initProvider(provider: String) {
         Timber.tag("teum-login").d("provider: $provider")
         when (provider) {
-            KAKAO_PROVIDER -> {
-                loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&state=STATE_STRING" +
+            KAKAO_PROVIDER_ENG -> {
+                loginUrl = KAKAO_BASE_URL +
                         "&client_id=${BuildConfig.KAKAO_API_KEY}" +
                         "&redirect_uri=${BuildConfig.KAKAO_REDIRECT_URL}"
             }
-            NAVER_PROVIDER -> {
-                loginUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code&state=STATE_STRING" +
+            NAVER_PROVIDER_ENG -> {
+                loginUrl = NAVER_BASE_URL +
                         "&client_id=${BuildConfig.NAVER_API_KEY}" +
                         "&redirect_uri=${BuildConfig.NAVER_REDIRECT_URL}"
             }
             else -> {
-                toast("소셜 로그인에 실패했습니다")
+                defaultSnackBar(binding.root, getString(R.string.signin_tv_fail_snackbar))
                 finish()
             }
         }
@@ -172,7 +175,7 @@ class SocialWebViewActivity
                         goToTermsActivity()
                     }
                     is SignInUiState.Failure -> {
-                        toast(it.msg)
+                        defaultSnackBar(binding.root, it.msg)
                         finish()
                     }
 
@@ -189,7 +192,7 @@ class SocialWebViewActivity
                         goToHomeScreen()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         goToTermsActivity()
                     }
                     else -> {}
@@ -202,8 +205,8 @@ class SocialWebViewActivity
         // 회원가입으로 이동
         // oauthId 받아서 SignUpActivity로
         val intent = Intent(this, TermsActivity::class.java)
-        intent.putExtra("oauthId", viewModel.oauthId)
-        intent.putExtra("provider", provider)
+        intent.putExtra(EXTRA_KEY_OAUTHID, viewModel.oauthId)
+        intent.putExtra(EXTRA_KEY_PROVIDER, provider)
         startActivity(intent)
         finish()
         // SignUpActivity에서 SignUpFinishActivity로 이동하기 전에 이 oauthId 포함해서 회원가입 진행
@@ -216,9 +219,8 @@ class SocialWebViewActivity
     }
 
     companion object {
-        const val KAKAO_PROVIDER = "kakao"
-        const val NAVER_PROVIDER = "naver"
-        const val CALLBACK_URL = ""
+        const val KAKAO_BASE_URL = "https://kauth.kakao.com/oauth/authorize?response_type=code&state=STATE_STRING"
+        const val NAVER_BASE_URL = "https://nid.naver.com/oauth2.0/authorize?response_type=code&state=STATE_STRING"
 
         const val WEBVIEW_SCRIPT = "(function() { " +
                 "   var body = document.getElementsByTagName('body')[0]; " +

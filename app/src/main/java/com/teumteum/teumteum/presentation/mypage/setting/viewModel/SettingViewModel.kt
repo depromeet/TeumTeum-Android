@@ -1,9 +1,11 @@
 package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.entity.WithDrawReasons
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.SettingRepository
@@ -28,8 +30,121 @@ class SettingViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ): ViewModel() {
 
+    private val _userName = MutableStateFlow("")
+    val userName = _userName.asStateFlow()
+
+    private val _userBirthDate = MutableStateFlow("")
+    val userBirthDate = _userBirthDate.asStateFlow()
+
+    private val _userAuth = MutableStateFlow("")
+    val userAuth = _userAuth.asStateFlow()
+
+    private val originalUserInfo = MutableStateFlow<UserInfo?>(null)
+
+    private val _userOpenMeetingList = MutableStateFlow<List<com.teumteum.domain.entity.Meeting>>(emptyList())
+    val userOpenMeetingList: StateFlow<List<com.teumteum.domain.entity.Meeting>> = _userOpenMeetingList
+
+    private val _userClosedMeetingList = MutableStateFlow<List<com.teumteum.domain.entity.Meeting>>(emptyList())
+    val userClosedMeetingList: StateFlow<List<com.teumteum.domain.entity.Meeting>> = _userClosedMeetingList
+
+    private val _userHostOpenMeetingList = MutableStateFlow<List<com.teumteum.domain.entity.Meeting>>(emptyList())
+    val userHostMeetingList: StateFlow<List<com.teumteum.domain.entity.Meeting>> = _userHostOpenMeetingList
+
+    private val _userHostClosedMeetingList = MutableStateFlow<List<com.teumteum.domain.entity.Meeting>>(emptyList())
+    val userHostClosedMeetingList: StateFlow<List<com.teumteum.domain.entity.Meeting>> = _userHostClosedMeetingList
+
+    init {
+        loadUserInfo()
+        getUserClosedMeeting()
+        getUserOpenMeeting()
+    }
+
+    private fun loadUserInfo() = viewModelScope.launch {
+        originalUserInfo.value = userRepository.getUserInfo()
+        originalUserInfo.value?.let {
+            _userName.value = it.name
+            _userBirthDate.value = it.birth
+            _userAuth.value = it.authenticated
+        }
+    }
+
+    fun getUserOpenMeeting() {
+        val userId = authRepository.getUserId()
+//        val userId = 16.toLong()
+        if (userId != -1L) {
+            viewModelScope.launch {
+                settingRepository.getMyPageOpenMeeting(userId)
+                    .onSuccess { meetings ->
+                        val openMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
+                        val hostMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
+                        meetings.forEach { meeting ->
+                            if (meeting.hostId == userId) {
+                                hostMeetings.add(meeting)
+                            } else {
+                                openMeetings.add(meeting)
+                            }
+                        }
+                        _userOpenMeetingList.value = openMeetings
+                        _userHostOpenMeetingList.value = hostMeetings
+                    }
+                    .onFailure {
+                        Timber.e(it)
+                        updateSettingStatus(SettingStatus.ERROR)
+                    }
+            }
+        }
+    }
+
+    fun getUserClosedMeeting() {
+                val userId = authRepository.getUserId()
+//        val userId = 16.toLong()
+        if (userId != -1L) {
+            viewModelScope.launch {
+                settingRepository.getMyPageOpenMeeting(userId)
+                    .onSuccess { meetings ->
+                        val closedMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
+                        val hostMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
+                        meetings.forEach { meeting ->
+                            if (meeting.hostId == userId) {
+                                hostMeetings.add(meeting)
+                            } else {
+                                closedMeetings.add(meeting)
+                            }
+                        }
+                        _userClosedMeetingList.value = closedMeetings
+                        _userHostClosedMeetingList.value = hostMeetings
+                    }
+                    .onFailure {
+                        Timber.e(it)
+                        updateSettingStatus(SettingStatus.ERROR)
+                    }
+            }
+        }
+    }
+
+    fun updateUserName(newName: String) {
+        _userName.value = newName
+    }
+
+    fun updateUserBirthDate(newBirthDate: String) {
+        _userBirthDate.value = newBirthDate
+    }
+
+
+    fun isUserInfoChanged(): Boolean {
+        originalUserInfo.value?.let { original ->
+            val currentInfo = original.copy(
+                name = _userName.value,
+                birth = _userBirthDate.value
+            )
+            return currentInfo != original
+        }
+        return false
+    }
+
     private val _alarmState = MutableStateFlow(false)
     val alarmState: StateFlow<Boolean> = _alarmState.asStateFlow()
+
     fun onToggleChange(newToggleState: Boolean) {
         _alarmState.value = newToggleState
     }
@@ -87,7 +202,24 @@ class SettingViewModel @Inject constructor(
             else -> {}
         }
     }
-
+        fun updateUserInfo() = viewModelScope.launch {
+            if (isUserInfoChanged()) {
+                originalUserInfo.value?.let { original ->
+                    val updatedUserInfo = original.copy(
+                        name = _userName.value,
+                        birth = _userBirthDate.value
+                    )
+                    userRepository.updateUserInfo(updatedUserInfo)
+                        .onSuccess {
+                            Log.d("업데이트 성공", "성공")
+                        }
+                        .onFailure {
+                            updateSettingStatus(SettingStatus.ERROR)
+                            Timber.e(it)
+                        }
+                }
+            }
+        }
     fun logout() {
         viewModelScope.launch {
             val logOutResult = settingRepository.logOut()
@@ -164,6 +296,7 @@ enum class SettingStatus {
 
 enum class DialogEvent {
     DEFAULT, LOGOUT, CANCEL;
+
     @StringRes
     fun getTitleResId(): Int {
         return when (this) {
@@ -172,6 +305,7 @@ enum class DialogEvent {
             else -> R.string.setting_dialog_default
         }
     }
+
     @StringRes
     fun getOkTextResId(): Int {
         return when (this) {
@@ -190,5 +324,6 @@ enum class DialogEvent {
         }
     }
 }
+
 
 

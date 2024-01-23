@@ -1,8 +1,10 @@
 package com.teumteum.domain.repository
 
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.entity.Users
 
 interface UserRepository {
     suspend fun postUserInfo(
@@ -16,5 +18,9 @@ interface UserRepository {
     fun saveUserInfo(userInfo: UserInfo)
     fun getUserInfo(): UserInfo?
     fun deleteUserInfo()
-    suspend fun getUserFriends(userId:Long): Result<List<Friend>>
+    suspend fun getUser(userId: Long): Result<Friend>
+    suspend fun getUsers(id: String): Result<Users>
+    suspend fun getUserFriends(userId: Long):Result<Friends>
+    suspend fun updateUserInfo(user: UserInfo): Result<Unit>
+    suspend fun getFriendInfo(userId: Long): UserInfo?
 }

@@ -57,7 +57,7 @@
             android:textColor="?attr/color_text_body_primary"
             android:hint="@string/signup_tv_goal_hint"
             android:text="@{vm.goalText}"
-            android:maxLength="50"
+            android:maxLength="49"
             android:background="@drawable/shape_rect4_elevation_level01"
             android:textColorHint="?attr/color_text_body_quinary"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle1"

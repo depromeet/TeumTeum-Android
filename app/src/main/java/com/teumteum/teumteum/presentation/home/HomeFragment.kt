@@ -19,6 +19,7 @@ import com.teumteum.teumteum.presentation.group.GroupListActivity
 import com.teumteum.teumteum.presentation.group.GroupListAdapter
 import com.teumteum.teumteum.presentation.group.GroupListUiState
 import com.teumteum.teumteum.presentation.group.GroupListViewModel
+import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 import com.teumteum.teumteum.presentation.group.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -76,7 +77,7 @@ class HomeFragment :
     private fun initView() {
         viewModel.initCurrentPage(viewModel.getLocation())
         adapter = GroupListAdapter {
-
+            startActivity(GroupDetailActivity.getIntent(requireActivity(), it.id))
         }
         binding.rvRecommendMeet.adapter = adapter
         binding.tvRecommendTitle.text =

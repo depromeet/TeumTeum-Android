@@ -1,6 +1,7 @@
 package com.teumteum.data.datasource.remote
 
 import com.teumteum.data.model.request.RequestSignOut
+import com.teumteum.data.model.response.ResponseMyMeeting
 import com.teumteum.data.service.SettingService
 import com.teumteum.domain.entity.WithDrawReasons
 import javax.inject.Inject
@@ -19,4 +20,25 @@ class RemoteSettingDataSource @Inject constructor(
         val request = RequestSignOut(withDrawReasons.withdrawReasons)
         return settingService.signOut(request).isSuccessful
     }
+
+    suspend fun getMyPageOpenMeeting(
+        size: Int,
+        page: Int,
+        sort: String,
+        isOpen: Boolean,
+        participantUserId: Long? = null
+    ): ResponseMyMeeting {
+        return settingService.getMyPageOpenMeeting(size, page, sort,isOpen, participantUserId)
+    }
+
+    suspend fun getMyPageClosedMeeting(
+        size: Int,
+        page: Int,
+        sort: String,
+        isOpen: Boolean,
+        participantUserId: Long? = null
+    ): ResponseMyMeeting {
+        return settingService.getMyPageClosedMeeting(size, page, sort,isOpen, participantUserId)
+    }
+
 }

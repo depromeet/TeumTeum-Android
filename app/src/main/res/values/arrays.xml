@@ -35,37 +35,37 @@
     </string-array>
 
     <string-array name="gyeonggi_areas">
-        <item>수원시</item>
-        <item>성남시</item>
-        <item>고양시</item>
-        <item>용인시</item>
-        <item>부천시</item>
-        <item>안산시</item>
-        <item>안양시</item>
-        <item>남양주시</item>
-        <item>화성시</item>
-        <item>의정부시</item>
-        <item>시흥시</item>
-        <item>평택시</item>
-        <item>광명시</item>
-        <item>파주시</item>
-        <item>군포시</item>
-        <item>광주시</item>
-        <item>김포시</item>
-        <item>이천시</item>
-        <item>양주시</item>
-        <item>구리시</item>
-        <item>오산시</item>
-        <item>안성시</item>
-        <item>의왕시</item>
-        <item>하남시</item>
-        <item>포천시</item>
-        <item>동두천시</item>
-        <item>과천시</item>
-        <item>여주시</item>
-        <item>양평군</item>
         <item>가평군</item>
+        <item>고양시</item>
+        <item>과천시</item>
+        <item>광명시</item>
+        <item>광주시</item>
+        <item>구리시</item>
+        <item>군포시</item>
+        <item>김포시</item>
+        <item>남양주시</item>
+        <item>동두천시</item>
+        <item>부천시</item>
+        <item>성남시</item>
+        <item>수원시</item>
+        <item>시흥시</item>
+        <item>안산시</item>
+        <item>안성시</item>
+        <item>안양시</item>
+        <item>양주시</item>
+        <item>양평군</item>
+        <item>여주시</item>
         <item>연천군</item>
+        <item>오산시</item>
+        <item>용인시</item>
+        <item>의왕시</item>
+        <item>의정부시</item>
+        <item>이천시</item>
+        <item>파주시</item>
+        <item>평택시</item>
+        <item>포천시</item>
+        <item>하남시</item>
+        <item>화성시</item>
     </string-array>
 
     <string-array name="incheon_areas">
@@ -76,8 +76,9 @@
         <item>미추홀구</item>
         <item>부평구</item>
         <item>서구</item>
-        <item>옹진군</item>
         <item>연수구</item>
+        <item>옹진군</item>
+        <item>중구</item>
     </string-array>
 
     <string-array name="community_status">
@@ -93,7 +94,7 @@
         <item>모여서 각자 일하기</item>
         <item>커리어</item>
         <item>직무 고민</item>
-        <item>사이트 프로젝트</item>
+        <item>사이드 프로젝트</item>
         <item>N잡</item>
     </string-array>
 

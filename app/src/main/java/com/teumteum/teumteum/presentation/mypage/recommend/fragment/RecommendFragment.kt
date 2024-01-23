@@ -23,7 +23,7 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
         val navController = findNavController()
 
         binding.composeRecommend.setContent {
-            RecommendScreen(viewModel, myPageViewModel,  navController)
+            RecommendScreen(myPageViewModel,  navController)
         }
 
     }
