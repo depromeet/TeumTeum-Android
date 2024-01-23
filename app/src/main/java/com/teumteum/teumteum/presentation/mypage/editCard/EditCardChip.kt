@@ -29,31 +29,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun InterestsChips(interests: List<String>, onClick: () -> Unit) {
-    FlowRow(
-       modifier = Modifier
-           .fillMaxWidth()
-           .wrapContentHeight(),
-        horizontalArrangement = Arrangement.Start,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        interests.forEach { interest ->
-            EditCardChipDefault(interest)
-            TmMarginHorizontalSpacer(size = 8)
+fun InterestsChips(interests: List<String>, onClick: () -> Unit, viewModel: EditCardViewModel) {
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalArrangement = Arrangement.Start,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            interests.forEach { interest ->
+                EditCardChipDefault(interest) { viewModel.removeInterestField(interest) }
+                TmMarginHorizontalSpacer(size = 8)
+            }
+            EditCardChipPlus(onClick)
         }
-        // 항상 마지막에 EditCardChipPlus 추가
-        EditCardChipPlus(onClick)
-    }
 }
 
 @Composable
-fun EditCardChipDefault(text: String) {
+fun EditCardChipDefault(text: String, onDeleteClick: () -> Unit) {
     Box(
         modifier = Modifier
             .wrapContentWidth()
@@ -63,12 +64,13 @@ fun EditCardChipDefault(text: String) {
                 shape = RoundedCornerShape(200.dp)
             )
             .height(48.dp)
+            .padding(bottom = 4.dp, top = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .wrapContentWidth()
                 .height(40.dp)
-                .padding(start = 16.dp, end = 14.dp, top = 8.dp, bottom = 6.dp),
+                .padding(start = 16.dp, end = 14.dp, top = 8.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -85,7 +87,7 @@ fun EditCardChipDefault(text: String) {
                     .size(20.dp)
                     .alignByBaseline()
                     .padding(top = 3.dp)
-                    .clickable { }
+                    .clickable { onDeleteClick() }
             )
         }
     }
@@ -105,7 +107,8 @@ fun EditCardChipPlus(onClick: () ->Unit) {
                 color = TmtmColorPalette.current.color_button_active,
                 shape = RoundedCornerShape(200.dp)
             )
-            .height(40.dp)
+            .height(48.dp)
+            .padding(bottom = 4.dp, top = 4.dp)
     ) {
         Row(
             modifier = Modifier

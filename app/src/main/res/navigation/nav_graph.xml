@@ -184,14 +184,7 @@
         android:name="com.teumteum.teumteum.presentation.mypage.editCard.EditCardFragment"
         android:label="EditCardFragment">
 
-        <action
-            android:id="@+id/action_fragment_edit_card_to_fragment_get_interest"
-            app:destination="@id/fragment_get_interest"/>
     </fragment>
 
-    <fragment
-        android:id="@+id/fragment_get_interest"
-        android:name="com.teumteum.teumteum.presentation.signup.interests.GetInterestFragment"
-        android:label="GetInterestFragment" />
-
 </navigation>
+

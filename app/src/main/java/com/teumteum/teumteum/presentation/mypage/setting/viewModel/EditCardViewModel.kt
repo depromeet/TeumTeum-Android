@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 
 enum class SheetEvent {
-    None, JobDetail, JobClass, Mbti, Area, Interest, Status, Dismiss,
+    None, JobDetail, JobClass, Mbti, Area, Interest, Status, Dismiss, SignUp,
 }
 @HiltViewModel
 class EditCardViewModel @Inject constructor(
@@ -51,7 +51,7 @@ class EditCardViewModel @Inject constructor(
     fun updateCompanyName(companyName: String) {
         _companyName.value = companyName
     }
-    private fun loadUserInfo() = viewModelScope.launch {
+    fun loadUserInfo() = viewModelScope.launch {
         originalUserInfo.value = userRepository.getUserInfo()
         originalUserInfo.value?.let {
             _userName.value = it.name
@@ -196,7 +196,10 @@ class EditCardViewModel @Inject constructor(
     val interestField: StateFlow<ArrayList<String>> = _interestField.asStateFlow()
 
     fun removeInterestField(interest: String) {
-        if (_interestField.value.contains(interest)) _interestField.value.remove(interest)
+        val updatedInterests = _interestField.value.toMutableList().apply {
+            remove(interest)
+        }
+        _interestField.value = updatedInterests as ArrayList<String>
         updateInterestCount()
     }
 

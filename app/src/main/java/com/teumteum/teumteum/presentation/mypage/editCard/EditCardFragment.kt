@@ -1,12 +1,16 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
+import android.app.Activity
 import android.app.ProgressDialog.show
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -47,6 +51,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     private var areaBottomSheet: AreaModalBottomSheet? = null
     private var statusBottomSheet: SingleModalBottomSheet? = null
     private var focusedCity: String = "서울"
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     var jobDetailList = ArrayList<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +59,14 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 결과 처리
+                val data: Intent? = result.data
+                // data에서 결과를 추출하고 처리
+            }
+        }
 
         setupEventObserver()
         initBottomSheet()
@@ -69,6 +82,11 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             (activity as MainActivity).showBottomNavi()
         }
     }
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadUserInfo()
+    }
+
 
     private fun initBottomSheet() {
 
@@ -96,6 +114,12 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                     SheetEvent.Mbti -> showMbtiSheet()
                     SheetEvent.Area -> showAreaSheet()
                     SheetEvent.Status -> showStatusSheet()
+                    SheetEvent.SignUp -> {
+                        val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
+                            putExtra("navigateTo", "fragment_get_interest")
+                        }
+                        resultLauncher.launch(intent)
+                    }
                     else -> {}
                 }
             }

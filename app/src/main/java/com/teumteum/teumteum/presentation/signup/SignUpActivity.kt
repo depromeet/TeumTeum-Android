@@ -62,6 +62,11 @@ class SignUpActivity
         setUpInitialListener()
         observer()
         userInfoObserver()
+
+        val navigateTo = intent.getStringExtra("navigateTo")
+        navigateTo?.let {
+            navigateToFragment(it)
+        }
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -82,6 +87,15 @@ class SignUpActivity
     private fun getIdProvider() {
         oauthId = intent.getStringExtra(EXTRA_KEY_OAUTHID).toString()
         provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
+    }
+
+    private fun navigateToFragment(fragmentName: String) {
+        when (fragmentName) {
+            "fragment_get_interest" -> navigateTo<GetInterestFragment>()
+            else -> {
+                setStartingFragment()
+            }
+        }
     }
 
     private fun setStartingFragment() {
