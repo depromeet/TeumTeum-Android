@@ -33,6 +33,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -83,11 +84,23 @@ fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting) {
 }
 
 fun formatDateTime(dateTime: String): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.KOREAN)
     val outputFormat = SimpleDateFormat("M월 d일 aa h:mm", Locale.KOREAN)
+    val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.KOREAN)
+    val inputFormat2 = SimpleDateFormat("MM'월' dd'일' a h:mm", Locale.KOREAN)
 
-    val date = inputFormat.parse(dateTime)
-    return outputFormat.format(date ?: return "")
+    try {
+        //서버에서 받을때
+        val date = inputFormat1.parse(dateTime)
+        return outputFormat.format(date ?: return "")
+    } catch (e: ParseException) {
+        try {
+            //다른 형식
+            val date = inputFormat2.parse(dateTime)
+            return outputFormat.format(date ?: return "")
+        } catch (e: ParseException) {
+            return ""
+        }
+    }
 }
 
 @Composable

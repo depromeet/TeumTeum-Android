@@ -48,6 +48,8 @@ fun EditCardScreen(
     val isNameValid by viewModel.isNameValid.collectAsState()
     val companyName by viewModel.companyName.collectAsState()
     val goal by viewModel.goalText.collectAsState()
+    val jobClass by viewModel.jobClass.collectAsState()
+    val jobDetailClass by viewModel.jobDetailClass.collectAsState()
     val mbti by viewModel.mbtiText.collectAsState()
     val date = viewModel.userBirth.collectAsState()
     val area by viewModel.preferredArea.collectAsState()
@@ -121,7 +123,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label5))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = mbti,
+                text = jobClass,
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.JobClass
             )
@@ -130,7 +132,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label6))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = "R.string.setting_edit_card_placeholder3",
+                text = jobDetailClass,
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.JobDetail
             )
