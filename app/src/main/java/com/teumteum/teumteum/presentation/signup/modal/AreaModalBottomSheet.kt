@@ -24,7 +24,7 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
     private lateinit var streetRvAdapter: AreaStreetModalAdapter
     private lateinit var cityItemClickListener: (String) -> Unit
     private lateinit var streetItemClickListener: (String) -> Unit
-    private lateinit var focusedShowImageView: ImageView
+    private  var focusedShowImageView: ImageView? = null
     private var selectedCity: String = ""
     private var selectedStreet: String = ""
     private var focusedCity: String = ""
@@ -110,7 +110,7 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
+        focusedShowImageView?.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
     }
 

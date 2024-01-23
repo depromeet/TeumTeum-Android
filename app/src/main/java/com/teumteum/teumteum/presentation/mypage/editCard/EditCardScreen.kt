@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,6 +44,14 @@ fun EditCardScreen(
     navController: NavController
 ) {
     val activity = LocalContext.current as? MainActivity
+    val name = viewModel.userName.collectAsState()
+    val isNameValid by viewModel.isNameValid.collectAsState()
+    val companyName by viewModel.companyName.collectAsState()
+    val goal by viewModel.goalText.collectAsState()
+    val mbti by viewModel.mbtiText.collectAsState()
+    val date = viewModel.userBirth.collectAsState()
+    val area by viewModel.preferredArea.collectAsState()
+
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_edit_card_topbar),
         onClick = {
@@ -64,18 +74,36 @@ fun EditCardScreen(
             //이름
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label1))
             TmMarginVerticalSpacer(size = 8)
-            TmInputField(text = R.string.setting_edit_card_placeholder1, text_error = R.string.setting_edit_card_error1)
+            TmInputField(
+                text = R.string.setting_edit_card_placeholder1,
+                text_error = R.string.setting_edit_card_error1,
+                value = name.value,
+                onValueChange = { updatedName ->
+                    viewModel.updateUserName(updatedName)
+                },
+                isError = !isNameValid
+            )
 
             //생년월일
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label2))
             TmMarginVerticalSpacer(size = 8)
-            TmInputField(text = R.string.setting_edit_card_placeholder2, text_error = R.string.setting_edit_card_error2)
+            TmInputField(
+                text = R.string.setting_edit_card_placeholder2,
+                text_error = R.string.setting_edit_card_error2,
+                value = date.value,
+                onValueChange = {updatedDate ->
+                    val formattedDate = viewModel.formatAsDateInput(updatedDate)
+                       viewModel.updateUserBirth(formattedDate)
+                },
+                isError = !viewModel.isValidDate(date.value),
+                isDate = true
+            )
 
             //상태
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label3))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = R.string.setting_edit_card_placeholder3,
+                text = "R.string.setting_edit_card_placeholder3",
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.Status
             )
@@ -83,13 +111,17 @@ fun EditCardScreen(
             //직장명
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label4))
             TmMarginVerticalSpacer(size = 8)
-            TmInputField(text = R.string.setting_edit_card_placeholder4, text_error = R.string.setting_edit_card_error4)
+            TmInputField(
+                value = companyName,
+                text = R.string.setting_edit_card_placeholder4,
+                text_error = R.string.setting_edit_card_error4,
+            )
 
             //직군
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label5))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = R.string.setting_edit_card_placeholder3,
+                text = mbti,
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.JobClass
             )
@@ -98,7 +130,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label6))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = R.string.setting_edit_card_placeholder3,
+                text = "R.string.setting_edit_card_placeholder3",
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.JobDetail
             )
@@ -107,7 +139,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label7))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = R.string.setting_edit_card_placeholder3,
+                text = mbti,
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.Mbti
             )
@@ -116,7 +148,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label8))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = R.string.setting_edit_card_placeholder3,
+                text = area,
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.Area
             )
@@ -131,7 +163,11 @@ fun EditCardScreen(
             TmInputField(text = R.string.setting_edit_card_placeholder10,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(134.dp)
+                    .height(134.dp),
+                value = goal,
+                onValueChange = {
+
+                }
             )
         }
     }
@@ -139,10 +175,11 @@ fun EditCardScreen(
 
 @Composable
 fun EditCardBottomBox(
-    @StringRes text: Int,
+    text: String,
     viewModel: EditCardViewModel,
     sheetEvent: SheetEvent
 ) {
+    val sheetState by viewModel.sheetEvent.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -164,14 +201,15 @@ fun EditCardBottomBox(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             androidx.compose.material3.Text(
-                text = stringResource(id = text),
-                color = TmtmColorPalette.current.color_text_body_quinary,
+                text = text,
+                color = TmtmColorPalette.current.color_text_body_primary,
                 style = TmTypo.current.Body1,
             )
-            Image(
-                painter = painterResource(id = R.drawable.ic_arrow_down_l),
-                contentDescription = null
-            )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_arrow_down_l),
+                    contentDescription = null
+                )
+
         }
     }
     TmMarginVerticalSpacer(size = 20)
