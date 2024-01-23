@@ -63,7 +63,6 @@ fun EditCardChipDefault(text: String) {
                 shape = RoundedCornerShape(200.dp)
             )
             .height(48.dp)
-            .padding(bottom = 4.dp, top =  4.dp)
     ) {
         Row(
             modifier = Modifier

@@ -62,6 +62,7 @@ fun EditCardScreen(
     val mbti by viewModel.mbtiText.collectAsState()
     val date = viewModel.userBirth.collectAsState()
     val area by viewModel.preferredArea.collectAsState()
+    val interests by viewModel.interestField.collectAsState()
 
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_edit_card_topbar),
@@ -104,7 +105,7 @@ fun EditCardScreen(
                 value = date.value,
                 onValueChange = {updatedDate ->
                     val formattedDate = viewModel.formatAsDateInput(updatedDate)
-                       viewModel.updateUserBirth(formattedDate)
+                    viewModel.updateUserBirth(formattedDate)
                 },
                 isError = !viewModel.isValidDate(date.value),
                 isDate = true
@@ -170,7 +171,8 @@ fun EditCardScreen(
             //자기 개발
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
             TmMarginVerticalSpacer(size = 8)
-
+            InterestsChips(interests = interests, onClick = {navController.navigate(R.id.fragment_get_interest)})
+            TmMarginVerticalSpacer(size = 20)
 
             //틈틈 목표
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label10))
