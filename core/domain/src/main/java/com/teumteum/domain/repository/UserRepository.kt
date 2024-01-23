@@ -20,6 +20,7 @@ interface UserRepository {
     suspend fun getUserFriends(userId: Long):Result<Friends>
     suspend fun updateUserInfo(user: UserInfo): Result<Unit>
     suspend fun getFriendInfo(userId: Long): UserInfo?
+    suspend fun postFriend(userId: Long): Result<Unit>
 
 
 }

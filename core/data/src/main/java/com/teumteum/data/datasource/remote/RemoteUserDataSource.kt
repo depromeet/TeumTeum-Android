@@ -37,4 +37,10 @@ class RemoteUserDataSource @Inject constructor(
     ): Boolean {
         return service.updateUserInfo(userInfo).isSuccessful
     }
+
+    suspend fun postFriend(
+        userId: Long
+    ): Boolean {
+        return service.postFriend(userId).isSuccessful
+    }
 }

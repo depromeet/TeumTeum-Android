@@ -1,7 +1,5 @@
 package com.teumteum.teumteum.presentation.mypage
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -27,11 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
@@ -39,23 +33,16 @@ import com.teumteum.base.component.compose.TmTabItem
 import com.teumteum.base.component.compose.TmTabRow
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
-import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.pager.MeetingItem
-import com.teumteum.teumteum.presentation.mypage.pager.MyMoimItems
-import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
 import com.teumteum.teumteum.presentation.mypage.pager.NoMoimItems
-import com.teumteum.teumteum.presentation.mypage.recommend.RecommendDetailViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
-import com.teumteum.teumteum.util.custom.view.FrontCardView
-import com.teumteum.teumteum.util.custom.view.model.FrontCard
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 
 @Composable
 fun RecommendDetailScreen(
     navController: NavController,
     viewModel: RecommendDetailViewModel,
+    userId: Int
 ) {
     val userInfo by viewModel.friendInfo.collectAsState()
 
@@ -81,7 +68,7 @@ fun RecommendDetailScreen(
                     MyFriendFrontCard(viewModel)
                 }
                 TmMarginVerticalSpacer(size = 22)
-                FriendBtn(text = "추천한 친구 ${userInfo?.friends}명", viewModel = viewModel)
+                FriendBtn(text = "추천한 친구 ${userInfo?.friends}명", viewModel = viewModel, userId= userId)
                 TmMarginVerticalSpacer(size = 10)
             }
 
@@ -118,8 +105,8 @@ fun MyFriendFrontCard(viewModel: RecommendDetailViewModel) {
 
 
 @Composable
-fun FriendBtn(text: String, viewModel: RecommendDetailViewModel) {
-    var isFriend by remember { mutableStateOf(true) }
+fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int) {
+    val isFriend by viewModel.isFriend.collectAsState()
     Row(
         modifier = Modifier
             .width(280.dp) ,
@@ -130,7 +117,7 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel) {
                 .weight(1f)
                 .height(46.dp),
             onClick = {
-                !isFriend
+                viewModel.postFriend(userId.toLong())
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = if (isFriend) TmtmColorPalette.current.color_button_active
@@ -161,23 +148,6 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel) {
             )
         }
     }
-}
-
-@Composable
-fun FriendCardView(frontCard: FrontCard) {
-    AndroidView(
-        factory = { context ->
-            FrontCardView(context).apply {
-                getInstance(frontCard)
-            }
-        },
-        update = { view ->
-            view.getInstance(frontCard)
-        },
-        modifier = Modifier
-            .width(280.dp)
-            .height(400.dp)
-    )
 }
 
 @Composable
@@ -227,7 +197,6 @@ fun FriendPager1Content(
                 MeetingItem(meeting = it)
             }
         }
-
         TmMarginVerticalSpacer(size = 20)
     }
 }
