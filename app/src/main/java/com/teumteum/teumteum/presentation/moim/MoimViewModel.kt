@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.MeetingArea
 import com.teumteum.domain.entity.MoimEntity
-import com.teumteum.domain.entity.Users
 import com.teumteum.domain.repository.GroupRepository
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
@@ -87,7 +86,10 @@ class MoimViewModel @Inject constructor(
     val moinCreateUserJob : StateFlow<String> = _moinCreateUserJob.asStateFlow()
 
     private val _moinJoinUsers = MutableStateFlow<List<Friend>>(listOf())
-    val moinJoinUsers : StateFlow<List<Friend>> = _moinJoinUsers.asStateFlow()
+    val moimJoinUsers : StateFlow<List<Friend>> = _moinJoinUsers.asStateFlow()
+
+    private val _meetingsId = MutableStateFlow<Long>(0L)
+    val meetingsId : StateFlow<Long> = _meetingsId.asStateFlow()
 
     val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_ghost,
@@ -354,7 +356,7 @@ class MoimViewModel @Inject constructor(
             repository.getGroup(meetingId)
                 .onSuccess {
                     getUser(it.hostId)
-                    getJoinUserList(it.participantIds.joinToString { id -> id.toString() })
+                    getJoinUserList(it.participantIds.joinToString { id -> id.toString() }.replace(" ", ""))
 
                     _topic.value = TopicType.values().find { type ->
                         type.value == it.topic
@@ -365,6 +367,7 @@ class MoimViewModel @Inject constructor(
                     _detailAddress.value = it.addressDetail
                     _date.value = it.date
                     _imageUri.value = it.photoUrls.map { photos -> Uri.parse(photos) }
+                    _meetingsId.value = it.id
                 }
         }
     }

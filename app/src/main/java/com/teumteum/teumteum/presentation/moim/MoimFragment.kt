@@ -56,9 +56,9 @@ class MoimFragment :
                     ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel)
+                        MoimConfirm(viewModel, requireActivity(),false)
                     }
-                    else ->  MoimConfirm(viewModel)
+                    else -> MoimConfirm(viewModel, requireActivity(),false)
                 }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
