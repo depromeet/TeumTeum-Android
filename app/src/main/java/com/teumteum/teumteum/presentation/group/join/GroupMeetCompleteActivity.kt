@@ -30,6 +30,7 @@ class GroupMeetCompleteActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initAppBarLayout()
         initEvent()
         observe()
     }
@@ -44,7 +45,9 @@ class GroupMeetCompleteActivity :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = null
+                clickEvent = {
+                    finish()
+                }
             )
         )
     }
