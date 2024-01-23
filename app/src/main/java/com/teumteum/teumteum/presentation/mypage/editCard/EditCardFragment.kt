@@ -11,6 +11,8 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -67,6 +69,8 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                 // data에서 결과를 추출하고 처리
 
                 viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+                Log.d("sheetEvent", viewModel._sheetEvent.toString())
+            } else {
             }
         }
 
