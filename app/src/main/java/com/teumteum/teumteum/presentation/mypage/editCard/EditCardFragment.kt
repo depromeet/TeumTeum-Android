@@ -1,6 +1,5 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
-import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -14,7 +13,6 @@ import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
-import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.modal.AreaModalBottomSheet
 import com.teumteum.teumteum.presentation.signup.modal.MbtiModalBottomSheet
 import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
@@ -102,9 +100,9 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             mbtiBoolean[1] = mbtiCharArray[1] == 'N'
             mbtiBoolean[2] = mbtiCharArray[2] == 'F'
             mbtiBoolean[3] = mbtiCharArray[3] == 'P'
-            mbtiBottomSheet?.setSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
+            mbtiBottomSheet?.initSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
         }
-        else mbtiBottomSheet?.initMbti()
+        else mbtiBottomSheet?.initDefaultMbti()
     }
 
 
