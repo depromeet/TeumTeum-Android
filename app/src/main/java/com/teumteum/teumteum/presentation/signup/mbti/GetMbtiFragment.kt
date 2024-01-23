@@ -40,14 +40,8 @@ class GetMbtiFragment:
         with(binding) {
             llStatus.setOnClickListener {
                 bottomSheet?.setFocusedImageView(ivShow)
-                val mbtiBoolean = BooleanArray(4)
-                val mbtiCharArray = viewModel.mbtiText.value.toCharArray()
-//                bottomSheet?.initMbti()
                 reloadLastMbti()
                 bottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
-                Timber.tag("teum-mbti").d("initBottomSheet called")
-
-
                 ivShow.setImageResource(R.drawable.ic_arrow_up_l)
             }
         }
@@ -57,13 +51,11 @@ class GetMbtiFragment:
     private fun reloadLastMbti() {
         val mbtiBoolean = BooleanArray(4)
         val mbtiCharArray = viewModel.mbtiText.value.toCharArray()
-        Timber.tag("teum-mbti").d(mbtiCharArray.concatToString())
         if (mbtiCharArray.size == 4) {
             mbtiBoolean[0] = mbtiCharArray[0] == 'E'
             mbtiBoolean[1] = mbtiCharArray[1] == 'N'
             mbtiBoolean[2] = mbtiCharArray[2] == 'F'
             mbtiBoolean[3] = mbtiCharArray[3] == 'P'
-            Timber.tag("teum-mbti").d("${mbtiBoolean[0]} ${mbtiBoolean[1]} ${mbtiBoolean[2]} ${mbtiBoolean[3]}")
             bottomSheet?.initSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
         }
         else bottomSheet?.initDefaultMbti()
