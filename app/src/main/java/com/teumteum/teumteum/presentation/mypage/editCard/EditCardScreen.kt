@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,6 +18,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmInputField
@@ -32,6 +37,9 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.moim.MoimCreateBtn
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
+import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
@@ -49,6 +57,7 @@ fun EditCardScreen(
     val companyName by viewModel.companyName.collectAsState()
     val goal by viewModel.goalText.collectAsState()
     val jobClass by viewModel.jobClass.collectAsState()
+    val community by viewModel.community.collectAsState()
     val jobDetailClass by viewModel.jobDetailClass.collectAsState()
     val mbti by viewModel.mbtiText.collectAsState()
     val date = viewModel.userBirth.collectAsState()
@@ -105,7 +114,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label3))
             TmMarginVerticalSpacer(size = 8)
             EditCardBottomBox(
-                text = "R.string.setting_edit_card_placeholder3",
+                text = community,
                 viewModel = viewModel,
                 sheetEvent = SheetEvent.Status
             )
@@ -117,6 +126,9 @@ fun EditCardScreen(
                 value = companyName,
                 text = R.string.setting_edit_card_placeholder4,
                 text_error = R.string.setting_edit_card_error4,
+                onValueChange = {
+                    viewModel.updateCompanyName(it)
+                }
             )
 
             //직군
@@ -159,6 +171,7 @@ fun EditCardScreen(
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
             TmMarginVerticalSpacer(size = 8)
 
+
             //틈틈 목표
             EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label10))
             TmMarginVerticalSpacer(size = 8)
@@ -168,9 +181,18 @@ fun EditCardScreen(
                     .height(134.dp),
                 value = goal,
                 onValueChange = {
-
+                    if (it.length <= 50) { // 입력 길이가 50자 이하인 경우에만 업데이트
+                        viewModel.updateGoalText(it)
+                    } else {
+                        val truncatedText = it.take(50)
+                        viewModel.updateGoalText(truncatedText)
+                    }
                 }
             )
+            Spacer(modifier = Modifier.weight(1f))
+            TeumDivider()
+            EditCardBtn(text = stringResource(id = R.string.setting_edit_card_btn), isEnabled = name.value.isNotEmpty(), viewModel = viewModel)
+            TmMarginVerticalSpacer(size = 14)
         }
     }
 }
@@ -181,7 +203,7 @@ fun EditCardBottomBox(
     viewModel: EditCardViewModel,
     sheetEvent: SheetEvent
 ) {
-    val sheetState by viewModel.sheetEvent.collectAsState()
+    val displayText = if (text.isBlank()) stringResource(id = R.string.setting_edit_card_placeholder3) else text
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -203,8 +225,8 @@ fun EditCardBottomBox(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             androidx.compose.material3.Text(
-                text = text,
-                color = TmtmColorPalette.current.color_text_body_primary,
+                text = displayText,
+                color = if(text.isNotBlank()) TmtmColorPalette.current.color_text_body_primary else TmtmColorPalette.current.color_text_body_quinary,
                 style = TmTypo.current.Body1,
             )
                 Image(
@@ -225,4 +247,33 @@ fun EditCardLabel(string: String) {
         color = TmtmColorPalette.current.color_text_body_quaternary,
         modifier = Modifier.clickable {  }
     )
+}
+
+
+@Composable
+fun EditCardBtn(
+    text: String,
+    viewModel: EditCardViewModel,
+    isEnabled: Boolean = true
+) {
+    val context = LocalContext.current
+    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
+    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+    androidx.compose.material3.Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(76.dp)
+            .padding(vertical = 10.dp),
+        enabled = isEnabled,
+        onClick = {
+            },
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
+        shape = RoundedCornerShape(size = 4.dp)
+    ) {
+        Text(
+            text = text,
+            style = TmTypo.current.HeadLine6,
+            color = textColors
+        )
+    }
 }

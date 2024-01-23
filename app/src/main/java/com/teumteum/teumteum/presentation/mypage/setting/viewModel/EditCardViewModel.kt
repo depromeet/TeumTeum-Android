@@ -64,6 +64,7 @@ class EditCardViewModel @Inject constructor(
                 _preferredCity.value = it.activityArea.substring(0, 2)
                 _preferredStreet.value = it.activityArea.substring(2)
             }
+            _community.value = it.status
         }
     }
 
@@ -82,10 +83,6 @@ class EditCardViewModel @Inject constructor(
         _sheetEvent.value = event
     }
 
-    fun resetSheetEvent() {
-        _sheetEvent.value = SheetEvent.None
-    }
-
     private val _userName = MutableStateFlow<String>("")
     val userName: StateFlow<String> = _userName.asStateFlow()
 
@@ -93,10 +90,11 @@ class EditCardViewModel @Inject constructor(
     val isNameValid: StateFlow<Boolean> = _isNameValid
 
     fun isValidName(name: String): Boolean {
+        val nameWithoutSpaces = name.filter { !it.isWhitespace() }
         val invalidPattern = Regex("^[ㄱ-ㅎㅏ-ㅣ]+$")
-        val isValidLength = name.length in 2..10
-        val isValidKorean = name.matches(Regex("[가-힣]+"))
-        return isValidLength && isValidKorean && !invalidPattern.matches(name)
+        val isValidLength = nameWithoutSpaces.length in 2..10
+        val containsNoAlphabet = name.none { it in 'a'..'z' || it in 'A'..'Z' } // 알파벳이 없어야 함
+        return isValidLength && containsNoAlphabet && !invalidPattern.matches(name)
     }
 
     fun validateUserName() {
@@ -104,6 +102,7 @@ class EditCardViewModel @Inject constructor(
     }
 
     fun updateUserName(name: String) {
+        _isNameValid.value = isValidName(_userName.value)
         _userName.value = name
     }
 
@@ -142,8 +141,6 @@ class EditCardViewModel @Inject constructor(
         _community.value = community
     }
 
-
-
     val currentJobValid: StateFlow<Boolean> = combine(
         companyName,
         jobClass,
@@ -152,26 +149,6 @@ class EditCardViewModel @Inject constructor(
         companyName.trim().length in 2..13 && jobClass.isNotBlank() && jobDetailClass.isNotBlank()
     }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
 
-    private val _readyJobClass = MutableStateFlow<String>("")
-    val readyJobClass: StateFlow<String> = _readyJobClass.asStateFlow()
-
-    private val _readyJobDetailClass = MutableStateFlow<String>("")
-    val readyJobDetailClass: StateFlow<String> = _readyJobDetailClass.asStateFlow()
-
-    fun updateReadyJobClass(readyJobClass: String) {
-        _readyJobClass.value = readyJobClass
-    }
-
-    fun updateReadyJobDetailClass(readyJobDetailClass: String) {
-        _readyJobDetailClass.value = readyJobDetailClass
-    }
-
-    val readyJobValid: StateFlow<Boolean> = combine(
-        readyJobClass,
-        readyJobDetailClass
-    ) { readyJobClass, readyJobDetailClass ->
-        readyJobClass.isNotBlank() && readyJobDetailClass.isNotBlank()
-    }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, false)
 
     private val _preferredCity = MutableStateFlow<String>("")
     val preferredCity: StateFlow<String> = _preferredCity.asStateFlow()

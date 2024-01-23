@@ -20,6 +20,7 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewMod
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
+import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
 import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
@@ -44,6 +45,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     private var jobClassBottomSheet: SingleModalBottomSheet? = null
     private var jobDetailClassBottomSheet: SingleModalBottomSheet? = null
     private var areaBottomSheet: AreaModalBottomSheet? = null
+    private var statusBottomSheet: SingleModalBottomSheet? = null
     private var focusedCity: String = "서울"
     var jobDetailList = ArrayList<String>()
 
@@ -71,15 +73,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     private fun initBottomSheet() {
 
 
-        val jobDetailClassListener: (String) -> Unit = { item ->
-            viewModel.updateJobDetailClass(item)
-            jobDetailClassBottomSheet?.dismiss()
-        }
-
-
-        // Initialize with an empty list, it will be updated later based on the selected job class
-        jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance(
-            ReadyJobFragment.BOTTOM_SHEET_DETAIL_TITLE, arrayListOf(), jobDetailClassListener)
     }
 
     private fun updateJobDetailList(jobClass: String?) {
@@ -100,15 +93,16 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                 when (event) {
                     SheetEvent.JobDetail -> showJobDetailSheet()
                     SheetEvent.JobClass -> showJobClassSheet()
-                    SheetEvent.Mbti -> showMbtiSheet(viewModel)
+                    SheetEvent.Mbti -> showMbtiSheet()
                     SheetEvent.Area -> showAreaSheet()
+                    SheetEvent.Status -> showStatusSheet()
                     else -> {}
                 }
             }
         }
     }
 
-    private fun showMbtiSheet(viewModel: EditCardViewModel) {
+    private fun showMbtiSheet() {
         mbtiBottomSheet = MbtiModalBottomSheet.newInstance("MBTI") { mbti ->
             viewModel.updateMbtiText(mbti)
             mbtiBottomSheet?.dismiss()
@@ -158,10 +152,27 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         }
     }
 
-    private fun showAreaSheet() {
+    private fun showStatusSheet() {
+        val listener: (String) -> Unit = { item ->
+            viewModel.updateCommunity(item)
+            statusBottomSheet?.dismiss()
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+        }
+        statusBottomSheet = SingleModalBottomSheet.newInstance(
+            CommunityFragment.BOTTOM_SHEET_TITLE,
+            CommunityFragment.communitySort, listener)
+        statusBottomSheet?.apply {
+            setSelectedItem(viewModel.community.value)
+        }
+        statusBottomSheet!!.show(childFragmentManager, SingleModalBottomSheet.TAG)
+    }
+
+
+        private fun showAreaSheet() {
         val cityListener: (String) -> Unit = { city ->
             focusedCity = city
             areaBottomSheet?.setFocusedCity(focusedCity)
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
         }
 
         val streetListener: (String) -> Unit = { street ->
@@ -180,7 +191,5 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
 
     companion object {
-        const val BOTTOM_SHEET_TITLE = "직군 입력"
-        const val BOTTOM_SHEET_DETAIL_TITLE = "직무 입력"
     }
 }
