@@ -50,6 +50,7 @@ data class JobEntity(
     constructor() : this("null", false, "", "")
 }
 
+
 @Serializable
 data class updatedUserInfo(
     val id: Long,
@@ -84,5 +85,3 @@ fun UserInfo.toUpdatedUserInfo(): updatedUserInfo {
         friends = this.friends
     )
 }
-
-
