@@ -35,14 +35,24 @@ import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.toRecommend
 
 
 @Composable
-fun RecommendScreen(myPageViewModel: MyPageViewModel, navController: NavController) {
-    val friends by myPageViewModel.friendsList.collectAsState()
+fun RecommendScreen(
+    myPageViewModel: MyPageViewModel,
+    navController: NavController,
+    userId: Int? = null,
+    recommendDetailModel : RecommendDetailViewModel? = null,
+) {
+    val friends = if (userId == null) {
+        myPageViewModel.friendsList.collectAsState().value
+    } else {
+        recommendDetailModel?.friendsList?.collectAsState()?.value ?: emptyList()
+    }
     val activity = LocalContext.current as? MainActivity
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
     val topbarText = when (userInfoState) {

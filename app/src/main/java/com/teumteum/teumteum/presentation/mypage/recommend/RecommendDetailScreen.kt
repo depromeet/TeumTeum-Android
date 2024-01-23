@@ -36,6 +36,8 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.mypage.pager.MeetingItem
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
 import com.teumteum.teumteum.presentation.mypage.pager.NoMoimItems
+import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragmentDirections
+import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 import timber.log.Timber
 
@@ -46,6 +48,7 @@ fun RecommendDetailScreen(
     userId: Int
 ) {
     val userInfo by viewModel.friendInfo.collectAsState()
+    val friendsCount by viewModel.friendsList.collectAsState()
 
     TmScaffold(
         isSetting = false,
@@ -55,6 +58,7 @@ fun RecommendDetailScreen(
         topbarText = "${userInfo?.name}님의 소개서"
     ) {
         val list = listOf("참여 모임", "받은 리뷰")
+
         val selectedTab = remember { mutableStateOf(list[0]) }
 
         LazyColumn(
@@ -69,7 +73,12 @@ fun RecommendDetailScreen(
                     MyFriendFrontCard(viewModel)
                 }
                 TmMarginVerticalSpacer(size = 22)
-                FriendBtn(text = "추천한 친구 ${userInfo?.friends}명", viewModel = viewModel, userId= userId)
+                FriendBtn(
+                    text = "추천한 친구 ${friendsCount.size}명",
+                    viewModel = viewModel,
+                    userId= userId,
+                    navController = navController
+                )
                 TmMarginVerticalSpacer(size = 10)
             }
 
@@ -107,7 +116,7 @@ fun MyFriendFrontCard(viewModel: RecommendDetailViewModel) {
 
 
 @Composable
-fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int) {
+fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int, navController: NavController) {
     val isFriend by viewModel.isFriend.collectAsState()
     Row(
         modifier = Modifier
@@ -139,6 +148,8 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int) {
                 .weight(1f)
                 .height(46.dp),
             onClick = {
+                val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentRecommend(userId)
+                navController.navigate(action)
             },
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
             shape = RoundedCornerShape(size = 4.dp)

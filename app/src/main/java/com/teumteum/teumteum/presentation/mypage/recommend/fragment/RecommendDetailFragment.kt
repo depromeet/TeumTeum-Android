@@ -25,6 +25,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
             viewModel.loadFriendInfo(userId.toLong())
             viewModel.getUserOpenMeeting(userId.toLong())
             viewModel.getUserClosedMeeting(userId.toLong())
+            viewModel.loadFriends(userId.toLong())
             mypageViewModel.friendsList.value.let { friendsList ->
                 viewModel.checkIfUserIsFriend(friendsList, userId.toLong())
             }
@@ -44,6 +45,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         viewModel.loadFriendInfo(userId.toLong())
         viewModel.getUserOpenMeeting(userId.toLong())
         viewModel.getUserClosedMeeting(userId.toLong())
+        viewModel.loadFriends(userId.toLong())
         mypageViewModel.friendsList.value.let { friendsList ->
             viewModel.checkIfUserIsFriend(friendsList, userId.toLong())
         }
