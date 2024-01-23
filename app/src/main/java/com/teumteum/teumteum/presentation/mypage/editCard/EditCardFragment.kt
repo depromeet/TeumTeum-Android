@@ -189,7 +189,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         areaBottomSheet!!.show(childFragmentManager, AreaModalBottomSheet.TAG)
     }
 
-
     companion object {
     }
 }
