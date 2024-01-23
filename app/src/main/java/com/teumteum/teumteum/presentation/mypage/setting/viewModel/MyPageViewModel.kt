@@ -31,24 +31,12 @@ class MyPageViewModel @Inject constructor(
     private val _friendsList = MutableStateFlow<List<Friend>>(emptyList())
     val friendsList : StateFlow<List<Friend>> = _friendsList
 
-    private val _isUserInfoUpdated = MutableStateFlow(false)
-    val isUserInfoUpdated: StateFlow<Boolean> = _isUserInfoUpdated.asStateFlow()
-
-    fun notifyUserInfoUpdated() {
-        _isUserInfoUpdated.value = true
-    }
-
-    fun resetUserInfoUpdatedFlag() {
-        _isUserInfoUpdated.value = false
-    }
-
     init {
         loadUserInfo()
     }
 
     fun loadFriends() {
-        val userId = 16L
-//        val userId = authRepository.getUserId()
+        val userId = authRepository.getUserId()
         if (userId != -1L) {
             viewModelScope.launch {
                 userRepository.getUserFriends(userId)

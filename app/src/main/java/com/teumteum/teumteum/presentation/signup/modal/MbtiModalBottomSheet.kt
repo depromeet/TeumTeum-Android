@@ -16,7 +16,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     private lateinit var itemClickListener: (String) -> Unit
-    private lateinit var focusedShowImageView: ImageView
+    private var focusedShowImageView: ImageView? = null
     private var mbtiText: CharArray = "xxxx".toCharArray()
 
     override fun onCreateView(
@@ -148,7 +148,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
+        focusedShowImageView?.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
     }
 

@@ -48,5 +48,11 @@ interface UserService {
     suspend fun getFriendInfo(
         @Path("userId") userId: Long
     ): UserInfo
+
+    @POST("users/{userId}/friends")
+    suspend fun postFriend(
+        @Path("userId") userId: Long
+    ): Response<Unit>
+
 }
 

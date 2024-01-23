@@ -19,7 +19,7 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var singleRvAdapter: SingleModalAdapter
     private lateinit var itemClickListener: (String) -> Unit
-    private lateinit var focusedShowImageView: ImageView
+    private var focusedShowImageView: ImageView? = null
     private var selectedItem: String = ""
 
     override fun onCreateView(
@@ -67,8 +67,16 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
         selectedItem = item
     }
 
+    fun updateList(newList: List<String>) {
+        if(this::singleRvAdapter.isInitialized) {
+            singleRvAdapter.submitList(newList)
+            singleRvAdapter.notifyDataSetChanged()
+        }
+    }
+
+
     override fun onDismiss(dialog: DialogInterface) {
-        focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
+        focusedShowImageView?.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
     }
 

@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,19 +37,40 @@ import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.toRecommend
 
 
 @Composable
-fun RecommendScreen(myPageViewModel: MyPageViewModel, navController: NavController) {
-    val friends by myPageViewModel.friendsList.collectAsState()
+fun RecommendScreen(
+    myPageViewModel: MyPageViewModel,
+    navController: NavController,
+    userId: Int? = null,
+    recommendDetailModel : RecommendDetailViewModel? = null,
+) {
+
+    val friends = if (userId == 0) {
+        myPageViewModel.friendsList.collectAsState().value
+    } else {
+        recommendDetailModel?.friendsList?.collectAsState()?.value ?: emptyList()
+    }
+
     val activity = LocalContext.current as? MainActivity
-    val userInfoState by myPageViewModel.userInfoState.collectAsState()
-    val topbarText = when (userInfoState) {
-        is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님을 추천한 친구"
-        else -> "로딩 중..."
+
+    val userInfoState = if (userId == 0) {
+        myPageViewModel.userInfoState.collectAsState()
+    } else {
+        recommendDetailModel?.userInfoState?.collectAsState()
+            ?: remember { mutableStateOf(UserInfoUiState.Init) }
+    }
+
+
+    val topbarText = when (val state = userInfoState.value) {
+        is UserInfoUiState.Success -> "${state.data.name}님을 추천한 친구"
+        is UserInfoUiState.Loading -> "로딩 중..."
+        else -> "" // 또는 다른 기본 텍스트
     }
 
 
@@ -80,7 +103,10 @@ fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel, navCon
     Box(modifier = Modifier
         .fillMaxWidth()
         .clickable {
-            val action = RecommendFragmentDirections.actionFragmentRecommendToFragmentRecommendDetail(recommend.id)
+            val action =
+                RecommendFragmentDirections.actionFragmentRecommendToFragmentRecommendDetail(
+                    recommend.id
+                )
             navController.navigate(action)
         }
         .padding(start = 20.dp, end = 20.dp, bottom = 12.dp)

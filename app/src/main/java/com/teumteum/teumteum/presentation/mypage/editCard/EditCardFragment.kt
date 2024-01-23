@@ -1,8 +1,18 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
+import android.app.Activity
+import android.app.ProgressDialog.show
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -10,12 +20,28 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
+import com.teumteum.teumteum.presentation.signup.SignUpActivity
+import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
+import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
+import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
+import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
+import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.modal.AreaModalBottomSheet
 import com.teumteum.teumteum.presentation.signup.modal.MbtiModalBottomSheet
+import com.teumteum.teumteum.presentation.signup.modal.SingleModalAdapter
 import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
+import com.teumteum.teumteum.util.SignupUtils
+import com.teumteum.teumteum.util.SignupUtils.JOB_DESIGN
+import com.teumteum.teumteum.util.SignupUtils.JOB_DESIGN_LIST
+import com.teumteum.teumteum.util.SignupUtils.JOB_DEVELOPMENT
+import com.teumteum.teumteum.util.SignupUtils.JOB_DEV_LIST
+import com.teumteum.teumteum.util.SignupUtils.JOB_PLANNING
+import com.teumteum.teumteum.util.SignupUtils.JOB_PLAN_LIST
+import com.teumteum.teumteum.util.SignupUtils.JOB_SORT_LIST
 import kotlinx.coroutines.launch
 
 class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragment_edit_card) {
@@ -25,7 +51,9 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     private var jobClassBottomSheet: SingleModalBottomSheet? = null
     private var jobDetailClassBottomSheet: SingleModalBottomSheet? = null
     private var areaBottomSheet: AreaModalBottomSheet? = null
+    private var statusBottomSheet: SingleModalBottomSheet? = null
     private var focusedCity: String = "서울"
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     var jobDetailList = ArrayList<String>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,6 +61,16 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // 결과 처리
+                val data: Intent? = result.data
+                // data에서 결과를 추출하고 처리
+
+                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+            }
+        }
 
         setupEventObserver()
         initBottomSheet()
@@ -48,26 +86,26 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             (activity as MainActivity).showBottomNavi()
         }
     }
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadUserInfo()
+    }
+
 
     private fun initBottomSheet() {
-        val jobClassListener: (String) -> Unit = { jobClass ->
-            viewModel.updateJobClass(jobClass)
-            jobClassBottomSheet?.dismiss()
+
+
+    }
+
+    private fun updateJobDetailList(jobClass: String?) {
+        jobDetailList = when (jobClass) {
+            JOB_DESIGN -> JOB_DESIGN_LIST
+            JOB_DEVELOPMENT -> JOB_DEV_LIST
+            JOB_PLANNING -> JOB_PLAN_LIST
+            else -> ArrayList()
         }
 
-        jobClassBottomSheet = SingleModalBottomSheet.newInstance("직군 입력", jobSort, jobClassListener)
-
-        val jobDetailClassListener: (String) -> Unit = { jobDetailClass ->
-            viewModel.updateJobDetailClass(jobDetailClass)
-            jobDetailClassBottomSheet?.dismiss()
-        }
-        jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance("직무 입력",jobDetailList,jobDetailClassListener)
-
-
-        val listener: (String) -> Unit = { item ->
-            viewModel.updateMbtiText(item)
-            mbtiBottomSheet?.dismiss()
-        }
+        jobDetailClassBottomSheet?.updateList(jobDetailList)
     }
 
     private fun setupEventObserver() {
@@ -78,6 +116,15 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                     SheetEvent.JobClass -> showJobClassSheet()
                     SheetEvent.Mbti -> showMbtiSheet()
                     SheetEvent.Area -> showAreaSheet()
+                    SheetEvent.Status -> showStatusSheet()
+                    SheetEvent.SignUp -> {
+                        val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
+                            val interests = viewModel.interestField.value
+                            putExtra("interests", ArrayList(interests))
+                            putExtra("navigateTo", "fragment_get_interest")
+                        }
+                        resultLauncher.launch(intent)
+                    }
                     else -> {}
                 }
             }
@@ -85,103 +132,92 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     }
 
     private fun showMbtiSheet() {
-        val mbtiBottomSheet = MbtiModalBottomSheet.newInstance("MBTI") { mbti ->
+        mbtiBottomSheet = MbtiModalBottomSheet.newInstance("MBTI") { mbti ->
             viewModel.updateMbtiText(mbti)
             mbtiBottomSheet?.dismiss()
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
         }
-        mbtiBottomSheet.show(childFragmentManager, "MbtiModalBottomSheet")
+        mbtiBottomSheet!!.show(childFragmentManager, "MbtiModalBottomSheet")
     }
-
-    private fun reloadLastMbti() {
-        val mbtiBoolean = BooleanArray(4)
-        val mbtiCharArray = viewModel.mbtiText.value.toCharArray()
-        if (mbtiCharArray.size == 4) {
-            mbtiBoolean[0] = mbtiCharArray[0] == 'E'
-            mbtiBoolean[1] = mbtiCharArray[1] == 'N'
-            mbtiBoolean[2] = mbtiCharArray[2] == 'F'
-            mbtiBoolean[3] = mbtiCharArray[3] == 'P'
-            mbtiBottomSheet?.initSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
-        }
-        else mbtiBottomSheet?.initDefaultMbti()
-    }
-
 
     private fun showJobClassSheet() {
-        val jobClassListener: (String) -> Unit = { jobClass ->
-            viewModel.updateJobClass(jobClass)
+        val jobClassListener: (String) -> Unit = { item ->
+            viewModel.updateJobClass(item)
             viewModel.updateJobDetailClass("")
+            updateJobDetailList(item)
             jobClassBottomSheet?.dismiss()
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
         }
-
-        jobClassBottomSheet = SingleModalBottomSheet.newInstance("직군 입력", jobSort, jobClassListener)
-        jobClassBottomSheet?.apply {
-            setSelectedItem(viewModel.jobClass.value)
-            show(childFragmentManager, SingleModalBottomSheet.TAG)
-        }
+        val jobClassBottomSheet = SingleModalBottomSheet.newInstance(
+            ReadyJobFragment.BOTTOM_SHEET_TITLE,
+            JOB_SORT_LIST, jobClassListener)
+        jobClassBottomSheet.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
 
     private fun showJobDetailSheet() {
-        jobDetailList = when (viewModel.jobClass.value) {
-            JOB_DESIGN -> jobDesigner
-            JOB_DEVELOPMENT -> jobDev
-            JOB_PLANNING -> jobManager
-            else -> ArrayList()
-        }
-
-        val jobDetailClassListener: (String) -> Unit = { jobDetailClass ->
-            viewModel.updateJobDetailClass(jobDetailClass)
+        val jobDetailClassListener: (String) -> Unit = { item ->
+            viewModel.updateJobDetailClass(item)
             jobDetailClassBottomSheet?.dismiss()
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
         }
-
-        jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance(
-            "직무 입력",
-            jobDetailList,
-            jobDetailClassListener
-        )
-        jobDetailClassBottomSheet?.apply {
-            setSelectedItem(viewModel.jobDetailClass.value)
-            show(childFragmentManager, SingleModalBottomSheet.TAG)
+        if (viewModel.jobClass.value in JOB_SORT_LIST) {
+            jobDetailList = when (viewModel.jobClass.value) {
+                JOB_DESIGN -> JOB_DESIGN_LIST
+                JOB_DEVELOPMENT -> JOB_DEV_LIST
+                JOB_PLANNING -> JOB_PLAN_LIST
+                else -> ArrayList()
+            }
+            if (viewModel.jobClass.value in JOB_SORT_LIST) {
+                jobDetailClassBottomSheet = SingleModalBottomSheet.newInstance(
+                    CurrentJobFragment.BOTTOM_SHEET_DETAIL_TITLE,
+                    jobDetailList,
+                    jobDetailClassListener
+                )
+                jobDetailClassBottomSheet?.apply {
+                    setSelectedItem(viewModel.jobDetailClass.value)
+                }
+            }
+            jobDetailClassBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
         }
     }
 
-    private fun showAreaSheet() {
+    private fun showStatusSheet() {
+        val listener: (String) -> Unit = { item ->
+            viewModel.updateCommunity(item)
+            statusBottomSheet?.dismiss()
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+        }
+        statusBottomSheet = SingleModalBottomSheet.newInstance(
+            CommunityFragment.BOTTOM_SHEET_TITLE,
+            CommunityFragment.communitySort, listener)
+        statusBottomSheet?.apply {
+            setSelectedItem(viewModel.community.value)
+        }
+        statusBottomSheet!!.show(childFragmentManager, SingleModalBottomSheet.TAG)
+    }
+
+
+        private fun showAreaSheet() {
         val cityListener: (String) -> Unit = { city ->
             focusedCity = city
             areaBottomSheet?.setFocusedCity(focusedCity)
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
         }
 
         val streetListener: (String) -> Unit = { street ->
             viewModel.updatePreferredArea(focusedCity, street)
             areaBottomSheet?.dismiss()
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
         }
+        
+        areaBottomSheet = AreaModalBottomSheet.newInstance(PreferredAreaFragment.BOTTOM_SHEET_TITLE, cityListener, streetListener)
 
-        areaBottomSheet = AreaModalBottomSheet.newInstance("관심 지역", cityListener, streetListener)
         areaBottomSheet?.apply {
             setSelectedStreet(viewModel.preferredCity.value, viewModel.preferredStreet.value)
-            show(childFragmentManager, AreaModalBottomSheet.TAG)
         }
+        areaBottomSheet!!.show(childFragmentManager, AreaModalBottomSheet.TAG)
     }
-
 
     companion object {
-        const val JOB_DESIGN = "디자인"
-        const val JOB_DEVELOPMENT = "개발"
-        const val JOB_PLANNING = "기획"
-
-        val jobSort = arrayListOf(JOB_DESIGN, JOB_DEVELOPMENT, JOB_PLANNING)
-
-        val jobDesigner = arrayListOf(
-            "프로덕트 디자이너", "BX 디자이너", "그래픽 디자이너",
-            "영상 디자이너", "UX 디자이너", "UI 디자이너", "플랫폼 디자이너"
-        )
-
-        val jobDev = arrayListOf(
-            "BE 개발자", "iOS 개발자", "AOS 개발자", "FE 개발자"
-        )
-
-        val jobManager = arrayListOf(
-            "PO", "PM", "서비스 기획자"
-        )
     }
-
 }

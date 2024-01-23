@@ -198,6 +198,10 @@ class SignUpViewModel @Inject constructor(
         _interestCount.value = interestField.value.size + interestSelf.value.size
     }
 
+    fun setInterestSelf(interests: List<String>) {
+        _interestSelf.value = ArrayList(interests)
+    }
+
     private var _goalText = MutableStateFlow<String>("")
     val goalText: StateFlow<String> = _goalText.asStateFlow()
 

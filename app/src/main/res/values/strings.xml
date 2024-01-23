@@ -177,6 +177,7 @@
     <string name="setting_edit_card_label9">자기개발/관심분야</string>
     <string name="setting_edit_card_label10">틈틈 목표</string>
     <string name="setting_edit_card_btn">수정 완료</string>
+    <string name="setting_edit_chip_plus">추가하기</string>
 
     <string name="setting_edit_card_topbar">소개서 수정하기</string>
     <string name="setting_edit_card_placeholder1">실명을 입력해주세요</string>

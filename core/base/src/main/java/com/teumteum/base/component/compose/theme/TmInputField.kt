@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -24,6 +26,8 @@ fun TmInputField(
     value:String = "",
     onValueChange: (String) -> Unit = {},
     isError:Boolean = false,
+    isDate: Boolean = false,
+    isName: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     modifier: Modifier = Modifier
 ) {
@@ -53,9 +57,11 @@ fun TmInputField(
             cursorColor = TmtmColorPalette.current.TMTMBlue500,
             backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
         ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = if (isDate) KeyboardType.Number else KeyboardType.Text
+        ),
         shape = RoundedCornerShape(4.dp),
         visualTransformation = visualTransformation,
-
         )
     TmMarginVerticalSpacer(size = 8)
     if (isError && text_error != null) {

@@ -83,7 +83,11 @@
             app:destination="@id/fragment_setting" />
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_recommend"
-            app:destination="@id/fragment_recommend" />
+            app:destination="@id/fragment_recommend">
+            <argument
+                android:name="id"
+                app:argType="integer"/>
+        </action>
 
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_edit_card"
@@ -125,7 +129,10 @@
     <fragment
         android:id="@+id/fragment_edit_myinfo"
         android:name="com.teumteum.teumteum.presentation.mypage.setting.fragment.EditMyInfoFragment"
-        android:label="EditMyInfoFragment" />
+        android:label="EditMyInfoFragment">
+
+
+    </fragment>
 
 
     <fragment
@@ -135,6 +142,13 @@
         <argument
             android:name="id"
             app:argType="integer"/>
+        <action
+            android:id="@+id/action_fragment_recommend_detail_to_fragment_recommend"
+            app:destination="@id/fragment_recommend">
+            <argument
+                android:name="id"
+                app:argType="integer"/>
+        </action>
 
     </fragment>
 
@@ -142,6 +156,9 @@
         android:id="@+id/fragment_recommend"
         android:name="com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendFragment"
         android:label="RecommendFragment">
+        <argument
+            android:name="id"
+            app:argType="integer"/>
         <action
             android:id="@+id/action_fragment_recommend_to_fragment_recommend_detail"
             app:destination="@id/fragment_recommend_detail">
@@ -170,3 +187,4 @@
     </fragment>
 
 </navigation>
+
