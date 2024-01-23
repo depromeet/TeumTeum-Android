@@ -69,8 +69,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                 // data에서 결과를 추출하고 처리
 
                 viewModel.triggerSheetEvent(SheetEvent.Dismiss)
-                Log.d("sheetEvent", viewModel._sheetEvent.toString())
-            } else {
             }
         }
 
