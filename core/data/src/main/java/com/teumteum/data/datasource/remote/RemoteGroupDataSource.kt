@@ -22,10 +22,10 @@ class RemoteGroupDataSource @Inject constructor(
     ): ResponseGroup {
         return service.getGroups(size, page, sort, isOpen, topic, meetingAreaStreet, participantUserId, searchWord)
     }
-    suspend fun postGroupJoin(
+    suspend fun postJoinGroup(
         meetingId: Long
     ): ResponseMeeting {
-        return service.postGroupJoin(meetingId)
+        return service.postJoinGroup(meetingId)
     }
 
     suspend fun deleteGroupJoin(
