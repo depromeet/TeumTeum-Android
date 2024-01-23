@@ -24,10 +24,10 @@ class RemoteGroupDataSource @Inject constructor(
         return service.getGroups(size, page, sort, isOpen, topic, meetingAreaStreet, participantUserId, searchWord)
     }
 
-    suspend fun postGroupJoin(
+    suspend fun postJoinGroup(
         meetingId: Long
     ): ResponseMeeting {
-        return service.postGroupJoin(meetingId)
+        return service.postJoinGroup(meetingId)
     }
 
     suspend fun deleteGroupJoin(
@@ -43,4 +43,9 @@ class RemoteGroupDataSource @Inject constructor(
         return service.postMoim(moimRequestBody, files)
     }
 
+    suspend fun getGroup(
+        meetingId: Long
+    ): ResponseMeeting {
+        return service.getGroup(meetingId)
+    }
 }

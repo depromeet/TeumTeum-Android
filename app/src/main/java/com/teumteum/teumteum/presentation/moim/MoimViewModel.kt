@@ -6,9 +6,12 @@ import android.provider.OpenableColumns
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.MeetingArea
 import com.teumteum.domain.entity.MoimEntity
 import com.teumteum.domain.repository.GroupRepository
+import com.teumteum.domain.repository.UserRepository
+import com.teumteum.teumteum.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,6 +36,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MoimViewModel @Inject constructor(
     private val repository: GroupRepository,
+    private val userRepository: UserRepository,
     @ApplicationContext private val context: Context
 ): ViewModel() {
 
@@ -71,6 +75,36 @@ class MoimViewModel @Inject constructor(
 
     private val _snackbarEvent = MutableSharedFlow<SnackbarEvent>()
     val snackbarEvent : SharedFlow<SnackbarEvent> = _snackbarEvent.asSharedFlow()
+
+    private val _moinCreateUserCharacterId = MutableStateFlow(R.drawable.ic_penguin)
+    val moinCreateUserCharacterId : StateFlow<Int> = _moinCreateUserCharacterId.asStateFlow()
+
+    private val _moinCreateUserName = MutableStateFlow("")
+    val moinCreateUserName : StateFlow<String> = _moinCreateUserName.asStateFlow()
+
+    private val _moinCreateUserJob = MutableStateFlow("")
+    val moinCreateUserJob : StateFlow<String> = _moinCreateUserJob.asStateFlow()
+
+    private val _moinJoinUsers = MutableStateFlow<List<Friend>>(listOf())
+    val moimJoinUsers : StateFlow<List<Friend>> = _moinJoinUsers.asStateFlow()
+
+    private val _meetingsId = MutableStateFlow<Long>(0L)
+    val meetingsId : StateFlow<Long> = _meetingsId.asStateFlow()
+
+    val characterList: HashMap<Int, Int> = hashMapOf(
+        0 to R.drawable.ic_ghost,
+        1 to R.drawable.ic_star,
+        2 to R.drawable.ic_bear,
+        3 to R.drawable.ic_raccoon,
+        4 to R.drawable.ic_cat,
+        5 to R.drawable.ic_rabbit,
+        6 to R.drawable.ic_fox,
+        7 to R.drawable.ic_water,
+        8 to R.drawable.ic_penguin,
+        9 to R.drawable.ic_dog,
+        10 to R.drawable.ic_mouse,
+        11 to R.drawable.ic_panda
+    )
 
     fun initializeState() {
         _screenState.value = ScreenState.Topic
@@ -314,6 +348,47 @@ class MoimViewModel @Inject constructor(
                 FILE_OVER_10MB -> "10mb 이하의 사진을 등록해주세요"
                 else -> ""
             }
+        }
+    }
+
+    fun getGroup(meetingId: Long) {
+        viewModelScope.launch {
+            repository.getGroup(meetingId)
+                .onSuccess {
+                    getUser(it.hostId)
+                    getJoinUserList(it.participantIds.joinToString { id -> id.toString() }.replace(" ", ""))
+
+                    _topic.value = TopicType.values().find { type ->
+                        type.value == it.topic
+                    }
+                    _introduction.value = it.introduction
+                    _people.value = it.numberOfRecruits
+                    _address.value = it.address
+                    _detailAddress.value = it.addressDetail
+                    _date.value = it.date
+                    _imageUri.value = it.photoUrls.map { photos -> Uri.parse(photos) }
+                    _meetingsId.value = it.id
+                }
+        }
+    }
+
+    private fun getUser(userId: Long) {
+        viewModelScope.launch {
+            userRepository.getUser(userId)
+                .onSuccess {
+                    _moinCreateUserName.value = it.name
+                    _moinCreateUserJob.value = "${it.job.detailClass} ${it.job.jobClass}"
+                    _moinCreateUserCharacterId.value = characterList[it.characterId] ?: R.drawable.ic_penguin
+                }
+        }
+    }
+
+    private fun getJoinUserList(id: String) {
+        viewModelScope.launch {
+            userRepository.getUsers(id)
+                .onSuccess {
+                    _moinJoinUsers.value = it.users
+                }
         }
     }
 }

@@ -1,13 +1,10 @@
 package com.teumteum.data.service
 
-import com.teumteum.data.model.request.RequestMoim
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
-import com.teumteum.data.model.response.ResponseMyMeeting
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.Response
-import retrofit2.http.Body
+import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -40,13 +37,17 @@ interface GroupService {
     ): ResponseGroup
 
     @POST("meetings/{meetingId}/participants")
-    suspend fun postGroupJoin(
+    suspend fun postJoinGroup(
         @Path("meetingId") meetingId: Long
     ): ResponseMeeting
 
     @DELETE("meetings/{meetingId}/participants")
     suspend fun deleteGroupJoin(
         @Path("meetingId") meetingId: Long
-    ): Response
+    ): Response<Void>
 
+    @GET("meetings/{meetingsId}")
+    suspend fun getGroup(
+        @Path("meetingsId") meetingsId: Long
+    ): ResponseMeeting
 }

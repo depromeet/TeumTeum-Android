@@ -9,9 +9,9 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
+import com.teumteum.domain.entity.Users
 import com.teumteum.domain.entity.toUpdatedUserInfo
 import com.teumteum.domain.repository.UserRepository
-import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -62,14 +62,11 @@ class UserRepositoryImpl @Inject constructor(
         dataStore.userInfo = ""
     }
 
-
-
     override suspend fun getUserFriends(userId: Long): Result<Friends> {
             return runCatching {
                 dataSource.getUserFriend(userId)
             }
     }
-
 
     override suspend fun updateUserInfo(
         userInfo: UserInfo
@@ -78,6 +75,18 @@ class UserRepositoryImpl @Inject constructor(
             val request = userInfo.toUpdatedUserInfo()
             dataSource.updateUserInfo(request)
             saveUserInfo(userInfo)
+        }
+    }
+
+    override suspend fun getUser(userId: Long): Result<Friend> {
+        return runCatching {
+            dataSource.getUser(userId)
+        }
+    }
+
+    override suspend fun getUsers(id: String): Result<Users> {
+        return runCatching {
+            dataSource.getUsers(id)
         }
     }
 
