@@ -49,9 +49,15 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun postGroupJoin(meetingId: Long): Result<Meeting> {
+    override suspend fun postJoinGroup(meetingId: Long): Result<Meeting> {
         return runCatching {
-            dataSource.postGroupJoin(meetingId).toMeeting()
+            dataSource.postJoinGroup(meetingId).toMeeting()
+        }
+    }
+
+    override suspend fun getGroup(meetingId: Long): Result<Meeting> {
+        return runCatching {
+            dataSource.getGroup(meetingId).toMeeting()
         }
     }
 

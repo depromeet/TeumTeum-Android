@@ -70,6 +70,8 @@
             android:exported="false" />
         <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
             android:exported="false" />
+        <activity android:name=".presentation.group.join.GroupDetailActivity"
+            android:exported="false" />
         <activity android:name=".presentation.splash.SplashActivity"
             android:exported="true">
             <intent-filter>

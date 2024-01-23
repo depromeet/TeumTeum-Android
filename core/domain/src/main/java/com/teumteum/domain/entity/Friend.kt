@@ -1,6 +1,5 @@
 package com.teumteum.domain.entity
 
-import kotlinx.coroutines.Job
 import kotlinx.serialization.Serializable
 
 @Serializable
