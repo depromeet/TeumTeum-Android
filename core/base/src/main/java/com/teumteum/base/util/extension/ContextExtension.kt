@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import com.teumteum.base.component.snackbar.ButtonSnackBar
 import com.teumteum.base.component.snackbar.DefaultSnackBar
+import com.teumteum.base.component.toast.DefaultToast
 
 fun Context.toast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -16,6 +17,10 @@ fun Context.toast(message: String) {
 
 fun Context.longToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+
+fun Context.defaultToast(message: String) {
+    DefaultToast.createToast(this, message)?.show()
 }
 
 fun Context.snackBar(anchorView: View, message: () -> String) {
