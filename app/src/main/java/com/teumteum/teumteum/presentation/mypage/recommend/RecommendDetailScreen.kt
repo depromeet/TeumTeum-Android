@@ -37,6 +37,7 @@ import com.teumteum.teumteum.presentation.mypage.pager.MeetingItem
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
 import com.teumteum.teumteum.presentation.mypage.pager.NoMoimItems
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
+import timber.log.Timber
 
 @Composable
 fun RecommendDetailScreen(
@@ -88,11 +89,12 @@ fun RecommendDetailScreen(
                 )
             }
             when (selectedTab.value) {
-                "내 모임" -> item {
-                    FriendPager1Content(viewModel, navController) }
-                "받은 리뷰" -> item { MyPagePager2Content() }
+                    "참여 모임" -> item {
+                        FriendPager1Content(viewModel, navController) }
+                    "받은 리뷰" -> item { MyPagePager2Content() }
 //                "북마크" -> item { MyPagePager3Content() }
             }
+
         }
     }
 }
@@ -109,7 +111,8 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int) {
     val isFriend by viewModel.isFriend.collectAsState()
     Row(
         modifier = Modifier
-            .width(280.dp) ,
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Button(
@@ -120,15 +123,14 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int) {
                 viewModel.postFriend(userId.toLong())
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isFriend) TmtmColorPalette.current.color_button_active
-                else TmtmColorPalette.current.color_button_alternative
+                containerColor = if (isFriend) TmtmColorPalette.current.color_button_alternative else TmtmColorPalette.current.color_button_active
             ),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
             Text(
                 text = if (isFriend) "추천함" else "추천하기",
                 style = TmTypo.current.HeadLine6,
-                color = TmtmColorPalette.current.color_text_button_primary_default
+                color = if(isFriend) TmtmColorPalette.current.color_text_button_alternative else TmtmColorPalette.current.color_text_button_primary_default
             )
         }
 
@@ -138,13 +140,13 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int) {
                 .height(46.dp),
             onClick = {
             },
-            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
             Text(
                 text = text,
                 style = TmTypo.current.HeadLine6,
-                color = TmtmColorPalette.current.color_text_button_primary_default
+                color = TmtmColorPalette.current.color_text_button_alternative
             )
         }
     }
@@ -174,9 +176,11 @@ fun FriendPager1Content(
         TmMarginVerticalSpacer(size = 20)
         // open이 모두 비어있을때
         if(userMeetingOpen.isEmpty()) {
+            Timber.d("No Open Meetings")
             NoMoimItems(false, navController)
         }
         else {
+            Timber.d("Open Meetings")
             userMeetingOpen.forEach {
                 MeetingItem(it)
             }
@@ -190,9 +194,11 @@ fun FriendPager1Content(
         )
         TmMarginVerticalSpacer(size = 20)
         if(userMeetingClosed.isEmpty()) {
+            Timber.d("No Closed Meetings")
             NoMoimItems(false, navController)
         }
         else  {
+            Timber.d("Closed Meetings")
             userMeetingClosed.forEach {
                 MeetingItem(meeting = it)
             }

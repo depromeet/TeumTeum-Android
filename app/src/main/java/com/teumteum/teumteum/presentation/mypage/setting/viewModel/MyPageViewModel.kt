@@ -47,8 +47,7 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun loadFriends() {
-        val userId = 16L
-//        val userId = authRepository.getUserId()
+        val userId = authRepository.getUserId()
         if (userId != -1L) {
             viewModelScope.launch {
                 userRepository.getUserFriends(userId)

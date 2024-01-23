@@ -36,6 +36,9 @@ class RecommendDetailViewModel @Inject constructor(
     private val _friendsList = MutableStateFlow<List<Friend>>(emptyList())
     val friendsList : StateFlow<List<Friend>> = _friendsList
 
+    fun checkIfUserIsFriend(friendsList: List<Friend>, userId: Long) {
+        _isFriend.value = friendsList.any { friend -> friend.id.toLong() == userId }
+    }
 
     fun postFriend(userId: Long) {
         if(!isFriend.value) {
@@ -86,20 +89,21 @@ class RecommendDetailViewModel @Inject constructor(
                 settingRepository.getMyPageOpenMeeting(userId)
                     .onSuccess { meetings ->
                         val openMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
-                        meetings.forEach { meeting ->
-                                openMeetings.add(meeting)
-                            }
                         _userMeetingOpen.value = openMeetings
                     }
                     .onFailure {
                         Timber.e(it)
                     }
+            }
+        }
+    }
+
+    fun getUserClosedMeeting(userId:Long) {
+        if (userId != -1L) {
+            viewModelScope.launch {
                 settingRepository.getMyPageClosedMeeting(userId)
                     .onSuccess {meetings->
                         val closedMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
-                        meetings.forEach { meeting->
-                            closedMeetings.add(meeting)
-                        }
                         _userMeetingClosed.value = closedMeetings
                     }
                     .onFailure {
