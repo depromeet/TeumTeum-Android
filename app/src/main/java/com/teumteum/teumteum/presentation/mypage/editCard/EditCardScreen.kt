@@ -198,6 +198,13 @@ fun EditCardScreen(
 }
 
 @Composable
+fun EditInterestChip(
+
+) {
+
+}
+
+@Composable
 fun EditCardBottomBox(
     text: String,
     viewModel: EditCardViewModel,
