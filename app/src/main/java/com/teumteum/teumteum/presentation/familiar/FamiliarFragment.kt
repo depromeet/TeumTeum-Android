@@ -21,10 +21,8 @@ class FamiliarFragment :
 
         if (!sharedPreferencesManager.isOnboardingCompleted()) {
             startActivity(Intent(requireContext(), FamiliarOnBoardingActivity::class.java))
-            requireActivity().finish()
         } else {
             startActivity(Intent(requireContext(), NeighborActivity::class.java))
-            requireActivity().finish()
         }
     }
 }

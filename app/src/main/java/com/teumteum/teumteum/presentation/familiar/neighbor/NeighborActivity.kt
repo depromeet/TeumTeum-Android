@@ -20,7 +20,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
 import com.teumteum.teumteum.util.AuthUtils
-import com.teumteum.teumteum.util.DrawableMapper
+import com.teumteum.teumteum.util.IdMapper
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -31,6 +31,8 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private val viewModel by viewModels<NeighborViewModel>()
+    private val selectedNeighborIds = mutableListOf<Long>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,14 +62,18 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private fun initMyCharacter() {
         val myInfo = AuthUtils.getMyInfo(this)
         if (myInfo != null) {
-            with(binding.cvMe) {
-                characterImage.setImageResource(DrawableMapper.getCharacterDrawableById(myInfo.characterId.toInt()))
-                characterName.text = myInfo.name
-                characterJob.text = myInfo.job.name
-                isVisible = true
+            val imageRes = IdMapper.getCharacterDrawableById(myInfo.characterId.toInt())
+            setCharacterView(
+                view = binding.cvMe,
+                imageRes = imageRes,
+                job = myInfo.job.jobClass,
+                name = myInfo.name
+            ).apply {
+                binding.cvMe.isEnabled = false //내 캐릭터 터치 시 체크박스 visible 방지
             }
         }
     }
+
 
     private fun setUpListener() {
         binding.btnStart.setOnClickListener {
@@ -75,8 +81,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         }
     }
 
-    private fun setUpObserver() { //한 바인딩 되면 페이지를 나갔다 들어올 때까지 계속 유지됨. 대응 조치 필요. List 전체를 다루는 게 아니라 어차피 최대 6명만 내려지니까 이 각각을 옵저빙하고 UI 상태 관리도
-        //각각 해줘야 함.
+    private fun setUpObserver() {
         viewModel.neighborUserState.observe(this) { state ->
             when (state) {
                 UiState.Loading -> {}
@@ -87,10 +92,23 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
 
                     neighbors.forEachIndexed { index, neighbor ->
                         if (index < views.size) {
+                            val view = views[index]
+
+                            view.setOnClickListener {
+                                view.isCharacterSelected =
+                                    !view.isCharacterSelected //체크박스 visibility
+
+                                val id = neighbor.id
+                                if (selectedNeighborIds.contains(id)) {
+                                    selectedNeighborIds.remove(id)
+                                } else {
+                                    selectedNeighborIds.add(id)
+                                }
+                            }
                             val imageRes =
-                                DrawableMapper.getCharacterDrawableById(neighbor.characterId.toInt())
+                                IdMapper.getCharacterDrawableById(neighbor.characterId.toInt())
                             setCharacterView(
-                                view = views[index],
+                                view = view,
                                 imageRes = imageRes,
                                 job = neighbor.jobDetailClass,
                                 name = neighbor.name
@@ -115,7 +133,11 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     }
 
     private fun startIntroduceActivity() {
-        startActivity(Intent(this, IntroduceActivity::class.java))
+        val idsString = selectedNeighborIds.joinToString(separator = ",")
+        val intent = Intent(this, IntroduceActivity::class.java).apply {
+            putExtra(EXTRA_NEIGHBORS_IDS, idsString)
+        }
+        startActivity(intent)
     }
 
 
@@ -134,7 +156,10 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                 for (location in locationResult.locations) {
                     Timber.tag("Location")
                         .d("${location.latitude}, ${location.longitude}") //todo - post함수 추가
-                    postNeighborUser(latitude = location.latitude, longitude = location.longitude) //todo - 테스트용 임시 좌표, 동적 좌표로 수정 필요
+                    postNeighborUser(
+                        latitude = location.latitude,
+                        longitude = location.longitude
+                    ) //todo - 테스트용 임시 좌표, 동적 좌표로 수정 필요
                 }
             }
         }
@@ -172,5 +197,9 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     override fun onPause() {
         super.onPause()
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
+    companion object {
+        const val EXTRA_NEIGHBORS_IDS = "EXTRA_NEIGHBORS_IDS"
     }
 }

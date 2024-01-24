@@ -10,16 +10,22 @@
         android:background="@color/background"
         android:theme="@style/Theme.TeumTeum">
 
-        <ImageView
-            android:id="@+id/iv_introduce_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_shake_onboarding_card"
+
+        <com.teumteum.teumteum.util.custom.view.FrontCardView
+            android:id="@+id/cv_character"
+            android:layout_width="280dp"
+            android:layout_height="400dp"
+            app:area="서울 광진구"
+            app:company="디프만"
+            app:characterImage="@drawable/ic_card_penguin"
+            app:job="안드로이드 개발"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:level="lv.1층"
+            app:mbti="ESTP"
+            app:name="김우남" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

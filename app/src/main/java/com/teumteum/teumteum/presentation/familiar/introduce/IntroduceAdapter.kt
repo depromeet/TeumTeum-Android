@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.databinding.ItemIntroduceBinding
-import com.teumteum.teumteum.presentation.familiar.introduce.model.Introduce
+import com.teumteum.teumteum.util.IdMapper
 
 class IntroduceAdapter() :
-    ListAdapter<Introduce, IntroduceAdapter.ItemViewHolder>(
+    ListAdapter<Friend, IntroduceAdapter.ItemViewHolder>(
         ItemListDiffCallback
     ) {
     private lateinit var binding: ItemIntroduceBinding
@@ -31,22 +32,33 @@ class IntroduceAdapter() :
 
     class ItemViewHolder(private val binding: ItemIntroduceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Introduce) {
-            Glide.with(itemView.context)
-                .load(item.image)
-                .apply(RequestOptions.centerInsideTransform())
-                .into(binding.ivIntroduceCard)
+        fun bind(item: Friend) {
+            val imageRes = IdMapper.getCardCharacterDrawableById(characterId = item.characterId)
+
+            with(binding.cvCharacter) {
+                tvName.text = item.name
+                tvCompany.text = item.job.name
+                tvJob.text = item.job.detailClass
+                tvLevel.text = item.mannerTemperature.toString()
+                tvArea.text = item.activityArea + "에 사는"
+                tvMbti.text = item.mbti
+
+                Glide.with(itemView.context)
+                    .load(imageRes)
+                    .apply(RequestOptions.centerInsideTransform())
+                    .into(ivCharacter)
+            }
         }
     }
 
-    object ItemListDiffCallback : DiffUtil.ItemCallback<Introduce>() {
-        override fun areItemsTheSame(oldItem: Introduce, newItem: Introduce): Boolean {
-            return oldItem == newItem
+    object ItemListDiffCallback : DiffUtil.ItemCallback<Friend>() {
+        override fun areItemsTheSame(oldItem: Friend, newItem: Friend): Boolean {
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: Introduce,
-            newItem: Introduce
+            oldItem: Friend,
+            newItem: Friend
         ): Boolean {
             return oldItem == newItem
         }

@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NeighborViewModel @Inject constructor(
-    private val neighborRepository: NeighborRepository, private val userRepository: UserRepository
+    private val neighborRepository: NeighborRepository
 ) : ViewModel() {
 
     private var _neighborUserState = MutableLiveData<UiState>(UiState.Empty)
@@ -28,7 +28,6 @@ class NeighborViewModel @Inject constructor(
     fun postNeighborUser(requestPostNeighborUser: RequestPostNeighborUser) {
         viewModelScope.launch {
             runCatching {
-                userRepository.getUserInfo()
                 _neighborUserState.value = UiState.Loading
                 neighborRepository.postNeighborUser(requestPostNeighborUser = requestPostNeighborUser)
             }.onSuccess { //todo - null 처리

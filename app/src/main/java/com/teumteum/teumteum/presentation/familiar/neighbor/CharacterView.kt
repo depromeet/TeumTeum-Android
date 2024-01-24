@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.teumteum.domain.entity.NeighborEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.CustomCharacterViewBinding
 
@@ -18,23 +19,12 @@ class CharacterView @JvmOverloads constructor(
     val characterImage: ImageView
     val characterName: TextView
     val characterJob: TextView
-    private var isCharacterSelected: Boolean = false
+
+    var isCharacterSelected: Boolean = false
         set(value) {
             field = value
             binding.ivCheck.visibility = if (value) VISIBLE else INVISIBLE
-            onCharacterSelectedChangeListener?.onSelectedChanged(value)
         }
-
-    // 선택 상태 변경 리스너 인터페이스
-    interface OnCharacterSelectedChangeListener {
-        fun onSelectedChanged(isSelected: Boolean)
-    }
-
-    private var onCharacterSelectedChangeListener: OnCharacterSelectedChangeListener? = null
-
-    fun isCharacterSelected(): Boolean {
-        return isCharacterSelected
-    }
 
     override fun setOnClickListener(listener: OnClickListener?) {
         super.setOnClickListener(listener)
@@ -62,8 +52,6 @@ class CharacterView @JvmOverloads constructor(
                 typedArray.getResourceId(R.styleable.CustomCharacterView_characterImage, 0)
             val name = typedArray.getString(R.styleable.CustomCharacterView_name)
             val job = typedArray.getString(R.styleable.CustomCharacterView_job)
-            val isSelected =
-                typedArray.getBoolean(R.styleable.CustomCharacterView_isSelected, false)
 
             binding.ivCharacterSelf.setImageResource(characterImageResId)
             binding.tvCharacterName.text = name
