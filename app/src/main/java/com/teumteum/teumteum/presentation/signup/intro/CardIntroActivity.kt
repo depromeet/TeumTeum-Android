@@ -52,12 +52,19 @@ class CardIntroActivity
                 val intent = Intent(this@CardIntroActivity, SignUpActivity::class.java)
                 intent.putExtra(EXTRA_KEY_OAUTHID, oauthId)
                 intent.putExtra(EXTRA_KEY_PROVIDER, provider)
+                intent.putExtra("isFromCardIntro", true)
                 startActivity(intent)
+                openActivitySlideAnimation()
             }
             getLeftMenuChildAt(0).setOnClickListener {
                 finish()
             }
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {

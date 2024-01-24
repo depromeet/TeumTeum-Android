@@ -22,6 +22,7 @@ class AccessLocationActivity
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
         startActivity(Intent(this@AccessLocationActivity, SignInActivity::class.java))
+        openActivitySlideAnimation()
         finish()
     }
 
@@ -42,6 +43,11 @@ class AccessLocationActivity
                 checkLocationPermission()
             }
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {
