@@ -11,13 +11,11 @@ data class Friend(
     val authenticated: String,
     val mbti: String,
     val activityArea: String,
-    val mannerTemperature: Int
-)
+    val mannerTemperature: Int,
+    val interests: List<String>
+) : java.io.Serializable
 
 @Serializable
 data class Friends(
     val friends: List<Friend>
-)
-
-
-
+) : java.io.Serializable

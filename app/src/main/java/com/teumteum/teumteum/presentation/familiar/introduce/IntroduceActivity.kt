@@ -57,13 +57,12 @@ class IntroduceActivity
     }
 
     private fun startShakeActivity() {
-        startActivity(
-            Intent(
-                this@IntroduceActivity,
-                ShakeActivity::class.java
-            )
-        )
-        finish()
+        val friends = viewModel.introduceUser.value ?: listOf()
+
+        val intent = Intent(this, ShakeActivity::class.java).apply {
+            putExtra(EXTRA_FRIENDS, ArrayList(friends))
+        }
+        startActivity(intent)
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -92,5 +91,9 @@ class IntroduceActivity
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
             tab.view.isClickable = false
         }.attach()
+    }
+
+    companion object {
+        const val EXTRA_FRIENDS = "EXTRA_FRIENDS"
     }
 }

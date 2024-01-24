@@ -19,11 +19,14 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
+import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityShakeBinding
+import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.Companion.EXTRA_FRIENDS
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewData
 import com.teumteum.teumteum.presentation.familiar.topic.TopicActivity
+import com.teumteum.teumteum.util.IdMapper
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,28 +45,35 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
+        setupShakeDetector()
+        setupSensorManager()
+        processReceivedFriendList()
+    }
 
-        shakeDetector =
-            ShakeDetector(this, ::triggerVibration, ::stopVibration, ::startTopicActivity)
+    private fun setupShakeDetector() {
+        shakeDetector = ShakeDetector(this, ::triggerVibration, ::stopVibration, ::startTopicActivity)
+    }
 
+    private fun setupSensorManager() {
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+    }
 
-        // UserInterest 객체를 위한 정보를 정의한 리스트
-        val userInterests = listOf(
-            InterestViewData("디자인", ContextCompat.getColor(this, color.graphic_skyblue)),
-            InterestViewData("IT", ContextCompat.getColor(this, color.graphic_mint)),
-            InterestViewData("경제", ContextCompat.getColor(this, color.graphic_pink)),
-            InterestViewData("재테크", ContextCompat.getColor(this, color.graphic_skyblue)),
-            InterestViewData("퍼스널 브랜딩", ContextCompat.getColor(this, color.graphic_skyblue)),
-            InterestViewData("마음 수련", ContextCompat.getColor(this, color.graphic_skyblue)),
-            InterestViewData("네트워킹", ContextCompat.getColor(this, color.graphic_mint)),
-            InterestViewData("네트워킹", ContextCompat.getColor(this, color.graphic_yelloworange)),
-            InterestViewData("고민 나누기", ContextCompat.getColor(this, color.graphic_yelloworange)),
-            InterestViewData("IT", ContextCompat.getColor(this, color.graphic_pink)),
-        )
-
+    private fun processReceivedFriendList() {
+        val friends = intent.getSerializableExtra(EXTRA_FRIENDS) as? List<Friend> ?: listOf()
+        val userInterests = extractInterests(friends)
         addUserInterestView(userInterests)
+    }
+
+    private fun extractInterests(friends: List<Friend>): List<InterestViewData> {
+        val interestsData = mutableListOf<InterestViewData>()
+        for (friend in friends) {
+            val color = IdMapper.getColorByCharacterId(characterId = friend.characterId)
+            friend.interests.forEach { interest ->
+                interestsData.add(InterestViewData(interest, color))
+            }
+        }
+        return interestsData
     }
 
     private fun startTopicActivity() {
