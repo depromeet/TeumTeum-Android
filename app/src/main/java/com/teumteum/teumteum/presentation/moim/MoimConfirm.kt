@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -32,12 +33,15 @@ import androidx.compose.material3.ButtonDefaults
 import com.google.accompanist.pager.HorizontalPager
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -49,6 +53,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TeumDividerHorizontalThick
 import com.teumteum.base.component.compose.TeumDividerThick
+import com.teumteum.base.component.compose.TmDialog
 import com.teumteum.base.component.compose.TmIndicator
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -58,7 +63,9 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.base.util.extension.toast
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.group.join.GroupMeetCheckActivity
+
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -67,12 +74,47 @@ fun MoimConfirm(
     viewModel: MoimViewModel,
     activity: Activity,
     isJoinView: Boolean,
-    meetingId: Int? = null,
+    meetingId: Long? = null,
     onClick: ()-> Unit = { activity?.finish() },
 
 ) {
+
+    val showDialog = remember { mutableStateOf(false) }
+    val screenState by viewModel.screenState.collectAsState()
+
+    LaunchedEffect(key1 = screenState) {
+        if (screenState == ScreenState.Cancel) {
+            showDialog.value = true
+        }
+    }
+
+    if (showDialog.value) {
+        TmDialog(
+            title = stringResource(id = R.string.setting_dialog_cancel),
+            okText = stringResource(id = R.string.setting_dialog_cancel_btn2),
+            cancelText = stringResource(id = R.string.setting_dialog_cancel_btn1),
+            onOk = {
+                if (meetingId != null) {
+                    viewModel.cancelMeeting(meetingId)
+                }
+                showDialog.value = false
+            },
+            onCancel = {
+                showDialog.value = false
+                viewModel.updateSheetEvent(ScreenState.CancelInit)
+            },
+            onDismiss = {
+                showDialog.value = false
+                viewModel.updateSheetEvent(ScreenState.CancelInit)
+            }
+        )
+    }
+
     TmScaffold(
-        topbarText = if (isJoinView) "" else stringResource(id = R.string.moim_confirm_appbar),
+        topbarText =
+        if (isJoinView) ""
+        else if (meetingId != null && meetingId > 0) ""
+        else stringResource(id = R.string.moim_confirm_appbar),
         onClick = { onClick() }
     ) {
         val scrollState = rememberScrollState()
@@ -102,15 +144,19 @@ fun MoimConfirm(
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
             if (isJoinView) {
-                //joinView, mettingId o
-                if (meetingId != null) {
-                    if(meetingId > 0) {
-
+                if (meetingId != null && meetingId > 0) {
+                    MoimCancelBtn(
+                        viewModel = viewModel,
+                        onJoinGroupClick = { viewModel.cancelMeeting(it)})
+                } else {
+                    MoimJoinBtn(viewModel = viewModel) {
+                        activity.startActivity(
+                            GroupMeetCheckActivity.getIntent(activity, it)
+                        )
                     }
                 }
-                // joinview, meetingId x
-                else {  MoimJoinBtn(viewModel = viewModel) { activity.startActivity(GroupMeetCheckActivity.getIntent(activity, it)) } }
-            } else {
+            }
+            else {
                 MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel)
                 TmMarginVerticalSpacer(size = 24)
             }
@@ -284,7 +330,7 @@ fun MoimHostRow(viewModel: MoimViewModel) {
         }
 
         Column(
-            modifier=Modifier
+            modifier= Modifier
                 .wrapContentSize()
                 .padding(start = 12.dp),
             horizontalAlignment = Alignment.Start,
@@ -293,12 +339,12 @@ fun MoimHostRow(viewModel: MoimViewModel) {
             Text(
                 text = name,
                 style = TmTypo.current.HeadLine6,
-                color = TmtmColorPalette.current.color_text_body_primary
+                color = TmtmColorPalette.current.color_text_headline_primary
             )
             Text(
                 text = job,
                 style = TmTypo.current.Caption1,
-                color = TmtmColorPalette.current.color_text_body_secondary,
+                color = TmtmColorPalette.current.color_text_headline_primary,
                 modifier = Modifier.padding(start = 1.dp)
             )
         }
@@ -402,22 +448,21 @@ fun MoimCancelBtn(
     viewModel: MoimViewModel,
     onJoinGroupClick: (Long) -> Unit,
 ) {
-    val meetingsId by viewModel.meetingsId.collectAsState()
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
             .height(76.dp)
             .padding(horizontal = 20.dp, vertical = 10.dp),
         onClick = {
-            onJoinGroupClick(meetingsId)
+            viewModel.updateSheetEvent(ScreenState.Cancel)
         },
-        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
+        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
         shape = RoundedCornerShape(size = 4.dp)
     ) {
         Text(
             text = "참여 안할래요",
             style = TmTypo.current.HeadLine6,
-            color = TmtmColorPalette.current.color_text_button_primary_default
+            color = TmtmColorPalette.current.color_text_button_alternative
         )
     }
 }

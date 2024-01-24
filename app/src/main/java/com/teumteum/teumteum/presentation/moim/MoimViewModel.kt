@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
@@ -12,6 +13,8 @@ import com.teumteum.domain.entity.MoimEntity
 import com.teumteum.domain.repository.GroupRepository
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.DialogEvent
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -110,6 +113,31 @@ class MoimViewModel @Inject constructor(
     fun initializeState() {
         _screenState.value = ScreenState.Topic
         _currentStep.value = 0
+        _topic.value = null
+        _title.value = ""
+        _introduction.value = ""
+        _imageUri.value = emptyList()
+        _date.value = ""
+        _time.value = ""
+        _people.value = 2
+        _address.value = null
+        _detailAddress.value = ""
+        _moinCreateUserCharacterId.value = R.drawable.ic_penguin
+        _moinCreateUserName.value = ""
+        _moinCreateUserJob.value = ""
+        _moinJoinUsers.value = listOf()
+        _meetingsId.value = 0L
+    }
+
+    fun getUserId() {
+        viewModelScope.launch {
+            val result = userRepository.getUserInfo()
+            if (result != null) {
+                _moinCreateUserJob.value = result.job?.detailClass ?: ""
+                _moinCreateUserName.value = result.name.toString()
+                _moinCreateUserCharacterId.value = result.characterId?.toInt()!!
+            }
+        }
     }
 
     fun updateTopic(topicType: TopicType) {
@@ -226,6 +254,19 @@ class MoimViewModel @Inject constructor(
         }
     }
 
+    fun cancelMeeting(meetingId: Long) {
+        viewModelScope.launch {
+            repository.deleteGroupJoin(meetingId)
+                .onSuccess {
+                    _screenState.value = ScreenState.CancelSuccess
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
+        }
+    }
+
     // Uri로부터 파일 이름을 추출하는 함수
     private fun getFileName(uri: Uri, context: Context): String? {
         var name: String? = null
@@ -309,6 +350,7 @@ class MoimViewModel @Inject constructor(
         _screenState.value =
             when(_screenState.value) {
                 ScreenState.Failure -> ScreenState.Create
+                ScreenState.Success -> ScreenState.Success
                 ScreenState.Create -> ScreenState.Address
                 ScreenState.Address -> ScreenState.DateTime
                 ScreenState.DateTime -> ScreenState.Introduce
@@ -377,7 +419,7 @@ class MoimViewModel @Inject constructor(
         }
     }
 
-    private fun getUser(userId: Long) {
+    fun getUser(userId: Long) {
         viewModelScope.launch {
             userRepository.getUser(userId)
                 .onSuccess {
@@ -396,10 +438,11 @@ class MoimViewModel @Inject constructor(
                 }
         }
     }
+
 }
 
 enum class ScreenState {
-    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server
+    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server, CancelInit, Cancel, CancelSuccess, Finish
 }
 enum class TopicType(val value: String, val title: String ,val subTitle: String) {
     SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
@@ -408,3 +451,5 @@ enum class TopicType(val value: String, val title: String ,val subTitle: String)
     SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
 
 }
+
+

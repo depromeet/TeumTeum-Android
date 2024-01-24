@@ -220,6 +220,9 @@
     <string name="moim_datetime_placeholder1">00월 00일</string>
     <string name="moim_datetime_placeholder2">오후 00시</string>
 
+    <string name="moim_finish">모임 생성이 완료되었어요!</string>
+    <string name="moim_finish_btn">홈으로 가기</string>
+
     <string name="moim_address_title">모임 일정을 정해주세요</string>
     <string name="moim_address_label1">도로명 주소</string>
     <string name="moim_address_label2">상세 주소</string>

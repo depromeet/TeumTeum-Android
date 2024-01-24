@@ -49,7 +49,6 @@ fun RecommendDetailScreen(
     viewModel: RecommendDetailViewModel,
     userId: Int
 ) {
-    val userInfo by viewModel.friendInfo.collectAsState()
     val friendsCount by viewModel.friendsList.collectAsState()
     val userInfoState by viewModel.userInfoState.collectAsState()
 
@@ -203,10 +202,7 @@ fun FriendPager1Content(
         else {
             Timber.d("Open Meetings")
             userMeetingOpen.forEach {
-                MeetingItem(it) {id->
-                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
-                    navController.navigate(action)
-                }
+                MeetingItem(it) {}
             }
         }
         TmMarginVerticalSpacer(size = 9)
@@ -224,9 +220,10 @@ fun FriendPager1Content(
         else  {
             Timber.d("Closed Meetings")
             userMeetingClosed.forEach {
-                MeetingItem(meeting = it) {id->
-                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
-                    navController.navigate(action)
+                MeetingItem(meeting = it) {
+//                        id->
+//                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
+//                    navController.navigate(action)
                 }
             }
         }

@@ -187,12 +187,6 @@ class SettingViewModel @Inject constructor(
 
     fun handleDialogChange(status: SettingStatus) {
         when (status) {
-            SettingStatus.CANCEL -> {
-                viewModelScope.launch {
-                    _dialogEvent.emit(DialogEvent.CANCEL)
-                }
-            }
-
             SettingStatus.LOGOUT -> {
                 viewModelScope.launch {
                     _dialogEvent.emit(DialogEvent.LOGOUT)
@@ -261,10 +255,6 @@ class SettingViewModel @Inject constructor(
                 logout()
             }
 
-            DialogEvent.CANCEL -> {
-                cancelMeeting()
-            }
-
             else -> {}
         }
     }
@@ -295,13 +285,12 @@ enum class SettingStatus {
 
 
 enum class DialogEvent {
-    DEFAULT, LOGOUT, CANCEL;
+    DEFAULT, LOGOUT;
 
     @StringRes
     fun getTitleResId(): Int {
         return when (this) {
             LOGOUT -> R.string.setting_dialog_logout
-            CANCEL -> R.string.setting_dialog_cancel
             else -> R.string.setting_dialog_default
         }
     }
@@ -310,7 +299,6 @@ enum class DialogEvent {
     fun getOkTextResId(): Int {
         return when (this) {
             LOGOUT -> R.string.setting_dialog_logout_btn2
-            CANCEL -> R.string.setting_dialog_cancel_btn2
             else -> android.R.string.ok
         }
     }
@@ -319,7 +307,6 @@ enum class DialogEvent {
     fun getCancelTextResId(): Int {
         return when (this) {
             LOGOUT -> R.string.setting_dialog_logout_btn1
-            CANCEL -> R.string.setting_dialog_cancel_btn1
             else -> android.R.string.cancel
         }
     }

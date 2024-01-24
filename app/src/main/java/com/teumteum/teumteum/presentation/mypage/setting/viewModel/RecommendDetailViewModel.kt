@@ -6,6 +6,7 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.SettingRepository
 import com.teumteum.domain.repository.UserRepository
+import com.teumteum.teumteum.R
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,6 +58,21 @@ class RecommendDetailViewModel @Inject constructor(
             }
         }
     }
+
+    val characterList: HashMap<Int, Int> = hashMapOf(
+        0 to R.drawable.ic_card_ghost,
+        1 to R.drawable.ic_card_star,
+        2 to R.drawable.ic_card_bear,
+        3 to R.drawable.ic_card_raccon,
+        4 to R.drawable.ic_card_cat,
+        5 to R.drawable.ic_card_rabbit,
+        6 to R.drawable.ic_card_fox,
+        7 to R.drawable.ic_card_water,
+        8 to R.drawable.ic_card_penguin,
+        9 to R.drawable.ic_card_dog,
+        10 to R.drawable.ic_card_mouse,
+        11 to R.drawable.ic_card_panda
+    )
 
 
     fun loadFriends(userId: Long) {
@@ -123,11 +139,13 @@ class RecommendDetailViewModel @Inject constructor(
     fun getFrontCardFromInfo(): FrontCard {
         val userInfo = friendInfo.value
         return if (userInfo != null) {
+            val characterResId = characterList[userInfo.characterId.toInt()] ?: R.drawable.ic_card_penguin// 기본값 설정
             FrontCard(
                 name = userInfo.name,
                 company = "@${userInfo.job.name}",
                 job = userInfo.job.detailClass,
                 level = "lv.0층",
+                characterResId = characterResId,
                 area = userInfo.activityArea,
                 mbti = userInfo.mbti,
             )

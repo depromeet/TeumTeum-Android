@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
@@ -70,7 +71,8 @@ fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {
 fun MoimCreateBtn(
     text: String,
     viewModel: MoimViewModel ,
-    isEnabled: Boolean = true
+    isEnabled: Boolean = true,
+    navController: NavController? = null
 ) {
     val screenState by viewModel.screenState.collectAsState()
     val context = LocalContext.current
@@ -87,6 +89,8 @@ fun MoimCreateBtn(
             if (screenState == ScreenState.Create) {
                 viewModel.createMoim()
                 Log.d("screenState", screenState.toString())
+            } else if (screenState == ScreenState.Finish) {
+                navController?.navigate(R.id.fragment_home)
             }
             else {
             viewModel.goToNextScreen() }},

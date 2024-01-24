@@ -38,13 +38,13 @@ class MoimFragment :
         observe()
 
         val navController = findNavController()
-        val meetingId = arguments?.getLong("meetingId", -1) ?: -1
+        val meetingId = arguments?.getLong("meetingId", -1L) ?: -1L
 
         if (meetingId >= 0) {
             Log.d("meetingId", meetingId.toString())
             // meetingId가 있는 경우의 로직
             viewModel.getGroup(meetingId)
-            viewModel.updateSheetEvent(ScreenState.Create)
+            viewModel.updateSheetEvent(ScreenState.CancelInit)
         } else {
             setupUI()
         }
@@ -53,6 +53,7 @@ class MoimFragment :
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
             }
+
         }
 
         binding.composeMoim.setContent {
@@ -66,11 +67,18 @@ class MoimFragment :
                     ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
+                        viewModel.getUserId()
                         MoimConfirm(viewModel, requireActivity(),false) { goFrontScreen()}
                     }
+                    ScreenState.CancelInit, ScreenState.Cancel -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(viewModel, requireActivity(),true, meetingId) {navController.popBackStack()}
+                    }
+                    ScreenState.Success -> MoimFinish(viewModel = viewModel, onClick = {goFrontScreen()} ,navController = navController)
+
                     else -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(),false) {navController.popBackStack()}
+                        MoimConfirm(viewModel, requireActivity(),false)
                     }
                 }
         }
@@ -97,6 +105,7 @@ class MoimFragment :
         if (viewModel.screenState.value == ScreenState.Topic) {
             findNavController().navigate(R.id.action_fragment_moim_to_fragment_home)
             (activity as MainActivity).showBottomNavi()
+            viewModel.initializeState()
 
         } else {
             viewModel.goPreviousScreen()
@@ -109,13 +118,14 @@ class MoimFragment :
                 when(it) {
                     ScreenState.Failure -> { context?.toast("모임 신청에 오류가 발생했습니다") }
                     ScreenState.Server -> { context?.toast("서버 통신에 실패했습니다") }
-                    ScreenState.Success -> {
+                    ScreenState.Create -> {
+                        viewModel.getUserId()
+                    }
+                    ScreenState.CancelSuccess -> {
+                        context?.toast("모임 취소를 완료했습니다")
                         val navController = findNavController()
-                        if (navController.currentDestination?.id == R.id.fragment_moim) {
-                            (activity as MainActivity).showBottomNavi()
-                            navController.navigate(R.id.action_fragment_moim_to_fragment_home)
-                            viewModel.resetScreenState()
-                        }
+                        navController.popBackStack()
+                        viewModel.initializeState()
                     }
                     else -> {}
                 }

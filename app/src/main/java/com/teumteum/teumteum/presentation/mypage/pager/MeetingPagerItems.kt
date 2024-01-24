@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit) {
+fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit?) {
     val formattedTime = formatDateTime(meeting.date)
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -84,6 +84,7 @@ fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Lo
             )
         }
     }
+    TmMarginVerticalSpacer(size = 14)
 }
 
 fun formatDateTime(dateTime: String): String {
@@ -115,7 +116,7 @@ fun NoMoimItems(
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
-        .clickable { navController.navigate(R.id.fragment_home)}
+        .clickable { navController.navigate(R.id.fragment_home) }
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)
