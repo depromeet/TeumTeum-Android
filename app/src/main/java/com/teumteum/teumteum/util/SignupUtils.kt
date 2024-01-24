@@ -22,6 +22,21 @@ object SignupUtils {
         11 to R.drawable.ic_card_front_panda
     )
 
+    val CHARACTER_CARD_LIST_BACK: HashMap<Int, Int> = hashMapOf(
+        0 to R.drawable.ic_card_back_ghost,
+        1 to R.drawable.ic_card_back_star,
+        2 to R.drawable.ic_card_back_bear,
+        3 to R.drawable.ic_card_back_raccon,
+        4 to R.drawable.ic_card_back_cat,
+        5 to R.drawable.ic_card_back_rabbit,
+        6 to R.drawable.ic_card_back_fox,
+        7 to R.drawable.ic_card_back_water,
+        8 to R.drawable.ic_card_back_penguin,
+        9 to R.drawable.ic_card_back_dog,
+        10 to R.drawable.ic_card_back_mouse,
+        11 to R.drawable.ic_card_back_panda
+    )
+
     const val JOB_DESIGN = "디자인"
     const val JOB_DEVELOPMENT = "개발"
     const val JOB_PLANNING = "기획"
