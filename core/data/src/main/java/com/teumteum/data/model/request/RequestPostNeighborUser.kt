@@ -5,17 +5,17 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponsePostNeighborUser(
-    @SerialName("characterId")
-    val characterId: Int?,
+data class RequestPostNeighborUser(
     @SerialName("id")
     val id: Int,
-    @SerialName("jobDetailClass")
-    val jobDetailClass: String,
     @SerialName("latitude")
     val latitude: Double,
     @SerialName("longitude")
     val longitude: Double,
     @SerialName("name")
-    val name: String
+    val name: String,
+    @SerialName("jobDetailClass")
+    val jobDetailClass: String,
+    @SerialName("characterId")
+    val characterId: Int?,
 )

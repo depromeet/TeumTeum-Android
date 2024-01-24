@@ -5,6 +5,6 @@ import com.teumteum.data.service.NeighborService
 import javax.inject.Inject
 
 class RemoteNeighborDataSource @Inject constructor(private val neighborService: NeighborService) {
-    suspend fun postNeighborUser(): ResponsePostNeighborUser =
-        neighborService.getNeighboringUser()
+    suspend fun postNeighborUser(requestNeighborUser: com.teumteum.domain.repository.RequestPostNeighborUser): ResponsePostNeighborUser =
+        neighborService.getNeighboringUser(requestPostNeighborUser = requestNeighborUser)
 }

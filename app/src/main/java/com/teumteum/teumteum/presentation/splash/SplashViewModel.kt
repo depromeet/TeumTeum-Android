@@ -1,5 +1,7 @@
 package com.teumteum.teumteum.presentation.splash
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.UserInfo
@@ -20,6 +22,10 @@ class SplashViewModel @Inject constructor(
     private val _myInfoState = MutableStateFlow<MyInfoUiState>(MyInfoUiState.Init)
     val myInfoState: StateFlow<MyInfoUiState> = _myInfoState
 
+    private val _myInfo = MutableLiveData<UserInfo>()
+    val myInfo: LiveData<UserInfo> = _myInfo
+
+
     private fun saveUserInfo(userInfo: UserInfo) {
         repository.saveUserInfo(userInfo)
     }
@@ -37,6 +43,7 @@ class SplashViewModel @Inject constructor(
             repository.getMyInfoFromServer()
                 .onSuccess {
                     saveUserInfo(userInfo = it)
+                    _myInfo.value = it
                     _myInfoState.value = MyInfoUiState.Success
                 }
                 .onFailure {
@@ -56,7 +63,7 @@ class SplashViewModel @Inject constructor(
 }
 
 sealed interface MyInfoUiState {
-    object Init: MyInfoUiState
-    object Success: MyInfoUiState
-    data class Failure(val msg: String): MyInfoUiState
+    object Init : MyInfoUiState
+    object Success : MyInfoUiState
+    data class Failure(val msg: String) : MyInfoUiState
 }
