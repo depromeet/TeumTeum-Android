@@ -18,6 +18,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentTeumTeumBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.teumteum.shake.onboarding.ShakeOnBoardingActivity
+import com.teumteum.teumteum.util.custom.view.model.Interest
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -38,6 +39,19 @@ class TeumTeumFragment :
             val intent = Intent(requireActivity(), ShakeOnBoardingActivity::class.java)
             startActivity(intent)
         }
+
+        // BackCardView 인스턴스 참조
+        val backCardView = binding.cvBack
+
+        // 데이터 리스트 준비
+        val interests = listOf(
+            Interest(interest = "#사이드 프로젝트"),
+            Interest(interest = "#네트워킹"),
+            Interest(interest = "#모여서 각자 일하기"),
+        )
+
+        // 어댑터에 데이터 전달
+        backCardView.submitInterestList(interests)
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding

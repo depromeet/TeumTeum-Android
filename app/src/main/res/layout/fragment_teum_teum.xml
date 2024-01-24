@@ -30,6 +30,7 @@
             app:layout_constraintTop_toBottomOf="@id/appBar" />
 
         <ImageView
+            android:visibility="invisible"
             android:id="@+id/iv_background"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -39,22 +40,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appBar" />
 
+        <com.teumteum.teumteum.util.custom.view.BackCardView
+            android:id="@+id/cv_back"
+            android:layout_width="280dp"
+            android:layout_height="400dp"
+            android:elevation="2dp"
+            app:characterImage="@drawable/ic_card_back_penguin"
+            app:goalTitle="GOAL"
+            app:goalContent="가고싶은 회사에 퍄업해 프로덕트 디자이너로 일하고 싶어요 안녕하세요 저는 사십구자에요"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.teumteum.teumteum.presentation.teumteum.location.custom.CharacterView
+            android:visibility="invisible"
             android:id="@+id/cv_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:characterImage="@drawable/ic_character_pink"
-            app:name="나"
-            app:job="프로덕트 디자이너"
             app:isSelected="false"
+            app:job="프로덕트 디자이너"
             app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
-             />
+            app:name="나" />
 
 
         <com.teumteum.teumteum.presentation.teumteum.location.custom.CharacterView
+            android:visibility="invisible"
             android:id="@+id/cv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,6 +84,7 @@
             app:name="이프만" />
 
         <com.teumteum.teumteum.presentation.teumteum.location.custom.CharacterView
+            android:visibility="invisible"
             android:id="@+id/cv_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,6 +99,7 @@
             app:name="김프만" />
 
         <com.teumteum.teumteum.presentation.teumteum.location.custom.CharacterView
+            android:visibility="invisible"
             android:id="@+id/cv_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,6 +114,7 @@
             app:name="박프만" />
 
         <com.teumteum.teumteum.presentation.teumteum.location.custom.CharacterView
+            android:visibility="invisible"
             android:id="@+id/cv_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,6 +129,7 @@
             app:name="김프만" />
 
         <com.teumteum.teumteum.presentation.teumteum.location.custom.CharacterView
+            android:visibility="invisible"
             android:id="@+id/cv_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

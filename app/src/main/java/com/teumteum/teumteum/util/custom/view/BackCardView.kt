@@ -112,13 +112,13 @@ class BackCardView : CardView {
             try {
                 with(backCard) {
                     goalTitle =
-                        getString(com.teumteum.base.R.styleable.CardBackView_goalTitle) ?: ""
+                        getString(com.teumteum.base.R.styleable.CardBackView_goalTitle) ?: "GOAL"
                     goalContent =
                         getString(com.teumteum.base.R.styleable.CardBackView_goalContent) ?: ""
                     characterResId =
                         getResourceId(com.teumteum.base.R.styleable.CardBackView_characterImage, 0)
-                    isModify =
-                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
+//                    isModify =
+//                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
 //                    isModifyDetail = getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModifyDetail, false)
                 }
             } finally {
