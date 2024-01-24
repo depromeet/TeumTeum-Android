@@ -89,7 +89,7 @@ fun MoimIntroduce(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = TmtmColorPalette.current.GreyWhite),
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
         ) {
@@ -117,6 +117,7 @@ fun MoimIntroColumn(viewModel: MoimViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(color = TmtmColorPalette.current.color_background)
             .wrapContentHeight(),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
@@ -131,6 +132,7 @@ fun MoimIntroColumn(viewModel: MoimViewModel) {
 fun MoimSystemText(@StringRes text: Int) {
     Row(modifier = Modifier
         .fillMaxWidth()
+        .background(color = TmtmColorPalette.current.color_background)
         .wrapContentHeight()
         .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.Start,

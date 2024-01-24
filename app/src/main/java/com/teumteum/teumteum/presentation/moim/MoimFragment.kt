@@ -35,9 +35,19 @@ class MoimFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navController = findNavController()
         observe()
 
+        val navController = findNavController()
+        val meetingId = arguments?.getLong("meetingId", -1) ?: -1
+
+        if (meetingId >= 0) {
+            Log.d("meetingId", meetingId.toString())
+            // meetingId가 있는 경우의 로직
+            viewModel.getGroup(meetingId)
+            viewModel.updateSheetEvent(ScreenState.Create)
+        } else {
+            setupUI()
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
@@ -56,12 +66,25 @@ class MoimFragment :
                     ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(),false)
+                        MoimConfirm(viewModel, requireActivity(),false) { goFrontScreen()}
                     }
-                    else -> MoimConfirm(viewModel, requireActivity(),false)
+                    else -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(viewModel, requireActivity(),false) {navController.popBackStack()}
+                    }
                 }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun setupUI() {
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.currentStep.collect {currentStep ->
+                animateProgressBar(currentStep)
+            }
+        }
+
     }
 
     val callback = object : OnBackPressedCallback(true) {

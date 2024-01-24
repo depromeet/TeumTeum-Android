@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -40,6 +41,7 @@ fun SettingServiceScreen(viewModel: SettingViewModel, navController: NavControll
 
 @Composable
 fun SettingServiceColumn2() {
+    val uriHandler = LocalUriHandler.current
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,7 +54,7 @@ fun SettingServiceColumn2() {
             SettingTitle(
                 title = item.title,
                 onClick = {
-                    item.onClick()
+                    uriHandler.openUri(item.url)
                 }
             )
         }

@@ -30,6 +30,7 @@ import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.base.util.extension.longExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
@@ -38,12 +39,14 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting) {
+fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit) {
     val formattedTime = formatDateTime(meeting.date)
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
-        .clickable { }
+        .clickable {
+            navigateToMoim(meeting.id)
+        }
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)

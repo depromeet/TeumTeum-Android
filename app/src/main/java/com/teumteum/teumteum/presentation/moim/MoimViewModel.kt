@@ -12,6 +12,7 @@ import com.teumteum.domain.entity.MoimEntity
 import com.teumteum.domain.repository.GroupRepository
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -349,6 +350,10 @@ class MoimViewModel @Inject constructor(
                 else -> ""
             }
         }
+    }
+
+    fun updateSheetEvent(screenState: ScreenState) {
+        _screenState.value = screenState
     }
 
     fun getGroup(meetingId: Long) {

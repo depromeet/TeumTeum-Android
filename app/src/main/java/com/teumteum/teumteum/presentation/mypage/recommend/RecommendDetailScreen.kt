@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,7 +72,8 @@ fun RecommendDetailScreen(
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -201,7 +203,10 @@ fun FriendPager1Content(
         else {
             Timber.d("Open Meetings")
             userMeetingOpen.forEach {
-                MeetingItem(it)
+                MeetingItem(it) {id->
+                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
+                    navController.navigate(action)
+                }
             }
         }
         TmMarginVerticalSpacer(size = 9)
@@ -219,7 +224,10 @@ fun FriendPager1Content(
         else  {
             Timber.d("Closed Meetings")
             userMeetingClosed.forEach {
-                MeetingItem(meeting = it)
+                MeetingItem(meeting = it) {id->
+                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
+                    navController.navigate(action)
+                }
             }
         }
         TmMarginVerticalSpacer(size = 20)

@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,7 +71,6 @@ fun EditCardScreen(
         val scrollState = rememberScrollState()
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
             .verticalScroll(scrollState)
             .background(color = TmtmColorPalette.current.color_background)
             .wrapContentHeight(),
@@ -78,125 +78,135 @@ fun EditCardScreen(
             horizontalAlignment = Alignment.Start) {
             TmMarginVerticalSpacer(size = 80)
 
-            //이름
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label1))
-            TmMarginVerticalSpacer(size = 8)
-            TmInputField(
-                text = R.string.setting_edit_card_placeholder1,
-                text_error = R.string.setting_edit_card_error1,
-                value = name.value,
-                onValueChange = { updatedName ->
-                    viewModel.updateUserName(updatedName)
-                },
-                isError = !isNameValid
-            )
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.color_background)
+                .padding(horizontal = 20.dp)) {
 
-            //생년월일
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label2))
-            TmMarginVerticalSpacer(size = 8)
-            TmInputField(
-                text = R.string.setting_edit_card_placeholder2,
-                text_error = R.string.setting_edit_card_error2,
-                value = date.value,
-                onValueChange = {updatedDate ->
-                    val formattedDate = viewModel.formatAsDateInput(updatedDate)
-                    viewModel.updateUserBirth(formattedDate)
-                },
-                isError = !viewModel.isValidDate(date.value),
-                isDate = true
-            )
+                //이름
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label1))
+                TmMarginVerticalSpacer(size = 8)
+                TmInputField(
+                    text = R.string.setting_edit_card_placeholder1,
+                    text_error = R.string.setting_edit_card_error1,
+                    value = name.value,
+                    onValueChange = { updatedName ->
+                        viewModel.updateUserName(updatedName)
+                    },
+                    isError = !isNameValid
+                )
 
-            //상태
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label3))
-            TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(
-                text = community,
-                viewModel = viewModel,
-                sheetEvent = SheetEvent.Status
-            )
+                //생년월일
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label2))
+                TmMarginVerticalSpacer(size = 8)
+                TmInputField(
+                    text = R.string.setting_edit_card_placeholder2,
+                    text_error = R.string.setting_edit_card_error2,
+                    value = date.value,
+                    onValueChange = { updatedDate ->
+                        val formattedDate = viewModel.formatAsDateInput(updatedDate)
+                        viewModel.updateUserBirth(formattedDate)
+                    },
+                    isError = !viewModel.isValidDate(date.value),
+                    isDate = true
+                )
 
-            //직장명
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label4))
-            TmMarginVerticalSpacer(size = 8)
-            TmInputField(
-                value = companyName,
-                text = R.string.setting_edit_card_placeholder4,
-                text_error = R.string.setting_edit_card_error4,
-                onValueChange = {
-                    if (it.length <= 20) {
-                        viewModel.updateCompanyName(it)
+                //상태
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label3))
+                TmMarginVerticalSpacer(size = 8)
+                EditCardBottomBox(
+                    text = community,
+                    viewModel = viewModel,
+                    sheetEvent = SheetEvent.Status
+                )
+
+                //직장명
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label4))
+                TmMarginVerticalSpacer(size = 8)
+                TmInputField(
+                    value = companyName,
+                    text = R.string.setting_edit_card_placeholder4,
+                    text_error = R.string.setting_edit_card_error4,
+                    onValueChange = {
+                        if (it.length <= 20) {
+                            viewModel.updateCompanyName(it)
+                        }
+                    },
+                    isError = companyName.length > 20
+                )
+
+                //직군
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label5))
+                TmMarginVerticalSpacer(size = 8)
+                EditCardBottomBox(
+                    text = jobClass,
+                    viewModel = viewModel,
+                    sheetEvent = SheetEvent.JobClass
+                )
+
+                //직무
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label6))
+                TmMarginVerticalSpacer(size = 8)
+                EditCardBottomBox(
+                    text = jobDetailClass,
+                    viewModel = viewModel,
+                    sheetEvent = SheetEvent.JobDetail
+                )
+
+                //MBTI
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label7))
+                TmMarginVerticalSpacer(size = 8)
+                EditCardBottomBox(
+                    text = mbti,
+                    viewModel = viewModel,
+                    sheetEvent = SheetEvent.Mbti
+                )
+
+                //관심 지역
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label8))
+                TmMarginVerticalSpacer(size = 8)
+                EditCardBottomBox(
+                    text = area,
+                    viewModel = viewModel,
+                    sheetEvent = SheetEvent.Area
+                )
+
+                //자기 개발
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
+                TmMarginVerticalSpacer(size = 8)
+                InterestsChips(
+                    interests = interests,
+                    onClick = { viewModel.triggerSheetEvent(SheetEvent.SignUp) },
+                    viewModel = viewModel
+                )
+                TmMarginVerticalSpacer(size = 20)
+
+                //틈틈 목표
+                EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label10))
+                TmMarginVerticalSpacer(size = 8)
+                TmInputField(text = R.string.setting_edit_card_placeholder10,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(134.dp),
+                    value = goal,
+                    onValueChange = {
+                        if (it.length <= 50) { // 입력 길이가 50자 이하인 경우에만 업데이트
+                            viewModel.updateGoalText(it)
+                        } else {
+                            val truncatedText = it.take(50)
+                            viewModel.updateGoalText(truncatedText)
+                        }
                     }
-                },
-                isError = companyName.length > 20
-            )
-
-            //직군
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label5))
-            TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(
-                text = jobClass,
-                viewModel = viewModel,
-                sheetEvent = SheetEvent.JobClass
-            )
-
-            //직무
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label6))
-            TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(
-                text = jobDetailClass,
-                viewModel = viewModel,
-                sheetEvent = SheetEvent.JobDetail
-            )
-
-            //MBTI
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label7))
-            TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(
-                text = mbti,
-                viewModel = viewModel,
-                sheetEvent = SheetEvent.Mbti
-            )
-
-            //관심 지역
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label8))
-            TmMarginVerticalSpacer(size = 8)
-            EditCardBottomBox(
-                text = area,
-                viewModel = viewModel,
-                sheetEvent = SheetEvent.Area
-            )
-
-            //자기 개발
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
-            TmMarginVerticalSpacer(size = 8)
-            InterestsChips(
-                interests = interests,
-                onClick = { viewModel.triggerSheetEvent(SheetEvent.SignUp)},
-                viewModel = viewModel
-            )
-            TmMarginVerticalSpacer(size = 20)
-
-            //틈틈 목표
-            EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label10))
-            TmMarginVerticalSpacer(size = 8)
-            TmInputField(text = R.string.setting_edit_card_placeholder10,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(134.dp),
-                value = goal,
-                onValueChange = {
-                    if (it.length <= 50) { // 입력 길이가 50자 이하인 경우에만 업데이트
-                        viewModel.updateGoalText(it)
-                    } else {
-                        val truncatedText = it.take(50)
-                        viewModel.updateGoalText(truncatedText)
-                    }
-                }
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            TeumDivider()
-            EditCardBtn(text = stringResource(id = R.string.setting_edit_card_btn), isEnabled = name.value.isNotEmpty(), viewModel = viewModel)
-            TmMarginVerticalSpacer(size = 14)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                TeumDivider()
+                EditCardBtn(
+                    text = stringResource(id = R.string.setting_edit_card_btn),
+                    isEnabled = name.value.isNotEmpty(),
+                    viewModel = viewModel
+                )
+                TmMarginVerticalSpacer(size = 14)
+            }
         }
     }
 }
@@ -280,7 +290,7 @@ fun EditCardBtn(
     val interests = viewModel.interestField.collectAsState().value
 
     // 모든 필드가 유효한지 검사
-    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.length <=50 &&
+    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.isNotEmpty() && goal.length <=50 &&
             jobClass.isNotEmpty() && community.isNotEmpty() && jobDetailClass.isNotEmpty() &&
             mbti.isNotEmpty() && date.isNotEmpty() && area.isNotEmpty() &&
             interests.isNotEmpty() && viewModel.isNameValid.collectAsState().value &&

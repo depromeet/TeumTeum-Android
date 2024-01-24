@@ -84,7 +84,8 @@ fun RecommendScreen(
         Spacer(modifier = Modifier.height(68.dp))
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .background(color = TmtmColorPalette.current.color_background),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement =  Arrangement.Top
             ) {

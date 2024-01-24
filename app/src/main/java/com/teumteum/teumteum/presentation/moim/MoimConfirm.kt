@@ -63,10 +63,17 @@ import com.teumteum.teumteum.presentation.group.join.GroupMeetCheckActivity
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MoimConfirm(viewModel: MoimViewModel, activity: Activity, isJoinView: Boolean) {
+fun MoimConfirm(
+    viewModel: MoimViewModel,
+    activity: Activity,
+    isJoinView: Boolean,
+    meetingId: Int? = null,
+    onClick: ()-> Unit = { activity?.finish() },
+
+) {
     TmScaffold(
         topbarText = if (isJoinView) "" else stringResource(id = R.string.moim_confirm_appbar),
-        onClick = { activity.finish() }
+        onClick = { onClick() }
     ) {
         val scrollState = rememberScrollState()
         Column(
@@ -95,7 +102,14 @@ fun MoimConfirm(viewModel: MoimViewModel, activity: Activity, isJoinView: Boolea
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
             if (isJoinView) {
-                MoimJoinBtn(viewModel = viewModel) { activity.startActivity(GroupMeetCheckActivity.getIntent(activity, it)) }
+                //joinView, mettingId o
+                if (meetingId != null) {
+                    if(meetingId > 0) {
+
+                    }
+                }
+                // joinview, meetingId x
+                else {  MoimJoinBtn(viewModel = viewModel) { activity.startActivity(GroupMeetCheckActivity.getIntent(activity, it)) } }
             } else {
                 MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel)
                 TmMarginVerticalSpacer(size = 24)
@@ -103,6 +117,8 @@ fun MoimConfirm(viewModel: MoimViewModel, activity: Activity, isJoinView: Boolea
         }
     }
 }
+
+
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -380,6 +396,32 @@ fun MoimJoinListItem(index: Int, item: Friend, characterList: HashMap<Int, Int>)
         )
     }
 }
+
+@Composable
+fun MoimCancelBtn(
+    viewModel: MoimViewModel,
+    onJoinGroupClick: (Long) -> Unit,
+) {
+    val meetingsId by viewModel.meetingsId.collectAsState()
+    androidx.compose.material3.Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(76.dp)
+            .padding(horizontal = 20.dp, vertical = 10.dp),
+        onClick = {
+            onJoinGroupClick(meetingsId)
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
+        shape = RoundedCornerShape(size = 4.dp)
+    ) {
+        Text(
+            text = "참여 안할래요",
+            style = TmTypo.current.HeadLine6,
+            color = TmtmColorPalette.current.color_text_button_primary_default
+        )
+    }
+}
+
 
 @Composable
 fun MoimJoinBtn(
