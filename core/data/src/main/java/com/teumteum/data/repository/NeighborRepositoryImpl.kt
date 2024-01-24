@@ -8,7 +8,9 @@ import javax.inject.Inject
 
 class NeighborRepositoryImpl @Inject constructor(private val remoteNeighborDataSource: RemoteNeighborDataSource) :
     NeighborRepository {
-    override suspend fun postNeighborUser(): MutableList<NeighborEntity> {
-        return remoteNeighborDataSource.postNeighborUser().aroundUserLocations.map { it.toEntity() }.toMutableList()
+
+    override suspend fun postNeighborUser(requestPostNeighborUser: com.teumteum.domain.repository.RequestPostNeighborUser): MutableList<NeighborEntity> {
+        return remoteNeighborDataSource.postNeighborUser(requestNeighborUser = requestPostNeighborUser).aroundUserLocations.map { it.toEntity() }
+            .toMutableList()
     }
 }

@@ -12,22 +12,22 @@ data class ResponsePostNeighborUser(
 ) {
     @Serializable
     data class AroundUserLocation(
-        @SerialName("characterId")
-        val characterId: Int,
         @SerialName("id")
-        val id: Int,
+        val id: Long,
+        @SerialName("name")
+        val name: String,
         @SerialName("jobDetailClass")
         val jobDetailClass: String,
-        @SerialName("name")
-        val name: String
+        @SerialName("characterId")
+        val characterId: Long,
     )
 }
 
 fun ResponsePostNeighborUser.AroundUserLocation.toEntity(): NeighborEntity {
     return NeighborEntity(
-        characterId = characterId, //todo - null 처리
         id = id,
+        name = name,
         jobDetailClass = jobDetailClass,
-        name = name
+        characterId = characterId //todo - null 처리
     )
 }

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
+import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -13,9 +15,13 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.domain.repository.RequestPostNeighborUser
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
+import com.teumteum.teumteum.util.AuthUtils
+import com.teumteum.teumteum.util.DrawableMapper
+import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -24,15 +30,15 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     AppBarLayout {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+    private val viewModel by viewModels<NeighborViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
-        initCharacterViews()
-        binding.btnStart.setOnClickListener {
-            startIntroduceActivity()
-        }
+        initMyCharacter()
+        setUpListener()
+        setUpObserver()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -51,45 +57,51 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         )
     }
 
-    private fun initCharacterViews() {
-        with(binding) {
-            setCharacterView(
-                view = cvMe,
-                imageRes = R.drawable.ic_bear,
-                job = "AOS 개발자",
-                name = "나"
-            )
-            setCharacterView(
-                view = cv1,
-                imageRes = R.drawable.ic_cat,
-                job = "AOS 개발자",
-                name = "신민서"
-            )
-            setCharacterView(
-                view = cv2,
-                imageRes = R.drawable.ic_rabbit,
-                job = "프로덕트 디자이너",
-                name = "김예은"
-            )
-            setCharacterView(
-                view = cv3,
-                imageRes = R.drawable.ic_star,
-                job = "프로덕트 디자이너",
-                name = "신한별"
-            )
-            setCharacterView(
-                view = cv4,
-                imageRes = R.drawable.ic_ghost,
-                job = "서버 개발자",
-                name = "최동근"
-            )
-            setCharacterView(
-                view = cv5,
-                imageRes = R.drawable.ic_panda,
-                job = "서버 개발자",
-                name = "강성민"
-            )
+    private fun initMyCharacter() {
+        val myInfo = AuthUtils.getMyInfo(this)
+        if (myInfo != null) {
+            with(binding.cvMe) {
+                characterImage.setImageResource(DrawableMapper.getCharacterDrawableById(myInfo.characterId.toInt()))
+                characterName.text = myInfo.name
+                characterJob.text = myInfo.job.name
+                isVisible = true
+            }
+        }
+    }
 
+    private fun setUpListener() {
+        binding.btnStart.setOnClickListener {
+            startIntroduceActivity()
+        }
+    }
+
+    private fun setUpObserver() { //한 바인딩 되면 페이지를 나갔다 들어올 때까지 계속 유지됨. 대응 조치 필요. List 전체를 다루는 게 아니라 어차피 최대 6명만 내려지니까 이 각각을 옵저빙하고 UI 상태 관리도
+        //각각 해줘야 함.
+        viewModel.neighborUserState.observe(this) { state ->
+            when (state) {
+                UiState.Loading -> {}
+                UiState.Success -> {
+                    val neighbors = viewModel.neighborUsers
+                    val views =
+                        listOf(binding.cv1, binding.cv2, binding.cv3, binding.cv4, binding.cv5)
+
+                    neighbors.forEachIndexed { index, neighbor ->
+                        if (index < views.size) {
+                            val imageRes =
+                                DrawableMapper.getCharacterDrawableById(neighbor.characterId.toInt())
+                            setCharacterView(
+                                view = views[index],
+                                imageRes = imageRes,
+                                job = neighbor.jobDetailClass,
+                                name = neighbor.name
+                            )
+                        }
+                    }
+                }
+
+                UiState.Failure -> {}
+                else -> {}
+            }
         }
     }
 
@@ -98,6 +110,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
             characterImage.setImageResource(imageRes)
             characterJob.text = job
             characterName.text = name
+            isVisible = true // todo - 제거 고민중
         }
     }
 
@@ -119,7 +132,9 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
-                    Timber.tag("Location").d("${location.latitude}, ${location.longitude}")
+                    Timber.tag("Location")
+                        .d("${location.latitude}, ${location.longitude}") //todo - post함수 추가
+                    postNeighborUser(latitude = location.latitude, longitude = location.longitude) //todo - 테스트용 임시 좌표, 동적 좌표로 수정 필요
                 }
             }
         }
@@ -129,6 +144,24 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
             locationCallback,
             Looper.getMainLooper()
         )
+    }
+
+    private fun postNeighborUser(latitude: Double, longitude: Double) { //todo - 함수명 수정
+        val myInfo = AuthUtils.getMyInfo(this)
+        Timber.tag("getMyInfo").d("$myInfo")
+
+        if (myInfo != null) {
+            viewModel.postNeighborUser(
+                requestPostNeighborUser = RequestPostNeighborUser(
+                    id = myInfo.id,
+                    latitude = latitude,
+                    longitude = longitude,
+                    name = myInfo.name,
+                    jobDetailClass = myInfo.job.detailClass,
+                    characterId = myInfo.characterId
+                )
+            )
+        }
     }
 
     override fun onResume() {

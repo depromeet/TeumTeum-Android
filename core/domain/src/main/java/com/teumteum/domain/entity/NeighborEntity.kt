@@ -1,10 +1,8 @@
 package com.teumteum.domain.entity
 
-import kotlinx.serialization.SerialName
-
 data class NeighborEntity(
-    val characterId: Int,
-    val id: Int,
+    val id: Long,
+    val name: String,
     val jobDetailClass: String,
-    val name: String
+    val characterId: Long
 )

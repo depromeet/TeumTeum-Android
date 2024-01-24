@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -43,6 +44,7 @@
             android:id="@+id/cv_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:characterImage="@drawable/ic_character_pink"
             app:isSelected="false"
             app:job="프로덕트 디자이너"
@@ -50,13 +52,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
-            app:name="나" />
+            app:name="나"
+            tools:visibility="visible" />
 
 
         <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
             android:id="@+id/cv_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:characterImage="@drawable/ic_character_pink"
             app:job="프로덕트 디자이너"
             app:layout_constraintBottom_toTopOf="@id/divider"
@@ -65,12 +69,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
             app:layout_constraintVertical_bias="0.837"
-            app:name="이프만" />
+            app:name="이프만"
+            tools:visibility="visible" />
 
         <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
             android:id="@+id/cv_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:characterImage="@drawable/ic_character_pink"
             app:job="AOS 개발자"
             app:layout_constraintBottom_toTopOf="@id/divider"
@@ -79,12 +85,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
             app:layout_constraintVertical_bias="0.584"
-            app:name="김프만" />
+            app:name="김프만"
+            tools:visibility="visible" />
 
         <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
             android:id="@+id/cv_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:characterImage="@drawable/ic_character_pink"
             app:job="서버 개발자"
             app:layout_constraintBottom_toTopOf="@id/divider"
@@ -93,12 +101,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
             app:layout_constraintVertical_bias="0.72"
-            app:name="박프만" />
+            app:name="박프만"
+            tools:visibility="visible" />
 
         <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
             android:id="@+id/cv_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:characterImage="@drawable/ic_character_pink"
             app:job="AOS 개발자"
             app:layout_constraintBottom_toTopOf="@id/divider"
@@ -107,12 +117,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
             app:layout_constraintVertical_bias="0.241"
-            app:name="김프만" />
+            app:name="김프만"
+            tools:visibility="visible" />
 
         <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
             android:id="@+id/cv_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:characterImage="@drawable/ic_character_pink"
             app:job="서버 개발자"
             app:layout_constraintBottom_toTopOf="@id/divider"
@@ -121,7 +133,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_background"
             app:layout_constraintVertical_bias="0.321"
-            app:name="박프만" />
+            app:name="박프만"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/divider"
