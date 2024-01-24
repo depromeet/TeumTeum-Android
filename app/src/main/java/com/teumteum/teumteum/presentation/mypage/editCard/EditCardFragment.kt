@@ -67,7 +67,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
 
-                val interests = result.data?.getStringArrayListExtra("selectedInterests")
+                val interests = result.data?.getStringArrayListExtra("selectedInterests2")
                 interests?.let {
                     viewModel.setInterestField(it)
                 }

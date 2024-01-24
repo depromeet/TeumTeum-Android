@@ -1,8 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,12 +35,8 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.moim.MoimCreateBtn
-import com.teumteum.teumteum.presentation.moim.MoimViewModel
-import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 
 @Composable
@@ -63,6 +57,7 @@ fun EditCardScreen(
     val date = viewModel.userBirth.collectAsState()
     val area by viewModel.preferredArea.collectAsState()
     val interests by viewModel.interestField.collectAsState()
+
 
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_edit_card_topbar),
@@ -128,8 +123,11 @@ fun EditCardScreen(
                 text = R.string.setting_edit_card_placeholder4,
                 text_error = R.string.setting_edit_card_error4,
                 onValueChange = {
-                    viewModel.updateCompanyName(it)
-                }
+                    if (it.length <= 20) {
+                        viewModel.updateCompanyName(it)
+                    }
+                },
+                isError = companyName.length > 20
             )
 
             //직군
@@ -267,11 +265,33 @@ fun EditCardLabel(string: String) {
 fun EditCardBtn(
     text: String,
     viewModel: EditCardViewModel,
-    isEnabled: Boolean = true
+    isEnabled: Boolean = false,
 ) {
-    val context = LocalContext.current
-    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
-    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+    // 각 필드의 현재 상태를 수집
+    val name = viewModel.userName.collectAsState().value
+    val companyName = viewModel.companyName.collectAsState().value
+    val goal = viewModel.goalText.collectAsState().value
+    val jobClass = viewModel.jobClass.collectAsState().value
+    val community = viewModel.community.collectAsState().value
+    val jobDetailClass = viewModel.jobDetailClass.collectAsState().value
+    val mbti = viewModel.mbtiText.collectAsState().value
+    val date = viewModel.userBirth.collectAsState().value
+    val area = viewModel.preferredArea.collectAsState().value
+    val interests = viewModel.interestField.collectAsState().value
+
+    // 모든 필드가 유효한지 검사
+    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.isNotEmpty() &&
+            jobClass.isNotEmpty() && community.isNotEmpty() && jobDetailClass.isNotEmpty() &&
+            mbti.isNotEmpty() && date.isNotEmpty() && area.isNotEmpty() &&
+            interests.isNotEmpty() && viewModel.isNameValid.collectAsState().value &&
+            viewModel.isValidDate(date)
+
+    // 버튼의 활성화 상태
+
+    val buttonColors =
+        if (isAllValid) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
+    val textColors =
+        if (isAllValid) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.color_text_button_primary_disabled
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -279,6 +299,7 @@ fun EditCardBtn(
             .padding(vertical = 10.dp),
         enabled = isEnabled,
         onClick = {
+            if(isAllValid) { viewModel.updateUserInfo() }
             },
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         shape = RoundedCornerShape(size = 4.dp)

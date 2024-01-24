@@ -130,6 +130,7 @@ data class ColorPalette_Light(
     val TMTMBlue500: Color = Color(0xFF1A9CFF),
 
     val color_button_active: Color = Color(0xFF44AEFF),
+    val color_button_disabled: Color = Color(0xFFE9E9E9),
     val GreyWhite: Color = Color(0xFFFFFFFF),
     val ColorDivider: Color = Color(0xFFF0F0F0),
     val elevation_color_elevation_level01: Color = Color(0xFFF5F5F5),

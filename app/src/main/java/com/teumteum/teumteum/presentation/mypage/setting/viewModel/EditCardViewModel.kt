@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -59,17 +60,27 @@ class EditCardViewModel @Inject constructor(
 
     fun isUserInfoChanged(): Boolean {
         originalUserInfo.value?.let { original ->
+            val formattedBirth = _userBirth.value.replace(".", "")
             val currentInfo = original.copy(
                 name = _userName.value,
-                birth = _userBirth.value,
+                birth = formattedBirth,
                 status =  _community.value,
                 interests =  _interestField.value,
                 mbti = _mbtiText.value,
+                job = original.job.copy(
+                    name = _companyName.value,
+                    jobClass = _jobClass.value,
+                    detailClass = _jobDetailClass.value
+                ),
+                activityArea = "${_preferredCity.value} ${_preferredStreet.value}",
+                goal = _goalText.value
             )
             return currentInfo != original
         }
         return false
     }
+
+
 
     fun updateUserInfo() = viewModelScope.launch {
         if(isUserInfoChanged()) {
@@ -80,22 +91,32 @@ class EditCardViewModel @Inject constructor(
                     status = _community.value,
                     mbti =  _mbtiText.value,
                     interests = _interestField.value,
+                    job = original.job.copy(
+                        name = _companyName.value,
+                        jobClass = _jobClass.value,
+                        detailClass = _jobDetailClass.value
+                    ),
+                    activityArea = "${_preferredCity.value} ${_preferredStreet.value}",
+                    goal = _goalText.value
 
                 )
                 userRepository.updateUserInfo(updatedUserInfo)
                     .onSuccess {
                         Log.d("업데이트 성공", "성공")
+                        saveDatastore(updatedUserInfo)
                         _sheetEvent.value = SheetEvent.Success
                     }
                     .onFailure {
                        _sheetEvent.value = SheetEvent.Error
                         Timber.e(it)
                     }
-
             }
         }
     }
 
+    private fun saveDatastore(userInfo: UserInfo) = viewModelScope.launch {
+        userRepository.saveUserInfo(userInfo)
+    }
 
     private val originalUserInfo = MutableStateFlow<UserInfo?>(null)
 
@@ -104,6 +125,8 @@ class EditCardViewModel @Inject constructor(
 
     private val _isNameValid = MutableStateFlow<Boolean>(true)
     val isNameValid: StateFlow<Boolean> = _isNameValid
+
+
 
     fun isValidName(name: String): Boolean {
         val nameWithoutSpaces = name.filter { !it.isWhitespace() }
@@ -253,5 +276,8 @@ class EditCardViewModel @Inject constructor(
     fun updateGoalText(goal: String) {
         _goalText.value = goal
     }
+
+
+
 
 }
