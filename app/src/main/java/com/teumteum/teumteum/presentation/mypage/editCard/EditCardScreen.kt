@@ -280,7 +280,7 @@ fun EditCardBtn(
     val interests = viewModel.interestField.collectAsState().value
 
     // 모든 필드가 유효한지 검사
-    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.isNotEmpty() &&
+    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.length <=50 &&
             jobClass.isNotEmpty() && community.isNotEmpty() && jobDetailClass.isNotEmpty() &&
             mbti.isNotEmpty() && date.isNotEmpty() && area.isNotEmpty() &&
             interests.isNotEmpty() && viewModel.isNameValid.collectAsState().value &&
