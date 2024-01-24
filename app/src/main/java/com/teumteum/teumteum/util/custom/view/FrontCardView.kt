@@ -233,7 +233,7 @@ class FrontCardView : CardView {
         addImageView(
             context,
             id = R.id.ivCharacter,
-            drawableRes = R.drawable.ic_card_penguin,
+            drawableRes = R.drawable.ic_card_front_penguin,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent
         )

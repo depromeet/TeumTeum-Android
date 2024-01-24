@@ -46,10 +46,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TeumDividerHorizontalThick
 import com.teumteum.base.component.compose.TeumDividerThick
@@ -64,7 +64,10 @@ import com.teumteum.base.util.extension.toast
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.group.join.GroupMeetCheckActivity
+import com.teumteum.teumteum.presentation.group.join.JoinFriendListActivity
+import com.teumteum.teumteum.presentation.group.join.check.GroupMeetCheckActivity
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 
@@ -78,7 +81,6 @@ fun MoimConfirm(
     onClick: ()-> Unit = { activity?.finish() },
 
 ) {
-
     val showDialog = remember { mutableStateOf(false) }
     val screenState by viewModel.screenState.collectAsState()
 
@@ -135,7 +137,8 @@ fun MoimConfirm(
                 TeumDividerHorizontalThick(int = 1, 20)
                 TmMarginVerticalSpacer(size = 20)
                 MoimJoinUserRow(viewModel) {
-                    activity.toast("it")
+                    activity.startActivity(JoinFriendListActivity.getIntent(activity, Json.encodeToString(it)))
+                    (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
                 }
                 TmMarginVerticalSpacer(size = 20)
             }
@@ -155,8 +158,7 @@ fun MoimConfirm(
                         )
                     }
                 }
-            }
-            else {
+            } else {
                 MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel)
                 TmMarginVerticalSpacer(size = 24)
             }

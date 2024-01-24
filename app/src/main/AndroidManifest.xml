@@ -36,8 +36,7 @@
         </activity>
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".presentation.group.GroupListActivity"
             android:exported="false" />
@@ -63,12 +62,12 @@
             android:name=".presentation.group.search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.group.join.GroupMeetCheckActivity"
+            android:name=".presentation.group.join.check.GroupMeetCheckActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.signup.finish.SignUpFinishActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.GroupMeetCompleteActivity"
+        <activity android:name=".presentation.group.join.complete.GroupMeetCompleteActivity"
             android:exported="false" />
         <activity android:name=".presentation.group.join.GroupDetailActivity"
             android:exported="false" />
@@ -85,7 +84,8 @@
             android:exported="false" />
         <activity android:name=".presentation.signup.terms.TermsWebViewActivity"
             android:exported="false" />
-
+        <activity android:name=".presentation.group.join.JoinFriendListActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

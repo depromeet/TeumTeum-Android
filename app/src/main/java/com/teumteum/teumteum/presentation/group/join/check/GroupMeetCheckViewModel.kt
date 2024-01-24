@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.group.join
+package com.teumteum.teumteum.presentation.group.join.check
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

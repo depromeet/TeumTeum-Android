@@ -211,6 +211,8 @@
     <string name="group_home">홈으로 가기</string>
     <string name="group_cancel">취소할래요</string>
 
+    <string name="group_join_friend_list_title">어떤 사람들과\n함께 하는지 살펴보세요</string>
+
     <string name="number_one">1</string>
     <string name="number_two">2</string>
 
@@ -258,6 +260,7 @@
     <string name="location_title">근처에 틈틈을 켠 사람을\n찾고 있어요!</string>
     <string name="character_name">김프만</string>
     <string name="character_job">AOS 개발자</string>
+    <string name="back_card_goal_title">GOAL</string>
     <string name="home_recommend_meet_title">%1$s 추천 모임 🔥</string>
 
 </resources>

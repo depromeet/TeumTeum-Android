@@ -2,14 +2,13 @@ package com.teumteum.teumteum.presentation.mypage.recommend.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.compose.runtime.collectAsState
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentRecommendDetailBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.RecommendDetailScreen
+import com.teumteum.teumteum.presentation.mypage.recommend.RecommendDetailScreen
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R.layout.fragment_recommend_detail) {
@@ -20,6 +19,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         super.onViewCreated(view, savedInstanceState)
 
         userId = arguments?.getInt("id") ?: -1
+        val isJoinView = arguments?.getBoolean("isJoinView") ?: false
         if (userId != -1) {
 
             viewModel.loadFriendInfo(userId.toLong())
@@ -35,7 +35,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         val navController = findNavController()
 
         binding.composeRecommendDetail.setContent {
-            RecommendDetailScreen(navController, viewModel, userId)
+            RecommendDetailScreen(navController, viewModel, userId, isJoinView, requireActivity())
         }
 
     }
