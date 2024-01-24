@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.FriendMyPage
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.SettingRepository
 import com.teumteum.domain.repository.UserRepository
@@ -38,10 +39,10 @@ class RecommendDetailViewModel @Inject constructor(
     private val _isFriend = MutableStateFlow<Boolean>(false)
     val isFriend: StateFlow<Boolean> = _isFriend.asStateFlow()
 
-    private val _friendsList = MutableStateFlow<List<Friend>>(emptyList())
-    val friendsList : StateFlow<List<Friend>> = _friendsList
+    private val _friendsList = MutableStateFlow<List<FriendMyPage>>(emptyList())
+    val friendsList : StateFlow<List<FriendMyPage>> = _friendsList
 
-    fun checkIfUserIsFriend(friendsList: List<Friend>, userId: Long) {
+    fun checkIfUserIsFriend(friendsList: List<FriendMyPage>, userId: Long) {
         _isFriend.value = friendsList.any { friend -> friend.id.toLong() == userId }
     }
 

@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 import android.content.Intent
 import androidx.annotation.DrawableRes
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.FriendMyPage
 import com.teumteum.teumteum.R
 
 data class Meeting(
@@ -17,7 +18,7 @@ data class Recommend(
     val characterId: Int,
 )
 
-fun Friend.toRecommend(): Recommend {
+fun FriendMyPage.toRecommend(): Recommend {
     return Recommend(
         id = this.id,
         characterId = this.characterId,
