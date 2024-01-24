@@ -9,12 +9,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.hideKeyboard
-import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySearchBinding
-import com.teumteum.teumteum.presentation.group.GroupListActivity
 import com.teumteum.teumteum.presentation.group.GroupListAdapter
+import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -52,7 +52,8 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
     private fun initGroupListAdapter() {
         groupListAdapter = GroupListAdapter {
-            //TODO 그룹 상세보기로 이동하는 로직 들어가야 함
+            startActivity(GroupDetailActivity.getIntent(this, it.id))
+            openActivitySlideAnimation()
         }
         binding.rvGroupList.adapter = groupListAdapter
         infinityScroll()
@@ -61,7 +62,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
     private fun initEvent() {
         binding.ivSearch.setOnClickListener {
             if (viewModel.isInputBlank) {
-                toast(getString(R.string.group_search_empty_keyword))
+                defaultToast(getString(R.string.group_search_empty_keyword))
             } else {
                 viewModel.initCurrentPage()
                 hideKeyboard(binding.root)
@@ -78,6 +79,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
         binding.ivBack.setOnClickListener {
             finish()
+            closeActivitySlideAnimation()
         }
     }
 
@@ -102,7 +104,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                     }
 
                     is SearchUiState.Failure -> {
-                        toast(it.msg)
+                        defaultToast(it.msg)
                     }
 
                     else -> {}

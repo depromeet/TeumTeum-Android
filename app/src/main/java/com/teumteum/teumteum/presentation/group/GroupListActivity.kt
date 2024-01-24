@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
-import com.teumteum.base.util.extension.defaultSnackBar
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.base.util.extension.stringExtra
 import com.teumteum.teumteum.R
@@ -47,6 +47,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
 
         adapter = GroupListAdapter {
             startActivity(GroupDetailActivity.getIntent(this, it.id))
+            openActivitySlideAnimation()
         }
 
         binding.rvGroupList.adapter = adapter
@@ -56,6 +57,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
     private fun initEvent() {
         binding.ivClose.setOnClickListener {
             finish()
+            closeActivitySlideAnimation()
         }
     }
 
@@ -72,7 +74,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
                     }
 
                     is GroupListUiState.Failure -> {
-                        defaultSnackBar(binding.root, it.msg)
+                        defaultToast(it.msg)
                     }
 
                     else -> {}

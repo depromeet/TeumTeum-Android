@@ -20,6 +20,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         super.onViewCreated(view, savedInstanceState)
 
         userId = arguments?.getInt("id") ?: -1
+        val isJoinView = arguments?.getBoolean("isJoinView") ?: false
         if (userId != -1) {
 
             viewModel.loadFriendInfo(userId.toLong())
@@ -35,7 +36,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         val navController = findNavController()
 
         binding.composeRecommendDetail.setContent {
-            RecommendDetailScreen(navController, viewModel, userId)
+            RecommendDetailScreen(navController, viewModel, userId, isJoinView, requireActivity())
         }
 
     }

@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.teumteum.base.BindingActivity
 import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
@@ -63,6 +64,7 @@ class HomeFragment :
                 clickEvent = {
                     Intent(requireActivity(), SearchActivity::class.java).apply {
                         startActivity(this)
+                        (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
                     }
                 }
             ),
@@ -78,6 +80,7 @@ class HomeFragment :
         viewModel.initCurrentPage(viewModel.getLocation())
         adapter = GroupListAdapter {
             startActivity(GroupDetailActivity.getIntent(requireActivity(), it.id))
+            (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
         }
         binding.rvRecommendMeet.adapter = adapter
         binding.tvRecommendTitle.text =
@@ -125,6 +128,7 @@ class HomeFragment :
 
     private fun goToGroupListActivity(title: String, type: Int) {
         startActivity(GroupListActivity.getIntent(requireActivity(), title, type))
+        (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
     }
 
     private fun navigateToMoimFragment() {

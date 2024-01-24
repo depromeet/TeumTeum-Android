@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.group.join
+package com.teumteum.teumteum.presentation.group.join.complete
 
 import android.content.Context
 import android.content.Intent
@@ -10,20 +10,21 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.defaultSnackBar
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.longExtra
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.ActivityGroupMeetCheckBinding
+import com.teumteum.teumteum.databinding.ActivityGroupMeetCompleteBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class GroupMeetCheckActivity :
-    BindingActivity<ActivityGroupMeetCheckBinding>(R.layout.activity_group_meet_check),
+class GroupMeetCompleteActivity :
+    BindingActivity<ActivityGroupMeetCompleteBinding>(R.layout.activity_group_meet_complete),
     AppBarLayout {
 
-    private val viewModel by viewModels<GroupMeetCheckViewModel>()
+    private val viewModel by viewModels<GroupMeetCompleteViewModel>()
     private val meetingId by longExtra()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,30 +47,24 @@ class GroupMeetCheckActivity :
                 useRippleEffect = false,
                 clickEvent = {
                     finish()
+                    closeActivitySlideAnimation()
                 }
             )
         )
     }
 
-    private fun initEvent() {
-        binding.checkboxWaring.setOnCheckedChangeListener { _, isCheck ->
-            binding.btnJoin.isEnabled = isCheck
-        }
-
-        binding.btnJoin.setOnClickListener {
-            viewModel.joinGroup(meetingId)
-        }
-    }
-
     private fun observe() {
-        viewModel.joinState.flowWithLifecycle(lifecycle)
+        viewModel.cancelState.flowWithLifecycle(lifecycle)
             .onEach {
                 when (it) {
-                    is MeetCheckUiState.Success -> {
-                        startActivity(GroupMeetCompleteActivity.getIntent(this, it.data.id))
+                    is GroupMeetCancelUiState.Success -> {
+                        defaultToast(getString(R.string.group_meet_cancel))
+                        goToMainActivity()
+                        finish()
                     }
-                    is MeetCheckUiState.Failure -> {
-                        defaultSnackBar(binding.root, it.msg)
+
+                    is GroupMeetCancelUiState.Failure -> {
+                        defaultToast(it.msg)
                     }
 
                     else -> {}
@@ -77,9 +72,28 @@ class GroupMeetCheckActivity :
             }.launchIn(lifecycleScope)
     }
 
+    private fun initEvent() {
+        binding.btnCancel.setOnClickListener {
+            viewModel.deleteJoinCancel(meetingId)
+        }
+
+        binding.btnHome.setOnClickListener {
+            goToMainActivity()
+            finish()
+        }
+    }
+
+    private fun goToMainActivity() {
+        Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(this)
+        }
+        openActivitySlideAnimation()
+    }
+
     companion object {
         fun getIntent(context: Context, meetingId: Long) =
-            Intent(context, GroupMeetCheckActivity::class.java).apply {
+            Intent(context, GroupMeetCompleteActivity::class.java).apply {
                 putExtra("meetingId", meetingId)
             }
     }
