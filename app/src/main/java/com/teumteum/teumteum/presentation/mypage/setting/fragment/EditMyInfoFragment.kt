@@ -12,7 +12,6 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewMo
 
 class EditMyInfoFragment: BindingFragment<FragmentEditMyinfoBinding>(R.layout.fragment_edit_myinfo) {
     private val viewModel : SettingViewModel by activityViewModels()
-    private val SettingViewModel: SettingViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
