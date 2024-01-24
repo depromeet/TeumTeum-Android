@@ -1,7 +1,9 @@
 package com.teumteum.teumteum.presentation.moim
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,10 +20,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import com.google.accompanist.pager.HorizontalPager
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
@@ -34,10 +39,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.compose.TeumDivider
+import com.teumteum.base.component.compose.TeumDividerHorizontalThick
 import com.teumteum.base.component.compose.TeumDividerThick
 import com.teumteum.base.component.compose.TmIndicator
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
@@ -45,14 +53,24 @@ import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.base.util.extension.toast
+import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.group.join.JoinFriendListActivity
+import com.teumteum.teumteum.presentation.group.join.check.GroupMeetCheckActivity
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MoimConfirm(viewModel: MoimViewModel) {
+fun MoimConfirm(viewModel: MoimViewModel, activity: Activity, isJoinView: Boolean) {
     TmScaffold(
-        topbarText = stringResource(id = R.string.moim_confirm_appbar),
+        topbarText = if (isJoinView) "" else stringResource(id = R.string.moim_confirm_appbar),
+        onClick = {
+            activity.finish()
+            (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
+        }
     ) {
         val scrollState = rememberScrollState()
         Column(
@@ -66,14 +84,30 @@ fun MoimConfirm(viewModel: MoimViewModel) {
             TmMarginVerticalSpacer(size = 32)
             TeumDividerThick(int = 8)
             TmMarginVerticalSpacer(size = 20)
-            MoimHostRow()
+            MoimHostRow(viewModel)
             TmMarginVerticalSpacer(size = 20)
+            if (isJoinView) {
+                TeumDividerHorizontalThick(int = 1, 20)
+                TmMarginVerticalSpacer(size = 20)
+                MoimJoinUserRow(viewModel) {
+                    activity.startActivity(JoinFriendListActivity.getIntent(activity, Json.encodeToString(it)))
+                    (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
+                }
+                TmMarginVerticalSpacer(size = 20)
+            }
             TeumDividerThick(int = 8)
             MoimConfirmIntroColumn(viewModel)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
-            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel)
-            TmMarginVerticalSpacer(size = 24)
+            if (isJoinView) {
+                MoimJoinBtn(viewModel = viewModel) {
+                    activity.startActivity(GroupMeetCheckActivity.getIntent(activity, it))
+                    (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
+                }
+            } else {
+                MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel)
+                TmMarginVerticalSpacer(size = 24)
+            }
         }
     }
 }
@@ -159,7 +193,6 @@ fun MoimInfoCard(viewModel: MoimViewModel) {
     val people by viewModel.people.collectAsState()
     val date by viewModel.date.collectAsState()
     val time by viewModel.time.collectAsState()
-    val address by viewModel.address.collectAsState()
     val detailAddress by viewModel.detailAddress.collectAsState()
 
     Box(
@@ -185,7 +218,7 @@ fun MoimInfoCard(viewModel: MoimViewModel) {
             TmMarginVerticalSpacer(size = 4)
             MoimCardRow(title = stringResource(id = R.string.moim_confirm_title3), text = "${people}명")
             TmMarginVerticalSpacer(size = 4)
-            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title4), text = "$address $detailAddress")
+            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title4), text = detailAddress)
 
         }
 
@@ -216,13 +249,15 @@ fun MoimCardRow(title: String, text: String) {
 }
 
 @Composable
-fun MoimHostRow() {
+fun MoimHostRow(viewModel: MoimViewModel) {
+    val characterId by viewModel.moinCreateUserCharacterId.collectAsState()
+    val name by viewModel.moinCreateUserName.collectAsState()
+    val job by viewModel.moinCreateUserJob.collectAsState()
     Row(
         modifier = Modifier
             .width(147.dp)
             .height(40.dp)
             .padding(start = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -232,7 +267,7 @@ fun MoimHostRow() {
                 .clip(CircleShape)
                 .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
         ) {
-            Image(painter = painterResource(id = R.drawable.ic_dog),
+            Image(painter = painterResource(id = characterId),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -242,21 +277,49 @@ fun MoimHostRow() {
 
         Column(
             modifier=Modifier
-                .wrapContentSize(),
+                .wrapContentSize()
+                .padding(start = 12.dp),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                text = "주최자 이름",
+                text = name,
                 style = TmTypo.current.HeadLine6,
                 color = TmtmColorPalette.current.color_text_body_primary
             )
             Text(
-                text = "주최자 직업",
+                text = job,
                 style = TmTypo.current.Caption1,
                 color = TmtmColorPalette.current.color_text_body_secondary,
                 modifier = Modifier.padding(start = 1.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun MoimJoinUserRow(viewModel: MoimViewModel, onJoinListClick: (List<Friend>) -> (Unit)) {
+    val moimJoinUserList by viewModel.moimJoinUsers.collectAsState()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onJoinListClick(moimJoinUserList) },
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(start = 20.dp)
+        ) {
+            MoimJoinList(moimJoinUserList, viewModel.characterList)
+        }
+        Box(
+            modifier = Modifier
+                .padding(end = 20.dp)
+        ) {
+            Text(text = "현재 참여중인 사람 ${moimJoinUserList.size}명",
+                style = TmTypo.current.Body2,
+                color = TmtmColorPalette.current.color_text_body_teritary)
         }
     }
 }
@@ -284,7 +347,73 @@ fun MoimConfirmIntroColumn(viewModel: MoimViewModel) {
             color = TmtmColorPalette.current.color_text_body_secondary,
         )
     }
+}
 
+@Composable
+fun MoimJoinList(moimJoinUserList: List<Friend>, characterList: HashMap<Int, Int>) {
+    LazyRow {
+        itemsIndexed(moimJoinUserList) { index, item ->
+            MoimJoinListItem(index, item, characterList)
+        }
+    }
+}
+
+@Composable
+fun MoimJoinListItem(index: Int, item: Friend, characterList: HashMap<Int, Int>) {
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .aspectRatio(1f)
+            .offset(
+                x = if (index > 0) (-8).dp * index else 0.dp
+            )
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .aspectRatio(1f)
+                .clip(CircleShape)
+                .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
+        )
+
+        Image(
+            painter = painterResource(
+                id = characterList[item.characterId] ?: R.drawable.ic_penguin
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Composable
+fun MoimJoinBtn(
+    viewModel: MoimViewModel,
+    onJoinGroupClick: (Long) -> Unit
+) {
+    val people by viewModel.people.collectAsState()
+    val moimJoinUsers by viewModel.moimJoinUsers.collectAsState()
+    val meetingsId by viewModel.meetingsId.collectAsState()
+    androidx.compose.material3.Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(76.dp)
+            .padding(horizontal = 20.dp, vertical = 10.dp),
+        onClick = {
+                  onJoinGroupClick(meetingsId)
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
+        shape = RoundedCornerShape(size = 4.dp)
+    ) {
+        Text(
+            text = "참여할래요 (${moimJoinUsers.size}/${people})",
+            style = TmTypo.current.HeadLine6,
+            color = TmtmColorPalette.current.color_text_button_primary_default
+        )
+    }
 }
 
 

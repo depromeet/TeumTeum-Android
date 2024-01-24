@@ -11,6 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.BottomsheetAreaModalBinding
+import com.teumteum.teumteum.util.SignupUtils.AREA_CITY_GYEONGGI
+import com.teumteum.teumteum.util.SignupUtils.AREA_CITY_INCHEON
+import com.teumteum.teumteum.util.SignupUtils.AREA_CITY_SEOUL
 
 class AreaModalBottomSheet : BottomSheetDialogFragment() {
 
@@ -21,7 +24,7 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
     private lateinit var streetRvAdapter: AreaStreetModalAdapter
     private lateinit var cityItemClickListener: (String) -> Unit
     private lateinit var streetItemClickListener: (String) -> Unit
-    private lateinit var focusedShowImageView: ImageView
+    private  var focusedShowImageView: ImageView? = null
     private var selectedCity: String = ""
     private var selectedStreet: String = ""
     private var focusedCity: String = ""
@@ -68,7 +71,7 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
         streetRvAdapter = AreaStreetModalAdapter(streetItemClickListener)
         streetRvAdapter.setSelectedStreet(selectedCity, selectedStreet)
         if (selectedCity.isNotBlank()) setFocusedCity(selectedCity)
-        else setFocusedCity("서울")
+        else setFocusedCity(AREA_CITY_SEOUL)
         with(binding.rvDetailArea) {
             adapter = streetRvAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -99,15 +102,15 @@ class AreaModalBottomSheet : BottomSheetDialogFragment() {
         focusedCity = city
         cityRvAdapter.setFocusedCity(focusedCity)
         when (focusedCity) {
-            "서울" -> streetRvAdapter.submitList(resources.getStringArray(R.array.seoul_areas).toList())
-            "경기" -> streetRvAdapter.submitList(resources.getStringArray(R.array.gyeonggi_areas).toList())
-            "인천" -> streetRvAdapter.submitList(resources.getStringArray(R.array.incheon_areas).toList())
+            AREA_CITY_SEOUL -> streetRvAdapter.submitList(resources.getStringArray(R.array.seoul_areas).toList())
+            AREA_CITY_GYEONGGI -> streetRvAdapter.submitList(resources.getStringArray(R.array.gyeonggi_areas).toList())
+            AREA_CITY_INCHEON -> streetRvAdapter.submitList(resources.getStringArray(R.array.incheon_areas).toList())
         }
         streetRvAdapter.setFocusedCity(focusedCity)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
+        focusedShowImageView?.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
     }
 

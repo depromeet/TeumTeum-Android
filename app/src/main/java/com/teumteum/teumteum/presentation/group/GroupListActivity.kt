@@ -3,18 +3,18 @@ package com.teumteum.teumteum.presentation.group
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.base.util.extension.stringExtra
-import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupListBinding
+import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,8 +46,10 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
         }
 
         adapter = GroupListAdapter {
-            Toast.makeText(this, it.photoUrls.first(), Toast.LENGTH_SHORT).show()
+            startActivity(GroupDetailActivity.getIntent(this, it.id))
+            openActivitySlideAnimation()
         }
+
         binding.rvGroupList.adapter = adapter
         infinityScroll()
     }
@@ -55,6 +57,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
     private fun initEvent() {
         binding.ivClose.setOnClickListener {
             finish()
+            closeActivitySlideAnimation()
         }
     }
 
@@ -71,7 +74,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
                     }
 
                     is GroupListUiState.Failure -> {
-                        toast(it.msg)
+                        defaultToast(it.msg)
                     }
 
                     else -> {}

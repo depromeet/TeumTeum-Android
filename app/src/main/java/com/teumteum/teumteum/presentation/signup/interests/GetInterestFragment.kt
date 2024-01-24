@@ -1,15 +1,13 @@
 package com.teumteum.teumteum.presentation.signup.interests
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentGetInterestBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -27,8 +25,16 @@ class GetInterestFragment:
 
         binding.vm = viewModel
         binding.lifecycleOwner = this
-        initSelfChips()
-        initFieldChips()
+
+        val isFromSpecialPath = arguments?.getBoolean("isFromSpecialPath", false) ?: false
+        if (isFromSpecialPath) {
+            val selectedInterests = arguments?.getStringArrayList("selectedInterests") ?: arrayListOf()
+            initChipsWithValue(selectedInterests)
+        } else {
+            initSelfChips()
+            initFieldChips()
+        }
+
         checkValidInput()
     }
 
@@ -71,13 +77,79 @@ class GetInterestFragment:
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     // Chip이 선택되었을 때 실행되는 코드
-                    viewModel.addInterestSelf(buttonView.text.toString())
+                    if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
+                        viewModel.addInterestSelf(buttonView.text.toString())
+                        viewModel.updateInterestCount()
+                    }
+                    else {
+                        context?.defaultSnackBar(view, getString(R.string.signup_tv_interset_toast),
+                            (activity as SignUpActivity).findViewById(R.id.btn_next_signup))
+                        buttonView.isChecked = false
+                    }
                 } else {
                     // Chip이 해제되었을 때 실행되는 코드
                     viewModel.removeInterestSelf(buttonView.text.toString())
+                    viewModel.updateInterestCount()
                 }
             }
             binding.cgInterest1.addView(chip)
+        }
+    }
+
+    private fun initChipsWithValue(selectedInterests: ArrayList<String>) {
+        val interestArray = resources.getStringArray(R.array.interest_1)
+        val fieldArray = resources.getStringArray(R.array.interest_2)
+
+        // 개인 칩 초기화
+        for (interest in interestArray) {
+            val chip = makeChip(interest)
+            val isChecked = interest in selectedInterests
+            chip.isChecked = interest in selectedInterests
+            setupChipListener(chip, isSelf = true)
+            binding.cgInterest1.addView(chip)
+            if (isChecked) {
+                viewModel.addInterestSelf(interest)
+            }
+        }
+
+        // 필드 칩 초기화
+        for (field in fieldArray) {
+            val chip = makeChip(field)
+            val isChecked = field in selectedInterests
+            chip.isChecked = field in selectedInterests
+            setupChipListener(chip, isSelf = false)
+            binding.cgInterest2.addView(chip)
+            if (isChecked) {
+                viewModel.addInterestField(field)
+            }
+        }
+    }
+
+    private fun setupChipListener(chip: Chip, isSelf: Boolean) {
+        chip.setOnCheckedChangeListener { buttonView, isChecked ->
+            val interest = buttonView.text.toString()
+
+            if (isChecked) {
+                if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
+                    if (isSelf) {
+                        viewModel.addInterestSelf(interest)
+                    } else {
+                        viewModel.addInterestField(interest)
+                    }
+                    viewModel.updateInterestCount()
+                } else {
+                    context?.defaultSnackBar(view, getString(R.string.signup_tv_interset_toast),
+                        (activity as SignUpActivity).findViewById(R.id.btn_next_signup))
+                    chip.isChecked = false
+                }
+            } else {
+                if (isSelf) {
+                    viewModel.removeInterestSelf(interest)
+                } else {
+                    viewModel.removeInterestField(interest)
+                }
+                viewModel.updateInterestCount()
+            }
         }
     }
 
@@ -90,10 +162,20 @@ class GetInterestFragment:
             chip.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     // Chip이 선택되었을 때 실행되는 코드
-                    viewModel.addInterestField(buttonView.text.toString())
+                    if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
+                        viewModel.addInterestField(buttonView.text.toString())
+                        viewModel.updateInterestCount()
+                    }
+                    else {
+                        context?.defaultSnackBar(view, getString(R.string.signup_tv_interset_toast),
+                            (activity as SignUpActivity).findViewById(R.id.btn_next_signup))
+                        buttonView.isChecked = false
+                    }
+
                 } else {
                     // Chip이 해제되었을 때 실행되는 코드
                     viewModel.removeInterestField(buttonView.text.toString())
+                    viewModel.updateInterestCount()
                 }
             }
             binding.cgInterest2.addView(chip)
@@ -107,5 +189,9 @@ class GetInterestFragment:
                 else (activity as SignUpActivity).disableNextButton()
             }
         }
+    }
+
+    companion object {
+        const val MAXIMUM_CHIP_COUNT = 3
     }
 }

@@ -2,7 +2,6 @@ package com.teumteum.teumteum.presentation.signup.modal
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     private lateinit var itemClickListener: (String) -> Unit
-    private lateinit var focusedShowImageView: ImageView
+    private var focusedShowImageView: ImageView? = null
     private var mbtiText: CharArray = "xxxx".toCharArray()
 
     override fun onCreateView(
@@ -53,12 +52,10 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setFeeler(feeler: Boolean) {
-        Log.d("teum-mbti", "setFeeler: $feeler")
         with(binding) {
             btnF.isSelected = feeler
             btnT.isSelected = !feeler
         }
-        Log.d("teum-mbti", "check: ${binding.btnF.isSelected} ${binding.btnT.isSelected}")
         mbtiText[2] = if (feeler) 'F' else 'T'
     }
 
@@ -70,7 +67,7 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
         mbtiText[3] = if (perceiver) 'P' else 'J'
     }
 
-    fun initMbti() {
+    fun initDefaultMbti() {
         mbtiText = "xxxx".toCharArray()
     }
 
@@ -111,6 +108,27 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
                 setPerceiver(false)
                 checkValid()
             }
+
+            when (mbtiText[0]) {
+                'E' -> btnE.callOnClick()
+                'I' -> btnI.callOnClick()
+                else -> {}
+            }
+            when (mbtiText[1]) {
+                'N' -> btnN.callOnClick()
+                'S' -> btnS.callOnClick()
+                else -> {}
+            }
+            when (mbtiText[2]) {
+                'F' -> btnF.callOnClick()
+                'T' -> btnT.callOnClick()
+                else -> {}
+            }
+            when (mbtiText[3]) {
+                'P' -> btnP.callOnClick()
+                'J' -> btnJ.callOnClick()
+                else -> {}
+            }
         }
     }
 
@@ -122,19 +140,15 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
         focusedShowImageView = iv
     }
 
-    fun setSelectedMbti(extrovert: Boolean, intuitive: Boolean, feeler: Boolean, perceiver: Boolean) {
-        binding.root.post {
-            with(binding) {
-                if (extrovert) btnE.callOnClick() else btnI.callOnClick()
-                if (intuitive) btnN.callOnClick() else btnS.callOnClick()
-                if (feeler) btnF.callOnClick() else btnT.callOnClick()
-                if (perceiver) btnP.callOnClick() else btnJ.callOnClick()
-            }
-        }
+    fun initSelectedMbti(extrovert: Boolean, intuitive: Boolean, feeler: Boolean, perceiver: Boolean) {
+        mbtiText[0] = if (extrovert) 'E' else 'I'
+        mbtiText[1] = if (intuitive) 'N' else 'S'
+        mbtiText[2] = if (feeler) 'F' else 'T'
+        mbtiText[3] = if (perceiver) 'P' else 'J'
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        focusedShowImageView.setImageResource(R.drawable.ic_arrow_down_l)
+        focusedShowImageView?.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
     }
 

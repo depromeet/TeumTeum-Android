@@ -1,19 +1,20 @@
 package com.teumteum.teumteum.presentation.signup
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
@@ -32,10 +33,15 @@ import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
 import com.teumteum.teumteum.presentation.splash.MyInfoUiState
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_OAUTHID
+import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
+import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_ENG
+import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_KOR
+import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_ENG
+import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_KOR
+import com.teumteum.teumteum.util.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SignUpActivity
@@ -53,10 +59,14 @@ class SignUpActivity
         initAppBarLayout()
         setProgressBar()
         setStartingFragment()
-        initNextButton()
-        initPreviousButton()
+        setUpInitialListener()
         observer()
         userInfoObserver()
+
+        val navigateTo = intent.getStringExtra("navigateTo")
+        navigateTo?.let {
+            navigateToFragment(it)
+        }
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -75,8 +85,28 @@ class SignUpActivity
     }
 
     private fun getIdProvider() {
-        oauthId = intent.getStringExtra("oauthId").toString()
-        provider = intent.getStringExtra("provider").toString()
+        oauthId = intent.getStringExtra(EXTRA_KEY_OAUTHID).toString()
+        provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
+    }
+
+    private fun navigateToFragment(fragmentName: String) {
+        when (fragmentName) {
+            "fragment_get_interest" -> {
+                val fragment = GetInterestFragment().apply {
+                    arguments = Bundle().apply {
+                        putBoolean("isFromSpecialPath", true)
+                        val interests = intent.getStringArrayListExtra("interests")
+                        putStringArrayList("selectedInterests", interests)
+                    }
+                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fcv_signup, fragment)
+                    .commit()
+            }
+            else -> {
+                setStartingFragment()
+            }
+        }
     }
 
     private fun setStartingFragment() {
@@ -95,44 +125,66 @@ class SignUpActivity
         binding.seekBar.visibility = View.GONE
     }
 
+    private fun hideAppbar() {
+        binding.appBar.clAppBar.visibility = View.INVISIBLE
+    }
+
+    private fun showAppbar() {
+        binding.appBar.clAppBar.visibility = View.VISIBLE
+    }
+
     private fun changeToTwoCallButton() {
         with(binding) {
             btnNextSignup.visibility = View.GONE
+            btnFinishSignup.visibility = View.GONE
             btnTwocallSignup.visibility = View.VISIBLE
         }
     }
 
+    // fix 화면 나타날 때
     private fun changeToCtaButton() {
         with(binding) {
             btnTwocallSignup.visibility = View.GONE
-            btnNextSignup.apply {
-                visibility = View.VISIBLE
-                text = getString(R.string.signup_tv_go_home)
-                setOnClickListener { registerUserInfo() }
-            }
+            btnFinishSignup.visibility = View.VISIBLE
         }
     }
 
-    private fun initNextButton() {
+    private fun setUpInitialListener() {
         binding.btnNextSignup.setOnClickListener {
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
-    }
-
-    private fun initPreviousButton() {
         getLeftMenuChildAt(0).setOnClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
         }
     }
 
-    private fun setPreviousButtonOnCardComplete() {
+    // card fix 시 특정 필드를 수정하는 화면의 하단 버튼
+    fun showNextButtonOnFixingField() {
+        binding.appBar.clAppBar.visibility = View.INVISIBLE
+        binding.btnFinishSignup.visibility = View.GONE
+        binding.btnNextSignup.visibility = View.VISIBLE
+    }
+
+    fun activateFixFinishButton() {
+        binding.btnFinishSignup.isEnabled = true
+    }
+
+    fun disableFixFinishButton() {
+        binding.btnFinishSignup.isEnabled = false
+    }
+
+    private fun setUpListenersOnCardComplete() {
         binding.btnFix.setOnClickListener {
+            savePresentUserInfo()
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
         binding.btnKeep.setOnClickListener {
+            registerUserInfo()
+        }
+        binding.btnFinishSignup.setOnClickListener {
             registerUserInfo()
         }
         getLeftMenuChildAt(0).setOnClickListener {
@@ -140,10 +192,13 @@ class SignUpActivity
         }
     }
 
-    private fun setPreviousButtonOnCardFix() {
+    private fun setUpListenersOnCardFix() {
         getLeftMenuChildAt(0).setOnClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
+        }
+        binding.btnNextSignup.setOnClickListener {
+            fixCard()
         }
     }
 
@@ -161,9 +216,9 @@ class SignUpActivity
                         splashViewModel.refreshUserInfo()
                     }
                     is UserInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         finish()
-                        }
+                    }
                     else -> {}
                 }
             }
@@ -178,7 +233,7 @@ class SignUpActivity
                         goToSignUpFinishActivity()
                     }
                     is MyInfoUiState.Failure -> {
-                        toast(state.msg)
+                        defaultSnackBar(binding.root, state.msg)
                         finish()
                     }
                     else -> {}
@@ -187,17 +242,21 @@ class SignUpActivity
         }
     }
 
+    private fun savePresentUserInfo() {
+        viewModel.savePresentUserInfo(provider)
+    }
+
     private fun registerUserInfo() {
-        if (provider == "kakao")
+        if (provider == KAKAO_PROVIDER_ENG)
             viewModel.postSignUp(
                 oauthId,
-                "카카오",
+                KAKAO_PROVIDER_KOR,
                 serviceAgreed = true,
                 privatePolicyAgreed = true)
-        else if (provider == "naver")
+        else if (provider == NAVER_PROVIDER_ENG)
             viewModel.postSignUp(
                 oauthId,
-                "네이버",
+                NAVER_PROVIDER_KOR,
                 serviceAgreed = true,
                 privatePolicyAgreed = true)
     }
@@ -233,14 +292,30 @@ class SignUpActivity
     private fun completeCard() {
         navigateTo<CardCompleteFragment>()
         hideProgressBar()
-        setPreviousButtonOnCardComplete()
+        hideAppbar()
+        setUpListenersOnCardComplete()
         changeToTwoCallButton()
     }
 
     private fun fixCard() {
+        showAppbar()
         navigateTo<CardFixFragment>()
-        setPreviousButtonOnCardFix()
+        setUpListenersOnCardFix()
         changeToCtaButton()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val focusView = currentFocus
+        if (focusView != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev!!.x.toInt()
+            val y = ev.y.toInt()
+            if (!rect.contains(x, y))
+                hideKeyboard(focusView)
+
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     inline fun <reified T : Fragment> navigateTo() {

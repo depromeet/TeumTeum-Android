@@ -25,15 +25,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
+import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
-fun MeetingItem(meeting: Meeting) {
+fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting) {
+    val formattedTime = formatDateTime(meeting.date)
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
@@ -58,12 +64,12 @@ fun MeetingItem(meeting: Meeting) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "{$meeting.title}",
+                    text = meeting.name,
                     style = TmTypo.current.HeadLine7,
                     color = TmtmColorPalette.current.color_text_headline_primary
                 )
                 Text(
-                    text = "${meeting.time}",
+                    text = formattedTime,
                     style = TmTypo.current.Body3,
                     color = TmtmColorPalette.current.color_text_body_quaternary
                 )
@@ -77,44 +83,81 @@ fun MeetingItem(meeting: Meeting) {
     }
 }
 
+fun formatDateTime(dateTime: String): String {
+    val outputFormat = SimpleDateFormat("M월 d일 aa h:mm", Locale.KOREAN)
+    val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.KOREAN)
+    val inputFormat2 = SimpleDateFormat("MM'월' dd'일' a h:mm", Locale.KOREAN)
+
+    try {
+        //서버에서 받을때
+        val date = inputFormat1.parse(dateTime)
+        return outputFormat.format(date ?: return "")
+    } catch (e: ParseException) {
+        try {
+            //다른 형식
+            val date = inputFormat2.parse(dateTime)
+            return outputFormat.format(date ?: return "")
+        } catch (e: ParseException) {
+            return ""
+        }
+    }
+}
+
 @Composable
 fun NoMoimItems(
-    commingMoim: Boolean = true
+    commingMoim: Boolean = true,
+    navController: NavController
 ) {
     val textId = if(commingMoim) R.string.setting_pager1_no_moim_text else R.string.setting_pager1_no_moim_text2
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
-        .clickable { }
+        .clickable { navController.navigate(R.id.fragment_home)}
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)
         )
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = textId),
-                style = TmTypo.current.HeadLine7,
-                color = TmtmColorPalette.current.color_text_headline_primary
-            )
-            Text(
-                text = stringResource(id = R.string.setting_pager1_go_to_moim),
-                style = TmTypo.current.Body1,
-                color = TmtmColorPalette.current.color_text_button_secondary_default
-            )
-
+        if(commingMoim) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = textId),
+                    style = TmTypo.current.HeadLine7,
+                    color = TmtmColorPalette.current.color_text_headline_primary
+                )
+                Text(
+                    text = stringResource(id = R.string.setting_pager1_go_to_moim),
+                    style = TmTypo.current.Body1,
+                    color = TmtmColorPalette.current.color_text_button_secondary_default
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = textId),
+                    style = TmTypo.current.HeadLine7,
+                    color = TmtmColorPalette.current.color_text_headline_primary,
+                )
+            }
         }
     }
+    TmMarginVerticalSpacer(size = 16)
 }
-@Preview
 @Composable
-fun MyMoimItems(metting: Meeting = MeetingDummy1) {
+fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting) {
+    val formattedTime = formatDateTime(meeting.date)
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
@@ -139,7 +182,7 @@ fun MyMoimItems(metting: Meeting = MeetingDummy1) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "${metting.title}",
+                    text = meeting.name,
                     style = TmTypo.current.HeadLine7,
                     color = TmtmColorPalette.current.color_text_headline_primary
                 )
@@ -150,7 +193,7 @@ fun MyMoimItems(metting: Meeting = MeetingDummy1) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${metting.time}",
+                        text = formattedTime,
                         style = TmTypo.current.Body3,
                         color = TmtmColorPalette.current.color_text_body_quaternary
                     )
@@ -164,6 +207,7 @@ fun MyMoimItems(metting: Meeting = MeetingDummy1) {
             )
         }
     }
+    TmMarginVerticalSpacer(size = 16)
 }
 
 @Composable

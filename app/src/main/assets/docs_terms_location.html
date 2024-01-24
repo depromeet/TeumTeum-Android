@@ -1,0 +1,692 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>위치 기반 서비스 이용 동의</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="4177d4f9-16b3-46b8-b8b9-c53cc7d8d95b" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🔒</span></div><h1 class="page-title">위치 기반 서비스 이용 동의</h1><p class="page-description"></p></header><div class="page-body"><p id="955d2296-3ee4-4b74-91d3-0a44a3136b7c" class="">
+</p><p id="524418cd-0b16-45d8-bcdb-edf54b907558" class="">틈틈 위치기반서비스 이용약관</p><p id="0514c452-4ea5-476e-8931-38e783dcaebc" class="">○ 본 약관은 2024년 1월 22일부터 시행합니다.</p><hr id="159f7eff-3092-4271-abcc-4b901be5375e"/><p id="07bb3068-cc64-4ff4-850e-08275448fc86" class="">
+</p><h2 id="d2f33242-6e6e-4c19-b2da-6eca40b2cdbf" class=""><strong>제 1 조 목적</strong></h2><p id="680ab9b0-0336-45b1-bb09-6b77007dc67e" class="">본 약관은 이용자가 틈틈(이하 “단체”라 합니다)이 제공하는 위치기반서비스(이하 “서비스”라 합니다)를 이용함에 있어 단체와 회원의 권리・의무 및 책임사항을 규정함을 목적으로 합니다.</p><p id="2c830987-e414-4bea-a029-b35ff686b4d1" class="">
+</p><h2 id="69b27116-6703-422e-876d-e91dd7e5dd7b" class=""><strong>제 2 조 서비스 이용약관과의 관계</strong></h2><ol type="1" id="05607ddd-d2f2-411f-bb51-80155aa8925a" class="numbered-list" start="1"><li>본 약관은 teumteum Application 이용약관(이하 “서비스 이용약관”이라 합니다)의 일부를 이루는 것으로 봅니다.</li></ol><ol type="1" id="6b296da4-29a6-4f9e-86b1-d22daf56bb63" class="numbered-list" start="2"><li>위치기반서비스와 관련하여 본 약관과 서비스 이용약관의 내용이 서로 모순되는 경우에는 본 약관의 내용이 우선합니다.</li></ol><p id="d41336ea-4922-4935-b45d-3b32d52f682d" class="">
+</p><h2 id="5b63f781-d03e-41cb-887a-22df1296f627" class=""><strong>제 3 조 약관 외 준칙</strong></h2><p id="8cc2d4c1-4d99-4746-a03a-9e0ce9b1c40d" class="">본 약관에 규정되지 않은 사항에 대해서는 위치정보의 보호 및 이용 등에 관한 법률(이하 “위치정보법”이라고 합니다), 전기통신사업법, 정보통신망 이용촉진 및 보호 등에 관한 법률(이하 “정보통신망법”이라고 합니다), 개인정보보호법 등 관련법령 또는 단체가 정한 서비스의 운영정책 및 규칙 등(이하 “세부지침”이라고 합니다)의 규정에 따릅니다.</p><p id="0da16496-4ee8-4444-9d3b-a755540a04f7" class="">
+</p><h2 id="94b112a5-34b8-4148-b36d-5c9b5c326507" class=""><strong>제 4 조 서비스의 내용</strong></h2><ol type="1" id="e0c6f35f-895e-4c94-a3f0-88efb3be1b95" class="numbered-list" start="1"><li>단체가 제공하는 서비스의 종류, 세부 내용, 이용 요금은 아래와 같습니다.</li></ol><ul id="9f2eb8c1-1c83-41c8-bde7-b6fefd96733d" class="bulleted-list"><li style="list-style-type:disc">서비스 명 : 틈틈 / teumteum</li></ul><ul id="b7aa0ad5-9723-42b8-b8ac-c669afedd5f5" class="bulleted-list"><li style="list-style-type:disc">설명 : 사람 사이의 틈을 이어 성장을 돕는 IT 커리어 네트워킹 서비스</li></ul><ul id="196ab760-003a-4f8b-806a-e1eeb5107a24" class="bulleted-list"><li style="list-style-type:disc">요금 : 무료</li></ul><ul id="9c415cbc-d88c-455b-9ca4-37c1d431817b" class="bulleted-list"><li style="list-style-type:disc">위치정보 이용 목적 :<ul id="b66e4485-dc4b-460f-bf7c-f8eb938a8ff4" class="bulleted-list"><li style="list-style-type:circle">이용자의 현재 위치를 이용한 정보 및 컨텐츠 추천</li></ul><ul id="54e1d31b-818a-4aa8-b40e-22dd316bc822" class="bulleted-list"><li style="list-style-type:circle">위치를 기반으로 한 단체의 개인화 서비스 제공<br/><br/></li></ul></li></ul><ol type="1" id="351eecbd-e729-4df4-ac84-ed8ace694662" class="numbered-list" start="2"><li>서비스의 이용은 연중무휴 1일 24시간을 원칙으로 합니다. 단, 단체의 업무 또는 기술상의 이유로 서비스가 일시 중지될 수 있으며, 운영상의 목적으로 단체가 정한 기간에도 서비스는 일시 중지될 수 있습니다. 이때 단체는 사전 또는 사후에 이를 공지합니다.</li></ol><p id="739676eb-96bd-48db-8e45-d835c5ef8dc5" class="">
+</p><h2 id="6520e5b8-1e08-46f6-b166-79e2fbfa7c1a" class=""><strong>제 5 조 서비스 이용요금</strong></h2><ol type="1" id="879a9a1a-c1db-4445-8a4d-e3cfc9e1b0b8" class="numbered-list" start="1"><li>단체가 제공하는 서비스는 기본적으로 무료입니다. 단, 별도의 유료서비스의 경우 해당 서비스에 명시된 요금을 지불하여야 사용 가능합니다.</li></ol><ol type="1" id="3d24ec02-76bd-4b33-aba5-b21b372dcbb0" class="numbered-list" start="2"><li>단체는 유료서비스 이용요금을 단체와 계약한 전자지불업체에서 정한 방법에 의하거나 단체가 정한 청구서에 합산하여 청구할 수 있습니다.</li></ol><ol type="1" id="ef69e64a-2021-43e2-8537-82d4ebcd99fb" class="numbered-list" start="3"><li>유료서비스 이용을 통하여 결제된 대금에 대한 취소 및 환불은 단체의 결제 이용약관 등 관련법령에 따릅니다.</li></ol><ol type="1" id="caf07ac9-f92f-4746-a4ff-df8cf82b27c2" class="numbered-list" start="4"><li>회원의 개인정보도용 및 결제사기로 인한 환불요청 또는 결제자의 개인정보 요구는 법률이 정한 경우 외에는 거절될 수 있습니다.</li></ol><ol type="1" id="519f722c-f76e-432c-b4be-611225884e8d" class="numbered-list" start="5"><li>무선서비스 이용 시 발생하는 데이터 통신료는 별도이며, 회원이 가입한 각 이동통신사의 정책에 따릅니다.</li></ol><ol type="1" id="2faffbfa-92a1-47a6-aaa4-eaebdbc033d6" class="numbered-list" start="6"><li>MMS 등으로 게시물을 등록할 경우 발생하는 요금은 회원이 가입한 각 이동통신사의 정책에 따릅니다.</li></ol><p id="92c488ef-3a78-4c14-8e28-3c3db310f888" class="">
+</p><h2 id="11c79965-a576-4d74-8223-08f8f8322784" class=""><strong>제 6 조 서비스내용변경 통지 등</strong></h2><ol type="1" id="0ae5aba0-1edf-49c6-9592-f39eca5e1bc6" class="numbered-list" start="1"><li>단체가 서비스 내용을 변경하거나 종료하는 경우 단체는 회원의 등록된 전자우편 주소로 이메일을 통하여 서비스 내용의 변경 사항 또는 종료를 통지할 수 있습니다.</li></ol><ol type="1" id="295e4a33-1925-4de2-9e97-1b1734a5c47c" class="numbered-list" start="2"><li>전항의 경우 불특정 다수인을 상대로 통지를 함에 있어서는 서비스 홈페이지 등 기타 단체의 공지사항 페이지를 통하여 회원들에게 통지할 수 있습니다. 단, 회원 본인의 거래와 관련하여 중대한 영향을 미치는 사항은 회원에게 전자적 형태(전자우편, SMS 등)로 개별통지 합니다.</li></ol><p id="8588089e-111c-4ecb-ac95-ef47332738ea" class="">
+</p><h2 id="0f3e4309-aa08-4d2e-84aa-9128c1c51a10" class=""><strong>제 7 조 개인위치정보의 이용 또는 제공</strong></h2><ol type="1" id="9bb86c1f-67f2-4175-875d-60caf32ea2b5" class="numbered-list" start="1"><li>단체는 타사업자 또는 이용 고객과의 요금정산 및 민원처리를 위해 위치정보 이용·제공, 사실 확인자료를 자동 기록·보존하며, 해당 자료는 1년간 보관합니다.</li></ol><ol type="1" id="3fd838a8-fed7-4047-bf4a-9f2ad26fba7b" class="numbered-list" start="2"><li>단체는 개인위치정보주체의 동의 없이 개인위치정보를 제3자에게 제공하지 아니하며, 제3자 제공 서비스를 제공하는 경우에는 제공받는 자 및 제공목적을 사전에 개인위치정보주체에게 고지하고 동의를 받습니다. 다만, 다음 각 호의 경우는 개인위치정보주체의 동의 없이도 개인위치정보를 다음 각호의 자에게 제공할 수 있습니다.</li></ol><ol type="1" id="52bbb6d1-a8df-4e51-915c-f21ca3eca0b7" class="numbered-list" start="3"><li>법령의 규정에 의거하거나 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우</li></ol><ol type="1" id="8cb72bc4-3a3c-4fc5-be28-403168a32e82" class="numbered-list" start="4"><li>단체는 개인위치정보를 회원이 지정하는 제3자에게 제공하는 경우에는 개인위치정보를 수집한 당해 통신 단말장치로 매회 회원에게 제공받는 자, 제공 일시 및 제공목적을 즉시 통보합니다. 단, 다음 각 호의 어느 하나에 해당하는 경우에는 회원이 미리 특정하여 지정한 통신 단말장치 또는 전자우편주소로 통보합니다.</li></ol><ol type="1" id="6b1a5a49-1dc1-4ba0-bab6-edacfd6cd509" class="numbered-list" start="5"><li>개인위치정보를 수집한 당해 통신단말장치가 문자, 음성 또는 영상의 수신기능을 갖추지 아니한 경우</li></ol><ol type="1" id="867c3547-26d8-44bd-93f5-d21f9506daca" class="numbered-list" start="6"><li>회원이 온라인 게시 등의 방법으로 통보할 것을 미리 요청한 경우</li></ol><p id="662f0a01-50b3-4059-8c43-e13feb422a41" class="">
+</p><h2 id="df5eb291-b037-4c9e-9dc3-5dfad5b71433" class=""><strong>제 8 조 개인위치정보주체의 권리</strong></h2><ol type="1" id="08a35cd1-53c6-40b3-a2de-9b1d95f7fdc2" class="numbered-list" start="1"><li>회원은 단체에 대하여 언제든지 개인위치정보를 이용한 위치기반서비스 제공 및 개인위치정보의 제3자 제공에 대한 동의의 전부 또는 일부를 철회할 수 있습니다. 이 경우 단체는 수집한 개인위치정보 및 위치정보 이용, 제공사실 확인자료를 파기합니다.</li></ol><ol type="1" id="5c9f6f8f-f836-4454-a7c0-669b8a0b2b1e" class="numbered-list" start="2"><li>회원은 단체에 대하여 언제든지 개인위치정보의 수집, 이용 또는 제공의 일시적인 중지를 요구할 수 있습니다.</li></ol><ol type="1" id="357a23b3-980c-4af2-983a-eee7c30c4a31" class="numbered-list" start="3"><li>회원은 단체에 대하여 아래 각 호의 자료에 대한 열람 또는 고지를 요구할 수 있고, 당해 자료에 오류가 있는 경우에는 그 정정을 요구할 수 있습니다. 이 경우 단체는 정당한 사유 없이 회원의 요구를 거절할 수 없습니다.</li></ol><ol type="1" id="bbea164f-0f5b-460b-84a3-9086672f029b" class="numbered-list" start="4"><li>본인에 대한 위치정보 수집, 이용, 제공사실 확인자료</li></ol><ol type="1" id="651d2c2f-787b-4805-8e9b-02e2e8b40e98" class="numbered-list" start="5"><li>본인의 개인위치정보가 위치정보법 또는 다른 법률 규정에 의하여 제3자에게 제공된 이유 및 내용</li></ol><ol type="1" id="5136c448-67a1-4cda-8b94-7a790620664e" class="numbered-list" start="6"><li>회원은 제1항 내지 제3항의 권리행사를 위해 단체의 소정의 절차를 통해 요구할 수 있습니다.</li></ol><p id="1e1b6ee6-1bba-4ea9-ac72-6ebac6e4d5f4" class="">
+</p><h2 id="febeb580-06e5-468a-8f01-ebdf3230c749" class=""><strong>제 11 조 법정대리인의 권리</strong></h2><ol type="1" id="a521783e-09dd-4e2b-8f30-8ced209614b9" class="numbered-list" start="1"><li>단체는 14세 미만의 회원에 대해서는 개인위치정보를 이용한 위치기반서비스 제공 및 개인위치정보의 제3자 제공에 대한 동의를 당해 회원과 당해 회원의 법정대리인으로부터 동의를 받아야 합니다. 이 경우 법정대리인은 제11조에 의한 회원의 권리를 모두 가집니다.</li></ol><ol type="1" id="6b323bdd-771d-45f3-a322-5a3d83a96167" class="numbered-list" start="2"><li>단체는 14세 미만의 아동의 개인위치정보 또는 위치정보 이용, 제공사실 확인자료를 이용약관에 명시 또는 고지한 범위를 넘어 이용하거나 제3자에게 제공하고자 하는 경우에는 14세 미만의 아동과 그 법정대리인의 동의를 받아야 합니다. 단, 아래의 경우는 제외합니다.</li></ol><ol type="1" id="616434e0-bd10-4c2b-8e14-1e88c3e3d1f7" class="numbered-list" start="3"><li>위치정보 및 위치기반서비스 제공에 따른 요금정산을 위하여 위치정보 이용, 제공사실 확인자료가 필요한 경우</li></ol><ol type="1" id="0f0bbbc6-96f2-4a35-bf9c-7e645a805696" class="numbered-list" start="4"><li>통계작성, 학술연구 또는 시장조사를 위하여 특정 개인을 알아볼 수 없는 형태로 가공하여 제공하는 경우</li></ol><p id="57e88adf-093e-4c8d-bdce-013ed2a72d88" class="">
+</p><h2 id="7cbcf27f-dcf3-4a83-a7ba-d8b208964446" class=""><strong>제 12 조 8세 이하의 아동 등의 보호의무자의 권리</strong></h2><ol type="1" id="23752089-fc78-43e4-b6ba-13a737a6e9e6" class="numbered-list" start="1"><li>단체는 다음 각 호의 어느 하나에 해당하는 자(이하 “8세 이하의 아동 등”)의 보호의무자가 8세 이하의 아동 등의 생명 또는 신체보호를 위하여 개인위치정보의 이용 또는 제공에 동의하는 경우에는 본인의 동의가 있는 것으로 봅니다.</li></ol><ol type="1" id="0062712d-775c-44e1-95ea-d845d3f24b04" class="numbered-list" start="2"><li>8세 이하의 아동</li></ol><ol type="1" id="b84d8b06-b6aa-4f8b-ac4e-9ff147e40995" class="numbered-list" start="3"><li>피성년후견인</li></ol><ol type="1" id="70f32936-4af7-4dee-9255-815a7556b846" class="numbered-list" start="4"><li>장애인복지법 제2조 제2항 제2호의 규정에 따른 정신적 장애를 가진 자로서 장애인 고용촉진 및 직업재활법 제2조 제2호의 규정에 따라 중증장애인에 해당하는 자(장애인복지법 제32조의 규정에 따라 장애인등록을 한 자에 한합니다)</li></ol><ol type="1" id="4d4206ae-9bb9-4161-9d36-2e49f2cd6b25" class="numbered-list" start="5"><li> 전항의 규정에 따른 8세 이하 아동 등의 보호의무자는 해당 아동을 사실상 보호하는 자로서 다음 각 호의 어느 하나에 해당하는 자를 말합니다.</li></ol><ol type="1" id="5c981a91-5184-43d7-9309-b20143d9758d" class="numbered-list" start="6"><li>8세 이하의 아동의 법정대리인 또는 보호시설에 있는 미성년자의 후견 직무에 관한 법률 제3조의 규정에 따른 후견인</li></ol><ol type="1" id="5f4aea3c-20fe-496c-92c0-00f9749b5e4d" class="numbered-list" start="7"><li>피성년후견인의 법정대리인</li></ol><ol type="1" id="17578b90-ff13-4a4c-bd99-df7bbc8080db" class="numbered-list" start="8"><li>본 조 제1항 제3호의 자의 법정대리인 또는 장애인복지법 제58조 제1항 제1호의 규정에 따른 장애인생활시설(국가 또는 지방자치단체가 설치·운영하는 시설에 한합니다)의 장, 정신보건법 제3조 제4호의 규정에 따른 정신질환자 사회복귀시설(국가 또는 지방자치단체가 설치·운영하는 시설에 한합니다)의 장, 동법 동조 제5호의 규정에 따른 정신요양시설의 장</li></ol><ol type="1" id="4e682d5b-cccb-4740-a4b6-ce1789fc9144" class="numbered-list" start="9"><li>8세 이하의 아동 등의 생명 또는 신체의 보호를 위하여 개인위치정보의 이용 또는 제공에 동의를 하고자 하는 보호의무자는 서면동의서에 보호의무자임을 증명하는 서면을 첨부하여 단체에 제출하여야 합니다.</li></ol><ol type="1" id="ba41a5bf-f725-467c-ad0e-f4e7b05ec75a" class="numbered-list" start="10"><li>보호의무자는 8세 이하의 아동 등의 개인위치정보 이용 또는 제공에 동의하는 경우 개인위치정보주체 권리의 전부를 행사할 수 있습니다.</li></ol><p id="39f2ab71-7e1f-4207-b1f8-d3f30dbba05c" class="">
+</p><h2 id="3ea46e1b-a715-4531-a30f-584117426904" class=""><strong>제 13 조 개인정보 보호책임자 작성</strong></h2><ol type="1" id="cf861908-884c-41aa-9df3-5cb9da70bbc7" class="numbered-list" start="1"><li>틈틈은 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.<ul id="d873f284-fc34-45b5-9e7f-0d616829d5e2" class="bulleted-list"><li style="list-style-type:disc">성명 : 신한별</li></ul><ul id="eb3a040d-61d9-484c-b1c7-a8f1120b5f39" class="bulleted-list"><li style="list-style-type:disc">직책 : Product Designer</li></ul><ul id="4b6af3db-8d93-4438-9ece-cf5046a97058" class="bulleted-list"><li style="list-style-type:disc">문의처 : <a href="mailto:depromeet146@gmail.com">depromeet14.6@gmail.com</a></li></ul></li></ol><p id="a4d1330f-8760-4919-9a17-fc4cea8f0a94" class="">정보주체는 틈틈의 서비스(또는 사업)을 이용하시면서 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을 개인정보 보호책임자 및 담당부서로 문의하실 수 있습니다. 틈틈은 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.</p><p id="fc4a858b-936c-46e1-af75-a37394e37b4f" class="">
+</p><h2 id="060dbc2b-5dcc-4394-ad1d-25ae4bd7e1e6" class=""><strong>제 14 조 손해배상</strong></h2><ol type="1" id="ba756b74-9e43-4f0d-a91a-4bd26380c7cc" class="numbered-list" start="1"><li>단체가 위치정보법 제15조 내지 제26조의 규정을 위반한 행위로 회원에게 손해가 발생한 경우 회원은 단체에 대하여 손해배상 청구를 할 수 있습니다. 이 경우 단체는 고의, 과실이 없음을 입증하지 못하는 경우 책임을 면할 수 없습니다.</li></ol><ol type="1" id="6f107a1b-adb3-461c-9eb5-44fc9518e8a7" class="numbered-list" start="2"><li>회원이 본 약관의 규정을 위반하여 단체에 손해가 발생한 경우 단체는 회원에 대하여 손해배상을 청구할 수 있습니다. 이 경우 회원은 고의, 과실이 없음을 입증하지 못하는 경우 책임을 면할 수 없습니다.</li></ol><p id="56bf5988-e238-45f0-8d00-4fb39488b006" class="">
+</p><h2 id="33b88172-8f6e-4356-89b7-9864cfa63b93" class=""><strong>제 15 조 면책</strong></h2><ol type="1" id="1e59051b-27d0-44d9-add2-1ac267de9400" class="numbered-list" start="1"><li>단체는 다음 각 호의 경우로 서비스를 제공할 수 없는 경우 이로 인하여 회원에게 발생한 손해에 대해서는 책임을 부담하지 않습니다.</li></ol><ol type="1" id="a3a2ecc9-2354-4183-98c0-4753500588bb" class="numbered-list" start="2"><li>천재지변 또는 이에 준하는 불가항력의 상태가 있는 경우</li></ol><ol type="1" id="047e7c98-0e6d-4312-a36b-c22a66d5a25f" class="numbered-list" start="3"><li>서비스 제공을 위하여 단체와 서비스 제휴계약을 체결한 제3자의 고의적인 서비스 방해가 있는 경우</li></ol><ol type="1" id="590eab2d-f666-4efd-9c72-5a5e462c23f7" class="numbered-list" start="4"><li>회원의 귀책사유로 서비스 이용에 장애가 있는 경우</li></ol><ol type="1" id="881a7782-e7a5-432c-8731-ae0fd0e305ee" class="numbered-list" start="5"><li>제1호 내지 제3호를 제외한 기타 단체의 고의ㆍ과실이 없는 사유로 인한 경우</li></ol><ol type="1" id="a8a21382-36bc-446b-aedb-1130e2bcb64c" class="numbered-list" start="6"><li>단체는 서비스 및 서비스에 게재된 정보, 자료, 사실의 신뢰도, 정확성 등에 대해서는 보증을 하지 않으며 이로 인해 발생한 회원의 손해에 대하여는 책임을 부담하지 아니합니다.</li></ol><p id="504e47cc-4a04-4632-aefd-da3527b96808" class="">
+</p><h2 id="8d2fe50b-29e9-41a5-aad3-a0fa62199716" class=""><strong>제 16 조 분쟁의 조정 및 기타</strong></h2><ol type="1" id="51ac1e8a-d9e5-45eb-b285-9fc67d8a9d11" class="numbered-list" start="1"><li>서비스 이용과 관련하여 단체와 회원 간에 분쟁이 발생하면, 단체는 분쟁의 해결을 위해 회원과 성실히 협의합니다.</li></ol><ol type="1" id="511663d0-83d8-4d37-8cb4-c84d8388cbe8" class="numbered-list" start="2"><li>전항의 협의에서 분쟁이 해결되지 않은 경우 단체와 회원은 위치정보법 제28조에 의한 방송통신위원회에 재정을 신청하거나, 개인정보보호법 제43조에 의한 방송통신위원회 또는 개인정보분쟁조정위원회에 재정 또는 분쟁조정을 신청할 수 있습니다.</li></ol><ol type="1" id="e493ccb7-889a-4bf8-b2b4-dbc9a67b738c" class="numbered-list" start="3"><li>전항으로도 분쟁이 해결되지 않으면 단체와 회원 양 당사자는 민사소송법상의 관할법원에 소를 제기할 수 있습니다.</li></ol><p id="f2dd3779-0b5d-45bc-abad-00ae91171ab7" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

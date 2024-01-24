@@ -1,52 +1,54 @@
 package com.teumteum.teumteum.presentation.mypage.recommend.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
+import androidx.compose.runtime.collectAsState
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
-import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentRecommendDetailBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.mypage.recommend.RecommendDetailScreen
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
-
+import com.teumteum.teumteum.presentation.mypage.RecommendDetailScreen
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R.layout.fragment_recommend_detail) {
-    private val viewModel: SettingViewModel by activityViewModels()
+    private val viewModel: RecommendDetailViewModel by activityViewModels()
+    private val mypageViewModel : MyPageViewModel by activityViewModels()
+    private var userId: Int = -1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as MainActivity).hideBottomNavi()
+        userId = arguments?.getInt("id") ?: -1
+        val isJoinView = arguments?.getBoolean("isJoinView") ?: false
+        if (userId != -1) {
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingStatus.collect { status ->
-                handleSettingStatus(status)
+            viewModel.loadFriendInfo(userId.toLong())
+            viewModel.getUserOpenMeeting(userId.toLong())
+            viewModel.getUserClosedMeeting(userId.toLong())
+            viewModel.loadFriends(userId.toLong())
+            mypageViewModel.friendsList.value.let { friendsList ->
+                viewModel.checkIfUserIsFriend(friendsList, userId.toLong())
             }
         }
+
+        (activity as MainActivity).showBottomNavi()
+        val navController = findNavController()
 
         binding.composeRecommendDetail.setContent {
-            RecommendDetailScreen()
+            RecommendDetailScreen(navController, viewModel, userId, isJoinView, requireActivity())
         }
 
     }
 
-    val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            viewModel.updateSettingStatus(SettingStatus.RECOMMEND)
-        }
-    }
-    private fun handleSettingStatus(status: SettingStatus) {
-        when (status) {
-            SettingStatus.ERROR -> {
-                requireActivity().toast("서버 통신에 실패했습니다")
-                viewModel.updateSettingStatus(SettingStatus.DEFAULT)
-            }
-            else -> {}
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadFriendInfo(userId.toLong())
+        viewModel.getUserOpenMeeting(userId.toLong())
+        viewModel.getUserClosedMeeting(userId.toLong())
+        viewModel.loadFriends(userId.toLong())
+        mypageViewModel.friendsList.value.let { friendsList ->
+            viewModel.checkIfUserIsFriend(friendsList, userId.toLong())
         }
     }
 

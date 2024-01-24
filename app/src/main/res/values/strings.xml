@@ -25,14 +25,21 @@
     <string name="onboarding_tv_networking_subtitle">회사/학교 인증, 지인 인증, 리뷰 등으로\n안전한 네트워킹을 즐겨보세요</string>
     <string name="shake_title">세 분의 관심사의 틈을 채워\n대화 주제를 조합하는 중이에요</string>
 
+    <string name="onboarding_tv_access_location_title">위치 권한을 허용해주세요</string>
+    <string name="onboarding_tv_access_location_subtitle">지역 기반 기능 사용 시 위치 권한이 필요합니다.</string>
+    <string name="onboarding_tv_access_location_allow">허용</string>
+    <string name="onboarding_tv_access_location_decline">허용 안함</string>
+
     <string name="signin_tv_kakao">카카오톡으로 시작하기</string>
     <string name="signin_tv_naver">네이버로 시작하기</string>
+    <string name="signin_tv_fail_snackbar">소셜 로그인에 실패했습니다</string>
 
     <string name="signup_tv_terms_title">틈틈에 오신 것을 환영합니다</string>
     <string name="signup_tv_terms_subtitle">서비스 시작 및 가입을 위해서 먼저\n가입 및 정보 제공에 동의해 주세요.</string>
     <string name="signup_tv_terms_agree_all">전체동의</string>
     <string name="signup_tv_terms_agree_1">서비스 이용약관</string>
     <string name="signup_tv_terms_agree_2">개인정보 처리방침</string>
+    <string name="signup_tv_terms_agree_3">위치 기반 서비스 이용 동의</string>
     <string name="signup_tv_terms_mandatory">(필수)</string>
     <string name="signup_btn_start">시작하기</string>
     <string name="signup_tv_card_intro_title">나만의 소개서를 만들어 봐요</string>
@@ -84,6 +91,7 @@
     <string name="signup_tv_interest_title">카드의 뒷면을 완성해\n나를 표현해 주세요!</string>
     <string name="signup_tv_interest_1">자기계발</string>
     <string name="signup_tv_interest_2">관심분야</string>
+    <string name="signup_tv_interset_toast">최대 3개까지 선택할 수 있어요</string>
 
     <string name="signup_tv_area_modal_title">관심 지역</string>
     <string name="signup_tv_goal_title">틈틈을 이용해 달성하고\n싶은 목표를 알려주세요!</string>
@@ -169,6 +177,7 @@
     <string name="setting_edit_card_label9">자기개발/관심분야</string>
     <string name="setting_edit_card_label10">틈틈 목표</string>
     <string name="setting_edit_card_btn">수정 완료</string>
+    <string name="setting_edit_chip_plus">추가하기</string>
 
     <string name="setting_edit_card_topbar">소개서 수정하기</string>
     <string name="setting_edit_card_placeholder1">실명을 입력해주세요</string>
@@ -197,9 +206,12 @@
     <string name="group_meet_check_warning">무단으로 불참하거나, 함께하는 멤버들을\n존중하지 않고 피해를 주는 경우\n신고 제도를 통해 이용에 제재를 받게 됩니다.</string>
     <string name="group_meet_check_box_text">확인했습니다!</string>
     <string name="group_meet_complete">참여가 완료되었어요!</string>
+    <string name="group_meet_cancel">모임 신청이 취소되었습니다</string>
     <string name="group_join">참여하기</string>
     <string name="group_home">홈으로 가기</string>
     <string name="group_cancel">취소할래요</string>
+
+    <string name="group_join_friend_list_title">어떤 사람들과\n함께 하는지 살펴보세요</string>
 
     <string name="number_one">1</string>
     <string name="number_two">2</string>

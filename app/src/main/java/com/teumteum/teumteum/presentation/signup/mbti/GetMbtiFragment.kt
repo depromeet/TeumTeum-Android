@@ -12,6 +12,7 @@ import com.teumteum.teumteum.presentation.signup.SignUpViewModel
 import com.teumteum.teumteum.presentation.signup.modal.MbtiModalBottomSheet
 import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class GetMbtiFragment:
     BindingFragment<FragmentGetMbtiBinding>(R.layout.fragment_get_mbti) {
@@ -34,22 +35,19 @@ class GetMbtiFragment:
             bottomSheet?.dismiss()
         }
 
-        bottomSheet = MbtiModalBottomSheet.newInstance("MBTI", listener)
+        bottomSheet = MbtiModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, listener)
 
         with(binding) {
             llStatus.setOnClickListener {
                 bottomSheet?.setFocusedImageView(ivShow)
-                val mbtiBoolean = BooleanArray(4)
-                val mbtiCharArray = viewModel.mbtiText.value.toCharArray()
-//                reloadLastMbti()
-                bottomSheet?.initMbti()
+                reloadLastMbti()
                 bottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
                 ivShow.setImageResource(R.drawable.ic_arrow_up_l)
             }
         }
     }
 
-    /* 지난 mbti 선택에 따라 버튼 활성화 유지 -> 수정 필요 */
+    /* 지난 mbti 선택에 따라 버튼 활성화 유지 -> 수정 완료 */
     private fun reloadLastMbti() {
         val mbtiBoolean = BooleanArray(4)
         val mbtiCharArray = viewModel.mbtiText.value.toCharArray()
@@ -58,9 +56,9 @@ class GetMbtiFragment:
             mbtiBoolean[1] = mbtiCharArray[1] == 'N'
             mbtiBoolean[2] = mbtiCharArray[2] == 'F'
             mbtiBoolean[3] = mbtiCharArray[3] == 'P'
-            bottomSheet?.setSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
+            bottomSheet?.initSelectedMbti(mbtiBoolean[0], mbtiBoolean[1], mbtiBoolean[2], mbtiBoolean[3])
         }
-        else bottomSheet?.initMbti()
+        else bottomSheet?.initDefaultMbti()
     }
 
     private fun checkValidInput() {
@@ -73,5 +71,6 @@ class GetMbtiFragment:
     }
 
     companion object {
+        const val BOTTOM_SHEET_TITLE = "MBTI"
     }
 }

@@ -7,6 +7,10 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCardCompleteBinding
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
+import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST
+import com.teumteum.teumteum.util.SignupUtils.STATUS_STUDENT
+import com.teumteum.teumteum.util.SignupUtils.STATUS_TRAINEE
+import com.teumteum.teumteum.util.SignupUtils.STATUS_WORKER
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -25,13 +29,13 @@ class CardCompleteFragment
 
     private fun initCard() {
         with(viewModel) {
-            val fc = characterList[characterId.value]?.let {
+            val fc = CHARACTER_CARD_LIST[characterId.value]?.let {
                 when (community.value) {
-                    COMMUNITY_WORKER -> FrontCard(userName.value, "@${companyName.value}", jobDetailClass.value,
+                    STATUS_WORKER -> FrontCard(userName.value, "@${companyName.value}", jobDetailClass.value,
                         "lv.1층", "${preferredArea.value}에 사는", mbtiText.value.toUpperCase(Locale.ROOT), it)
-                    COMMUNITY_STUDENT -> FrontCard(userName.value, "@${schoolName.value}", readyJobDetailClass.value,
+                    STATUS_STUDENT -> FrontCard(userName.value, "@${schoolName.value}", readyJobDetailClass.value,
                         "lv.1층", "${preferredArea.value}에 사는", mbtiText.value.toUpperCase(Locale.ROOT), it)
-                    COMMUNITY_TRAINEE -> FrontCard(userName.value, "@준비 중", readyJobDetailClass.value,
+                    STATUS_TRAINEE -> FrontCard(userName.value, "@준비 중", readyJobDetailClass.value,
                         "lv.1층", "${preferredArea.value}에 사는", mbtiText.value.toUpperCase(Locale.ROOT), it)
                     else -> FrontCard()
                 }
@@ -41,23 +45,5 @@ class CardCompleteFragment
     }
 
     companion object {
-        private val characterList: HashMap<Int, Int> = hashMapOf(
-            0 to R.drawable.ic_card_ghost,
-            1 to R.drawable.ic_card_star,
-            2 to R.drawable.ic_card_bear,
-            3 to R.drawable.ic_card_raccon,
-            4 to R.drawable.ic_card_cat,
-            5 to R.drawable.ic_card_rabbit,
-            6 to R.drawable.ic_card_fox,
-            7 to R.drawable.ic_card_water,
-            8 to R.drawable.ic_card_penguin,
-            9 to R.drawable.ic_card_dog,
-            10 to R.drawable.ic_card_mouse,
-            11 to R.drawable.ic_card_panda
-        )
-
-        private const val COMMUNITY_WORKER = "직장인"
-        private const val COMMUNITY_STUDENT = "학생"
-        private const val COMMUNITY_TRAINEE = "취업준비생"
     }
 }

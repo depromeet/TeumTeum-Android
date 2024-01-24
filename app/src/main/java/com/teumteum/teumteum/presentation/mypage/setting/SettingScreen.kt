@@ -19,6 +19,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -118,6 +120,7 @@ fun SettingScreen(viewModel: SettingViewModel, navController: NavController) {
 
 @Composable
 fun SettingAccountRow(viewModel: SettingViewModel, navController: NavController) {
+    val name by viewModel.userName.collectAsState()
     Row(modifier = Modifier
         .fillMaxWidth()
         .background(color = TmtmColorPalette.current.color_background)
@@ -132,7 +135,7 @@ fun SettingAccountRow(viewModel: SettingViewModel, navController: NavController)
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
-            Text(text = "정은아", style = TmTypo.current.HeadLine6, color= TmtmColorPalette.current.color_text_headline_primary)
+            Text(text = name, style = TmTypo.current.HeadLine6, color= TmtmColorPalette.current.color_text_headline_primary)
             TmMarginHorizontalSpacer(size = 4)
             Text(text = stringResource(id = R.string.setting_my_info_edit_text),
                 style = TmTypo.current.Body3,
@@ -143,7 +146,9 @@ fun SettingAccountRow(viewModel: SettingViewModel, navController: NavController)
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_right_l ),
             contentDescription = "right_arrow", tint= Color.Unspecified,
-            modifier = Modifier.size(20.dp).clickable { navController.navigate(R.id.fragment_edit_myinfo) }
+            modifier = Modifier
+                .size(20.dp)
+                .clickable { navController.navigate(R.id.fragment_edit_myinfo) }
         )
 
     }

@@ -1,10 +1,9 @@
-package com.teumteum.teumteum.presentation.group.join
+package com.teumteum.teumteum.presentation.group.join.check
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.repository.GroupRepository
-import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,7 @@ class GroupMeetCheckViewModel @Inject constructor(
 
     fun joinGroup(meetingId: Long) {
         viewModelScope.launch {
-            repository.postGroupJoin(meetingId)
+            repository.postJoinGroup(meetingId)
                 .onSuccess {
                     _joinState.value = MeetCheckUiState.Success(it)
                 }.onFailure {
