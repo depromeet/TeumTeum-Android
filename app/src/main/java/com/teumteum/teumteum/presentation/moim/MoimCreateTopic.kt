@@ -160,7 +160,7 @@ fun CreateTopicItem(
             .height(92.dp)
             .clickable(onClick = onItemSelected)
             .padding(horizontal = 20.dp)
-            .background(color = TmtmColorPalette.current.Gray50, shape = RoundedCornerShape(4.dp))
+            .background(color = TmtmColorPalette.current.elevation_color_elevation_level01, shape = RoundedCornerShape(4.dp))
     ) {
         Row(modifier = Modifier
             .fillMaxSize()

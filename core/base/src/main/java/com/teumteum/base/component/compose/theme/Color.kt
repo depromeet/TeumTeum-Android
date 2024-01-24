@@ -66,7 +66,7 @@ data class ColorPalette_Dark(
     val TMTMBlue500: Color = Color(0xFF0FA4FF),
 
     val color_button_active: Color = Color(0xFF36B2FF),
-    val color_button_disabled: Color = Color(0xFFE9E9E9),
+    val color_button_disabled: Color = Color(0xFF292929),
     val color_button_alternative : Color = Color(0xFFE9E9E9),
 
     val GreyWhite: Color = Color(0xFF1111111),

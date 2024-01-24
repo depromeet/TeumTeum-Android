@@ -135,8 +135,9 @@ class MoimViewModel @Inject constructor(
             if (result != null) {
                 _moinCreateUserJob.value = result.job?.detailClass ?: ""
                 _moinCreateUserName.value = result.name.toString()
-                _moinCreateUserCharacterId.value = result.characterId?.toInt()!!
+                _moinCreateUserCharacterId.value = characterList[result.characterId?.toInt() ?: 0] ?: R.drawable.ic_ghost
             }
+
         }
     }
 
