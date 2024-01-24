@@ -30,6 +30,9 @@
             <argument
                 android:name="id"
                 app:argType="integer"/>
+            <argument
+                android:name="isJoinView"
+                app:argType="boolean"/>
         </action>
 
     </fragment>
