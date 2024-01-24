@@ -67,18 +67,18 @@ class MyPageViewModel @Inject constructor(
         }
     }
     val characterList: HashMap<Int, Int> = hashMapOf(
-        0 to R.drawable.ic_card_ghost,
-        1 to R.drawable.ic_card_star,
-        2 to R.drawable.ic_card_bear,
-        3 to R.drawable.ic_card_raccon,
-        4 to R.drawable.ic_card_cat,
-        5 to R.drawable.ic_card_rabbit,
-        6 to R.drawable.ic_card_fox,
-        7 to R.drawable.ic_card_water,
-        8 to R.drawable.ic_card_penguin,
-        9 to R.drawable.ic_card_dog,
-        10 to R.drawable.ic_card_mouse,
-        11 to R.drawable.ic_card_panda
+        0 to R.drawable.ic_card_front_ghost,
+        1 to R.drawable.ic_card_front_star,
+        2 to R.drawable.ic_card_front_bear,
+        3 to R.drawable.ic_card_front_raccon,
+        4 to R.drawable.ic_card_front_cat,
+        5 to R.drawable.ic_card_front_rabbit,
+        6 to R.drawable.ic_card_front_fox,
+        7 to R.drawable.ic_card_front_water,
+        8 to R.drawable.ic_card_front_penguin,
+        9 to R.drawable.ic_card_front_dog,
+        10 to R.drawable.ic_card_front_mouse,
+        11 to R.drawable.ic_card_front_panda
     )
 
 

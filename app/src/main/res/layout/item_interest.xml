@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data></data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:theme="@style/Theme.TeumTeum">
+
+        <TextView
+            android:id="@+id/tv_interest"
+            style="@style/ta.caption.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_rect4_background"
+            android:padding="8dp"
+            android:textColor="@color/text_caption_secondary_default"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="#사이드 프로젝트" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

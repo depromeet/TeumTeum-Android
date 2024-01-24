@@ -52,7 +52,7 @@
             app:level="@string/front_card_level"
             app:area="@string/front_card_area"
             app:mbti="@string/front_card_mbti"
-            app:characterImage="@drawable/ic_card_penguin"
+            app:characterImage="@drawable/ic_card_front_penguin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle"

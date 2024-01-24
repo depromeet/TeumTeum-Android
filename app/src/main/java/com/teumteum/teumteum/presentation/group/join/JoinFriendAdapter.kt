@@ -37,7 +37,7 @@ class JoinFriendAdapter(private val itemClick: (Friend) -> (Unit)) :
                 tvName.text = item.name
                 tvArea.text = item.activityArea
                 tvMbti.text = item.mbti
-                ivCharacter.setImageResource(SignupUtils.CHARACTER_CARD_LIST[item.characterId] ?: R.drawable.ic_card_penguin)
+                ivCharacter.setImageResource(SignupUtils.CHARACTER_CARD_LIST[item.characterId] ?: R.drawable.ic_card_front_penguin)
             }
 
             binding.root.setOnClickListener {

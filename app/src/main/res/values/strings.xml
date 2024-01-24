@@ -257,6 +257,7 @@
     <string name="location_title">근처에 틈틈을 켠 사람을\n찾고 있어요!</string>
     <string name="character_name">김프만</string>
     <string name="character_job">AOS 개발자</string>
+    <string name="back_card_goal_title">GOAL</string>
     <string name="home_recommend_meet_title">%1$s 추천 모임 🔥</string>
 
 </resources>
