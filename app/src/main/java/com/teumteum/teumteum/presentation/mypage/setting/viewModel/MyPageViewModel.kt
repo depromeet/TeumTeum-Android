@@ -4,6 +4,7 @@ package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.FriendMyPage
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
@@ -28,8 +29,8 @@ class MyPageViewModel @Inject constructor(
     private val _frontCardState = MutableStateFlow(FrontCard())
     val frontCardState: StateFlow<FrontCard> = _frontCardState
 
-    private val _friendsList = MutableStateFlow<List<Friend>>(emptyList())
-    val friendsList : StateFlow<List<Friend>> = _friendsList
+    private val _friendsList = MutableStateFlow<List<FriendMyPage>>(emptyList())
+    val friendsList : StateFlow<List<FriendMyPage>> = _friendsList
 
     init {
         loadUserInfo()

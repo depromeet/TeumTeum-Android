@@ -52,6 +52,7 @@ class SignUpActivity
     private val splashViewModel by viewModels<SplashViewModel>()
     private var oauthId = ""
     private var provider = ""
+    private var isFromMainActivity = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +73,8 @@ class SignUpActivity
         userInfoObserver()
 
         val navigateTo = intent.getStringExtra("navigateTo")
+        isFromMainActivity = intent.getBooleanExtra("isFromMainActivity", false)
+
         navigateTo?.let {
             navigateToFragment(it)
         }
@@ -105,7 +108,12 @@ class SignUpActivity
                         putBoolean("isFromSpecialPath", true)
                         val interests = intent.getStringArrayListExtra("interests")
                         putStringArrayList("selectedInterests", interests)
+                        val combinedInterests = ArrayList<String>()
+                        combinedInterests.addAll(viewModel.interestSelf.value)
+                        combinedInterests.addAll(viewModel.interestField.value)
+                        putStringArrayList("selectedInterests2", combinedInterests)
                     }
+                    binding.btnNextSignup.visibility = View.GONE
                 }
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fcv_signup, fragment)
@@ -116,6 +124,7 @@ class SignUpActivity
             }
         }
     }
+
 
     private fun setStartingFragment() {
         navigateTo<CharacterFragment>()

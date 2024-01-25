@@ -57,7 +57,7 @@ fun SettingScreen(viewModel: SettingViewModel, navController: NavController) {
     LaunchedEffect(viewModel.dialogEvent) {
         viewModel.dialogEvent.collect { event ->
             when(event) {
-                DialogEvent.LOGOUT, DialogEvent.CANCEL -> {
+                DialogEvent.LOGOUT -> {
                     showDialog.value = true
                     dialogTitle.value = context.getString(event.getTitleResId())
                     okText.value = context.getString(event.getOkTextResId())

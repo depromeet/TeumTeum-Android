@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.mypage.editCard
 
 import android.app.Activity
 import android.app.ProgressDialog.show
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -17,6 +18,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.toast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -64,10 +66,11 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // 결과 처리
-                val data: Intent? = result.data
-                // data에서 결과를 추출하고 처리
 
+                val interests = result.data?.getStringArrayListExtra("selectedInterests2")
+                interests?.let {
+                    viewModel.setInterestField(it)
+                }
                 viewModel.triggerSheetEvent(SheetEvent.Dismiss)
             }
         }
@@ -121,10 +124,13 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                         val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
                             val interests = viewModel.interestField.value
                             putExtra("interests", ArrayList(interests))
+                            putExtra("isFromMainActivity", true)
                             putExtra("navigateTo", "fragment_get_interest")
                         }
                         resultLauncher.launch(intent)
                     }
+                    SheetEvent.Error -> { context?.toast("서버 통신에 오류가 발생했습니다") }
+                    SheetEvent.Success -> {context?.toast("정보 수정이 완료되었습니다")}
                     else -> {}
                 }
             }

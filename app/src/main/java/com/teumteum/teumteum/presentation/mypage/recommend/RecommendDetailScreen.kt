@@ -1,6 +1,7 @@
-package com.teumteum.teumteum.presentation.mypage
+package com.teumteum.teumteum.presentation.mypage.recommend
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.teumteum.base.component.compose.TmTabItem
 import com.teumteum.base.component.compose.TmTabRow
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.mypage.FrontCardView
 import com.teumteum.teumteum.presentation.mypage.pager.MeetingItem
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
 import com.teumteum.teumteum.presentation.mypage.pager.NoMoimItems
@@ -49,7 +51,6 @@ fun RecommendDetailScreen(
     isJoinView: Boolean,
     activity: Activity
 ) {
-    val userInfo by viewModel.friendInfo.collectAsState()
     val friendsCount by viewModel.friendsList.collectAsState()
     val userInfoState by viewModel.userInfoState.collectAsState()
 
@@ -75,7 +76,8 @@ fun RecommendDetailScreen(
 
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -205,7 +207,7 @@ fun FriendPager1Content(
         else {
             Timber.d("Open Meetings")
             userMeetingOpen.forEach {
-                MeetingItem(it)
+                MeetingItem(it) {}
             }
         }
         TmMarginVerticalSpacer(size = 9)
@@ -223,7 +225,11 @@ fun FriendPager1Content(
         else  {
             Timber.d("Closed Meetings")
             userMeetingClosed.forEach {
-                MeetingItem(meeting = it)
+                MeetingItem(meeting = it) {
+//                        id->
+//                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
+//                    navController.navigate(action)
+                }
             }
         }
         TmMarginVerticalSpacer(size = 20)
