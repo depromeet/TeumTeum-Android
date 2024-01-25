@@ -25,7 +25,7 @@ fun MoimCreateName(viewModel: MoimViewModel, onClick: () ->Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = TmtmColorPalette.current.GreyWhite),
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
         ) {

@@ -44,6 +44,9 @@
         android:label="MoimFragment"
         android:title="@string/bottom_menu_familar"
         tools:layout="@layout/fragment_moim">
+        <argument
+            android:name="meetingId"
+            app:argType="long"/>
         <action
             android:id="@+id/action_moimFragment_to_fragment_web_view"
             app:destination="@id/fragment_web_view" />
@@ -91,6 +94,15 @@
                 android:name="id"
                 app:argType="integer"/>
         </action>
+
+        <action
+            android:id="@+id/action_fragment_my_page_to_fragment_moim"
+            app:destination="@id/fragment_moim">
+            <argument
+                android:name="meetingId"
+                app:argType="long"/>
+        </action>
+
 
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_edit_card"
@@ -152,6 +164,15 @@
                 android:name="id"
                 app:argType="integer"/>
         </action>
+
+        <action
+            android:id="@+id/action_fragment_recommend_detail_to_fragment_moim"
+            app:destination="@id/fragment_moim">
+            <argument
+                android:name="meetingId"
+                app:argType="long"/>
+        </action>
+
 
     </fragment>
 

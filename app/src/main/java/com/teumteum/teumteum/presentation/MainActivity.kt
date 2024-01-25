@@ -11,6 +11,7 @@ import com.teumteum.base.util.extension.intExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
 import com.teumteum.teumteum.presentation.home.HomeFragmentDirections
+import com.teumteum.teumteum.util.callback.CustomBackPressedCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +20,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        this.onBackPressedDispatcher.addCallback(this,
+            CustomBackPressedCallback(this, getString(R.string.alert_back_pressed_finish))
+        )
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -44,6 +49,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             )
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         navHostFragment.navController.navigate(action)
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {

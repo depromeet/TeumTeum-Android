@@ -17,7 +17,7 @@
             android:layout_height="400dp"
             app:area="서울 광진구"
             app:company="디프만"
-            app:characterImage="@drawable/ic_card_penguin"
+            app:characterImage="@drawable/ic_card_front_penguin"
             app:job="안드로이드 개발"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

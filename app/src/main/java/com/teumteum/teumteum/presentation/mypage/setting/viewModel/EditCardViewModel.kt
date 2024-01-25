@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +13,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
 enum class SheetEvent {
-    None, JobDetail, JobClass, Mbti, Area, Interest, Status, Dismiss, SignUp,
+    None, JobDetail, JobClass, Mbti, Area, Interest, Status, Dismiss, SignUp, Error, Success
 }
 @HiltViewModel
 class EditCardViewModel @Inject constructor(
@@ -29,27 +32,13 @@ class EditCardViewModel @Inject constructor(
     init {
         loadUserInfo()
     }
-    private val originalUserInfo = MutableStateFlow<UserInfo?>(null)
 
-    private val _companyName = MutableStateFlow<String>("")
-    val companyName: StateFlow<String> = _companyName.asStateFlow()
 
-    private val _jobClass = MutableStateFlow<String>("")
-    val jobClass: StateFlow<String> = _jobClass.asStateFlow()
+    private val _sheetEvent = MutableStateFlow(SheetEvent.None)
+    val sheetEvent: StateFlow<SheetEvent> = _sheetEvent.asStateFlow()
 
-    fun updateJobClass(jobClass: String) {
-        _jobClass.value = jobClass
-    }
-
-    private val _jobDetailClass = MutableStateFlow<String>("")
-    val jobDetailClass: StateFlow<String> = _jobDetailClass.asStateFlow()
-
-    fun updateJobDetailClass(jobDetailClass: String) {
-        _jobDetailClass.value = jobDetailClass
-    }
-
-    fun updateCompanyName(companyName: String) {
-        _companyName.value = companyName
+    fun triggerSheetEvent(event: SheetEvent) {
+        _sheetEvent.value = event
     }
     fun loadUserInfo() = viewModelScope.launch {
         originalUserInfo.value = userRepository.getUserInfo()
@@ -69,26 +58,75 @@ class EditCardViewModel @Inject constructor(
         }
     }
 
-    fun formatAsDate(date: String): String {
-        return if (date.length == 8) {
-            "${date.substring(0, 4)}.${date.substring(4, 6)}.${date.substring(6, 8)}"
-        } else {
-            date
+    fun isUserInfoChanged(): Boolean {
+        originalUserInfo.value?.let { original ->
+            val formattedBirth = _userBirth.value.replace(".", "")
+            val currentInfo = original.copy(
+                name = _userName.value,
+                birth = formattedBirth,
+                status =  _community.value,
+                interests =  _interestField.value,
+                mbti = _mbtiText.value,
+                job = original.job.copy(
+                    name = _companyName.value,
+                    jobClass = _jobClass.value,
+                    detailClass = _jobDetailClass.value
+                ),
+                activityArea = "${_preferredCity.value} ${_preferredStreet.value}",
+                goal = _goalText.value
+            )
+            return currentInfo != original
+        }
+        return false
+    }
+
+
+
+    fun updateUserInfo() = viewModelScope.launch {
+        if(isUserInfoChanged()) {
+            originalUserInfo.value?.let { original->
+                val updatedUserInfo = original.copy(
+                    name = _userName.value,
+                    birth = _userBirth.value,
+                    status = _community.value,
+                    mbti =  _mbtiText.value,
+                    interests = _interestField.value,
+                    job = original.job.copy(
+                        name = _companyName.value,
+                        jobClass = _jobClass.value,
+                        detailClass = _jobDetailClass.value
+                    ),
+                    activityArea = "${_preferredCity.value} ${_preferredStreet.value}",
+                    goal = _goalText.value
+
+                )
+                userRepository.updateUserInfo(updatedUserInfo)
+                    .onSuccess {
+                        Log.d("업데이트 성공", "성공")
+                        saveDatastore(updatedUserInfo)
+                        _sheetEvent.value = SheetEvent.Success
+                    }
+                    .onFailure {
+                       _sheetEvent.value = SheetEvent.Error
+                        Timber.e(it)
+                    }
+            }
         }
     }
 
-    private val _sheetEvent = MutableStateFlow(SheetEvent.None)
-    val sheetEvent: StateFlow<SheetEvent> = _sheetEvent.asStateFlow()
-
-    fun triggerSheetEvent(event: SheetEvent) {
-        _sheetEvent.value = event
+    private fun saveDatastore(userInfo: UserInfo) = viewModelScope.launch {
+        userRepository.saveUserInfo(userInfo)
     }
+
+    private val originalUserInfo = MutableStateFlow<UserInfo?>(null)
 
     private val _userName = MutableStateFlow<String>("")
     val userName: StateFlow<String> = _userName.asStateFlow()
 
     private val _isNameValid = MutableStateFlow<Boolean>(true)
     val isNameValid: StateFlow<Boolean> = _isNameValid
+
+
 
     fun isValidName(name: String): Boolean {
         val nameWithoutSpaces = name.filter { !it.isWhitespace() }
@@ -106,6 +144,7 @@ class EditCardViewModel @Inject constructor(
         _isNameValid.value = isValidName(_userName.value)
         _userName.value = name
     }
+
 
     private val _userBirth = MutableStateFlow<String>("")
     val userBirth: StateFlow<String> = _userBirth.asStateFlow()
@@ -132,6 +171,35 @@ class EditCardViewModel @Inject constructor(
             digits.length <= 4 -> digits
             digits.length <= 6 -> "${digits.substring(0, 4)}.${digits.substring(4, 6)}"
             else -> "${digits.substring(0, 4)}.${digits.substring(4, 6)}.${digits.substring(6, digits.length.coerceAtMost(8))}"
+        }
+    }
+
+    private val _companyName = MutableStateFlow<String>("")
+    val companyName: StateFlow<String> = _companyName.asStateFlow()
+
+    private val _jobClass = MutableStateFlow<String>("")
+    val jobClass: StateFlow<String> = _jobClass.asStateFlow()
+
+    fun updateJobClass(jobClass: String) {
+        _jobClass.value = jobClass
+    }
+
+    private val _jobDetailClass = MutableStateFlow<String>("")
+    val jobDetailClass: StateFlow<String> = _jobDetailClass.asStateFlow()
+
+    fun updateJobDetailClass(jobDetailClass: String) {
+        _jobDetailClass.value = jobDetailClass
+    }
+
+    fun updateCompanyName(companyName: String) {
+        _companyName.value = companyName
+    }
+
+    fun formatAsDate(date: String): String {
+        return if (date.length == 8) {
+            "${date.substring(0, 4)}.${date.substring(4, 6)}.${date.substring(6, 8)}"
+        } else {
+            date
         }
     }
 
@@ -179,19 +247,6 @@ class EditCardViewModel @Inject constructor(
         _mbtiText.value = mbti
     }
 
-    private val _interestSelf = MutableStateFlow<ArrayList<String>>(ArrayList())
-    val interestSelf: StateFlow<ArrayList<String>> = _interestSelf.asStateFlow()
-
-    fun removeInterestSelf(interest: String) {
-        if (_interestSelf.value.contains(interest)) _interestSelf.value.remove(interest)
-        updateInterestCount()
-    }
-
-    fun addInterestSelf(interest: String) {
-        if (!_interestSelf.value.contains(interest)) _interestSelf.value.add(interest)
-        updateInterestCount()
-    }
-
     private val _interestField = MutableStateFlow<ArrayList<String>>(ArrayList())
     val interestField: StateFlow<ArrayList<String>> = _interestField.asStateFlow()
 
@@ -203,8 +258,8 @@ class EditCardViewModel @Inject constructor(
         updateInterestCount()
     }
 
-    fun addInterestField(interest: String) {
-        if (!_interestField.value.contains(interest)) _interestField.value.add(interest)
+    fun setInterestField(interests: ArrayList<String>) {
+        _interestField.value = interests
         updateInterestCount()
     }
 
@@ -212,7 +267,7 @@ class EditCardViewModel @Inject constructor(
     val interestCount: StateFlow<Int> = _interestCount.asStateFlow()
 
     private fun updateInterestCount() {
-        _interestCount.value = interestField.value.size + interestSelf.value.size
+        _interestCount.value = interestField.value.size
     }
 
     private var _goalText = MutableStateFlow<String>("")
@@ -221,5 +276,8 @@ class EditCardViewModel @Inject constructor(
     fun updateGoalText(goal: String) {
         _goalText.value = goal
     }
+
+
+
 
 }

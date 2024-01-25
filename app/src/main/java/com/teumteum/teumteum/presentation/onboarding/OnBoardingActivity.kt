@@ -1,9 +1,7 @@
 package com.teumteum.teumteum.presentation.onboarding
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
@@ -12,9 +10,7 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.domain.entity.CommonViewPagerEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
-import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.onboarding.adapter.OnBoardingViewPagerAdapter
-import com.teumteum.teumteum.presentation.signin.SignInActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,6 +40,7 @@ class OnBoardingActivity
     private fun setUpListener() {
         binding.btnStart.setOnClickListener {
             startActivity(Intent(this, AccessLocationActivity::class.java))
+            openActivitySlideAnimation()
         }
     }
 
@@ -83,6 +80,11 @@ class OnBoardingActivity
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
             tab.view.isClickable = false
         }.attach()
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {}

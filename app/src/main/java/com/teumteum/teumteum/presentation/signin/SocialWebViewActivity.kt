@@ -208,6 +208,7 @@ class SocialWebViewActivity
         intent.putExtra(EXTRA_KEY_OAUTHID, viewModel.oauthId)
         intent.putExtra(EXTRA_KEY_PROVIDER, provider)
         startActivity(intent)
+        openActivitySlideAnimation()
         finish()
         // SignUpActivity에서 SignUpFinishActivity로 이동하기 전에 이 oauthId 포함해서 회원가입 진행
     }
@@ -216,6 +217,12 @@ class SocialWebViewActivity
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        openActivitySlideAnimation()
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {

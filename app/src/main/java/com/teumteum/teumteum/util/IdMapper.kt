@@ -25,19 +25,19 @@ object IdMapper {
 
     fun getCardCharacterDrawableById(characterId: Int): Int {
         return when (characterId) {
-            0 -> R.drawable.ic_card_ghost
-            1 -> R.drawable.ic_card_star
-            2 -> R.drawable.ic_card_bear
-            3 -> R.drawable.ic_card_raccon
-            4 -> R.drawable.ic_card_cat
-            5 -> R.drawable.ic_card_rabbit
-            6 -> R.drawable.ic_card_fox
-            7 -> R.drawable.ic_card_water
-            8 -> R.drawable.ic_card_penguin
-            9 -> R.drawable.ic_card_dog
-            10 -> R.drawable.ic_card_mouse
-            11 -> R.drawable.ic_card_panda
-            else -> R.drawable.ic_card_raccon //기본값
+            0 -> R.drawable.ic_card_front_ghost
+            1 -> R.drawable.ic_card_front_star
+            2 -> R.drawable.ic_card_front_bear
+            3 -> R.drawable.ic_card_front_raccon
+            4 -> R.drawable.ic_card_front_cat
+            5 -> R.drawable.ic_card_front_rabbit
+            6 -> R.drawable.ic_card_front_fox
+            7 -> R.drawable.ic_card_front_water
+            8 -> R.drawable.ic_card_front_penguin
+            9 -> R.drawable.ic_card_front_dog
+            10 -> R.drawable.ic_card_front_mouse
+            11 -> R.drawable.ic_card_front_panda
+            else -> R.drawable.ic_card_front_raccon //기본값
         }
     }
 

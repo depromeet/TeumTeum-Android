@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +13,7 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.domain.enumSet.EnumTopic
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
@@ -112,13 +113,15 @@ class HomeFragment :
     private fun observe() {
         viewModel.groupData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
+                binding.tvGroupEmpty.isVisible = it is GroupListUiState.Empty
+                binding.rvRecommendMeet.isVisible = it !is GroupListUiState.Empty
                 when (it) {
                     is GroupListUiState.SetMeetings -> {
                         adapter?.setItems(it.data)
                     }
 
                     is GroupListUiState.Failure -> {
-                        requireActivity().toast(it.msg)
+                        requireActivity().defaultToast(it.msg)
                     }
 
                     else -> {}

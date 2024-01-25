@@ -1,26 +1,20 @@
 package com.teumteum.teumteum.presentation.mypage.editCard
 
 import android.app.Activity
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
@@ -29,12 +23,9 @@ import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
 import com.teumteum.teumteum.presentation.signup.community.CommunityFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
-import com.teumteum.teumteum.presentation.signup.mbti.GetMbtiFragment
 import com.teumteum.teumteum.presentation.signup.modal.AreaModalBottomSheet
 import com.teumteum.teumteum.presentation.signup.modal.MbtiModalBottomSheet
-import com.teumteum.teumteum.presentation.signup.modal.SingleModalAdapter
 import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
-import com.teumteum.teumteum.util.SignupUtils
 import com.teumteum.teumteum.util.SignupUtils.JOB_DESIGN
 import com.teumteum.teumteum.util.SignupUtils.JOB_DESIGN_LIST
 import com.teumteum.teumteum.util.SignupUtils.JOB_DEVELOPMENT
@@ -64,10 +55,11 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // 결과 처리
-                val data: Intent? = result.data
-                // data에서 결과를 추출하고 처리
 
+                val interests = result.data?.getStringArrayListExtra("selectedInterests2")
+                interests?.let {
+                    viewModel.setInterestField(it)
+                }
                 viewModel.triggerSheetEvent(SheetEvent.Dismiss)
             }
         }
@@ -121,10 +113,13 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                         val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
                             val interests = viewModel.interestField.value
                             putExtra("interests", ArrayList(interests))
+                            putExtra("isFromMainActivity", true)
                             putExtra("navigateTo", "fragment_get_interest")
                         }
                         resultLauncher.launch(intent)
                     }
+                    SheetEvent.Error -> { context?.defaultToast("서버 통신에 오류가 발생했습니다") }
+                    SheetEvent.Success -> {context?.defaultToast("정보 수정이 완료되었습니다")}
                     else -> {}
                 }
             }

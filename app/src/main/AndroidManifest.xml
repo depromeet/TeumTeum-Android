@@ -36,8 +36,7 @@
         </activity>
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".presentation.group.GroupListActivity"
             android:exported="false" />

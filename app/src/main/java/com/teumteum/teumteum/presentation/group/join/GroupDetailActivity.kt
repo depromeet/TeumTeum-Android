@@ -31,6 +31,11 @@ class GroupDetailActivity :
         viewModel.getGroup(meetingId)
     }
 
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
+    }
+
     companion object {
         fun getIntent(context: Context, meetingId: Long) =
             Intent(context, GroupDetailActivity::class.java).apply {

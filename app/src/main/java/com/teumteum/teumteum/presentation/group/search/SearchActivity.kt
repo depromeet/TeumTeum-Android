@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.group.search
 
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -61,12 +62,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
     private fun initEvent() {
         binding.ivSearch.setOnClickListener {
-            if (viewModel.isInputBlank) {
-                defaultToast(getString(R.string.group_search_empty_keyword))
-            } else {
-                viewModel.initCurrentPage()
-                hideKeyboard(binding.root)
-            }
+            searchEvent()
         }
 
         binding.ivClear.setOnClickListener {
@@ -79,7 +75,14 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
         binding.ivBack.setOnClickListener {
             finish()
-            closeActivitySlideAnimation()
+        }
+
+        binding.etSearch.setOnEditorActionListener { _, id, _ ->
+            if (id == EditorInfo.IME_ACTION_SEARCH) {
+                searchEvent()
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 
@@ -112,6 +115,16 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
             }.launchIn(lifecycleScope)
     }
 
+    private fun searchEvent() {
+        if (viewModel.isInputBlank) {
+            defaultToast(getString(R.string.group_search_empty_keyword))
+        } else {
+            viewModel.initCurrentPage()
+            binding.etSearch.clearFocus()
+            hideKeyboard(binding.root)
+        }
+    }
+
     private fun infinityScroll() {
         binding.rvGroupList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -128,5 +141,10 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                 }
             }
         })
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 }
