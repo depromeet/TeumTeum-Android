@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,6 +64,8 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
     private fun observe() {
         viewModel.groupData.flowWithLifecycle(lifecycle)
             .onEach {
+                binding.clEmpty.isVisible = it is GroupListUiState.Empty
+                binding.rvGroupList.isVisible = it !is GroupListUiState.Empty
                 when (it) {
                     is GroupListUiState.SetMeetings -> {
                         adapter.setItems(it.data)
