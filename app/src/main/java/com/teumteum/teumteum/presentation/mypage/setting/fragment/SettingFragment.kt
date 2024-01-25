@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSettingBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -61,7 +61,7 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
             }
             SettingStatus.ERROR -> {
-                requireActivity().toast("서버 통신 에러")
+                requireActivity().defaultToast("서버 통신 에러")
             }
             else -> {}
         }
