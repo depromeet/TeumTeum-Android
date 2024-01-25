@@ -35,7 +35,10 @@ class GroupListViewModel @Inject constructor(
             groupRepository.getSearchGroup(currentPage++, location = location, topic = topic)
                 .onSuccess {
                     if (currentPage == 1) {
-                        _groupData.value = GroupListUiState.SetMeetings(it.second)
+                        _groupData.value = when {
+                            it.second.isEmpty() -> { GroupListUiState.Empty }
+                            else -> { GroupListUiState.SetMeetings(it.second) }
+                        }
                     } else if (currentPage > 1) {
                         _groupData.value = GroupListUiState.AddMeetings(it.second)
                     }
@@ -53,6 +56,7 @@ class GroupListViewModel @Inject constructor(
 
 sealed interface GroupListUiState {
     object Init : GroupListUiState
+    object Empty : GroupListUiState
     data class SetMeetings(val data: List<Meeting>) : GroupListUiState
     data class AddMeetings(val data: List<Meeting>) : GroupListUiState
     data class Failure(val msg: String) : GroupListUiState
