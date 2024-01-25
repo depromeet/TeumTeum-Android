@@ -3,18 +3,19 @@ package com.teumteum.teumteum.di
 import com.teumteum.data.repository.AuthRepositoryImpl
 import com.teumteum.data.repository.GroupRepositoryImpl
 import com.teumteum.data.repository.HomeRepositoryImpl
+import com.teumteum.data.repository.NeighborRepositoryImpl
 import com.teumteum.data.repository.SampleRepositoryImpl
 import com.teumteum.data.repository.SettingRepositoryImpl
 import com.teumteum.data.repository.UserRepositoryImpl
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.GroupRepository
 import com.teumteum.domain.repository.HomeRepository
+import com.teumteum.domain.repository.NeighborRepository
 import com.teumteum.domain.repository.SampleRepository
 import com.teumteum.domain.repository.SettingRepository
 import com.teumteum.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -30,6 +31,10 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindHomeRepository(homeRepositoryImpl: HomeRepositoryImpl): HomeRepository
+
+    @Singleton
+    @Binds
+    fun bindNeighborRepository(neighborRepositoryImpl: NeighborRepositoryImpl): NeighborRepository
 
     @Singleton
     @Binds

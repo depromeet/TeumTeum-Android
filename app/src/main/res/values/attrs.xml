@@ -5,6 +5,5 @@
         <attr name="characterImage" format="integer" />
         <attr name="name" format="string" />
         <attr name="job" format="string" />
-        <attr name="isSelected" format="boolean" />
     </declare-styleable>
 </resources>

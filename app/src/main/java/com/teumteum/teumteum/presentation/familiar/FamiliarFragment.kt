@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentFamiliarBinding
-import com.teumteum.teumteum.presentation.familiar.location.LocationActivity
+import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity
 import com.teumteum.teumteum.presentation.familiar.onboarding.FamiliarOnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,10 +21,8 @@ class FamiliarFragment :
 
         if (!sharedPreferencesManager.isOnboardingCompleted()) {
             startActivity(Intent(requireContext(), FamiliarOnBoardingActivity::class.java))
-            requireActivity().finish()
         } else {
-            startActivity(Intent(requireContext(), LocationActivity::class.java))
-            requireActivity().finish()
+            startActivity(Intent(requireContext(), NeighborActivity::class.java))
         }
     }
 }

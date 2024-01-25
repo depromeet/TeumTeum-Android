@@ -14,8 +14,10 @@ import com.teumteum.teumteum.databinding.ActivitySplashBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.onboarding.OnBoardingActivity
 import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.util.AuthUtils
 import com.teumteum.teumteum.util.NetworkManager
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashActivity
@@ -25,8 +27,15 @@ class SplashActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         checkNetwork()
+        setUpObserver()
+    }
+
+    private fun setUpObserver() {
+        viewModel.myInfo.observe(this) {
+            AuthUtils.setMyInfo(context = this, myInfo = it)
+            Timber.tag("setMyInfo").d("$it")
+        }
     }
 
     private fun checkNetwork() {
@@ -51,8 +60,7 @@ class SplashActivity
         else if (viewModel.getIsAutoLogin()) {
             viewModel.refreshUserInfo()
             initSplash(IS_AUTO_LOGIN)
-        }
-        else {
+        } else {
             initSplash(HAVE_TO_SIGN_IN)
         }
     }
@@ -79,10 +87,12 @@ class SplashActivity
                     is MyInfoUiState.Success -> {
                         startHomeScreen()
                     }
+
                     is MyInfoUiState.Failure -> {
                         defaultSnackBar(binding.root, state.msg)
                         startSignIn()
                     }
+
                     else -> {}
                 }
             }

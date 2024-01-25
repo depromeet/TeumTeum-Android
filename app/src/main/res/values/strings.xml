@@ -267,5 +267,7 @@
     <string name="back_card_goal_title">GOAL</string>
     <string name="back_card_goal_content">가고 싶은 회사에 취업해 프로덕트 디자이너로 일하고 싶어요</string>
     <string name="home_recommend_meet_title">%1$s 추천 모임 🔥</string>
+    <string name="introduce_more_familiar">더 가까워지기</string>
+    <string name="introduce_title">소개서를 살펴보며 서로를\n소개해 보세요</string>
 
 </resources>

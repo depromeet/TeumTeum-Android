@@ -46,7 +46,7 @@ data class JobEntity(
     @SerialName("class")
     val jobClass: String,
     val detailClass: String
-) {
+) : java.io.Serializable {
     constructor() : this("null", false, "", "")
 }
 

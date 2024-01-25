@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:elevation="2dp"
             android:id="@+id/iv_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,9 +24,9 @@
 
         <ImageView
             android:id="@+id/iv_character_self"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_character_pink"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_cat"
             app:layout_constraintBottom_toTopOf="@id/tv_character_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -18,7 +18,7 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.familiar.SharedPreferencesManager
-import com.teumteum.teumteum.presentation.familiar.location.LocationActivity
+import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity
 import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
 import com.teumteum.teumteum.util.PermissionUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,7 +70,7 @@ class FamiliarOnBoardingActivity
         startActivity(
             Intent(
                 this@FamiliarOnBoardingActivity,
-                LocationActivity::class.java
+                NeighborActivity::class.java
             )
         )
         finish()
@@ -134,7 +134,7 @@ class FamiliarOnBoardingActivity
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             tl.clearOnTabSelectedListeners()
             btnStart.setOnClickListener {
-                checkLocationPermission()
+                checkLocationPermission() //todo - setUpListener로 분리
             }
         }
         TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->

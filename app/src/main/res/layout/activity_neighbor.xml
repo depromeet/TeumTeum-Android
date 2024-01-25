@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_common_appbar" />
+
+        <TextView
+            android:id="@+id/tv_location_title"
+            style="@style/ta.headline.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:elevation="1dp"
+            android:outlineProvider="none"
+            android:text="@string/location_title"
+            android:textColor="@color/text_headline_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+        <ImageView
+            android:id="@+id/iv_background"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:src="@drawable/ic_location_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBar" />
+
+        <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
+            android:id="@+id/cv_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:characterImage="@drawable/ic_character_pink"
+            app:job="프로덕트 디자이너"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_background"
+            app:name="나"
+            tools:visibility="visible" />
+
+
+        <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
+            android:id="@+id/cv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:characterImage="@drawable/ic_character_pink"
+            app:job="프로덕트 디자이너"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.625"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_background"
+            app:layout_constraintVertical_bias="0.837"
+            app:name="이프만"
+            tools:visibility="visible" />
+
+        <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
+            android:id="@+id/cv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:characterImage="@drawable/ic_character_pink"
+            app:job="AOS 개발자"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.823"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_background"
+            app:layout_constraintVertical_bias="0.584"
+            app:name="김프만"
+            tools:visibility="visible" />
+
+        <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
+            android:id="@+id/cv_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:characterImage="@drawable/ic_character_pink"
+            app:job="서버 개발자"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.185"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_background"
+            app:layout_constraintVertical_bias="0.72"
+            app:name="박프만"
+            tools:visibility="visible" />
+
+        <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
+            android:id="@+id/cv_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:characterImage="@drawable/ic_character_pink"
+            app:job="AOS 개발자"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.778"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_background"
+            app:layout_constraintVertical_bias="0.241"
+            app:name="김프만"
+            tools:visibility="visible" />
+
+        <com.teumteum.teumteum.presentation.familiar.neighbor.CharacterView
+            android:id="@+id/cv_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:characterImage="@drawable/ic_character_pink"
+            app:job="서버 개발자"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.185"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_background"
+            app:layout_constraintVertical_bias="0.321"
+            app:name="박프만"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="?attr/color_divider_level02"
+            app:layout_constraintBottom_toTopOf="@id/btn_start" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/sel_button_cta"
+            android:elevation="0dp"
+            android:enabled="true"
+            android:stateListAnimator="@null"
+            android:text="선택완료"
+            android:textAppearance="@style/ta.headline.6"
+            android:textColor="@color/color_text_button_primary_selector"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
