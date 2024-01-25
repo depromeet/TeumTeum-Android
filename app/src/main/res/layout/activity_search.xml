@@ -34,6 +34,7 @@
             android:background="@color/transparent"
             android:hint="@string/group_search_hint"
             android:inputType="text"
+            android:imeOptions="actionSearch"
             android:maxLines="1"
             android:paddingVertical="13dp"
             android:text="@={viewModel.etSearch}"

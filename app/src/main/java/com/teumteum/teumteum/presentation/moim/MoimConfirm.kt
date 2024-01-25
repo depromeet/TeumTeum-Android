@@ -1,9 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.app.Activity
-import android.app.Dialog
-import android.content.Context
-import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -78,7 +76,10 @@ fun MoimConfirm(
     activity: Activity,
     isJoinView: Boolean,
     meetingId: Long? = null,
-    onClick: ()-> Unit = { activity?.finish() },
+    onClick: ()-> Unit = {
+        activity.finish()
+        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
+    },
 
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -163,6 +164,11 @@ fun MoimConfirm(
                 TmMarginVerticalSpacer(size = 24)
             }
         }
+    }
+    BackHandler {
+        // Handle the back button press
+        activity.finish()
+        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
     }
 }
 

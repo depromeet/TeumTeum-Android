@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -112,6 +113,8 @@ class HomeFragment :
     private fun observe() {
         viewModel.groupData.flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
+                binding.tvGroupEmpty.isVisible = it is GroupListUiState.Empty
+                binding.rvRecommendMeet.isVisible = it !is GroupListUiState.Empty
                 when (it) {
                     is GroupListUiState.SetMeetings -> {
                         adapter?.setItems(it.data)
