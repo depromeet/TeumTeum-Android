@@ -57,7 +57,6 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
     private fun initEvent() {
         binding.ivClose.setOnClickListener {
             finish()
-            closeActivitySlideAnimation()
         }
     }
 
@@ -103,6 +102,11 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
                 }
             }
         })
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {

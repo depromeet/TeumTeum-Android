@@ -47,7 +47,6 @@ class GroupMeetCheckActivity :
                 useRippleEffect = false,
                 clickEvent = {
                     finish()
-                    closeActivitySlideAnimation()
                 }
             )
         )
@@ -78,6 +77,11 @@ class GroupMeetCheckActivity :
                     else -> {}
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {

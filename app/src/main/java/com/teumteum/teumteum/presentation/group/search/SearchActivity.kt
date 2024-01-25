@@ -79,7 +79,6 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
 
         binding.ivBack.setOnClickListener {
             finish()
-            closeActivitySlideAnimation()
         }
     }
 
@@ -128,5 +127,10 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
                 }
             }
         })
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 }
