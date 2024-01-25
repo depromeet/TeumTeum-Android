@@ -39,6 +39,7 @@ import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_ENG
 import com.teumteum.teumteum.util.SigninUtils.KAKAO_PROVIDER_KOR
 import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_ENG
 import com.teumteum.teumteum.util.SigninUtils.NAVER_PROVIDER_KOR
+import com.teumteum.teumteum.util.callback.CustomBackPressedCallback
 import com.teumteum.teumteum.util.extension.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,6 +56,13 @@ class SignUpActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val isFromCardIntro = intent.getBooleanExtra("isFromCardIntro", false)
+        if (isFromCardIntro) {
+            this.onBackPressedDispatcher.addCallback(this,
+                CustomBackPressedCallback(this, getString(R.string.alert_back_pressed_signup))
+            )
+        }
 
         getIdProvider()
         initAppBarLayout()
@@ -215,6 +223,7 @@ class SignUpActivity
         val intent = Intent(this, SignUpFinishActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        openActivitySlideAnimation()
     }
 
     private fun observer() {
@@ -274,7 +283,9 @@ class SignUpActivity
         lifecycleScope.launch {
             viewModel.currentStep.collect { currentStep ->
                 binding.seekBar.progress = currentStep * 10
-                if (currentStep == 0) finish()
+                if (currentStep == 0) {
+                    finish()
+                }
             }
         }
     }
@@ -332,6 +343,11 @@ class SignUpActivity
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_signup, T::class.java.canonicalName)
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {

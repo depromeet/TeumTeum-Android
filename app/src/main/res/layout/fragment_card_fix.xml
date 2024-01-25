@@ -42,8 +42,20 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             />
 
+        <com.teumteum.teumteum.util.custom.view.BackCardView
+            android:id="@+id/cardview_back"
+            android:layout_width="280dp"
+            android:layout_height="400dp"
+            app:goalTitle="@string/back_card_goal_title"
+            app:isModify="true"
+            app:goalContent="@string/back_card_goal_content"
+            app:characterImage="@drawable/ic_card_back_penguin"
+            app:layout_constraintStart_toStartOf="@id/cardview_front"
+            app:layout_constraintTop_toTopOf="@id/cardview_front"
+            />
+
         <com.teumteum.teumteum.util.custom.view.FrontCardView
-            android:id="@+id/cardview"
+            android:id="@+id/cardview_front"
             android:layout_width="280dp"
             android:layout_height="400dp"
             app:name="@string/front_card_name"

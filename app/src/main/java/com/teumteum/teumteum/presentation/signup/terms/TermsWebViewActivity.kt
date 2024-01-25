@@ -52,6 +52,11 @@ class TermsWebViewActivity
         }
     }
 
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
+    }
+
     companion object {
     }
 }

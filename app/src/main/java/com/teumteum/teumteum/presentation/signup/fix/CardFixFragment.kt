@@ -1,5 +1,8 @@
 package com.teumteum.teumteum.presentation.signup.fix
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -9,15 +12,20 @@ import com.teumteum.teumteum.databinding.FragmentCardFixBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
+import com.teumteum.teumteum.presentation.signup.goal.GetGoalFragment
+import com.teumteum.teumteum.presentation.signup.interests.GetInterestFragment
 import com.teumteum.teumteum.presentation.signup.job.CurrentJobFragment
 import com.teumteum.teumteum.presentation.signup.job.ReadyJobFragment
 import com.teumteum.teumteum.presentation.signup.name.GetNameFragment
 import com.teumteum.teumteum.presentation.signup.school.CurrentSchoolFragment
+import com.teumteum.teumteum.util.SignupUtils
 import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST
 import com.teumteum.teumteum.util.SignupUtils.STATUS_STUDENT
 import com.teumteum.teumteum.util.SignupUtils.STATUS_TRAINEE
 import com.teumteum.teumteum.util.SignupUtils.STATUS_WORKER
+import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
+import com.teumteum.teumteum.util.custom.view.model.Interest
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -27,11 +35,16 @@ class CardFixFragment
 
     private val viewModel by activityViewModels<SignUpViewModel>()
 
+    private lateinit var frontAnimation: AnimatorSet
+    private lateinit var backAnimation: AnimatorSet
+    private var isFront = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initCard()
         initCardListener()
+        initCardAnim()
     }
 
     override fun onResume() {
@@ -52,12 +65,26 @@ class CardFixFragment
                     else -> FrontCard()
                 }
             }
-            if (fc != null) binding.cardview.getInstance(fc)
+            if (fc != null) binding.cardviewFront.getInstance(fc)
+
+            val interests = mutableListOf<Interest>()
+            for (i in interestField.value) {
+                interests.add(Interest("#$i"))
+            }
+            for (i in interestSelf.value) {
+                interests.add(Interest("#$i"))
+            }
+            binding.cardviewBack.apply {
+                tvGoalContent.text = goalText.value
+                SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
+                submitInterestList(interests)
+                isModify = false
+            }
         }
     }
 
     private fun initCardListener() {
-        with(binding.cardview) {
+        with(binding.cardviewFront) {
             ivEditName.setOnClickListener{
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
@@ -103,11 +130,58 @@ class CardFixFragment
                 }
             }
         }
+        with(binding.cardviewBack) {
+            ivEditGoalContent.setOnClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetGoalFragment>()
+                }
+            }
+            rvInterests.setOnClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetInterestFragment>()
+                }
+            }
+        }
     }
 
     private fun checkValidInput() {
         if (viewModel.checkUserInfoChanged()) (activity as SignUpActivity).activateFixFinishButton()
         else (activity as SignUpActivity).disableFixFinishButton()
+    }
+
+    @SuppressLint("ResourceType")
+    private fun initCardAnim() {
+        val scale = resources.displayMetrics.density
+        binding.cardviewFront.cameraDistance = 8000 * scale
+        binding.cardviewBack.cameraDistance = 8000 * scale
+
+        frontAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_front) as AnimatorSet
+        backAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_back) as AnimatorSet
+
+        binding.cardviewFront.setOnClickListener {
+            startAnim()
+        }
+        binding.cardviewBack.setOnClickListener {
+            startAnim()
+        }
+    }
+
+    private fun startAnim() {
+        isFront = if (isFront) {
+            frontAnimation.setTarget(binding.cardviewFront)
+            backAnimation.setTarget(binding.cardviewBack)
+            frontAnimation.start()
+            backAnimation.start()
+            false
+        } else {
+            frontAnimation.setTarget(binding.cardviewBack)
+            backAnimation.setTarget(binding.cardviewFront)
+            backAnimation.start()
+            frontAnimation.start()
+            true
+        }
     }
 
     companion object {

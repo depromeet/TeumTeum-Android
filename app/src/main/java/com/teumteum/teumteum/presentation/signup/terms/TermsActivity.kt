@@ -3,12 +3,14 @@ package com.teumteum.teumteum.presentation.signup.terms
 import android.content.Intent
 import android.os.Bundle
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTermsBinding
 import com.teumteum.teumteum.presentation.signup.intro.CardIntroActivity
 import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_OAUTHID
 import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_PROVIDER
 import com.teumteum.teumteum.util.SigninUtils.EXTRA_KEY_URL
+import com.teumteum.teumteum.util.callback.CustomBackPressedCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,6 +23,9 @@ class TermsActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        this.onBackPressedDispatcher.addCallback(this,
+            CustomBackPressedCallback(this, getString(R.string.alert_back_pressed_signup))
+        )
         getIdProvider()
         initView()
         initTermsDetail()
@@ -61,6 +66,7 @@ class TermsActivity
                     intent.putExtra(EXTRA_KEY_OAUTHID, oauthId)
                     intent.putExtra(EXTRA_KEY_PROVIDER, provider)
                     startActivity(intent)
+                    openActivitySlideAnimation()
                 }
             }
         }
@@ -88,12 +94,18 @@ class TermsActivity
             3 -> intent.putExtra(EXTRA_KEY_URL, TERMS_URL_3)
         }
         startActivity(intent)
+        openActivitySlideAnimation()
     }
 
     private fun checkAllSelected(): Boolean {
         with (binding) {
             return btnTerms1.isSelected && btnTerms2.isSelected && btnTerms3.isSelected
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {
