@@ -13,7 +13,7 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.toast
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.domain.enumSet.EnumTopic
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
@@ -121,7 +121,7 @@ class HomeFragment :
                     }
 
                     is GroupListUiState.Failure -> {
-                        requireActivity().toast(it.msg)
+                        requireActivity().defaultToast(it.msg)
                     }
 
                     else -> {}

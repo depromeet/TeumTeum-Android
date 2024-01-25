@@ -74,7 +74,6 @@ class UserRepositoryImpl @Inject constructor(
         return runCatching {
             val request = userInfo.toUpdatedUserInfo()
             dataSource.updateUserInfo(request)
-            saveUserInfo(userInfo)
         }
     }
 

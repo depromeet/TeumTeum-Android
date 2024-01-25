@@ -187,12 +187,6 @@ class SettingViewModel @Inject constructor(
 
     fun handleDialogChange(status: SettingStatus) {
         when (status) {
-            SettingStatus.CANCEL -> {
-                viewModelScope.launch {
-                    _dialogEvent.emit(DialogEvent.CANCEL)
-                }
-            }
-
             SettingStatus.LOGOUT -> {
                 viewModelScope.launch {
                     _dialogEvent.emit(DialogEvent.LOGOUT)
@@ -261,10 +255,6 @@ class SettingViewModel @Inject constructor(
                 logout()
             }
 
-            DialogEvent.CANCEL -> {
-                cancelMeeting()
-            }
-
             else -> {}
         }
     }
@@ -281,8 +271,8 @@ fun getMemberSetting(viewModel: SettingViewModel, navController: NavController):
 
 fun getServiceGuide(): List<SettingUiItem> {
     return listOf(
-        SettingUiItem(title = "서비스 이용약관", url = "https://sheer-billboard-d63.notion.site/KUSITMS-9e6619383bcd4ce68b6ba4b2b6ef0d40?pvs=4"),
-        SettingUiItem(title = "개인정보 처리방침", url = "https://sheer-billboard-d63.notion.site/24a4639559d4433cb89c8f1abb889726?pvs=4")
+        SettingUiItem(title = "서비스 이용약관", url = "https://www.notion.so/a9258de57a984838bada4eb32c30b730?pvs=4"),
+        SettingUiItem(title = "개인정보 처리방침", url = "https://www.notion.so/bcede3e738c647ba97a4335830540d2f?pvs=4")
     )
 }
 
@@ -295,13 +285,12 @@ enum class SettingStatus {
 
 
 enum class DialogEvent {
-    DEFAULT, LOGOUT, CANCEL;
+    DEFAULT, LOGOUT;
 
     @StringRes
     fun getTitleResId(): Int {
         return when (this) {
             LOGOUT -> R.string.setting_dialog_logout
-            CANCEL -> R.string.setting_dialog_cancel
             else -> R.string.setting_dialog_default
         }
     }
@@ -310,7 +299,6 @@ enum class DialogEvent {
     fun getOkTextResId(): Int {
         return when (this) {
             LOGOUT -> R.string.setting_dialog_logout_btn2
-            CANCEL -> R.string.setting_dialog_cancel_btn2
             else -> android.R.string.ok
         }
     }
@@ -319,7 +307,6 @@ enum class DialogEvent {
     fun getCancelTextResId(): Int {
         return when (this) {
             LOGOUT -> R.string.setting_dialog_logout_btn1
-            CANCEL -> R.string.setting_dialog_cancel_btn1
             else -> android.R.string.cancel
         }
     }

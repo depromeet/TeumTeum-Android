@@ -8,6 +8,7 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMyPageBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.DialogEvent
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
@@ -31,6 +32,8 @@ class MyPageFragment :
     override fun onResume() {
         super.onResume()
         myPageViewModel.loadUserInfo()
+        viewModel.getUserOpenMeeting()
+        viewModel.getUserClosedMeeting()
     }
 
 

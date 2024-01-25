@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
@@ -50,7 +51,7 @@ fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = TmtmColorPalette.current.GreyWhite),
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
         ) {
@@ -70,13 +71,14 @@ fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {
 fun MoimCreateBtn(
     text: String,
     viewModel: MoimViewModel ,
-    isEnabled: Boolean = true
+    isEnabled: Boolean = true,
+    navController: NavController? = null
 ) {
     val screenState by viewModel.screenState.collectAsState()
     val context = LocalContext.current
 
-    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
-    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
+    val textColors = if(isEnabled) TmtmColorPalette.current.color_text_button_primary_default else TmtmColorPalette.current.color_text_button_primary_disabled
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,6 +89,8 @@ fun MoimCreateBtn(
             if (screenState == ScreenState.Create) {
                 viewModel.createMoim()
                 Log.d("screenState", screenState.toString())
+            } else if (screenState == ScreenState.Finish) {
+                navController?.navigate(R.id.fragment_home)
             }
             else {
             viewModel.goToNextScreen() }},
@@ -156,7 +160,7 @@ fun CreateTopicItem(
             .height(92.dp)
             .clickable(onClick = onItemSelected)
             .padding(horizontal = 20.dp)
-            .background(color = TmtmColorPalette.current.Gray50, shape = RoundedCornerShape(4.dp))
+            .background(color = TmtmColorPalette.current.elevation_color_elevation_level01, shape = RoundedCornerShape(4.dp))
     ) {
         Row(modifier = Modifier
             .fillMaxSize()

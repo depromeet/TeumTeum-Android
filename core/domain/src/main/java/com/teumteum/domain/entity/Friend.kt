@@ -15,8 +15,16 @@ data class Friend(
 )
 
 @Serializable
+data class FriendMyPage(
+    val id: Int,
+    val characterId: Int,
+    val name: String,
+    val job: JobEntity,
+)
+
+@Serializable
 data class Friends(
-    val friends: List<Friend>
+    val friends: List<FriendMyPage>
 )
 
 

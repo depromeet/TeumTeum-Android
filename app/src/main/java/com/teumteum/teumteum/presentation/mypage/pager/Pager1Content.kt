@@ -18,6 +18,8 @@ import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.mypage.MyPageFragmentDirections
+import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
@@ -53,7 +55,10 @@ fun MyPagePager1Content(
         }
         else {
             userOpen.forEach { meeting ->
-                MeetingItem(meeting)
+                MeetingItem(meeting) { id->
+                    val action = MyPageFragmentDirections.actionFragmentMyPageToFragmentMoim(id)
+                    navController.navigate(action)
+                }
             }
             userHostOpen.forEach { meeting ->  
                 MyMoimItems(meeting = meeting)
@@ -71,8 +76,11 @@ fun MyPagePager1Content(
             NoMoimItems(false, navController)
         }
         else  {
-            userClosed.forEach {
-                MeetingItem(meeting = it)
+            userClosed.forEach { meeting ->
+                MeetingItem(meeting) { id->
+                    val action = MyPageFragmentDirections.actionFragmentMyPageToFragmentMoim(id)
+                    navController.navigate(action)
+                }
             }
             userHostClosed.forEach { 
                 MyMoimItems(meeting = it)
