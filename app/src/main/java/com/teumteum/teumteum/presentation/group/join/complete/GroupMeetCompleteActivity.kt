@@ -47,7 +47,6 @@ class GroupMeetCompleteActivity :
                 useRippleEffect = false,
                 clickEvent = {
                     finish()
-                    closeActivitySlideAnimation()
                 }
             )
         )
@@ -89,6 +88,11 @@ class GroupMeetCompleteActivity :
             startActivity(this)
         }
         openActivitySlideAnimation()
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {
