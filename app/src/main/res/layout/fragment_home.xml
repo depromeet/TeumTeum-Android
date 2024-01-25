@@ -250,6 +250,18 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_recommend_title"
                     tools:listitem="@layout/item_group_list" />
 
+                <TextView
+                    android:id="@+id/tv_group_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="100dp"
+                    android:text="@string/group_list_empty"
+                    android:textAppearance="@style/ta.body.2"
+                    android:textColor="@color/text_body_quinary"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_recommend_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

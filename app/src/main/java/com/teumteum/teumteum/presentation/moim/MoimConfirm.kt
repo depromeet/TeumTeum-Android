@@ -1,9 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.app.Activity
-import android.app.Dialog
-import android.content.Context
-import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,24 +28,24 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import com.google.accompanist.pager.HorizontalPager
-import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.compose.TeumDivider
@@ -60,15 +58,12 @@ import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
-import com.teumteum.base.util.extension.toast
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.group.join.JoinFriendListActivity
 import com.teumteum.teumteum.presentation.group.join.check.GroupMeetCheckActivity
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -78,7 +73,10 @@ fun MoimConfirm(
     activity: Activity,
     isJoinView: Boolean,
     meetingId: Long? = null,
-    onClick: ()-> Unit = { activity?.finish() },
+    onClick: ()-> Unit = {
+        activity.finish()
+        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
+    },
 
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -163,6 +161,11 @@ fun MoimConfirm(
                 TmMarginVerticalSpacer(size = 24)
             }
         }
+    }
+    BackHandler {
+        // Handle the back button press
+        activity.finish()
+        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
     }
 }
 

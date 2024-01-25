@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.mypage.recommend
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -119,6 +120,11 @@ fun RecommendDetailScreen(
             }
 
         }
+    }
+    BackHandler {
+        // Handle the back button press
+        activity.finish()
+        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
     }
 }
 

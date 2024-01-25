@@ -40,7 +40,6 @@ class JoinFriendListActivity :
                 useRippleEffect = false,
                 clickEvent = {
                     finish()
-                    closeActivitySlideAnimation()
                 }
             )
         )
@@ -73,6 +72,11 @@ class JoinFriendListActivity :
         TabLayoutMediator(binding.tl, binding.vpFriend) { tab, _ ->
             tab.view.isClickable = false
         }.attach()
+    }
+
+    override fun finish() {
+        super.finish()
+        closeActivitySlideAnimation()
     }
 
     companion object {
