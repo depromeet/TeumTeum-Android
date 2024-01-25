@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -70,7 +71,7 @@ fun MoimConfirm(viewModel: MoimViewModel, activity: Activity, isJoinView: Boolea
         onClick = {
             activity.finish()
             (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
-        }
+        },
     ) {
         val scrollState = rememberScrollState()
         Column(
@@ -109,6 +110,11 @@ fun MoimConfirm(viewModel: MoimViewModel, activity: Activity, isJoinView: Boolea
                 TmMarginVerticalSpacer(size = 24)
             }
         }
+    }
+    BackHandler {
+        // Handle the back button press
+        activity.finish()
+        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
     }
 }
 
