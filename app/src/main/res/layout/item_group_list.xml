@@ -66,6 +66,6 @@
         android:id="@+id/view_division_button"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey_100"
+        android:background="@color/elevation_level01"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
