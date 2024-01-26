@@ -9,7 +9,7 @@
         android:title="@string/bottom_menu_home"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/fragment_teum_teum"
+        android:id="@+id/fragment_familiar"
         android:enabled="true"
         android:icon="@drawable/ic_bottom_navi_familiar"
         android:menuCategory="secondary"

@@ -16,7 +16,7 @@
             android:id="@+id/iv_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_dark"
+            android:src="@drawable/ic_check"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/iv_character_self"
             app:layout_constraintEnd_toEndOf="@id/iv_character_self"
