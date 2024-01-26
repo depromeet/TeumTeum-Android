@@ -69,7 +69,7 @@ fun MoimIntroduce(
             when (event) {
                 MoimViewModel.SnackbarEvent.FILE_OVER_10MB -> {
                     val result = snackbarHostState.showSnackbar(
-                        message = event.getMessage(),
+                        message = "10mb 이하의 사진을 등록해 주세요",
                         duration = SnackbarDuration.Short
                     )
                     delay(1000)

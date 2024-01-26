@@ -97,7 +97,7 @@ val ColorPalette_Dark = ColorPalette(
     color_text_caption_quaternary_default = Color(color = 0xFF444444), // gray300
 
     color_text_button_primary_default = Color(color = 0xFFFFFFFF),
-    color_text_button_primary_default02 = Color(color = 0xFF444444),
+    color_text_button_primary_default02 = Color(color = 0xFFF5F5F5),
     color_text_button_primary_press = Color(color = 0xFF96D7FF), // tmtm blue 200
     color_text_button_primary_disabled = Color(color = 0xFF444444),
     color_text_button_secondary_default = Color(color = 0xFF36B2FF),

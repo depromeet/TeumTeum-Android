@@ -41,7 +41,6 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
                 .background(color = TmtmColorPalette.current.color_background)
         ) {
             TmMarginVerticalSpacer(size = 68)
@@ -49,6 +48,7 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
                 text = stringResource(id = R.string.setting_my_info_edit_title1),
                 style = TmTypo.current.Body2,
                 color= TmtmColorPalette.current.color_text_body_quaternary,
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             TmMarginVerticalSpacer(size = 8)
             EditNameField(viewModel)
@@ -58,6 +58,7 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
                 text = stringResource(id = R.string.setting_my_info_edit_title2),
                 style = TmTypo.current.Body2,
                 color= TmtmColorPalette.current.color_text_body_quaternary,
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             TmMarginVerticalSpacer(size = 8)
             EditBirthField(viewModel)
@@ -66,6 +67,7 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
                 text = stringResource(id = R.string.setting_my_info_edit_title3),
                 style = TmTypo.current.Body2,
                 color= TmtmColorPalette.current.color_text_body_quaternary,
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             TmMarginVerticalSpacer(size = 8)
             EditSignUpBox(viewModel)
@@ -82,6 +84,7 @@ fun EditSignUpBox(viewModel: SettingViewModel) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(56.dp)
+        .padding(horizontal =20.dp)
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)
@@ -107,6 +110,7 @@ fun EditNameField(viewModel: SettingViewModel) {
         value = userName,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 20.dp)
             .wrapContentHeight(),
         placeholder = { Text(text = stringResource(id = R.string.setting_my_info_edit_placeholder1), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
         onValueChange = { newText ->

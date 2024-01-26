@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -83,6 +84,7 @@ fun MoimConfirm(
 ) {
     val showDialog = remember { mutableStateOf(false) }
     val screenState by viewModel.screenState.collectAsState()
+    val isJoined by viewModel.isUserJoined.collectAsState()
 
     LaunchedEffect(key1 = screenState) {
         if (screenState == ScreenState.Cancel) {
@@ -156,19 +158,38 @@ fun MoimConfirm(
             ) {
                 if (isJoinView) {
                     if (meetingId != null && meetingId > 0) {
-                        TeumDivider()
-                        MoimCancelBtn(
-                            viewModel = viewModel,
-                            onJoinGroupClick = { viewModel.cancelMeeting(it)})
-                        TmMarginVerticalSpacer(size = 24)
-                    } else {
-                        TeumDivider()
-                        MoimJoinBtn(viewModel = viewModel) {
-                            activity.startActivity(
-                                GroupMeetCheckActivity.getIntent(activity, it)
-                            )
+                        //meeting Id가 argument로 있는데, 참여중인 경우
+                        if(isJoined) {
+                            TeumDivider()
+                            MoimCancelBtn(
+                                viewModel = viewModel
+                            ) {
+                                if (meetingId != null) { viewModel.cancelMeeting(it) }
+                                else { viewModel.updateSheetEvent(ScreenState.Failure) }
+                            }
+                            TmMarginVerticalSpacer(size = 24)
                         }
-                        TmMarginVerticalSpacer(size = 24)
+                        //meeting Id가 argument로 있는데, 참여 중이지 않은 경우
+                        else {
+                            TeumDivider()
+                            MoimJoinBtn(viewModel = viewModel) {
+                                activity.startActivity(
+                                    GroupMeetCheckActivity.getIntent(activity, it)
+                                )
+                            }
+                            TmMarginVerticalSpacer(size = 24)
+                        }
+                    } else {
+                        //meeting Id가 argument로 없음, 참여중이지 않은경우(moimCreate)
+                        if(isJoined == false) {
+                            TeumDivider()
+                            MoimJoinBtn(viewModel = viewModel) {
+                                activity.startActivity(
+                                    GroupMeetCheckActivity.getIntent(activity, it)
+                                )
+                            }
+                            TmMarginVerticalSpacer(size = 24)
+                        }
                     }
                 } else {
                     TeumDivider()

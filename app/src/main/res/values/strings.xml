@@ -183,6 +183,10 @@
     <string name="setting_edit_card_btn">수정 완료</string>
     <string name="setting_edit_chip_plus">추가하기</string>
 
+    <string name="moim_alert_message_failure">모임 신청에 오류가 발생했습니다</string>
+    <string name="moim_alert_message_server">서버 통신에 실패했습니다</string>
+    <string name="moim_alert_message_success">모임 취소를 성공했습니다</string>
+
     <string name="setting_edit_card_topbar">소개서 수정하기</string>
     <string name="setting_edit_card_placeholder1">실명을 입력해주세요</string>
     <string name="setting_edit_card_placeholder2">생년월일을 입력해주세요. (20000101)</string>

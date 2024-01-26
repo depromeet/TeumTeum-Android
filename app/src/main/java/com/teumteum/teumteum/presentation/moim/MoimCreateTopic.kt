@@ -44,6 +44,7 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import kotlinx.coroutines.delay
 
 @Composable
 fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {

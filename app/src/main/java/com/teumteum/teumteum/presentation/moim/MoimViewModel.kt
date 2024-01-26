@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
@@ -68,7 +69,7 @@ class MoimViewModel @Inject constructor(
     private val _time = MutableStateFlow("")
     val time : StateFlow<String> = _time.asStateFlow()
 
-    private val _people = MutableStateFlow(2)
+    private val _people = MutableStateFlow(3)
     val people: StateFlow<Int> = _people.asStateFlow()
 
     private val _address = MutableStateFlow<String?>(null)
@@ -140,6 +141,7 @@ class MoimViewModel @Inject constructor(
 
         }
     }
+
 
     fun updateTopic(topicType: TopicType) {
         _topic.value = topicType
@@ -260,6 +262,8 @@ class MoimViewModel @Inject constructor(
             repository.deleteGroupJoin(meetingId)
                 .onSuccess {
                     _screenState.value = ScreenState.CancelSuccess
+                    _isUserJoined.value = false
+                    Log.d("cancel success", screenState.value.toString())
                 }
                 .onFailure {
                     Timber.e(it)
@@ -308,27 +312,17 @@ class MoimViewModel @Inject constructor(
                 if (requestModel != null) {
                     repository.postGroupMoim(requestModel, imageFiles)
                         .onSuccess { meeting ->
-                            Log.d("createMoim", "success")
                             _screenState.value = ScreenState.Success
-                            Log.d("screenState_success", screenState.value.toString())
                         }
                         .onFailure { throwable ->
-                            Log.d("createMoim", "failure")
                             Timber.e(throwable)
                             _screenState.value = ScreenState.Server
                         }
                 }
             } else {
-                Log.d("createMoim", "time is null")
                 _screenState.value = ScreenState.Failure
-                Log.d("sceenState after", _screenState.toString())
             }
         }
-    }
-
-    fun resetScreenState() {
-        _screenState.value = ScreenState.Topic
-        _currentStep.value = 0
     }
 
     fun goToNextScreen() {
@@ -399,13 +393,18 @@ class MoimViewModel @Inject constructor(
         _screenState.value = screenState
     }
 
+    private val _isUserJoined = MutableStateFlow(false)
+    val isUserJoined: StateFlow<Boolean> = _isUserJoined
+
     fun getGroup(meetingId: Long) {
         viewModelScope.launch {
             repository.getGroup(meetingId)
                 .onSuccess {
+                    Log.d("load", "load get Group")
                     getUser(it.hostId)
                     getJoinUserList(it.participantIds.joinToString { id -> id.toString() }.replace(" ", ""))
-
+                    _isUserJoined.value = (it.hostId == getMyId()) || it.participantIds.contains(getMyId().toInt())
+                    Log.d("userJoined", isUserJoined.value.toString())
                     _topic.value = TopicType.values().find { type ->
                         type.value == it.topic
                     }
@@ -419,6 +418,12 @@ class MoimViewModel @Inject constructor(
                 }
         }
     }
+
+    fun getMyId(): Long {
+            return userRepository.getUserInfo()?.id ?: -1L
+    }
+
+
 
     fun getUser(userId: Long) {
         viewModelScope.launch {
