@@ -56,6 +56,8 @@
             android:letterSpacing="-0.03125"
             android:lineSpacingExtra="5sp"
             android:text="@{vm.schoolName}"
+            android:inputType="text"
+            android:maxLines="1"
             android:maxLength="13"
             android:textColorHint="?attr/color_text_body_quinary"
             android:hint="@string/signup_tv_school_hint"

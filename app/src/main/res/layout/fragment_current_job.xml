@@ -56,6 +56,8 @@
             android:lineSpacingExtra="5sp"
             android:text="@{vm.companyName}"
             android:maxLength="13"
+            android:inputType="text"
+            android:maxLines="1"
             android:textColorHint="?attr/color_text_body_quinary"
             android:hint="@string/signup_tv_job_where_hint"
             app:layout_constraintTop_toBottomOf="@id/tv_where"
