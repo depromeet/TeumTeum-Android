@@ -14,6 +14,7 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.defaultToast
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.enumSet.EnumTopic
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
@@ -36,7 +37,7 @@ class HomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAppBarLayout()
-        binding.floatingBtn.setOnClickListener { navigateToMoimFragment() }
+        binding.floatingBtn.setOnSingleClickListener { navigateToMoimFragment() }
         initView()
         initEvent()
         observe()
@@ -89,23 +90,23 @@ class HomeFragment :
     }
 
     private fun initEvent() {
-        binding.cardConcerned.setOnClickListener {
+        binding.cardConcerned.setOnSingleClickListener {
             goToGroupListActivity(EnumTopic.CONCERNED.topic, GroupListActivity.TOPIC)
         }
 
-        binding.cardProject.setOnClickListener {
+        binding.cardProject.setOnSingleClickListener {
             goToGroupListActivity(EnumTopic.PROJECT.topic, GroupListActivity.TOPIC)
         }
 
-        binding.cardStudy.setOnClickListener {
+        binding.cardStudy.setOnSingleClickListener {
             goToGroupListActivity(EnumTopic.STUDY.topic, GroupListActivity.TOPIC)
         }
 
-        binding.cardWork.setOnClickListener {
+        binding.cardWork.setOnSingleClickListener {
             goToGroupListActivity(EnumTopic.WORK.topic, GroupListActivity.TOPIC)
         }
 
-        binding.tvRecommendMore.setOnClickListener {
+        binding.tvRecommendMore.setOnSingleClickListener {
             goToGroupListActivity(viewModel.getLocation(), GroupListActivity.LOCATION)
         }
     }

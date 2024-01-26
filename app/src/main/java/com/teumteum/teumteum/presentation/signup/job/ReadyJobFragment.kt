@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentReadyJobBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -53,7 +54,7 @@ class ReadyJobFragment
         jobClassBottomSheet = SingleModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, JOB_SORT_LIST, jobClassListener)
 
         with(binding) {
-            llWho.setOnClickListener {
+            llWho.setOnSingleClickListener {
                 jobClassBottomSheet?.apply {
                     setFocusedImageView(ivShowWho)
                     setSelectedItem(viewModel.readyJobClass.value)
@@ -63,7 +64,7 @@ class ReadyJobFragment
                 ivShowWho.setImageResource(R.drawable.ic_arrow_up_l)
             }
 
-            llWhat.setOnClickListener {
+            llWhat.setOnSingleClickListener {
                 if (viewModel.readyJobClass.value in JOB_SORT_LIST) {
                     jobDetailList = when (viewModel.readyJobClass.value) {
                         JOB_DESIGN -> JOB_DESIGN_LIST

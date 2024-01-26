@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentGetMbtiBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -38,7 +39,7 @@ class GetMbtiFragment:
         bottomSheet = MbtiModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, listener)
 
         with(binding) {
-            llStatus.setOnClickListener {
+            llStatus.setOnSingleClickListener {
                 bottomSheet?.setFocusedImageView(ivShow)
                 reloadLastMbti()
                 bottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)

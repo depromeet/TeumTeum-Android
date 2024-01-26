@@ -12,6 +12,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.longExtra
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupMeetCheckBinding
 import com.teumteum.teumteum.presentation.group.join.complete.GroupMeetCompleteActivity
@@ -57,7 +58,7 @@ class GroupMeetCheckActivity :
             binding.btnJoin.isEnabled = isCheck
         }
 
-        binding.btnJoin.setOnClickListener {
+        binding.btnJoin.setOnSingleClickListener {
             viewModel.joinGroup(meetingId)
         }
     }

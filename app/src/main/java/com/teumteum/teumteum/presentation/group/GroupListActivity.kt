@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.intExtra
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.base.util.extension.stringExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupListBinding
@@ -56,7 +57,7 @@ class GroupListActivity : BindingActivity<ActivityGroupListBinding>(R.layout.act
     }
 
     private fun initEvent() {
-        binding.ivClose.setOnClickListener {
+        binding.ivClose.setOnSingleClickListener {
             finish()
         }
     }

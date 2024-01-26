@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCardCompleteBinding
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
@@ -78,10 +79,10 @@ class CardCompleteFragment
         frontAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_front) as AnimatorSet
         backAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_back) as AnimatorSet
 
-        binding.cardviewFront.setOnClickListener {
+        binding.cardviewFront.setOnSingleClickListener {
             startAnim()
         }
-        binding.cardviewBack.setOnClickListener {
+        binding.cardviewBack.setOnSingleClickListener {
             startAnim()
         }
     }

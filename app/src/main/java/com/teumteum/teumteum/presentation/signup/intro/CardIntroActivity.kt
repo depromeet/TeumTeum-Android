@@ -9,6 +9,7 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityCardIntroBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -57,7 +58,7 @@ class CardIntroActivity
 
     private fun initView() {
         with (binding) {
-            btnStart.setOnClickListener {
+            btnStart.setOnSingleClickListener {
                 val intent = Intent(this@CardIntroActivity, SignUpActivity::class.java)
                 intent.putExtra(EXTRA_KEY_OAUTHID, oauthId)
                 intent.putExtra(EXTRA_KEY_PROVIDER, provider)
@@ -65,7 +66,7 @@ class CardIntroActivity
                 startActivity(intent)
                 openActivitySlideAnimation()
             }
-            getLeftMenuChildAt(0).setOnClickListener {
+            getLeftMenuChildAt(0).setOnSingleClickListener {
                 finish()
             }
             val interests = listOf(
@@ -88,10 +89,10 @@ class CardIntroActivity
         frontAnimation = AnimatorInflater.loadAnimator(this, com.teumteum.base.R.anim.card_reverse_front) as AnimatorSet
         backAnimation = AnimatorInflater.loadAnimator(this, com.teumteum.base.R.anim.card_reverse_back) as AnimatorSet
 
-        binding.cardviewFront.setOnClickListener {
+        binding.cardviewFront.setOnSingleClickListener {
             startAnim()
         }
-        binding.cardviewBack.setOnClickListener {
+        binding.cardviewBack.setOnSingleClickListener {
             startAnim()
         }
     }
