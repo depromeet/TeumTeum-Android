@@ -48,11 +48,6 @@ class CardFixFragment
         initCardAnim()
     }
 
-    override fun onResume() {
-        checkValidInput()
-        super.onResume()
-    }
-
     private fun initCard() {
         with(viewModel) {
             val fc = CHARACTER_CARD_LIST[characterId.value]?.let {
@@ -195,11 +190,6 @@ class CardFixFragment
                 }
             }
         }
-    }
-
-    private fun checkValidInput() {
-        if (viewModel.checkUserInfoChanged()) (activity as SignUpActivity).activateFixFinishButton()
-        else (activity as SignUpActivity).disableFixFinishButton()
     }
 
     @SuppressLint("ResourceType")

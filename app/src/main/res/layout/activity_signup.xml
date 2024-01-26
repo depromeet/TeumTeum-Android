@@ -77,7 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:elevation="0dp"
             android:stateListAnimator="@null"
-            android:enabled="false"
+            android:enabled="true"
             android:visibility="gone"
             android:text="@string/signup_tv_fix_finish"
             android:textAppearance="@style/ta.headline.6"
