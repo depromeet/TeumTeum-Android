@@ -62,6 +62,7 @@ fun MoimNameTextField(viewModel: MoimViewModel, placeHolder: String) {
 
     OutlinedTextField(
         value = text,
+        singleLine = true,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),

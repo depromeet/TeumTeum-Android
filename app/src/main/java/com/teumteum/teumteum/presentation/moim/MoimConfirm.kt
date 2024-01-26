@@ -117,7 +117,10 @@ fun MoimConfirm(
         if (isJoinView) ""
         else if (meetingId != null && meetingId > 0) ""
         else stringResource(id = R.string.moim_confirm_appbar),
-        onClick = { onClick() }
+        onClick = {
+            if(isJoinView) { onClick() }
+            else { viewModel.goPreviousScreen() }
+            }
     ) {
         Column(
             modifier = Modifier

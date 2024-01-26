@@ -31,11 +31,11 @@ fun MoimFinish(viewModel: MoimViewModel, navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = TmtmColorPalette.current.GreyWhite),
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
-            TmMarginVerticalSpacer(size = 198)
+            TmMarginVerticalSpacer(size = 218)
             MoimFinishColumn()
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
@@ -62,9 +62,11 @@ fun MoimFinishColumn() {
             painterResource(id = R.drawable.ic_suprise),
             contentDescription = null
         )
+        TmMarginVerticalSpacer(size = 16)
         Text(
             text = stringResource(R.string.moim_finish),
             style = TmTypo.current.HeadLine5,
+            color = TmtmColorPalette.current.color_text_headline_primary
         )
     }
 }

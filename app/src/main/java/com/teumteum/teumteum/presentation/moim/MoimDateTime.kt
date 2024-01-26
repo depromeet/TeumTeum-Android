@@ -137,6 +137,7 @@ fun MoimDateInputField(
                 }
             }
         },
+        singleLine = true,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = TmtmColorPalette.current.color_text_body_primary,
             focusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
