@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -117,59 +119,69 @@ fun MoimConfirm(
         else stringResource(id = R.string.moim_confirm_appbar),
         onClick = { onClick() }
     ) {
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = TmtmColorPalette.current.color_background)
-                .verticalScroll(scrollState)
         ) {
-            MoimPhotoPager(viewModel)
-            MoimConfirmInfo(viewModel)
-            TmMarginVerticalSpacer(size = 32)
-            TeumDividerThick(int = 8)
-            TmMarginVerticalSpacer(size = 20)
-            MoimHostRow(viewModel)
-            TmMarginVerticalSpacer(size = 20)
-            if (isJoinView) {
-                TeumDividerHorizontalThick(int = 1, 20)
-                TmMarginVerticalSpacer(size = 20)
-                MoimJoinUserRow(viewModel) {
-                    activity.startActivity(JoinFriendListActivity.getIntent(activity, Json.encodeToString(it)))
-                    (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
-                }
-                TmMarginVerticalSpacer(size = 20)
-            }
-            TeumDividerThick(int = 8)
-            MoimConfirmIntroColumn(viewModel)
-            Spacer(modifier = Modifier.weight(1f))
-            TeumDivider()
-            if (isJoinView) {
-                if (meetingId != null && meetingId > 0) {
-                    MoimCancelBtn(
-                        viewModel = viewModel,
-                        onJoinGroupClick = { viewModel.cancelMeeting(it)})
-                } else {
-                    MoimJoinBtn(viewModel = viewModel) {
-                        activity.startActivity(
-                            GroupMeetCheckActivity.getIntent(activity, it)
-                        )
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                    item {
+                        MoimPhotoPager(viewModel)
+                        MoimConfirmInfo(viewModel)
+                        TmMarginVerticalSpacer(size = 32)
+                        TeumDividerThick(int = 8)
+                        TmMarginVerticalSpacer(size = 20)
+                        MoimHostRow(viewModel)
+                        TmMarginVerticalSpacer(size = 20)
+                        if (isJoinView) {
+                            TeumDividerHorizontalThick(int = 1, 20)
+                            TmMarginVerticalSpacer(size = 20)
+                            MoimJoinUserRow(viewModel) {
+                                activity.startActivity(JoinFriendListActivity.getIntent(activity, Json.encodeToString(it)))
+                                (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
+                            }
+                            TmMarginVerticalSpacer(size = 20)
+                        }
+                        TeumDividerThick(int = 8)
+                        MoimConfirmIntroColumn(viewModel)
                     }
                 }
-            } else {
-                MoimCreateBtn(text = stringResource(id = R.string.moim_confirm_btn), viewModel = viewModel)
-                TmMarginVerticalSpacer(size = 24)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
+            ) {
+                if (isJoinView) {
+                    if (meetingId != null && meetingId > 0) {
+                        TeumDivider()
+                        MoimCancelBtn(
+                            viewModel = viewModel,
+                            onJoinGroupClick = { viewModel.cancelMeeting(it)})
+                        TmMarginVerticalSpacer(size = 24)
+                    } else {
+                        TeumDivider()
+                        MoimJoinBtn(viewModel = viewModel) {
+                            activity.startActivity(
+                                GroupMeetCheckActivity.getIntent(activity, it)
+                            )
+                        }
+                        TmMarginVerticalSpacer(size = 24)
+                    }
+                } else {
+                    TeumDivider()
+                    MoimCreateBtn(text = stringResource(id = R.string.moim_confirm_btn), viewModel = viewModel)
+                    TmMarginVerticalSpacer(size = 24)
+                }
             }
         }
     }
     BackHandler {
-        // Handle the back button press
-        activity.finish()
-        (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
+        if(isJoinView) {
+            activity.finish()
+            (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
+        }
     }
 }
-
-
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -189,9 +201,10 @@ fun MoimPhotoPager(viewModel : MoimViewModel) {
                 painter = rememberAsyncImagePainter(uri),
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 276.dp)
                     .clipToBounds(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.FillWidth
             )
         }
         if (imageUri.size > 1) {
@@ -215,10 +228,12 @@ fun MoimConfirmInfo(viewModel: MoimViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .background(color = TmtmColorPalette.current.color_background)
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
+        TmMarginVerticalSpacer(size = 32)
         Row(modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
