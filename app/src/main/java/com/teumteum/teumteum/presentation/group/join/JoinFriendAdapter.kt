@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemFriendListBinding
@@ -40,7 +41,7 @@ class JoinFriendAdapter(private val itemClick: (Friend) -> (Unit)) :
                 ivCharacter.setImageResource(SignupUtils.CHARACTER_CARD_LIST[item.characterId] ?: R.drawable.ic_card_front_penguin)
             }
 
-            binding.root.setOnClickListener {
+            binding.root.setOnSingleClickListener {
                 itemClick(item)
             }
         }

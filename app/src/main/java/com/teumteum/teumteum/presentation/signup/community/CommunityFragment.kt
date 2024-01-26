@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCommunityBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -41,7 +42,7 @@ class CommunityFragment
         bottomSheet = SingleModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, communitySort, listener)
 
         with(binding) {
-            llStatus.setOnClickListener {
+            llStatus.setOnSingleClickListener {
                 bottomSheet?.setFocusedImageView(ivShow)
                 bottomSheet?.setSelectedItem(viewModel.community.value)
                 bottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)

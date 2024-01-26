@@ -15,6 +15,7 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.defaultSnackBar
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupBinding
 import com.teumteum.teumteum.presentation.signup.area.PreferredAreaFragment
@@ -167,11 +168,11 @@ class SignUpActivity
     }
 
     private fun setUpInitialListener() {
-        binding.btnNextSignup.setOnClickListener {
+        binding.btnNextSignup.setOnSingleClickListener {
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
-        getLeftMenuChildAt(0).setOnClickListener {
+        getLeftMenuChildAt(0).setOnSingleClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
         }
@@ -193,28 +194,28 @@ class SignUpActivity
     }
 
     private fun setUpListenersOnCardComplete() {
-        binding.btnFix.setOnClickListener {
+        binding.btnFix.setOnSingleClickListener {
             savePresentUserInfo()
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
-        binding.btnKeep.setOnClickListener {
+        binding.btnKeep.setOnSingleClickListener {
             registerUserInfo()
         }
-        binding.btnFinishSignup.setOnClickListener {
+        binding.btnFinishSignup.setOnSingleClickListener {
             registerUserInfo()
         }
-        getLeftMenuChildAt(0).setOnClickListener {
+        getLeftMenuChildAt(0).setOnSingleClickListener {
             finish()
         }
     }
 
     private fun setUpListenersOnCardFix() {
-        getLeftMenuChildAt(0).setOnClickListener {
+        getLeftMenuChildAt(0).setOnSingleClickListener {
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
         }
-        binding.btnNextSignup.setOnClickListener {
+        binding.btnNextSignup.setOnSingleClickListener {
             fixCard()
         }
     }

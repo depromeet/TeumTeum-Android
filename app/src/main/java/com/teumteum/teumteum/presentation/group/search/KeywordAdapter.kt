@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.group.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.databinding.ItemKeywordListBinding
 
 class KeywordAdapter(private val itemClick: (String) -> (Unit)) :
@@ -36,7 +37,7 @@ class KeywordAdapter(private val itemClick: (String) -> (Unit)) :
         fun onBind(keyword: String) {
             binding.tvKeyword.text = keyword
 
-            binding.root.setOnClickListener {
+            binding.root.setOnSingleClickListener {
                 itemClick(keyword)
             }
         }

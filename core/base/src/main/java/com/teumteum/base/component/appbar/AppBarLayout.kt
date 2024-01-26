@@ -19,6 +19,7 @@ import com.teumteum.base.R
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
 import com.teumteum.base.util.extension.gone
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.base.util.extension.visible
 
 interface AppBarLayout {
@@ -178,7 +179,7 @@ interface AppBarLayout {
      * AppBar의 Title 영역 클릭 이벤트 추가
      */
     fun addOnAppBarTitleClickEvent(clickEvent: (() -> Unit)?) {
-        appBarBinding.llTitle.setOnClickListener {
+        appBarBinding.llTitle.setOnSingleClickListener {
             clickEvent?.invoke()
         }
     }
@@ -325,7 +326,7 @@ interface AppBarLayout {
                         }
 
                         // 클릭 이벤트
-                        setOnClickListener {
+                        setOnSingleClickListener {
                             appBarMenu.clickEvent?.invoke()
                         }
 
@@ -357,7 +358,7 @@ interface AppBarLayout {
                         }
 
                         // 클릭 이벤트
-                        setOnClickListener {
+                        setOnSingleClickListener {
                             appBarMenu.clickEvent?.invoke()
                         }
 

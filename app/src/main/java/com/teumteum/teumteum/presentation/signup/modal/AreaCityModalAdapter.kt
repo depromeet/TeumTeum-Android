@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.R.*
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.databinding.ItemAreaModalCityBinding
 
 class AreaCityModalAdapter(private val itemClickListener: (String) -> Unit)
@@ -35,7 +36,7 @@ class AreaCityModalAdapter(private val itemClickListener: (String) -> Unit)
         : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.root.setOnSingleClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = binding.tvItem.text.toString()

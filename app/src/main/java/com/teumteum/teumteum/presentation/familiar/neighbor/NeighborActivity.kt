@@ -15,6 +15,7 @@ import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.repository.RequestPostNeighborUser
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
@@ -76,7 +77,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
 
 
     private fun setUpListener() {
-        binding.btnStart.setOnClickListener {
+        binding.btnStart.setOnSingleClickListener {
             startIntroduceActivity()
         }
     }
@@ -94,7 +95,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                         if (index < views.size) {
                             val view = views[index]
 
-                            view.setOnClickListener {
+                            view.setOnSingleClickListener {
                                 view.isCharacterSelected =
                                     !view.isCharacterSelected //체크박스 visibility
 

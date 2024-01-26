@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.databinding.ItemAreaModalStreetBinding
 
 class AreaStreetModalAdapter(private val itemClickListener: (String) -> Unit)
@@ -43,7 +44,7 @@ class AreaStreetModalAdapter(private val itemClickListener: (String) -> Unit)
         : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.root.setOnSingleClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = binding.tvItem.text.toString() // 아이템 데이터를 텍스트 뷰에서 가져옴

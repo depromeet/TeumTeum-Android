@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.signup.character
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemCharacterListBinding
 
@@ -55,7 +56,7 @@ class CharacterListAdapter(private val itemClick: (Int) -> (Unit))
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(position: Int, res: Int) {
             binding.ivCharacter.setImageResource(res)
-            binding.root.setOnClickListener {
+            binding.root.setOnSingleClickListener {
                 itemClick(position)
             }
         }

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.teumteum.domain.entity.NeighborEntity
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.CustomCharacterViewBinding
 
@@ -39,7 +39,7 @@ class CharacterView @JvmOverloads constructor(
 
         attrs?.let { applyAttributes(context, it) }
 
-        setOnClickListener {
+        setOnSingleClickListener {
             isCharacterSelected = !isCharacterSelected
         }
     }

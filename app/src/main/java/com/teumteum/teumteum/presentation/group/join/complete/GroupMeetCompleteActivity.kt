@@ -12,6 +12,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.longExtra
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupMeetCompleteBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -72,11 +73,11 @@ class GroupMeetCompleteActivity :
     }
 
     private fun initEvent() {
-        binding.btnCancel.setOnClickListener {
+        binding.btnCancel.setOnSingleClickListener {
             viewModel.deleteJoinCancel(meetingId)
         }
 
-        binding.btnHome.setOnClickListener {
+        binding.btnHome.setOnSingleClickListener {
             goToMainActivity()
             finish()
         }

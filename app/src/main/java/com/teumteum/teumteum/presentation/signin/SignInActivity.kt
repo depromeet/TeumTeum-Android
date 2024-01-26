@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySigninBinding
 import com.teumteum.teumteum.presentation.splash.SplashViewModel
@@ -31,14 +32,14 @@ class SignInActivity
 
     private fun setClickListener() {
         with(binding) {
-            btnKakao.setOnClickListener {
+            btnKakao.setOnSingleClickListener {
                 val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
                 intent.putExtra(EXTRA_KEY_PROVIDER, KAKAO_PROVIDER_ENG)
                 startActivity(intent)
                 openActivitySlideAnimation()
             }
 
-            btnNaver.setOnClickListener {
+            btnNaver.setOnSingleClickListener {
                 val intent = Intent(this@SignInActivity, SocialWebViewActivity::class.java)
                 intent.putExtra(EXTRA_KEY_PROVIDER, NAVER_PROVIDER_ENG)
                 startActivity(intent)
