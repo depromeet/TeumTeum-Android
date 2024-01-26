@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
@@ -12,6 +14,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
@@ -53,30 +58,42 @@ class MoimFragment :
         }
 
         binding.composeMoim.setContent {
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
                 val screenState by viewModel.screenState.collectAsState()
                 when (screenState) {
                     ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen() }
                     ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
-                    ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
-                    ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
-                    ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
-                    ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
+                    ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen() }
+                    ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen() }
+                    ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen() }
+                    ScreenState.People -> MoimPeople(viewModel) { goFrontScreen() }
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
                         viewModel.getUserId()
-                        MoimConfirm(viewModel, requireActivity(),false) { goFrontScreen()}
+                        MoimConfirm(viewModel, requireActivity(), false) { goFrontScreen() }
                     }
+
                     ScreenState.CancelInit, ScreenState.Cancel -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(),true, meetingId) {navController.popBackStack()}
+                        MoimConfirm(
+                            viewModel,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
                     }
-                    ScreenState.Success -> MoimFinish(viewModel = viewModel, onClick = {goFrontScreen()} ,navController = navController)
+
+                    ScreenState.Success -> MoimFinish(
+                        viewModel = viewModel,
+                        onClick = { goFrontScreen() },
+                        navController = navController)
 
                     else -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(),false)
+                        MoimConfirm(viewModel, requireActivity(), false)
                     }
                 }
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }

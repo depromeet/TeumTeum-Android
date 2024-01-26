@@ -34,6 +34,7 @@ class MyPageViewModel @Inject constructor(
 
     init {
         loadUserInfo()
+        loadFriends()
     }
 
     fun loadFriends() {

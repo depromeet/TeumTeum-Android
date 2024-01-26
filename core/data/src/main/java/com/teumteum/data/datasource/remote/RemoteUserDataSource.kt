@@ -3,6 +3,7 @@ package com.teumteum.data.datasource.remote
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.FriendRecommend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
@@ -27,7 +28,7 @@ class RemoteUserDataSource @Inject constructor(
         return service.postUserInfo(userInfo)
     }
 
-    suspend fun getUserFriend(userId: Long): Friends {
+    suspend fun getUserFriend(userId: Long): FriendRecommend {
         return service.getUserFriends(userId)
     }
 

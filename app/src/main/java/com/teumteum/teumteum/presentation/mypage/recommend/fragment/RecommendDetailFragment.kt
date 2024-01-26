@@ -2,9 +2,14 @@ package com.teumteum.teumteum.presentation.mypage.recommend.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentRecommendDetailBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -35,7 +40,15 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         val navController = findNavController()
 
         binding.composeRecommendDetail.setContent {
-            RecommendDetailScreen(navController, viewModel, userId, isJoinView, requireActivity())
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
+                RecommendDetailScreen(
+                    navController,
+                    viewModel,
+                    userId,
+                    isJoinView,
+                    requireActivity()
+                )
+            }
         }
 
     }

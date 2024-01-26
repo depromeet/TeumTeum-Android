@@ -30,6 +30,8 @@ fun TmScaffold(
     isSetting: Boolean = false,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val TmtmColorPalette = TmtmColorPalette
+
     Scaffold(
         topBar = {
             TopAppBar(
