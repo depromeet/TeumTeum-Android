@@ -157,7 +157,7 @@ fun MoimConfirm(
                     }
                 }
             } else {
-                MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), viewModel = viewModel)
+                MoimCreateBtn(text = stringResource(id = R.string.moim_confirm_btn), viewModel = viewModel)
                 TmMarginVerticalSpacer(size = 24)
             }
         }
@@ -190,7 +190,8 @@ fun MoimPhotoPager(viewModel : MoimViewModel) {
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clipToBounds()
+                    .clipToBounds(),
+                contentScale = ContentScale.Crop
             )
         }
         if (imageUri.size > 1) {

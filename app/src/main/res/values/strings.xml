@@ -111,11 +111,12 @@
 
     <string name="moim_topic_title">어떤 주제로 모임을 만들까요?</string>
     <string name="moim_next_btn">다음</string>
+    <string name="moim_confirm_btn">모임 열기</string>
 
     <string name="moim_name_title">모임 이름을 작성해 주세요</string>
 
     <string name="moim_introduce_title">모임을 소개해 주세요</string>
-    <string name="moim_introduce_system_text">추천 수가 20개가 넘는 인기글의 경우 스팸 광고를 차단하기 위해 게시글 수정이 불가합니다.</string>
+    <string name="moim_introduce_system_text">모임 소개 글은 10자를 넘어야 합니다.</string>
     <string name="moim_introduce_title1_photo">사진 등록</string>
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
@@ -244,7 +245,6 @@
     <string name="moim_confirm_title3">인원</string>
     <string name="moim_confirm_title4">장소</string>
     <string name="moim_confirm_title5">모임 소개</string>
-    <string name="moim_confirm_btn">모임 열기</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

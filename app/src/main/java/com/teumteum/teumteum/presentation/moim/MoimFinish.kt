@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,8 +26,8 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 
 @Composable
-fun MoimFinish(viewModel: MoimViewModel, onClick: ()->Unit, navController: NavController) {
-    TmScaffold(onClick = {onClick()}) {
+fun MoimFinish(viewModel: MoimViewModel, navController: NavController) {
+    TmScaffold(onClick = { viewModel.goPreviousScreen()}) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -36,9 +37,10 @@ fun MoimFinish(viewModel: MoimViewModel, onClick: ()->Unit, navController: NavCo
         ) {
             TmMarginVerticalSpacer(size = 198)
             MoimFinishColumn()
+            Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
             MoimCreateBtn(
-                text = stringResource(id = R.string.moim_next_btn),
+                text = stringResource(id = R.string.moim_finish_btn),
                 viewModel = viewModel,
                 navController=  navController
             )
@@ -52,7 +54,9 @@ fun MoimFinishColumn() {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
-        .padding(horizontal = 20.dp)
+        .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
     ) {
         Image(
             painterResource(id = R.drawable.ic_suprise),

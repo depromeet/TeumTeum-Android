@@ -97,6 +97,8 @@ fun MoimIntroduce(
             CreateMoimTitle(string= stringResource(id = R.string.moim_introduce_title))
             TmMarginVerticalSpacer(size = 28)
             MoimIntroColumn(viewModel)
+            TmMarginVerticalSpacer(size = 8)
+            MoimSystemText(text =  R.string.moim_introduce_system_text)
             TmMarginVerticalSpacer(size = 20)
             TeumDivider()
             TmMarginVerticalSpacer(size = 20)
@@ -123,8 +125,6 @@ fun MoimIntroColumn(viewModel: MoimViewModel) {
         verticalArrangement = Arrangement.Top,
     ) {
         MoimInputField(viewModel)
-        TmMarginVerticalSpacer(size = 24)
-
     }
 }
 
@@ -174,7 +174,8 @@ fun MoimInputField(viewModel: MoimViewModel) {
             unfocusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
             unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
             focusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
-            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
+            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            cursorColor = TmtmColorPalette.current.TMTMBlue500,
         ),
     )
 

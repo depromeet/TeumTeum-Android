@@ -83,10 +83,7 @@ class MoimFragment :
                         ) { navController.popBackStack() }
                     }
 
-                    ScreenState.Success -> MoimFinish(
-                        viewModel = viewModel,
-                        onClick = { goFrontScreen() },
-                        navController = navController)
+                    ScreenState.Success -> MoimFinish(viewModel = viewModel, navController = navController)
 
                     else -> {
                         binding.progressBar.visibility = View.GONE

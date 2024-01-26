@@ -125,7 +125,7 @@ fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel, navCon
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RecommendRow(recommend = recommend, list= myPageViewModel.characterList)
+            RecommendRow(recommend = recommend, list= myPageViewModel.friendCharacterList)
             recommend.jobName?.let {
                 Text(
                     text = it,
@@ -149,7 +149,7 @@ fun RecommendRow(recommend: Recommend, list: HashMap<Int, Int>) {
             painter = painterResource(id = imageResId),
             contentDescription =null,
             modifier = Modifier
-                .size(32.dp)
+                .size(30.dp)
                 .padding(vertical = 0.dp)
         )
         TmMarginHorizontalSpacer(size = 8)

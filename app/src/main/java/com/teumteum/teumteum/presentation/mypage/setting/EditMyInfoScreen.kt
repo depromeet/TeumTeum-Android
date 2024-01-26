@@ -74,6 +74,8 @@ fun EditMyInfoScreen(viewModel: SettingViewModel, navController: NavController) 
     }
 }
 
+
+
 @Composable
 fun EditSignUpBox(viewModel: SettingViewModel) {
     val text by viewModel.userAuth.collectAsState()
@@ -118,7 +120,8 @@ fun EditNameField(viewModel: SettingViewModel) {
             unfocusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
             unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
             focusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
-            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
+            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            cursorColor = TmtmColorPalette.current.TMTMBlue500,
         ),
     )
 }
@@ -146,7 +149,8 @@ fun EditBirthField(viewModel: SettingViewModel) {
             unfocusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
             unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
             focusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
-            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
+            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            cursorColor = TmtmColorPalette.current.TMTMBlue500,
         ),
     )
 }

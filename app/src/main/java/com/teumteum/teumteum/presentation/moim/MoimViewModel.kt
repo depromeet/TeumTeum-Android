@@ -305,7 +305,6 @@ class MoimViewModel @Inject constructor(
                         )
                     } else { null }
                 }
-                Log.d("requestModel", requestModel.toString())
                 if (requestModel != null) {
                     repository.postGroupMoim(requestModel, imageFiles)
                         .onSuccess { meeting ->
@@ -351,6 +350,7 @@ class MoimViewModel @Inject constructor(
         _screenState.value =
             when(_screenState.value) {
                 ScreenState.Failure -> ScreenState.Create
+                ScreenState.Server -> ScreenState.Create
                 ScreenState.Success -> ScreenState.Success
                 ScreenState.Create -> ScreenState.Address
                 ScreenState.Address -> ScreenState.DateTime

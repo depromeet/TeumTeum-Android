@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -75,7 +76,7 @@ fun MoimCreateBtn(
     navController: NavController? = null
 ) {
     val screenState by viewModel.screenState.collectAsState()
-    val context = LocalContext.current
+    var lastClickTime by remember { mutableStateOf(0L) }
 
     val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
     val textColors = if(isEnabled) TmtmColorPalette.current.color_text_button_primary_default else TmtmColorPalette.current.color_text_button_primary_disabled
@@ -86,14 +87,18 @@ fun MoimCreateBtn(
             .padding(horizontal = 20.dp, vertical = 10.dp),
         enabled = isEnabled,
         onClick = {
-            if (screenState == ScreenState.Create) {
-                viewModel.createMoim()
-                Log.d("screenState", screenState.toString())
-            } else if (screenState == ScreenState.Finish) {
-                navController?.navigate(R.id.fragment_home)
-            }
-            else {
-            viewModel.goToNextScreen() }},
+            val currentClickTime = System.currentTimeMillis()
+            val gapTime = currentClickTime - lastClickTime
+
+            if(gapTime > 1000) {
+                if (screenState == ScreenState.Create) {
+                    viewModel.createMoim()
+                } else if (screenState == ScreenState.Success) {
+                    navController?.navigate(R.id.fragment_home)
+                }
+                else {
+                    viewModel.goToNextScreen() }}
+            },
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         shape = RoundedCornerShape(size = 4.dp)
     ) {
