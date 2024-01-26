@@ -8,7 +8,7 @@ object IdMapper {
     fun getCharacterDrawableById(characterId: Int): Int {
         return when (characterId) {
             0 -> R.drawable.ic_ghost
-            1 -> R.drawable.ic_star
+            1 -> R.drawable.ic_star_character
             2 -> R.drawable.ic_bear
             3 -> R.drawable.ic_raccoon
             4 -> R.drawable.ic_cat
