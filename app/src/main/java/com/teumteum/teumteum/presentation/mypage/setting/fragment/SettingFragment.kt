@@ -4,10 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSettingBinding
@@ -32,7 +37,9 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
         (activity as MainActivity).hideBottomNavi()
 
         binding.composeSetting.setContent {
-            SettingScreen(viewModel, navController)
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
+                SettingScreen(viewModel, navController)
+            }
         }
 
     }

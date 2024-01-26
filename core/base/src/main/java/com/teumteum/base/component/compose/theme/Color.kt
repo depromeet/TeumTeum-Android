@@ -128,7 +128,7 @@ val ColorPalette_Dark = ColorPalette(
 
     color_button_active = Color(color = 0xFF36B2FF),
     color_button_disabled = Color(color = 0xFF292929),
-    color_button_alternative = Color(color = 0xFFE9E9E9),
+    color_button_alternative = Color(color = 0xFF575757),
 
     GreyWhite = Color(color = 0xFF1111111),
     ColorDivider = Color(color = 0xFF212121),

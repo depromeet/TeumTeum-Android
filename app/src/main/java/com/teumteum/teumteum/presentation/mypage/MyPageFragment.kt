@@ -43,7 +43,6 @@ class MyPageFragment :
         viewModel.getUserClosedMeeting()
     }
 
-
     companion object {
     }
 }

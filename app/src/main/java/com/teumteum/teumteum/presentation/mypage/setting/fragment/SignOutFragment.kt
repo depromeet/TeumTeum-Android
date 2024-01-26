@@ -3,10 +3,15 @@ package com.teumteum.teumteum.presentation.mypage.setting.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSignoutBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -23,7 +28,9 @@ class SignOutFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment
         (activity as MainActivity).hideBottomNavi()
 
         binding.composeSignout.setContent {
-            SettingSignOutScreen(viewModel, navController)
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
+                SettingSignOutScreen(viewModel, navController)
+            }
         }
 
     }
