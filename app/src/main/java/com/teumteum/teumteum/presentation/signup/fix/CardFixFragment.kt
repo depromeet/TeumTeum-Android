@@ -92,7 +92,27 @@ class CardFixFragment
                     navigateTo<GetNameFragment>()
                 }
             }
+            tvName.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetNameFragment>()
+                }
+            }
             ivEditCompany.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    when (viewModel.community.value) {
+                        STATUS_WORKER -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentJobFragment>()
+                        }
+                        STATUS_STUDENT -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentSchoolFragment>()
+                        }
+                    }
+                }
+            }
+            tvCompany.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     when (viewModel.community.value) {
                         STATUS_WORKER -> {
@@ -124,7 +144,31 @@ class CardFixFragment
                     }
                 }
             }
+            tvJob.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    when (viewModel.community.value) {
+                        STATUS_WORKER -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentJobFragment>()
+                        }
+                        STATUS_STUDENT -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<ReadyJobFragment>()
+                        }
+                        STATUS_TRAINEE -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<ReadyJobFragment>()
+                        }
+                    }
+                }
+            }
             ivEditArea.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<PreferredAreaFragment>()
+                }
+            }
+            tvArea.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<PreferredAreaFragment>()
@@ -133,6 +177,12 @@ class CardFixFragment
         }
         with(binding.cardviewBack) {
             ivEditGoalContent.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetGoalFragment>()
+                }
+            }
+            tvGoalContent.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<GetGoalFragment>()
