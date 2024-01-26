@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.defaultToast
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTermsBinding
 import com.teumteum.teumteum.presentation.signup.intro.CardIntroActivity
@@ -38,29 +39,29 @@ class TermsActivity
 
     private fun initView() {
         with(binding) {
-            btnTermsAll.setOnClickListener {
+            btnTermsAll.setOnSingleClickListener {
                 btnTermsAll.isSelected = !btnTermsAll.isSelected
                 btnTerms1.isSelected = btnTermsAll.isSelected
                 btnTerms2.isSelected = btnTermsAll.isSelected
                 btnTerms3.isSelected = btnTermsAll.isSelected
                 btnStart.isEnabled = btnTermsAll.isSelected
             }
-            btnTerms1.setOnClickListener {
+            btnTerms1.setOnSingleClickListener {
                 btnTerms1.isSelected = !btnTerms1.isSelected
                 btnTermsAll.isSelected = checkAllSelected()
                 btnStart.isEnabled = btnTermsAll.isSelected
             }
-            btnTerms2.setOnClickListener {
+            btnTerms2.setOnSingleClickListener {
                 btnTerms2.isSelected = !btnTerms2.isSelected
                 btnTermsAll.isSelected = checkAllSelected()
                 btnStart.isEnabled = btnTermsAll.isSelected
             }
-            btnTerms3.setOnClickListener {
+            btnTerms3.setOnSingleClickListener {
                 btnTerms3.isSelected = !btnTerms3.isSelected
                 btnTermsAll.isSelected = checkAllSelected()
                 btnStart.isEnabled = btnTermsAll.isSelected
             }
-            btnStart.setOnClickListener {
+            btnStart.setOnSingleClickListener {
                 if (btnTermsAll.isSelected) {
                     val intent = Intent(this@TermsActivity, CardIntroActivity::class.java)
                     intent.putExtra(EXTRA_KEY_OAUTHID, oauthId)
@@ -74,13 +75,13 @@ class TermsActivity
 
     private fun initTermsDetail() {
         with(binding) {
-            btnTermsDetail1.setOnClickListener {
+            btnTermsDetail1.setOnSingleClickListener {
                 goToTermsWebView(1)
             }
-            btnTermsDetail2.setOnClickListener {
+            btnTermsDetail2.setOnSingleClickListener {
                 goToTermsWebView(2)
             }
-            btnTermsDetail3.setOnClickListener {
+            btnTermsDetail3.setOnSingleClickListener {
                 goToTermsWebView(3)
             }
         }

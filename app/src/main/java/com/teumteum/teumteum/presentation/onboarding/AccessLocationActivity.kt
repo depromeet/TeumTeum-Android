@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityAccessLocationBinding
 import com.teumteum.teumteum.presentation.signin.SignInActivity
@@ -36,10 +37,10 @@ class AccessLocationActivity
 
     private fun initView() {
         with(binding) {
-            btnDecline.setOnClickListener {
+            btnDecline.setOnSingleClickListener {
                 startActivity(Intent(this@AccessLocationActivity, SignInActivity::class.java))
             }
-            btnAllow.setOnClickListener {
+            btnAllow.setOnSingleClickListener {
                 checkLocationPermission()
             }
         }

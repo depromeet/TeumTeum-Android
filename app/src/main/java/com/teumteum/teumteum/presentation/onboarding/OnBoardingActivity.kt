@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.CommonViewPagerEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
@@ -38,7 +39,7 @@ class OnBoardingActivity
     }
 
     private fun setUpListener() {
-        binding.btnStart.setOnClickListener {
+        binding.btnStart.setOnSingleClickListener {
             startActivity(Intent(this, AccessLocationActivity::class.java))
             openActivitySlideAnimation()
         }

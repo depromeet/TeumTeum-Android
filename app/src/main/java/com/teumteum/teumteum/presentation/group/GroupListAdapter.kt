@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.teumteum.databinding.ItemGroupListBinding
 
@@ -48,7 +49,7 @@ class GroupListAdapter(private val itemClick: (Meeting) -> (Unit)) :
 
             binding.ivImage.load(item.photoUrls.first())
 
-            binding.root.setOnClickListener {
+            binding.root.setOnSingleClickListener {
                 itemClick(item)
             }
         }

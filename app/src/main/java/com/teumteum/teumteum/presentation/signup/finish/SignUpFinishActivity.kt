@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.signup.finish
 import android.content.Intent
 import android.os.Bundle
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySignupFinishBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -24,7 +25,7 @@ class SignUpFinishActivity
 
     private fun initView() {
         with (binding) {
-            btnStart.setOnClickListener {
+            btnStart.setOnSingleClickListener {
                 startActivity(Intent(this@SignUpFinishActivity, MainActivity::class.java))
                 openActivitySlideAnimation()
                 finish()

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.hideKeyboard
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySearchBinding
 import com.teumteum.teumteum.presentation.group.GroupListAdapter
@@ -61,11 +62,11 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
     }
 
     private fun initEvent() {
-        binding.ivSearch.setOnClickListener {
+        binding.ivSearch.setOnSingleClickListener {
             searchEvent()
         }
 
-        binding.ivClear.setOnClickListener {
+        binding.ivClear.setOnSingleClickListener {
             binding.etSearch.text.clear()
         }
 
@@ -73,7 +74,7 @@ class SearchActivity : BindingActivity<ActivitySearchBinding>(R.layout.activity_
             binding.ivClear.isVisible = (hasFocus)
         }
 
-        binding.ivBack.setOnClickListener {
+        binding.ivBack.setOnSingleClickListener {
             finish()
         }
 

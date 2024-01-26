@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.BottomsheetMbtiModalBinding
 
@@ -73,38 +74,38 @@ class MbtiModalBottomSheet : BottomSheetDialogFragment() {
 
     private fun initListener() {
         with(binding) {
-            btnNext.setOnClickListener {
+            btnNext.setOnSingleClickListener {
                 itemClickListener.invoke(mbtiText.concatToString())
             }
-            btnE.setOnClickListener {
+            btnE.setOnSingleClickListener {
                 setExtrovert(true)
                 checkValid()
             }
-            btnI.setOnClickListener {
+            btnI.setOnSingleClickListener {
                 setExtrovert(false)
                 checkValid()
             }
-            btnN.setOnClickListener {
+            btnN.setOnSingleClickListener {
                 setIntuitive(true)
                 checkValid()
             }
-            btnS.setOnClickListener {
+            btnS.setOnSingleClickListener {
                 setIntuitive(false)
                 checkValid()
             }
-            btnF.setOnClickListener {
+            btnF.setOnSingleClickListener {
                 setFeeler(true)
                 checkValid()
             }
-            btnT.setOnClickListener {
+            btnT.setOnSingleClickListener {
                 setFeeler(false)
                 checkValid()
             }
-            btnP.setOnClickListener {
+            btnP.setOnSingleClickListener {
                 setPerceiver(true)
                 checkValid()
             }
-            btnJ.setOnClickListener {
+            btnJ.setOnSingleClickListener {
                 setPerceiver(false)
                 checkValid()
             }

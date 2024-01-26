@@ -11,6 +11,7 @@ import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityIntroduceBinding
@@ -51,7 +52,7 @@ class IntroduceActivity
     }
 
     private fun setUpListener() {
-        binding.btnStart.setOnClickListener {
+        binding.btnStart.setOnSingleClickListener {
             startShakeActivity()
         }
     }

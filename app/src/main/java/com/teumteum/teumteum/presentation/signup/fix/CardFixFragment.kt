@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentCardFixBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -85,13 +86,13 @@ class CardFixFragment
 
     private fun initCardListener() {
         with(binding.cardviewFront) {
-            ivEditName.setOnClickListener{
+            ivEditName.setOnSingleClickListener{
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<GetNameFragment>()
                 }
             }
-            ivEditCompany.setOnClickListener {
+            ivEditCompany.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     when (viewModel.community.value) {
                         STATUS_WORKER -> {
@@ -105,7 +106,7 @@ class CardFixFragment
                     }
                 }
             }
-            ivEditJob.setOnClickListener {
+            ivEditJob.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     when (viewModel.community.value) {
                         STATUS_WORKER -> {
@@ -123,7 +124,7 @@ class CardFixFragment
                     }
                 }
             }
-            ivEditArea.setOnClickListener {
+            ivEditArea.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<PreferredAreaFragment>()
@@ -131,13 +132,13 @@ class CardFixFragment
             }
         }
         with(binding.cardviewBack) {
-            ivEditGoalContent.setOnClickListener {
+            ivEditGoalContent.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<GetGoalFragment>()
                 }
             }
-            rvInterests.setOnClickListener {
+            rvInterests.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<GetInterestFragment>()
@@ -160,10 +161,10 @@ class CardFixFragment
         frontAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_front) as AnimatorSet
         backAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_back) as AnimatorSet
 
-        binding.cardviewFront.setOnClickListener {
+        binding.cardviewFront.setOnSingleClickListener {
             startAnim()
         }
-        binding.cardviewBack.setOnClickListener {
+        binding.cardviewBack.setOnSingleClickListener {
             startAnim()
         }
     }

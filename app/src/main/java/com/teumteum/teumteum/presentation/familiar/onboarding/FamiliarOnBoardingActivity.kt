@@ -15,6 +15,7 @@ import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.familiar.SharedPreferencesManager
@@ -61,7 +62,7 @@ class FamiliarOnBoardingActivity
     }
 
     private fun setUpListener() {
-        binding.btnStart.setOnClickListener {
+        binding.btnStart.setOnSingleClickListener {
             if (PermissionUtils.isLocationPermissionGranted(this)) startLocationActivity() else showPermissionDeniedDialog()
         }
     }
@@ -133,7 +134,7 @@ class FamiliarOnBoardingActivity
             vp.adapter = familiarOnboardingAdapter
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             tl.clearOnTabSelectedListeners()
-            btnStart.setOnClickListener {
+            btnStart.setOnSingleClickListener {
                 checkLocationPermission() //todo - setUpListener로 분리
             }
         }

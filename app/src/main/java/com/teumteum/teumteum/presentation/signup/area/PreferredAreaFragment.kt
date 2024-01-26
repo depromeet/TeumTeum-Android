@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentPreferredAreaBinding
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
@@ -44,7 +45,7 @@ class PreferredAreaFragment
         bottomSheet = AreaModalBottomSheet.newInstance(BOTTOM_SHEET_TITLE, cityListener, streetListener)
 
         with(binding) {
-            llStatus.setOnClickListener {
+            llStatus.setOnSingleClickListener {
                 bottomSheet?.setFocusedImageView(ivShow)
                 bottomSheet?.setSelectedStreet(viewModel.preferredCity.value, viewModel.preferredStreet.value)
                 bottomSheet?.show(childFragmentManager, AreaModalBottomSheet.TAG)

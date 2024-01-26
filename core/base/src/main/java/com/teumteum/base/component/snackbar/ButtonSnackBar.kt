@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import com.teumteum.base.R
 import com.teumteum.base.databinding.SnackbarButtonBinding
+import com.teumteum.base.util.extension.setOnSingleClickListener
 
 class ButtonSnackBar(view: View, private val message: String,
                      private val buttonText: String,
@@ -41,7 +42,7 @@ class ButtonSnackBar(view: View, private val message: String,
         with(snackBarBinding) {
             tvSnackbar.text = message
             tvSnackbarButton.text = buttonText
-            tvSnackbarButton.setOnClickListener(onClickListener)
+            tvSnackbarButton.setOnSingleClickListener{ onClickListener }
         }
     }
 
