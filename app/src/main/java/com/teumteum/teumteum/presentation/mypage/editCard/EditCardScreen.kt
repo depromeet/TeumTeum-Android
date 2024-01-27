@@ -173,10 +173,12 @@ fun EditCardScreen(
 
                 //자기 개발
                 EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
-                TmMarginVerticalSpacer(size = 8)
+                TmMarginVerticalSpacer(size = 4)
                 InterestsChips(
                     interests = interests,
-                    onClick = { viewModel.triggerSheetEvent(SheetEvent.SignUp) },
+                    onClick = {
+                        viewModel.triggerSheetEvent(SheetEvent.SignUp)
+                              },
                     viewModel = viewModel
                 )
                 TmMarginVerticalSpacer(size = 20)

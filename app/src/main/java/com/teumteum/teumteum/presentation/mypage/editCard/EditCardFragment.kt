@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.mypage.editCard
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -58,16 +59,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
 
-        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-
-                val interests = result.data?.getStringArrayListExtra("selectedInterests")
-                interests?.let {
-                    viewModel.setInterestField(it)
-                }
-                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
-            }
-        }
 
         setupEventObserver()
         initBottomSheet()
@@ -75,6 +66,23 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         binding.composeEditCard.setContent {
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
             EditCardScreen(myPageViewModel, viewModel, navController)
+            }
+        }
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                val interests = result.data?.getStringArrayListExtra("changedInterests")
+                Log.d("resultInterest_editCard", interests.toString())
+                interests?.let {
+                    viewModel.setInterestField(it)
+                }
+                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
             }
         }
 
