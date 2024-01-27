@@ -187,17 +187,11 @@ class SignUpActivity
 
     private fun setUpListenersOnCardComplete() {
         binding.btnFix.setOnSingleClickListener {
-            savePresentUserInfo()
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
         binding.btnKeep.setOnSingleClickListener {
             registerUserInfo()
-        }
-        binding.btnFinishSignup.setOnSingleClickListener {
-            viewModel.goToPreviousScreen()
-            moveToCurrentProgress()
-            changeToTwoCallButton()
         }
         getLeftMenuChildAt(0).setOnSingleClickListener {
             finish()
@@ -209,8 +203,12 @@ class SignUpActivity
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
         }
-        binding.btnNextSignup.setOnSingleClickListener {
-            fixCard()
+//        binding.btnNextSignup.setOnSingleClickListener {
+//            fixCard()
+//        }
+        binding.btnFinishSignup.setOnSingleClickListener {
+            viewModel.goToPreviousScreen()
+            moveToCurrentProgress()
         }
     }
 
@@ -253,10 +251,6 @@ class SignUpActivity
                 }
             }
         }
-    }
-
-    private fun savePresentUserInfo() {
-        viewModel.savePresentUserInfo(provider)
     }
 
     private fun registerUserInfo() {

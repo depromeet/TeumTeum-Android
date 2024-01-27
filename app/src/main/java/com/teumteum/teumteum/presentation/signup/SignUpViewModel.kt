@@ -290,22 +290,6 @@ class SignUpViewModel @Inject constructor(
         _currentStep.value = previousStep.coerceAtLeast(0)
     }
 
-
-    private var presentUserInfo: UserInfo = UserInfo()
-
-    fun savePresentUserInfo(provider: String) {
-        val userInfo = getUserInfo(provider)
-        if (userInfo != null) presentUserInfo = userInfo
-    }
-
-    fun checkUserInfoChanged(): Boolean {
-        val provider = presentUserInfo.authenticated
-        val userInfo = getUserInfo(provider)
-
-        return if (userInfo != null) !userInfo.isIdentical(presentUserInfo)
-        else false
-    }
-
     private var _userInfoState = MutableStateFlow<UserInfoUiState>(UserInfoUiState.Init)
     val userInfoState: StateFlow<UserInfoUiState> = _userInfoState.asStateFlow()
 
