@@ -26,7 +26,7 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.getServiceGui
 fun SettingServiceScreen(viewModel: SettingViewModel, navController: NavController) {
     TmScaffold(
         topbarText = stringResource(id = R.string.setting_service_guide_topbar),
-        onClick = { viewModel.updateSettingStatus(SettingStatus.SETTING) }
+        onClick = { navController.popBackStack() }
     ) {
         Column(
             modifier = Modifier

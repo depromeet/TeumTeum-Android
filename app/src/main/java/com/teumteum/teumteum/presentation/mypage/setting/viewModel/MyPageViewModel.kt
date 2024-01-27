@@ -34,6 +34,7 @@ class MyPageViewModel @Inject constructor(
 
     init {
         loadUserInfo()
+        loadFriends()
     }
 
     fun loadFriends() {
@@ -82,11 +83,25 @@ class MyPageViewModel @Inject constructor(
         11 to R.drawable.ic_card_front_panda
     )
 
+    val friendCharacterList: HashMap<Int, Int> = hashMapOf(
+        0 to R.drawable.ic_ghost,
+        1 to R.drawable.ic_star,
+        2 to R.drawable.ic_bear,
+        3 to R.drawable.ic_raccoon,
+        4 to R.drawable.ic_cat,
+        5 to R.drawable.ic_rabbit,
+        6 to R.drawable.ic_fox,
+        7 to R.drawable.ic_water,
+        8 to R.drawable.ic_penguin,
+        9 to R.drawable.ic_dog,
+        10 to R.drawable.ic_mouse,
+        11 to R.drawable.ic_panda
+    )
 
     fun userInfoToFrontCard(userInfo: UserInfo, characterList: HashMap<Int, Int>): FrontCard {
         return FrontCard(
             name = userInfo.name,
-            company = userInfo.job.name ?: "@직장,학교명",
+            company = "@${userInfo.job.name}" ?: "@직장,학교명",
             job = userInfo.job.detailClass,
             level = "lv.${userInfo.mannerTemperature}층",
             area = "${userInfo.activityArea}에 사는",

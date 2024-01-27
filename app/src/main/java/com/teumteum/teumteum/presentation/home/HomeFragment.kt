@@ -24,6 +24,7 @@ import com.teumteum.teumteum.presentation.group.GroupListUiState
 import com.teumteum.teumteum.presentation.group.GroupListViewModel
 import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 import com.teumteum.teumteum.presentation.group.search.SearchActivity
+import com.teumteum.teumteum.util.callback.CustomBackPressedCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,6 +34,8 @@ class HomeFragment :
     BindingFragment<FragmentHomeBinding>(R.layout.fragment_home), AppBarLayout {
     private val viewModel by viewModels<GroupListViewModel>()
     private var adapter: GroupListAdapter? = null
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +52,6 @@ class HomeFragment :
     override fun initAppBarLayout() {
         setAppBarHeight(48)
         setAppBarBackgroundColor(com.teumteum.base.R.color.background)
-
         addMenuToLeft(
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_logo_title,
@@ -59,6 +61,9 @@ class HomeFragment :
                 }
             )
         )
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, CustomBackPressedCallback(requireActivity(), getString(R.string.alert_back_pressed_finish)))
+
         addMenuToRight(
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_search,

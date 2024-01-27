@@ -7,10 +7,15 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
@@ -68,7 +73,9 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         initBottomSheet()
 
         binding.composeEditCard.setContent {
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
             EditCardScreen(myPageViewModel, viewModel, navController)
+            }
         }
 
     }
@@ -76,8 +83,10 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             (activity as MainActivity).showBottomNavi()
+            findNavController().popBackStack()
         }
     }
+
     override fun onResume() {
         super.onResume()
         viewModel.loadUserInfo()

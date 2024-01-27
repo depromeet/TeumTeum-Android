@@ -26,5 +26,10 @@ data class FriendMyPage(
 @Serializable
 data class Friends(
     val friends: List<FriendMyPage>,
-    val introductions: List<Friend>
+    val introductions: List<Friend>?
 ) : java.io.Serializable
+
+@Serializable
+data class FriendRecommend(
+    val friends: List<FriendMyPage>
+)

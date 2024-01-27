@@ -4,10 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentSignoutBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -30,9 +35,12 @@ class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.f
         }
 
         (activity as MainActivity).hideBottomNavi()
+        val navController = findNavController()
 
         binding.composeSignout.setContent {
-            SettingSignOutConfirm(viewModel = viewModel, myPageViewModel =  myPageViewModel)
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
+                SettingSignOutConfirm(viewModel = viewModel, myPageViewModel = myPageViewModel, navController = navController)
+            }
         }
 
     }

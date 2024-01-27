@@ -2,9 +2,14 @@ package com.teumteum.teumteum.presentation.mypage
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMyPageBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -25,7 +30,9 @@ class MyPageFragment :
         (activity as MainActivity).showBottomNavi()
 
         binding.composeMypage.setContent {
-            MyPageScreen(navController = navController, viewModel = viewModel, myPageViewModel = myPageViewModel)
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
+                MyPageScreen(navController = navController, viewModel = viewModel, myPageViewModel = myPageViewModel)
+            }
         }
     }
 
@@ -35,7 +42,6 @@ class MyPageFragment :
         viewModel.getUserOpenMeeting()
         viewModel.getUserClosedMeeting()
     }
-
 
     companion object {
     }

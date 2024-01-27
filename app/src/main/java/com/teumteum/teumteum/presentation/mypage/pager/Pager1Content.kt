@@ -20,7 +20,6 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.MyPageFragmentDirections
 import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragmentDirections
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 
 @Composable

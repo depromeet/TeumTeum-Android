@@ -33,7 +33,6 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.base.util.extension.longExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MeetingDummy1
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
