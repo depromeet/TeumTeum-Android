@@ -101,7 +101,7 @@ class FamiliarOnBoardingActivity
                     getString(R.string.shake_onboarding_location_subtitle),
                     ContextCompat.getDrawable(
                         this@FamiliarOnBoardingActivity,
-                        R.drawable.ic_shake_onboarding_location
+                        R.drawable.ic_familiar_onboarding_neighbor
                     )
                 )
             )
@@ -111,7 +111,7 @@ class FamiliarOnBoardingActivity
                     getString(R.string.shake_onboarding_card_subtitle),
                     ContextCompat.getDrawable(
                         this@FamiliarOnBoardingActivity,
-                        R.drawable.ic_shake_onboarding_card
+                        R.drawable.ic_familiar_onboarding_card
                     )
                 )
             )
@@ -121,7 +121,7 @@ class FamiliarOnBoardingActivity
                     getString(R.string.shake_onboarding_interest_subtitle),
                     ContextCompat.getDrawable(
                         this@FamiliarOnBoardingActivity,
-                        R.drawable.ic_shake_onboarding_interest
+                        R.drawable.ic_familiar_onboarding_interest
                     )
                 )
             )
