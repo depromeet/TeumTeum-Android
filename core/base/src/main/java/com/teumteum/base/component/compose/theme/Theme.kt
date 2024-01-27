@@ -53,20 +53,21 @@ fun TeumTeumTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> ColorPalette_Dark
+        else -> ColorPalette_Light
     }
+
+    val CustomColorPalette = if(darkTheme) ColorPalette_Dark else ColorPalette_Light
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 
     CompositionLocalProvider(
-        TmtmColorPalette provides ColorPalette_Dark(),
+        TmtmColorPalette provides CustomColorPalette,
         TmTypo provides Type(),
         TmDimen provides Dimen()
     ) {

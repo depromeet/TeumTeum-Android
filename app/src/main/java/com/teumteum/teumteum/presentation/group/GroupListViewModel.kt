@@ -44,7 +44,7 @@ class GroupListViewModel @Inject constructor(
                     }
                     if (!it.first) isPagingFinish = true
                 }.onFailure {
-                    _groupData.value = GroupListUiState.Failure("모임 리스트 서버 통신 싪패")
+                    _groupData.value = GroupListUiState.Failure("모임 리스트 서버 통신 실패")
                 }
         }
     }

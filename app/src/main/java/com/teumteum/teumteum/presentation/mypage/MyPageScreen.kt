@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.mypage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,7 +48,7 @@ import com.teumteum.teumteum.util.custom.view.model.FrontCard
 fun MyPageScreen(
     navController: NavController,
     viewModel: SettingViewModel,
-    myPageViewModel: MyPageViewModel
+    myPageViewModel: MyPageViewModel,
 ) {
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
 

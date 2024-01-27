@@ -21,9 +21,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this.onBackPressedDispatcher.addCallback(this,
-            CustomBackPressedCallback(this, getString(R.string.alert_back_pressed_finish))
-        )
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         val navController = navHostFragment.navController

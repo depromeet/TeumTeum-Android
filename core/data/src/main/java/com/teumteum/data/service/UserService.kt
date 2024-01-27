@@ -2,6 +2,7 @@ package com.teumteum.data.service
 
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.FriendRecommend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
@@ -27,7 +28,7 @@ interface UserService {
     @GET("users/{userId}/friends")
     suspend fun getUserFriends(
         @Path("userId") userId: Long
-    ): Friends
+    ): FriendRecommend
 
     @GET("users/{userId}")
     suspend fun getUser(

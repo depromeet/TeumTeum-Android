@@ -42,14 +42,6 @@ data class SettingUiItem(
     val onClick: () -> Unit = {}
 )
 
-val MeetingDummy = listOf(
-    Meeting("UX 북스터디", "1월 9일 오후 7:00"),
-    Meeting("프로덕트 디자이너 포폴 리뷰 세션", "1월 8일 오후 6:00"),
-    Meeting("커피 마시며 고민 말하기", "1월 7일 오후 9:00"),
-)
-
-val MeetingDummy1 = Meeting("UX 북스터디", "1월 9일 오후 7:00")
-
 val UserGradeDummy = listOf(
     UserGrade("Excellent", "최고에요!", 3, R.drawable.ic_grade_exel),
     UserGrade("Good", "좋아요!", 2, R.drawable.ic_grade_good),

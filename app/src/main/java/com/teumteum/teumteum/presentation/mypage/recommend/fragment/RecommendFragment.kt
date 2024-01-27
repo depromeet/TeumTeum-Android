@@ -4,9 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentRecommendBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -23,20 +28,33 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
         super.onViewCreated(view, savedInstanceState)
 
         userId = arguments?.getInt("id") ?: null
+        Log.d("my id", userId.toString())
+
+        if(userId == 0)    myPageViewModel.loadFriends()
+        else    userId?.let { viewModel.loadFriends(it.toLong()) }
+
 
         (activity as MainActivity).hideBottomNavi()
         val navController = findNavController()
 
         binding.composeRecommend.setContent {
-            RecommendScreen(myPageViewModel,  navController, userId, viewModel)
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
+                RecommendScreen(myPageViewModel, navController, userId, viewModel)
+            }
         }
 
     }
 
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            (activity as MainActivity).showBottomNavi()
+            findNavController().popBackStack()
         }
+    }
+
+    override fun onResume() {
+        if(userId == 0)    myPageViewModel.loadFriends()
+        else    userId?.let { viewModel.loadFriends(it.toLong()) }
+        super.onResume()
     }
 
     companion object {

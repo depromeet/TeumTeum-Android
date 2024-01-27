@@ -6,6 +6,8 @@ import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.data.datasource.remote.RemoteUserDataSource
 import com.teumteum.data.model.request.RequestUserInfo
 import com.teumteum.domain.entity.Friend
+import com.teumteum.domain.entity.FriendMyPage
+import com.teumteum.domain.entity.FriendRecommend
 import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
@@ -62,7 +64,7 @@ class UserRepositoryImpl @Inject constructor(
         dataStore.userInfo = ""
     }
 
-    override suspend fun getUserFriends(userId: Long): Result<Friends> {
+    override suspend fun getUserFriends(userId: Long): Result<FriendRecommend> {
             return runCatching {
                 dataSource.getUserFriend(userId)
             }

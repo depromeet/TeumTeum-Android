@@ -135,13 +135,15 @@ fun MoimAddressInputField(
         onValueChange = { newText ->
             viewModel.updateDetailAddress(newText)
         },
+        singleLine = true,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             textColor = TmtmColorPalette.current.color_text_body_primary,
             focusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
             unfocusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
             unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
             focusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
-            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
+            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            cursorColor = TmtmColorPalette.current.TMTMBlue500,
         ),
     )
 }
