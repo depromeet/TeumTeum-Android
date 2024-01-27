@@ -62,6 +62,7 @@ fun MoimNameTextField(viewModel: MoimViewModel, placeHolder: String) {
 
     OutlinedTextField(
         value = text,
+        singleLine = true,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
@@ -77,7 +78,8 @@ fun MoimNameTextField(viewModel: MoimViewModel, placeHolder: String) {
             unfocusedBorderColor = TmtmColorPalette.current.elevation_color_elevation_level01,
             unfocusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
             focusedLabelColor = TmtmColorPalette.current.color_text_body_quinary,
-            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01
+            backgroundColor = TmtmColorPalette.current.elevation_color_elevation_level01,
+            cursorColor = TmtmColorPalette.current.TMTMBlue500,
         ),
     )
 }

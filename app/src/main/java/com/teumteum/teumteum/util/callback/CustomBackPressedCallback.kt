@@ -5,7 +5,7 @@ import androidx.activity.OnBackPressedCallback
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.defaultToast
 
-class CustomBackPressedCallback(private val activity: Activity, private val message: String)
+open class CustomBackPressedCallback(private val activity: Activity, private val message: String)
     : OnBackPressedCallback(true) {
 
     private var backKeyPressedTime = 0L

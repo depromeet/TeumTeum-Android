@@ -37,14 +37,14 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewMo
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
 
 @Composable
-fun SettingSignOutConfirm(viewModel: SettingViewModel, myPageViewModel: MyPageViewModel) {
+fun SettingSignOutConfirm(viewModel: SettingViewModel, myPageViewModel: MyPageViewModel, navController: NavController) {
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
     val name = when (userInfoState) {
         is UserInfoUiState.Success -> "${(userInfoState as UserInfoUiState.Success).data.name}님"
         else -> "로딩 중..."
     }
     TmScaffold(
-        onClick = { viewModel.updateSettingStatus(SettingStatus.SIGNOUT)}
+        onClick = { navController.popBackStack() }
     ) {
         Column(
             modifier = Modifier
@@ -91,8 +91,8 @@ fun SettingSignOutBtn2(
     val selectedReasonsCount by viewModel.signoutReason.collectAsState()
     val isCheckboxChecked by viewModel.isCheckboxChecked.collectAsState()
     val isEnabled = selectedReasonsCount.isNotEmpty() && isCheckboxChecked
-    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
-    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
+    val textColors = if(isEnabled) TmtmColorPalette.current.Gray900 else TmtmColorPalette.current.color_text_button_primary_disabled
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()

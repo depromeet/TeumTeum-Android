@@ -5,17 +5,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
+import com.teumteum.base.component.compose.theme.ColorPalette_Dark
+import com.teumteum.base.component.compose.theme.ColorPalette_Light
+import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -38,7 +45,6 @@ class MoimFragment :
 
         if (meetingId >= 0) {
             Log.d("meetingId", meetingId.toString())
-            // meetingId가 있는 경우의 로직
             viewModel.getGroup(meetingId)
             viewModel.updateSheetEvent(ScreenState.CancelInit)
         } else {
@@ -53,36 +59,47 @@ class MoimFragment :
         }
 
         binding.composeMoim.setContent {
+            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
                 val screenState by viewModel.screenState.collectAsState()
                 when (screenState) {
                     ScreenState.Topic -> MoimCreateTopic(viewModel) { goFrontScreen() }
                     ScreenState.Name -> MoimCreateName(viewModel) { goFrontScreen() }
-                    ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen()}
-                    ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen()}
-                    ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen()}
-                    ScreenState.People -> MoimPeople(viewModel) { goFrontScreen()}
+                    ScreenState.Introduce -> MoimIntroduce(viewModel) { goFrontScreen() }
+                    ScreenState.DateTime -> MoimDateTime(viewModel) { goFrontScreen() }
+                    ScreenState.Address -> MoimAddress(viewModel, navController) { goFrontScreen() }
+                    ScreenState.People -> MoimPeople(viewModel) { goFrontScreen() }
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
                         viewModel.getUserId()
-                        MoimConfirm(viewModel, requireActivity(),false) { goFrontScreen()}
+                        MoimConfirm(viewModel, requireActivity(), false) { goFrontScreen() }
                     }
+
                     ScreenState.CancelInit, ScreenState.Cancel -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(),true, meetingId) {navController.popBackStack()}
+                        MoimConfirm(
+                            viewModel,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
                     }
-                    ScreenState.Success -> MoimFinish(viewModel = viewModel, onClick = {goFrontScreen()} ,navController = navController)
+
+                    ScreenState.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimFinish(viewModel = viewModel, navController = navController)
+                    }
 
                     else -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(),false)
+                        MoimConfirm(viewModel, requireActivity(), false)
                     }
                 }
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun setupUI() {
-
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
@@ -112,15 +129,20 @@ class MoimFragment :
         viewModel.screenState.flowWithLifecycle(lifecycle)
             .onEach {
                 when(it) {
-                    ScreenState.Failure -> { context?.defaultToast("모임 신청에 오류가 발생했습니다") }
-                    ScreenState.Server -> { context?.defaultToast("서버 통신에 실패했습니다") }
+                    ScreenState.Failure -> { context?.defaultToast(getString(R.string.moim_alert_message_failure)) }
+                    ScreenState.Server -> { context?.defaultToast(getString(R.string.moim_alert_message_server)) }
                     ScreenState.Create -> {
                         viewModel.getUserId()
                     }
                     ScreenState.CancelSuccess -> {
-                        context?.defaultToast("모임 취소를 완료했습니다")
+                        context?.defaultToast(getString(R.string.moim_alert_message_success))
                         val navController = findNavController()
                         navController.popBackStack()
+                        delay(1000)
+                        viewModel.initializeState()
+                    }
+                    ScreenState.Success -> {
+                        delay(5000)
                         viewModel.initializeState()
                     }
                     else -> {}

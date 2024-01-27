@@ -38,6 +38,7 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.teumteum.R
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.BuildConfig
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.DialogEvent
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
@@ -101,6 +102,7 @@ fun SettingScreen(viewModel: SettingViewModel, navController: NavController) {
                 .fillMaxSize()
                 .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
         ) {
+            val versionName = BuildConfig.VERSION_NAME
             TmMarginVerticalSpacer(size = 60)
             SettingAccountRow(viewModel, navController)
             TmMarginVerticalSpacer(size = 8)
@@ -108,7 +110,7 @@ fun SettingScreen(viewModel: SettingViewModel, navController: NavController) {
             SettingColumn2(viewModel, navController)
             TmMarginVerticalSpacer(size = 14)
             Text(
-                text = stringResource(id = R.string.setting_version_text),
+                text = stringResource(id = R.string.setting_version_text) + " ${versionName}",
                 style = TmTypo.current.Body2,
                 color= TmtmColorPalette.current.color_text_body_quinary,
                 modifier = Modifier.padding(horizontal = 20.dp)

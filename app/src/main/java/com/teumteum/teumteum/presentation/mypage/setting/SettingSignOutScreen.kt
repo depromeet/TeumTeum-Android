@@ -42,6 +42,7 @@ fun SettingSignOutScreen(
     navController: NavController
 ) {
     TmScaffold(
+        onClick = { navController.popBackStack() }
     ) {
         Column(
             modifier = Modifier
@@ -73,8 +74,8 @@ fun SettingSignOutBtn1(
 ) {
     val selectedReasonsCount by viewModel.signoutReason.collectAsState()
     val isEnabled = selectedReasonsCount.isNotEmpty()
-    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.Gray200
-    val textColors = if(isEnabled) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.Gray300
+    val buttonColors = if (isEnabled) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
+    val textColors = if(isEnabled) TmtmColorPalette.current.Gray900 else TmtmColorPalette.current.color_text_button_primary_disabled
         androidx.compose.material3.Button(
             modifier = Modifier
                 .fillMaxWidth()
