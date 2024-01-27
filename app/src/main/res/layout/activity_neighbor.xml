@@ -151,7 +151,6 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/sel_button_cta"
             android:elevation="0dp"
-            android:enabled="true"
             android:stateListAnimator="@null"
             android:text="선택완료"
             android:textAppearance="@style/ta.headline.6"

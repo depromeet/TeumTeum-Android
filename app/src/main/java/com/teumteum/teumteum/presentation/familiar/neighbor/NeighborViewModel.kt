@@ -7,11 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.NeighborEntity
 import com.teumteum.domain.repository.NeighborRepository
 import com.teumteum.domain.repository.RequestPostNeighborUser
-import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +22,26 @@ class NeighborViewModel @Inject constructor(
         get() = _neighborUserState
 
     var neighborUsers = mutableListOf<NeighborEntity>()
+
+    private var _selectedNeighborIds = MutableLiveData<MutableList<Long>>(mutableListOf())
+    val selectedNeighborIds: LiveData<MutableList<Long>>
+        get() = _selectedNeighborIds
+
+    fun addSelectedNeighborId(id: Long) {
+        val currentList = _selectedNeighborIds.value ?: mutableListOf()
+        if (!currentList.contains(id)) {
+            currentList.add(id)
+            _selectedNeighborIds.value = currentList
+        }
+    }
+
+    fun removeSelectedNeighborId(id: Long) {
+        val currentList = _selectedNeighborIds.value ?: mutableListOf()
+        if (currentList.contains(id)) {
+            currentList.remove(id)
+            _selectedNeighborIds.value = currentList
+        }
+    }
 
     fun postNeighborUser(requestPostNeighborUser: RequestPostNeighborUser) {
         viewModelScope.launch {
