@@ -71,6 +71,8 @@
             android:textAppearance="@style/ta.body.1"
             android:letterSpacing="-0.03125"
             android:lineSpacingExtra="5sp"
+            android:inputType="text"
+            android:maxLines="1"
             android:textColorHint="?attr/color_text_body_quinary"
             android:text="@{vm.userName}"
             android:hint="@string/signup_tv_name_hint"

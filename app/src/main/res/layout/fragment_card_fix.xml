@@ -47,7 +47,7 @@
             android:layout_width="280dp"
             android:layout_height="400dp"
             app:goalTitle="@string/back_card_goal_title"
-            app:isModify="true"
+            app:isModifyDetail="true"
             app:goalContent="@string/back_card_goal_content"
             app:characterImage="@drawable/ic_card_back_penguin"
             app:layout_constraintStart_toStartOf="@id/cardview_front"

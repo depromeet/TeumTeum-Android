@@ -48,11 +48,6 @@ class CardFixFragment
         initCardAnim()
     }
 
-    override fun onResume() {
-        checkValidInput()
-        super.onResume()
-    }
-
     private fun initCard() {
         with(viewModel) {
             val fc = CHARACTER_CARD_LIST[characterId.value]?.let {
@@ -79,7 +74,6 @@ class CardFixFragment
                 tvGoalContent.text = goalText.value
                 SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
-                isModify = false
             }
         }
     }
@@ -92,7 +86,27 @@ class CardFixFragment
                     navigateTo<GetNameFragment>()
                 }
             }
+            tvName.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetNameFragment>()
+                }
+            }
             ivEditCompany.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    when (viewModel.community.value) {
+                        STATUS_WORKER -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentJobFragment>()
+                        }
+                        STATUS_STUDENT -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentSchoolFragment>()
+                        }
+                    }
+                }
+            }
+            tvCompany.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     when (viewModel.community.value) {
                         STATUS_WORKER -> {
@@ -124,7 +138,31 @@ class CardFixFragment
                     }
                 }
             }
+            tvJob.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    when (viewModel.community.value) {
+                        STATUS_WORKER -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<CurrentJobFragment>()
+                        }
+                        STATUS_STUDENT -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<ReadyJobFragment>()
+                        }
+                        STATUS_TRAINEE -> {
+                            showNextButtonOnFixingField()
+                            navigateTo<ReadyJobFragment>()
+                        }
+                    }
+                }
+            }
             ivEditArea.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<PreferredAreaFragment>()
+                }
+            }
+            tvArea.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<PreferredAreaFragment>()
@@ -138,6 +176,12 @@ class CardFixFragment
                     navigateTo<GetGoalFragment>()
                 }
             }
+            tvGoalContent.setOnSingleClickListener {
+                (activity as SignUpActivity).apply {
+                    showNextButtonOnFixingField()
+                    navigateTo<GetGoalFragment>()
+                }
+            }
             rvInterests.setOnSingleClickListener {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
@@ -145,11 +189,6 @@ class CardFixFragment
                 }
             }
         }
-    }
-
-    private fun checkValidInput() {
-        if (viewModel.checkUserInfoChanged()) (activity as SignUpActivity).activateFixFinishButton()
-        else (activity as SignUpActivity).disableFixFinishButton()
     }
 
     @SuppressLint("ResourceType")
