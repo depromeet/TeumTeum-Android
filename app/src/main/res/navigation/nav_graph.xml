@@ -21,8 +21,8 @@
             app:destination="@id/fragment_my_page" />
 
         <action
-            android:id="@+id/action_homeFragment_to_fragment_teum_teum"
-            app:destination="@id/fragment_teum_teum" />
+            android:id="@+id/action_homeFragment_to_fragment_familiar"
+            app:destination="@id/fragment_familiar" />
 
         <action
             android:id="@+id/action_fragment_home_to_fragment_recommend_detail"
@@ -72,9 +72,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_teum_teum"
+        android:id="@+id/fragment_familiar"
         android:name="com.teumteum.teumteum.presentation.familiar.FamiliarFragment"
-        android:label="TeumTeumFragment"
+        android:label="FamiliarFragment"
         tools:layout="@layout/fragment_familiar"/>
 
 

@@ -43,7 +43,7 @@ class TopicActivity
         setAppBarBackgroundColor(color.background)
         addMenuToLeft(
             AppBarMenu.IconStyle(
-                resourceId = R.drawable.ic_arrow_left_l,
+                resourceId = R.drawable.ic_close,
                 useRippleEffect = false,
                 clickEvent = ::finish
             )

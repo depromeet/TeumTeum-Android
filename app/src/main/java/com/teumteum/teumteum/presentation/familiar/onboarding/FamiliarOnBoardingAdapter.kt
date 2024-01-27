@@ -7,21 +7,25 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.teumteum.teumteum.databinding.ItemShakeOnboardingBinding
+import com.teumteum.teumteum.databinding.ItemFamiliarOnboardingBinding
 import com.teumteum.teumteum.presentation.familiar.onboarding.model.FamiliarOnBoarding
 
 class FamiliarOnBoardingAdapter() :
     ListAdapter<FamiliarOnBoarding, FamiliarOnBoardingAdapter.ItemViewHolder>(
         ItemListDiffCallback
     ) {
-    private lateinit var binding: ItemShakeOnboardingBinding
+    private lateinit var binding: ItemFamiliarOnboardingBinding
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ItemViewHolder {
         binding =
-            ItemShakeOnboardingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemFamiliarOnboardingBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         return ItemViewHolder(binding)
     }
 
@@ -29,7 +33,7 @@ class FamiliarOnBoardingAdapter() :
         holder.bind(getItem(position))
     }
 
-    class ItemViewHolder(private val binding: ItemShakeOnboardingBinding) :
+    class ItemViewHolder(private val binding: ItemFamiliarOnboardingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FamiliarOnBoarding) {
             with(binding) {
@@ -45,7 +49,10 @@ class FamiliarOnBoardingAdapter() :
     }
 
     object ItemListDiffCallback : DiffUtil.ItemCallback<FamiliarOnBoarding>() {
-        override fun areItemsTheSame(oldItem: FamiliarOnBoarding, newItem: FamiliarOnBoarding): Boolean {
+        override fun areItemsTheSame(
+            oldItem: FamiliarOnBoarding,
+            newItem: FamiliarOnBoarding
+        ): Boolean {
             return oldItem == newItem
         }
 

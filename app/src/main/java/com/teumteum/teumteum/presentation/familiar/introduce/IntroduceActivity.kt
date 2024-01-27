@@ -77,7 +77,7 @@ class IntroduceActivity
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = ::finish
+                clickEvent = ::finish //todo - 커스텀 팝업 띄우고
             )
         )
     }
