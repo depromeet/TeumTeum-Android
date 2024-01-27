@@ -74,7 +74,6 @@ class CardFixFragment
                 tvGoalContent.text = goalText.value
                 SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
-                isModify = false
             }
         }
     }
