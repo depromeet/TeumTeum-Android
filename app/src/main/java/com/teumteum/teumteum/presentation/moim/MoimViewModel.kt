@@ -408,6 +408,7 @@ class MoimViewModel @Inject constructor(
                     _topic.value = TopicType.values().find { type ->
                         type.value == it.topic
                     }
+                    _title.value = it.name
                     _introduction.value = it.introduction
                     _people.value = it.numberOfRecruits
                     _address.value = it.address

@@ -70,7 +70,7 @@ fun EditCardChipDefault(text: String, onDeleteClick: () -> Unit) {
             modifier = Modifier
                 .wrapContentWidth()
                 .height(40.dp)
-                .padding(start = 16.dp, end = 14.dp, top = 8.dp, bottom = 8.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -86,7 +86,7 @@ fun EditCardChipDefault(text: String, onDeleteClick: () -> Unit) {
                 modifier = Modifier
                     .size(20.dp)
                     .alignByBaseline()
-                    .padding(top = 3.dp)
+                    .padding(top = 2.dp)
                     .clickable { onDeleteClick() }
             )
         }
@@ -107,6 +107,7 @@ fun EditCardChipPlus(onClick: () ->Unit) {
                 color = TmtmColorPalette.current.color_button_active,
                 shape = RoundedCornerShape(200.dp)
             )
+            .clickable { onClick() }
             .height(48.dp)
             .padding(bottom = 4.dp, top = 4.dp)
     ) {
@@ -114,7 +115,7 @@ fun EditCardChipPlus(onClick: () ->Unit) {
             modifier = Modifier
                 .wrapContentSize()
                 .height(40.dp)
-                .padding(start = 16.dp, end = 14.dp, top = 8.dp, bottom = 6.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -130,8 +131,7 @@ fun EditCardChipPlus(onClick: () ->Unit) {
                 modifier = Modifier
                     .size(20.dp)
                     .alignByBaseline()
-                    .padding(top = 3.dp)
-                    .clickable { onClick() }
+                    .padding(top = 2.dp)
             )
         }
     }
