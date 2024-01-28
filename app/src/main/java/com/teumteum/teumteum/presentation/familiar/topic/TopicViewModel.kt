@@ -12,51 +12,33 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TopicViewModel @Inject constructor(private val topicRepository: TopicRepository) :
-    ViewModel() {
+class TopicViewModel @Inject constructor(
+    private val topicRepository: TopicRepository
+) : ViewModel() {
 
     private var _topicState = MutableLiveData<UiState>(UiState.Empty)
     val topicState: LiveData<UiState>
         get() = _topicState
 
+    private val _topics = MutableLiveData<TopicResponse>()
+    val topics: LiveData<TopicResponse>
+        get() = _topics
 
     fun getTopics(userIds: List<String>, type: String) {
         viewModelScope.launch {
             _topicState.value = UiState.Loading
-            val result = runCatching {
-                topicRepository.getTopics(userIds, type)
-            }
-
-            result.onSuccess { topicsResponse ->
-                when (val response = topicsResponse.getOrNull()) {
-                    is TopicResponse.Balance -> {
-                        //todo - 여기로 빠지는 data 담을 수 있는 전용 liveData 만들기
-
-                        // Process Balance response
-                        // Update LiveData or UI state
-                        _topicState.value = UiState.Success
-                    }
-
-                    is TopicResponse.Story -> {
-                        //todo - 여기로 빠지는 data 담을 수 있는 전용 liveData 만들기
-
-                        // Process Story response
-                        // Update LiveData or UI state
-                        _topicState.value = UiState.Success
-                    }
-
-                    else -> {
-                        _topicState.value = UiState.Failure
-                    }
+            val result = topicRepository.getTopics(userIds, type)
+            if (result.isSuccess) {
+                result.getOrNull()?.let { topicsResponse ->
+                    _topics.value = topicsResponse
+                    _topicState.value = UiState.Success
+                } ?: run {
+                    _topicState.value = UiState.Failure
                 }
-            }.onFailure {
-                // Log error or update UI state to reflect the failure
+            } else {
                 _topicState.value = UiState.Failure
             }
         }
     }
 }
-
-
-
 

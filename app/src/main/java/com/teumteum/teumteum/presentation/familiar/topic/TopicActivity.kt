@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.familiar.topic
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
@@ -11,6 +12,7 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTopicBinding
+import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborViewModel
 import com.teumteum.teumteum.presentation.familiar.topic.model.Topic
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +23,7 @@ class TopicActivity
 
     private val topicAdapter = TopicAdapter()
     private val viewpagerList = ArrayList<Topic>()
+    private val viewModel by viewModels<TopicViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,7 @@ class TopicActivity
         initViewPagerItem()
         initViewPager()
         setUpListener()
+        viewModel.getTopics(userIds = listOf("32","38"), type = "story")
     }
 
     private fun setUpListener() {
