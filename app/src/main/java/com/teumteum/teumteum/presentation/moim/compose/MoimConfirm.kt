@@ -1,7 +1,6 @@
-package com.teumteum.teumteum.presentation.moim
+package com.teumteum.teumteum.presentation.moim.compose
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,10 +24,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +61,8 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.group.join.JoinFriendListActivity
 import com.teumteum.teumteum.presentation.group.join.check.GroupMeetCheckActivity
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
+import com.teumteum.teumteum.presentation.moim.ScreenState
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -81,7 +79,7 @@ fun MoimConfirm(
         (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
     },
 
-) {
+    ) {
     val showDialog = remember { mutableStateOf(false) }
     val screenState by viewModel.screenState.collectAsState()
     val isJoined by viewModel.isUserJoined.collectAsState()

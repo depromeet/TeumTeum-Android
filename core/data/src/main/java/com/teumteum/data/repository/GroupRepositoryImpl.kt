@@ -34,6 +34,21 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun modifyMeeting(meetingId: Long, moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting> {
+        return runCatching {
+            val gson = Gson()
+            val moimJson = gson.toJson(moimEntity.toBody())
+            val moimRequestBody = moimJson.toRequestBody("application/json".toMediaTypeOrNull())
+
+            val imageParts = imageFiles.map { file ->
+                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                MultipartBody.Part.createFormData("images", file.name, requestFile)
+            }
+
+            dataSource.modifyMeeting(meetingId, moimRequestBody, imageParts).toMeeting()
+        }
+    }
+
     override suspend fun getSearchGroup(page: Int, keyword: String?, location: String?, topic: String?): Result<Pair<Boolean,List<Meeting>>> {
         val groupData = dataSource.getGroups(
         size = 20,
@@ -64,6 +79,12 @@ class GroupRepositoryImpl @Inject constructor(
     override suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean> {
         return runCatching {
             dataSource.deleteGroupJoin(meetingId)
+        }
+    }
+
+    override suspend fun deleteMeeting(meetingId: Long): Result<Boolean> {
+        return runCatching {
+            dataSource.deleteMeeting(meetingId)
         }
     }
 

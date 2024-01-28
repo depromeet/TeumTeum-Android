@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.moim
+package com.teumteum.teumteum.presentation.moim.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teumteum.base.component.compose.TeumDivider
@@ -24,6 +23,7 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
 
 @Composable
 fun MoimFinish(viewModel: MoimViewModel, navController: NavController) {

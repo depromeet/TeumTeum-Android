@@ -16,7 +16,7 @@ import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.longExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupDetailBinding
-import com.teumteum.teumteum.presentation.moim.MoimConfirm
+import com.teumteum.teumteum.presentation.moim.compose.MoimConfirm
 import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.moim.ScreenState
 import dagger.hilt.android.AndroidEntryPoint

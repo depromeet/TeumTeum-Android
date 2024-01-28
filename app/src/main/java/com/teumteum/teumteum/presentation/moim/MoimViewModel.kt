@@ -48,6 +48,9 @@ class MoimViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Topic)
     val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
 
+    private val _bottomSheet = MutableStateFlow<BottomSheet>(BottomSheet.Default)
+    val bottomSheet: StateFlow<BottomSheet> = _bottomSheet.asStateFlow()
+
     private val _currentStep = MutableStateFlow<Int>(0)
     val currentStep: StateFlow<Int> = _currentStep.asStateFlow()
 
@@ -286,6 +289,45 @@ class MoimViewModel @Inject constructor(
         return name
     }
 
+    fun modifyMoim(meetingId: Long) {
+        viewModelScope.launch {
+            val dateTime = combineDateAndTime()
+            val imageFiles = convertUrisToFile(imageUri.value)
+            if(dateTime != null) {
+                val meetingArea = address.value?.let {
+                    MeetingArea(
+                        address = it,
+                        addressDetail = detailAddress.value
+                    )
+                }
+                val requestModel = topic.value?.let {
+                    if (meetingArea != null) {
+                        MoimEntity(
+                            topic = it.value,
+                            title = title.value,
+                            introduction = introduction.value,
+                            promiseDateTime = dateTime,
+                            numberOfRecruits = people.value,
+                            meetingArea = meetingArea
+                        )
+                    } else { null }
+                }
+                if (requestModel != null) {
+                    repository.modifyMeeting(meetingId, requestModel, imageFiles)
+                        .onSuccess {
+                            _screenState.value = ScreenState.Success
+                        }
+                        .onFailure { throwable ->
+                            Timber.e(throwable)
+                            _screenState.value = ScreenState.Server
+                        }
+                }
+            } else {
+                _screenState.value = ScreenState.Failure
+            }
+        }
+    }
+
     fun createMoim() {
         viewModelScope.launch {
             val dateTime = combineDateAndTime()
@@ -446,11 +488,22 @@ class MoimViewModel @Inject constructor(
         }
     }
 
+    fun updateBottomSheet(bottomSheet: BottomSheet) {
+        _bottomSheet.value = bottomSheet
+    }
+
 }
 
 enum class ScreenState {
-    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server, CancelInit, Cancel, CancelSuccess, Finish
+    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
+    CancelInit, Cancel, CancelSuccess, Finish
 }
+
+enum class BottomSheet {
+    Topic, People, Default
+}
+
+
 enum class TopicType(val value: String, val title: String ,val subTitle: String) {
     SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
     STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),

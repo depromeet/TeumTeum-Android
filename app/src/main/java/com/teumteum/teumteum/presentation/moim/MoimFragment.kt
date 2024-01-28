@@ -9,7 +9,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +21,14 @@ import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.moim.compose.MoimAddress
+import com.teumteum.teumteum.presentation.moim.compose.MoimConfirm
+import com.teumteum.teumteum.presentation.moim.compose.MoimCreateName
+import com.teumteum.teumteum.presentation.moim.compose.MoimCreateTopic
+import com.teumteum.teumteum.presentation.moim.compose.MoimDateTime
+import com.teumteum.teumteum.presentation.moim.compose.MoimFinish
+import com.teumteum.teumteum.presentation.moim.compose.MoimIntroduce
+import com.teumteum.teumteum.presentation.moim.compose.MoimPeople
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
