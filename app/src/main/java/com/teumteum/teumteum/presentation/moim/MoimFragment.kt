@@ -152,6 +152,10 @@ class MoimFragment :
                         delay(5000)
                         viewModel.initializeState()
                     }
+                    ScreenState.Modify -> {
+                        val navController = findNavController()
+                        navController.navigate(R.id.action_fragment_moim_to_fragment_modify_moim)
+                    }
                     else -> {}
                 }
             }

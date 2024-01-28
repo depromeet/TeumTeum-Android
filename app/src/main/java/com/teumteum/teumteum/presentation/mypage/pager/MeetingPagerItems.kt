@@ -35,6 +35,8 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
@@ -159,12 +161,21 @@ fun NoMoimItems(
     TmMarginVerticalSpacer(size = 16)
 }
 @Composable
-fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting) {
+fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit?) {
     val formattedTime = formatDateTime(meeting.date)
+
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val meetingDateTime = LocalDateTime.parse(meeting.date, formatter)
+    val currentTime = LocalDateTime.now()
+    val isPastMeeting = meetingDateTime.isBefore(currentTime)
+
+
     Box(modifier = Modifier
         .fillMaxWidth()
         .height(62.dp)
-        .clickable { }
+        .clickable {
+            navigateToMoim(meeting.id)
+        }
         .background(
             color = TmtmColorPalette.current.elevation_color_elevation_level01,
             shape = RoundedCornerShape(4.dp)
@@ -204,10 +215,12 @@ fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting) {
                     MyMoimBadge()
                 }
             }
-            Image(
-                painter = painterResource(id = R.drawable.ic_pencil_fill),
-                contentDescription = null,
-            )
+            if(!isPastMeeting) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_pencil_fill),
+                    contentDescription = null,
+                )
+            }
         }
     }
     TmMarginVerticalSpacer(size = 16)

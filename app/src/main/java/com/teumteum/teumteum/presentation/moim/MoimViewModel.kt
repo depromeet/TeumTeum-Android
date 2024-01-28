@@ -275,6 +275,20 @@ class MoimViewModel @Inject constructor(
         }
     }
 
+    fun deleteMeeting(meetingId: Long) {
+        viewModelScope.launch {
+            repository.deleteMeeting(meetingId)
+                .onSuccess {
+                    _isUserHost.value = false
+                    _screenState.value = ScreenState.DeleteSuccess
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
+        }
+    }
+
     // Uri로부터 파일 이름을 추출하는 함수
     private fun getFileName(uri: Uri, context: Context): String? {
         var name: String? = null
@@ -438,6 +452,9 @@ class MoimViewModel @Inject constructor(
     private val _isUserJoined = MutableStateFlow(false)
     val isUserJoined: StateFlow<Boolean> = _isUserJoined
 
+    private val _isUserHost = MutableStateFlow(false)
+    val isUserHost: StateFlow<Boolean> = _isUserHost
+
     fun getGroup(meetingId: Long) {
         viewModelScope.launch {
             repository.getGroup(meetingId)
@@ -445,8 +462,10 @@ class MoimViewModel @Inject constructor(
                     Log.d("load", "load get Group")
                     getUser(it.hostId)
                     getJoinUserList(it.participantIds.joinToString { id -> id.toString() }.replace(" ", ""))
-                    _isUserJoined.value = (it.hostId == getMyId()) || it.participantIds.contains(getMyId().toInt())
-                    Log.d("userJoined", isUserJoined.value.toString())
+
+                    _isUserJoined.value = it.participantIds.contains(getMyId().toInt())
+                    _isUserHost.value = it.hostId.toInt() == (getMyId().toInt())
+
                     _topic.value = TopicType.values().find { type ->
                         type.value == it.topic
                     }
@@ -496,7 +515,7 @@ class MoimViewModel @Inject constructor(
 
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
-    CancelInit, Cancel, CancelSuccess, Finish
+    CancelInit, Cancel, CancelSuccess, Finish, Delete, DeleteSuccess, Modify
 }
 
 enum class BottomSheet {

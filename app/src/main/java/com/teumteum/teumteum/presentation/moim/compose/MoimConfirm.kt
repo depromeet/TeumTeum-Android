@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -83,33 +84,56 @@ fun MoimConfirm(
     val showDialog = remember { mutableStateOf(false) }
     val screenState by viewModel.screenState.collectAsState()
     val isJoined by viewModel.isUserJoined.collectAsState()
+    val isHost by viewModel.isUserHost.collectAsState()
 
     LaunchedEffect(key1 = screenState) {
-        if (screenState == ScreenState.Cancel) {
-            showDialog.value = true
-        }
+        showDialog.value = screenState == ScreenState.Cancel || screenState == ScreenState.Delete
     }
 
     if (showDialog.value) {
-        TmDialog(
-            title = stringResource(id = R.string.setting_dialog_cancel),
-            okText = stringResource(id = R.string.setting_dialog_cancel_btn2),
-            cancelText = stringResource(id = R.string.setting_dialog_cancel_btn1),
-            onOk = {
-                if (meetingId != null) {
-                    viewModel.cancelMeeting(meetingId)
-                }
-                showDialog.value = false
-            },
-            onCancel = {
-                showDialog.value = false
-                viewModel.updateSheetEvent(ScreenState.CancelInit)
-            },
-            onDismiss = {
-                showDialog.value = false
-                viewModel.updateSheetEvent(ScreenState.CancelInit)
+        when (screenState) {
+            ScreenState.Cancel -> {
+                TmDialog(
+                    title = stringResource(id = R.string.setting_dialog_cancel),
+                    okText = stringResource(id = R.string.setting_dialog_cancel_btn2),
+                    cancelText = stringResource(id = R.string.setting_dialog_cancel_btn1),
+                    onOk = {
+                        if (meetingId != null) {
+                            viewModel.cancelMeeting(meetingId)
+                        }
+                        showDialog.value = false
+                    },
+                    onCancel = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.CancelInit)
+                    },
+                    onDismiss = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.CancelInit)
+                    }
+                )
             }
-        )
+            ScreenState.Delete -> {
+                TmDialog(
+                    title = stringResource(id = R.string.setting_dialog_delete),
+                    okText = stringResource(id = R.string.setting_dialog_delete_btn2),
+                    cancelText = stringResource(id = R.string.setting_dialog_delete_btn1),
+                    onOk = {
+                        if (meetingId != null) {
+                            viewModel.deleteMeeting(meetingId)
+                        }
+                        showDialog.value = false
+                    },
+                    onCancel = {
+                        showDialog.value = false
+                    },
+                    onDismiss = {
+                        showDialog.value = false
+                    }
+                )
+            }
+            else -> {}
+        }
     }
 
     TmScaffold(
@@ -166,6 +190,15 @@ fun MoimConfirm(
                                 else { viewModel.updateSheetEvent(ScreenState.Failure) }
                             }
                             TmMarginVerticalSpacer(size = 24)
+                        }
+                        //meetingId argument, 내가 host일 경우
+                        else if(isHost) {
+                            TeumDivider()
+                            MoimHostBtn(
+                                viewModel = viewModel
+                            ) {
+                                if(meetingId != null) {viewModel.deleteMeeting(it)}
+                            }
                         }
                         //meeting Id가 argument로 있는데, 참여 중이지 않은 경우
                         else {
@@ -484,6 +517,58 @@ fun MoimJoinListItem(index: Int, item: Friend, characterList: HashMap<Int, Int>)
             contentScale = ContentScale.Crop
         )
     }
+}
+
+@Composable
+fun MoimHostBtn(
+    viewModel: MoimViewModel,
+    onJoinGroupClick: (Long) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .padding(horizontal = 20.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        androidx.compose.material3.Button(
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp),
+            onClick = {
+                viewModel.updateSheetEvent(ScreenState.Delete)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.setting_dialog_delete_row1),
+                style = TmTypo.current.HeadLine6,
+                color = TmtmColorPalette.current.color_text_button_alternative
+            )
+        }
+
+        androidx.compose.material3.Button(
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp),
+            onClick = {
+                viewModel.updateSheetEvent(ScreenState.Modify)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.setting_dialog_delete_row2),
+                style = TmTypo.current.HeadLine6,
+                color = TmtmColorPalette.current.color_text_button_alternative
+            )
+        }
+
+
+
+    }
+
 }
 
 @Composable

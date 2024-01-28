@@ -43,7 +43,6 @@ import kotlinx.coroutines.launch
 
 class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragment_edit_card) {
     private val viewModel: EditCardViewModel by activityViewModels()
-    private val myPageViewModel: MyPageViewModel by activityViewModels()
     private var mbtiBottomSheet: MbtiModalBottomSheet? = null
     private var jobClassBottomSheet: SingleModalBottomSheet? = null
     private var jobDetailClassBottomSheet: SingleModalBottomSheet? = null
@@ -65,7 +64,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
         binding.composeEditCard.setContent {
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
-            EditCardScreen(myPageViewModel, viewModel, navController)
+            EditCardScreen(viewModel, navController)
             }
         }
 

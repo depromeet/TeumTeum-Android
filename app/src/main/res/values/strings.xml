@@ -181,10 +181,19 @@
     <string name="setting_dialog_logout_btn2">로그아웃</string>
 
     <string name="setting_dialog_cancel">참여를 정말 취소하시겠어요?</string>
+    <string name="setting_dialog_delete">모임을 정말 삭제하시겠어요?</string>
 
     <string name="setting_dialog_default" />
     <string name="setting_dialog_cancel_btn1">돌아가기</string>
     <string name="setting_dialog_cancel_btn2">취소할래요</string>
+
+    <string name="setting_dialog_delete_btn1">돌아가기</string>
+    <string name="setting_dialog_delete_btn2">삭제할래요</string>
+
+    <string name="setting_dialog_delete_row1">삭제하기</string>
+    <string name="setting_dialog_delete_row2">수정하기</string>
+    <string name="setting_dialog_moim_delete_success">모임 삭제를 성공했습니다</string>
+    <string name="setting_dialog_moim_delete_failure">모임 삭제에 오류가 발생했습니다</string>
 
     <string name="setting_signout_title">탈퇴하는 이유가 무엇인가요?</string>
     <string name="setting_signout_btn1">선택 완료</string>
