@@ -5,5 +5,6 @@ import android.graphics.drawable.Drawable
 data class Topic(
     val topicNumber: String? = "",
     val topicTitle: String? = "",
-    val image: Drawable? = null
+    val frontImage: Drawable? = null,
+    val backImage: Drawable? = null
 )

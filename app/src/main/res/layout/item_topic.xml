@@ -11,38 +11,71 @@
         android:background="@color/background"
         android:theme="@style/Theme.TeumTeum">
 
-        <ImageView
-            android:id="@+id/iv_balance_background"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_front_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:outlineProvider="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_front_balance_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_front_balance_background_1" />
+
+            <TextView
+                android:id="@+id/tv_topic_number"
+                style="@style/ta.headline.6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="88dp"
+                android:textColor="@color/background"
+                app:layout_constraintStart_toStartOf="@id/iv_front_balance_background"
+                app:layout_constraintTop_toTopOf="@id/iv_front_balance_background"
+                tools:text="TOPIC.1" />
+
+            <TextView
+                android:id="@+id/tv_topic_title"
+                style="@style/ta.headline.1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/background"
+                app:layout_constraintStart_toStartOf="@id/tv_topic_number"
+                app:layout_constraintTop_toBottomOf="@id/tv_topic_number"
+                tools:text="모여서 각자\n디자인" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_back_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_balance_background_1" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_topic_number"
-            style="@style/ta.headline.6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="88dp"
-            android:textColor="@color/background"
-            app:layout_constraintStart_toStartOf="@id/iv_balance_background"
-            app:layout_constraintTop_toTopOf="@id/iv_balance_background"
-            tools:text="TOPIC.1" />
-
-        <TextView
-            android:id="@+id/tv_topic_title"
-            style="@style/ta.headline.1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/background"
-            app:layout_constraintStart_toStartOf="@id/tv_topic_number"
-            app:layout_constraintTop_toBottomOf="@id/tv_topic_number"
-            tools:text="모여서 각자\n디자인" />
+            <ImageView
+                android:id="@+id/iv_back_balance_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_back_balance_background_1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
