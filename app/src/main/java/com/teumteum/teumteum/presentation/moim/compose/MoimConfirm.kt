@@ -182,16 +182,24 @@ fun MoimConfirm(
                     if (meetingId != null && meetingId > 0) {
                         //meeting Id가 argument로 있는데, 참여중인 경우
                         if(isJoined) {
-                            TeumDivider()
-                            MoimCancelBtn(
-                                viewModel = viewModel
-                            ) {
-                                if (meetingId != null) { viewModel.cancelMeeting(it) }
-                                else { viewModel.updateSheetEvent(ScreenState.Failure) }
+                            if(!isHost) {
+                                TeumDivider()
+                                MoimCancelBtn(
+                                    viewModel = viewModel
+                                ) {
+                                    if (meetingId != null) { viewModel.cancelMeeting(it) }
+                                    else { viewModel.updateSheetEvent(ScreenState.Failure) }
+                                }
+                                TmMarginVerticalSpacer(size = 24)
+                            } else {
+                                TeumDivider()
+                                MoimHostBtn(
+                                    viewModel = viewModel
+                                ) {
+                                    if(meetingId != null) {viewModel.deleteMeeting(it)}
+                                }
                             }
-                            TmMarginVerticalSpacer(size = 24)
                         }
-                        //meetingId argument, 내가 host일 경우
                         else if(isHost) {
                             TeumDivider()
                             MoimHostBtn(

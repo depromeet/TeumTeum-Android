@@ -51,6 +51,10 @@ class GroupDetailActivity :
                         this@GroupDetailActivity?.defaultToast(getString(R.string.moim_alert_message_success))
                         initView()
                     }
+                    ScreenState.DeleteSuccess -> {
+                        finish()
+
+                    }
                     else -> {}
                 }
             }

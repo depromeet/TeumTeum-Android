@@ -131,6 +131,7 @@ class MoimViewModel @Inject constructor(
         _moinCreateUserJob.value = ""
         _moinJoinUsers.value = listOf()
         _meetingsId.value = 0L
+        _isUserHost.value = false
     }
 
     fun getUserId() {
@@ -265,7 +266,6 @@ class MoimViewModel @Inject constructor(
             repository.deleteGroupJoin(meetingId)
                 .onSuccess {
                     _screenState.value = ScreenState.CancelSuccess
-                    _isUserJoined.value = false
                     Log.d("cancel success", screenState.value.toString())
                 }
                 .onFailure {
@@ -515,7 +515,7 @@ class MoimViewModel @Inject constructor(
 
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
-    CancelInit, Cancel, CancelSuccess, Finish, Delete, DeleteSuccess, Modify
+    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess, Modify
 }
 
 enum class BottomSheet {

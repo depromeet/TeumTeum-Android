@@ -91,6 +91,16 @@ class MoimFragment :
                         ) { navController.popBackStack() }
                     }
 
+                    ScreenState.DeleteInit, ScreenState.Delete -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(
+                            viewModel,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
+                    }
+
                     ScreenState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         MoimFinish(viewModel = viewModel, navController = navController)
@@ -150,6 +160,13 @@ class MoimFragment :
                     }
                     ScreenState.Success -> {
                         delay(5000)
+                        viewModel.initializeState()
+                    }
+                    ScreenState.DeleteSuccess -> {
+                        context?.defaultToast("모임 삭제를 성공했습니다")
+                        val navController = findNavController()
+                        navController.popBackStack()
+                        delay(2000)
                         viewModel.initializeState()
                     }
                     ScreenState.Modify -> {

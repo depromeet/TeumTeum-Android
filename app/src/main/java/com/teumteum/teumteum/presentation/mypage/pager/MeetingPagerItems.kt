@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.mypage.pager
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +37,9 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Meeting
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Date
 import java.util.Locale
 
 @Composable
@@ -160,15 +163,29 @@ fun NoMoimItems(
     }
     TmMarginVerticalSpacer(size = 16)
 }
+
+fun parseMeetingDate(dateStr: String): Date? {
+    val format = SimpleDateFormat("MM월 dd일 a h:mm", Locale.KOREAN)
+    return try {
+        format.parse(dateStr)
+    } catch (e: ParseException) {
+        null
+    }
+}
+
+fun dateToLocalDateTime(date: Date?): LocalDateTime? {
+    return date?.toInstant()?.atZone(ZoneId.systemDefault())?.toLocalDateTime()
+}
+
 @Composable
 fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit?) {
     val formattedTime = formatDateTime(meeting.date)
 
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    val meetingDateTime = LocalDateTime.parse(meeting.date, formatter)
+    val meetingDate = parseMeetingDate(meeting.date)
+    val meetingDateTime = dateToLocalDateTime(meetingDate)
     val currentTime = LocalDateTime.now()
-    val isPastMeeting = meetingDateTime.isBefore(currentTime)
 
+    val isPastMeeting = meetingDateTime?.isBefore(currentTime)
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -215,12 +232,11 @@ fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Lo
                     MyMoimBadge()
                 }
             }
-            if(!isPastMeeting) {
-                Image(
+            Log.d("isPastMeeting", isPastMeeting.toString())
+            Image(
                     painter = painterResource(id = R.drawable.ic_pencil_fill),
                     contentDescription = null,
                 )
-            }
         }
     }
     TmMarginVerticalSpacer(size = 16)
