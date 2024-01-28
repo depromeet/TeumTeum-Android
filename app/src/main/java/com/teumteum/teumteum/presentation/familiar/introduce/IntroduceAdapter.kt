@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.familiar.introduce
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -42,6 +43,7 @@ class IntroduceAdapter() :
             initCardAnim()
         }
 
+        @SuppressLint("ResourceType")
         private fun initCardAnim() {
             val scale = itemView.resources.displayMetrics.density
             binding.cardviewFront.cameraDistance = 8000 * scale
@@ -81,7 +83,8 @@ class IntroduceAdapter() :
         }
 
         fun bind(item: Friend) {
-            val imageRes = IdMapper.getCardCharacterDrawableById(characterId = item.characterId)
+            val frontImageRes = IdMapper.getFrontCardCharacterDrawableById(characterId = item.characterId)
+            val backImageRes = IdMapper.getBackCardCharacterDrawableById(characterId = item.characterId)
 
             with(binding.cardviewFront) {
                 tvName.text = item.name
@@ -92,7 +95,7 @@ class IntroduceAdapter() :
                 tvMbti.text = item.mbti
 
                 Glide.with(itemView.context)
-                    .load(imageRes)
+                    .load(frontImageRes)
                     .apply(RequestOptions.centerInsideTransform())
                     .into(ivCharacter)
             }
@@ -102,7 +105,7 @@ class IntroduceAdapter() :
                 tvGoalContent.text = item.goal
 
                 Glide.with(itemView.context)
-                    .load(imageRes)
+                    .load(backImageRes)
                     .apply(RequestOptions.centerInsideTransform())
                     .into(ivCharacter)
 
