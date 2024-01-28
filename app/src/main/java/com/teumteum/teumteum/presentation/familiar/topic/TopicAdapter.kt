@@ -10,22 +10,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemTopicBinding
-import com.teumteum.teumteum.presentation.familiar.topic.model.Topic
 
-class TopicAdapter() :
-    ListAdapter<Topic, TopicAdapter.ItemViewHolder>(
-        ItemListDiffCallback
-    ) {
-    private lateinit var binding: ItemTopicBinding
+class TopicAdapter :
+    ListAdapter<TopicResponse, TopicAdapter.ItemViewHolder>(ItemListDiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ItemViewHolder {
-        binding =
-            ItemTopicBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTopicBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ItemViewHolder(binding)
     }
 
@@ -33,8 +33,9 @@ class TopicAdapter() :
         holder.bind(getItem(position))
     }
 
-    class ItemViewHolder(private val binding: ItemTopicBinding) :
+    inner class ItemViewHolder(private val binding: ItemTopicBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         private lateinit var frontAnimation: AnimatorSet
         private lateinit var backAnimation: AnimatorSet
         private var isFront = true
@@ -81,38 +82,44 @@ class TopicAdapter() :
                 isFront = true
             }
         }
-        fun bind(item: Topic) {
-            //front
-            with(binding) {
-                tvTopicNumber.text = item.topicNumber
-                tvTopicTitle.text = item.topicTitle
 
-                Glide.with(itemView.context)
-                    .load(item.frontImage)
-                    .apply(RequestOptions.centerInsideTransform())
-                    .into(binding.ivFrontBalanceBackground)
-            }
+        fun bind(item: TopicResponse) {
+            if (item is TopicResponse.Story) {
+                // Handle Story data
+                with(binding) {
+                    tvTopicNumber.text = "1"
+                    tvTopicTitle.text = item.topic
 
-            //back
-            with(binding) {
-                Glide.with(itemView.context)
-                    .load(item.backImage)
-                    .apply(RequestOptions.centerInsideTransform())
-                    .into(binding.ivBackBalanceBackground)
+                    Glide.with(itemView.context)
+                        .load(R.drawable.ic_front_balance_background_1)
+                        .apply(RequestOptions.centerInsideTransform())
+                        .into(binding.ivFrontBalanceBackground)
+
+                    Glide.with(itemView.context)
+                        .load(R.drawable.ic_back_balance_background_1)
+                        .apply(RequestOptions.centerInsideTransform())
+                        .into(binding.ivBackBalanceBackground)
+                }
+            } else if (item is TopicResponse.Balance) {
+                // Handle Balance data
+                // You can similarly bind Balance data to your views here
             }
         }
     }
 
-    object ItemListDiffCallback : DiffUtil.ItemCallback<Topic>() {
-        override fun areItemsTheSame(oldItem: Topic, newItem: Topic): Boolean {
-            return oldItem == newItem
+    object ItemListDiffCallback : DiffUtil.ItemCallback<TopicResponse>() {
+        override fun areItemsTheSame(oldItem: TopicResponse, newItem: TopicResponse): Boolean {
+            return when {
+                oldItem is TopicResponse.Balance && newItem is TopicResponse.Balance ->
+                    oldItem.topic == newItem.topic // Compare based on unique identifiers
+                oldItem is TopicResponse.Story && newItem is TopicResponse.Story ->
+                    oldItem.topic == newItem.topic // Compare based on unique identifiers
+                else -> false
+            }
         }
 
-        override fun areContentsTheSame(
-            oldItem: Topic,
-            newItem: Topic
-        ): Boolean {
-            return oldItem.topicNumber == newItem.topicNumber
+        override fun areContentsTheSame(oldItem: TopicResponse, newItem: TopicResponse): Boolean {
+            return oldItem == newItem // Data classes automatically implement equals for all properties
         }
     }
 }

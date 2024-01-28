@@ -2,7 +2,6 @@ package com.teumteum.teumteum.presentation.familiar.topic
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -11,12 +10,11 @@ import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTopicBinding
-import com.teumteum.teumteum.presentation.familiar.topic.model.Topic
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -24,35 +22,80 @@ class TopicActivity
     : BindingActivity<ActivityTopicBinding>(R.layout.activity_topic), AppBarLayout {
 
     private val topicAdapter = TopicAdapter()
-    private val viewpagerList = ArrayList<Topic>()
     private val viewModel by viewModels<TopicViewModel>()
     private val visitedPages = HashSet<Int>()
+    private var apiDataIndex = 0
+
+    private val dummyList = mutableListOf<TopicResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initAppBarLayout()
-        initViewPagerItem()
         initViewPager()
-        setUpListener()
         setUpObserver()
+        initDummyViewPager() // Move this after setUpObserver
     }
 
-    private fun setUpListener() {
+    private fun initDummyViewPager() {
+        for (i in 1..5) {
+            // Create instances of Balance and Story as needed
+            val balance = TopicResponse.Balance(
+                topic = "생성중입니다.",
+                balanceQuestion = listOf("Question 1", "Question 2")
+            )
+            val story = TopicResponse.Story(
+                topic = "생성중입니다.",
+                story = "Lorem ipsum story $i"
+            )
+
+            // Add either Balance or Story to the list based on your logic
+            if (i % 2 == 0) { // Alternating between Balance and Story
+                dummyList.add(balance)
+            } else {
+                dummyList.add(story)
+            }
+        }
+
+        // Initially, combine dummyList and apiDataList to update the ViewPager
+        updateViewPagerWithCombinedData()
     }
+
 
     private fun setUpObserver() {
         viewModel.topicState.observe(this) { state ->
             when (state) {
-                UiState.Loading -> {}
-                UiState.Success -> {
-                    Timber.tag("테스트").d("${viewModel.topics.value}")
-
+                is UiState.Loading -> {
+                    // Handle loading state
                 }
 
-                UiState.Failure -> {}
+                is UiState.Success -> {
+                    viewModel.topics.value?.let { newApiData ->
+                        updateViewPagerWithApiData(newApiData)
+                    }
+                }
+
+                is UiState.Failure -> {
+                    // Handle failure state
+                }
+
                 else -> {}
             }
+        }
+    }
+
+    private fun updateViewPagerWithApiData(newApiData: TopicResponse) {
+        if (dummyList.isNotEmpty()) {
+            dummyList[apiDataIndex % dummyList.size] = newApiData
+            apiDataIndex++
+            updateViewPagerWithCombinedData()
+        }
+    }
+
+    private fun updateViewPagerWithCombinedData() {
+        val currentItem = binding.vp.currentItem // 현재 페이지 위치 저장
+        topicAdapter.submitList(dummyList.toList()) // 리스트 업데이트
+        binding.vp.post {
+            binding.vp.setCurrentItem(currentItem, false) // 페이지 위치 복원
         }
     }
 
@@ -72,98 +115,19 @@ class TopicActivity
         )
     }
 
-    private fun initViewPagerItem() {
-        with(viewpagerList) {
-            add(
-                Topic(
-                    topicNumber = "TOPIC.1",
-                    topicTitle = "모여서 각자\n디자인",
-                    frontImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_front_balance_background_1
-                    ),
-                    backImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_back_balance_background_1
-                    )
-                )
-            )
-            add(
-                Topic(
-                    topicNumber = "TOPIC.2",
-                    topicTitle = "모여서 각자\n디자인",
-                    frontImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_front_balance_background_2
-                    ),
-                    backImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_back_balance_background_2
-                    )
-                )
-            )
-            add(
-                Topic(
-                    topicNumber = "TOPIC.3",
-                    topicTitle = "모여서 각자\n디자인",
-                    frontImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_front_balance_background_3
-                    ),
-                    backImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_back_balance_background_3
-                    )
-                )
-            )
-            add(
-                Topic(
-                    topicNumber = "TOPIC.4",
-                    topicTitle = "모여서 각자\n디자인",
-                    frontImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_front_balance_background_4
-                    ),
-                    backImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_back_balance_background_4
-                    )
-                )
-            )
-            add(
-                Topic(
-                    topicNumber = "TOPIC.5",
-                    topicTitle = "모여서 각자\n디자인",
-                    frontImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_front_balance_background_5
-                    ),
-                    backImage = ContextCompat.getDrawable(
-                        this@TopicActivity,
-                        R.drawable.ic_back_balance_background_5
-                    )
-
-                )
-            )
-        }
-    }
-
     private fun initViewPager() {
-        topicAdapter.submitList(viewpagerList)
         with(binding) {
             vp.adapter = topicAdapter
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-
             vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if (!visitedPages.contains(position)) {//방문하지 않은 페이지에서만 api 호출
+                    if (!visitedPages.contains(position)) {
                         getTopics()
                         visitedPages.add(position)
                     }
                 }
             })
-
             TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
                 tab.view.isClickable = false
             }.attach()
@@ -173,5 +137,4 @@ class TopicActivity
     private fun getTopics() {
         viewModel.getTopics(userIds = listOf("32", "38"), type = "story")
     }
-
 }
