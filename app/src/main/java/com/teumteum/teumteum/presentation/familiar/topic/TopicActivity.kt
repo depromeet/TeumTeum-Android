@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.R.color
@@ -12,9 +13,10 @@ import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTopicBinding
-import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborViewModel
 import com.teumteum.teumteum.presentation.familiar.topic.model.Topic
+import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -24,6 +26,7 @@ class TopicActivity
     private val topicAdapter = TopicAdapter()
     private val viewpagerList = ArrayList<Topic>()
     private val viewModel by viewModels<TopicViewModel>()
+    private val visitedPages = HashSet<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +35,25 @@ class TopicActivity
         initViewPagerItem()
         initViewPager()
         setUpListener()
-        viewModel.getTopics(userIds = listOf("32","38"), type = "story")
+        setUpObserver()
     }
 
     private fun setUpListener() {
+    }
+
+    private fun setUpObserver() {
+        viewModel.topicState.observe(this) { state ->
+            when (state) {
+                UiState.Loading -> {}
+                UiState.Success -> {
+                    Timber.tag("테스트").d("${viewModel.topics.value}")
+
+                }
+
+                UiState.Failure -> {}
+                else -> {}
+            }
+        }
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -135,11 +153,25 @@ class TopicActivity
         with(binding) {
             vp.adapter = topicAdapter
             vp.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            tl.clearOnTabSelectedListeners()
+
+            vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    if (!visitedPages.contains(position)) {//방문하지 않은 페이지에서만 api 호출
+                        getTopics()
+                        visitedPages.add(position)
+                    }
+                }
+            })
+
+            TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
+                tab.view.isClickable = false
+            }.attach()
         }
-        TabLayoutMediator(binding.tl, binding.vp) { tab, _ ->
-            tab.view.isClickable = false
-        }.attach()
+    }
+
+    private fun getTopics() {
+        viewModel.getTopics(userIds = listOf("32", "38"), type = "story")
     }
 
 }
