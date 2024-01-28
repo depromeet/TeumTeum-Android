@@ -62,6 +62,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private fun initMyCharacter() {
         val myInfo = AuthUtils.getMyInfo(this)
         if (myInfo != null) {
+            val view = binding.cvMe
             setCharacterView(
                 neighbor = NeighborEntity(
                     id = myInfo.id,
@@ -69,12 +70,9 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                     jobDetailClass = myInfo.job.detailClass,
                     characterId = myInfo.characterId
                 ),
-                view = binding.cvMe
+                view = view
             ).apply {
-                with(binding.cvMe){
-                    isVisible = true
-                    isEnabled = false //내 캐릭터 터치 시 체크박스 활성화 방지
-                }
+                view.isEnabled = false //내 캐릭터 터치 시 체크박스 활성화 방지
             }
         }
     }
@@ -114,6 +112,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     }
 
     private fun setCharacterView(neighbor: NeighborEntity, view: CharacterView) {
+        view.isVisible = true
         view.characterName.text = neighbor.name
         view.characterJob.text = neighbor.jobDetailClass
         view.characterImage.setImageResource(IdMapper.getCharacterDrawableById(neighbor.characterId.toInt()))
