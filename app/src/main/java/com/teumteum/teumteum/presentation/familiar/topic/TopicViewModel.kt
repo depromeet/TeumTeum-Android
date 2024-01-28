@@ -4,39 +4,54 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teumteum.domain.entity.RecommendMeetEntity
-import com.teumteum.domain.repository.HomeRepository
+import com.teumteum.domain.entity.TopicResponse
+import com.teumteum.domain.repository.TopicRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TopicViewModel @Inject constructor(private val homeRepository: HomeRepository) :
+class TopicViewModel @Inject constructor(private val topicRepository: TopicRepository) :
     ViewModel() {
 
-    val recommendMeets = MutableLiveData<List<RecommendMeetEntity>?>()
-
-    private var _recommendMeetState = MutableLiveData<UiState>(UiState.Empty)
-    val recommendMeetState: LiveData<UiState>
-        get() = _recommendMeetState
+    private var _topicState = MutableLiveData<UiState>(UiState.Empty)
+    val topicState: LiveData<UiState>
+        get() = _topicState
 
 
-    fun getTopics() {
+    fun getTopics(userIds: List<String>, type: String) {
         viewModelScope.launch {
-            runCatching {
-                _recommendMeetState.value = UiState.Loading
-                homeRepository.getRecommendMeet()
-            }.onSuccess {
-//                if (it != null) {
-//                    recommendMeets.value = it
-//                } else {
-//                    recommendMeets.value = null
-//                }
-                _recommendMeetState.value = UiState.Success
+            _topicState.value = UiState.Loading
+            val result = runCatching {
+                topicRepository.getTopics(userIds, type)
+            }
+
+            result.onSuccess { topicsResponse ->
+                when (val response = topicsResponse.getOrNull()) {
+                    is TopicResponse.Balance -> {
+                        //todo - 여기로 빠지는 data 담을 수 있는 전용 liveData 만들기
+
+                        // Process Balance response
+                        // Update LiveData or UI state
+                        _topicState.value = UiState.Success
+                    }
+
+                    is TopicResponse.Story -> {
+                        //todo - 여기로 빠지는 data 담을 수 있는 전용 liveData 만들기
+
+                        // Process Story response
+                        // Update LiveData or UI state
+                        _topicState.value = UiState.Success
+                    }
+
+                    else -> {
+                        _topicState.value = UiState.Failure
+                    }
+                }
             }.onFailure {
-//                Timber.e(it)
-                _recommendMeetState.value = UiState.Failure
+                // Log error or update UI state to reflect the failure
+                _topicState.value = UiState.Failure
             }
         }
     }

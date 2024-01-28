@@ -1,7 +1,7 @@
 package com.teumteum.teumteum.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.teumteum.data.remote.AuthInterceptor
+import com.teumteum.data.interceptor.AuthInterceptor
 import com.teumteum.teumteum.BuildConfig.BASE_URL
 import com.teumteum.teumteum.addFlipperNetworkPlugin
 import com.teumteum.teumteum.di.qualifier.Auth
