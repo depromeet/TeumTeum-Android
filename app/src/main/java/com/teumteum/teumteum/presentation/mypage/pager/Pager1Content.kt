@@ -85,8 +85,7 @@ fun MyPagePager1Content(
                 }
             }
             userHostClosed.forEach { 
-                MyMoimItems(meeting = it) {
-
+                MyMoimItemClosed(meeting = it) {
                 }
             }
         }

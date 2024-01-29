@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.moim.compose
 
+import android.app.Activity
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -55,6 +56,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.skydoves.balloon.textForm
+import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -73,11 +75,19 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 @Composable
 fun MoimModify(
     viewModel: MoimViewModel,
-    navController: NavController,
+    navController: NavController? = null,
+    activity: Activity? = null,
 ) {
     TmScaffold(
         topbarText = stringResource(id = R.string.modify_topbar),
-        onClick = { navController.popBackStack() }
+        onClick = {
+            if (navController != null) {
+                navController.popBackStack()
+            } else {
+                activity?.finish()
+                (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
+            }
+        }
     ) {
         val scrollState = rememberScrollState()
         Column(modifier = Modifier
@@ -100,7 +110,10 @@ fun MoimModify(
 }
 
 @Composable
-fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
+fun MoimModifyColumn(
+    viewModel: MoimViewModel,
+    navController: NavController? = null
+) {
     val title by viewModel.title.collectAsState()
     val introduction by viewModel.introduction.collectAsState()
     val address by viewModel.address.collectAsState()
@@ -204,7 +217,11 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
                 shape = RoundedCornerShape(4.dp)
             )
             .clickable {
-                navController.navigate(R.id.action_fragment_modify_moim_to_fragment_web_view)
+                if (navController != null) {
+                    navController.navigate(R.id.action_fragment_modify_moim_to_fragment_web_view)
+                } else {
+
+                }
             }
         ) {
             Text(

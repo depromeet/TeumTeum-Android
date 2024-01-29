@@ -18,10 +18,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -232,7 +234,6 @@ fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Lo
                     MyMoimBadge()
                 }
             }
-            Log.d("isPastMeeting", isPastMeeting.toString())
             Image(
                     painter = painterResource(id = R.drawable.ic_pencil_fill),
                     contentDescription = null,
@@ -241,6 +242,63 @@ fun MyMoimItems(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Lo
     }
     TmMarginVerticalSpacer(size = 16)
 }
+
+
+@Composable
+fun MyMoimItemClosed(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit?) {
+    val formattedTime = formatDateTime(meeting.date)
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(62.dp)
+        .clickable {
+            navigateToMoim(meeting.id)
+        }
+        .background(
+            color = TmtmColorPalette.current.elevation_color_elevation_level01,
+            shape = RoundedCornerShape(4.dp)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = meeting.name,
+                    style = TmTypo.current.HeadLine7,
+                    color = TmtmColorPalette.current.color_text_headline_primary
+                )
+                Row(modifier = Modifier
+                    .wrapContentWidth()
+                    .wrapContentHeight(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = formattedTime,
+                        style = TmTypo.current.Body3,
+                        color = TmtmColorPalette.current.color_text_body_quaternary
+                    )
+                    TmMarginHorizontalSpacer(size = 12)
+                    MyMoimBadge()
+                }
+            }
+        }
+    }
+    TmMarginVerticalSpacer(size = 16)
+}
+
+
 
 @Composable
 fun MyMoimBadge() {
@@ -260,9 +318,10 @@ fun MyMoimBadge() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.ic_crown_fill),
                 contentDescription = null,
+                tint = Color.Unspecified
             )
             TmMarginHorizontalSpacer(size = 4)
             Text(

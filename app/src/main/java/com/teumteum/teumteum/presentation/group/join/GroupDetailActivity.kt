@@ -37,10 +37,15 @@ class GroupDetailActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.updateSheetEvent(ScreenState.DeleteInit)
 
         binding.composeGroup.setContent {
+            val screenState by viewModel.screenState.collectAsState()
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
-                MoimConfirm(viewModel = viewModel, activity = this, isJoinView = true, meetingId = meetingId)
+                if(screenState == ScreenState.Modify) MoimModify(viewModel = viewModel, activity = this)
+                else {
+                    MoimConfirm(viewModel = viewModel, activity = this, isJoinView = true, meetingId = meetingId)
+                }
             }
         }
         observe()

@@ -572,6 +572,7 @@ fun MoimHostBtn(
     onJoinGroupClick: (Long) -> Unit
 ) {
     val meetingId by viewModel.meetingsId.collectAsState()
+    val screenState by viewModel.screenState.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -604,6 +605,8 @@ fun MoimHostBtn(
                 if (navController != null) {
                     val action = meetingId?.let { MoimFragmentDirections.actionFragmentMoimToFragmentModifyMoim(meetingId) }
                     if (action != null) { navController.navigate(action) }
+                } else {
+                    viewModel.updateSheetEvent(ScreenState.Modify)
                 }
             },
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
