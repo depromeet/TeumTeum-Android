@@ -171,6 +171,8 @@ class MoimFragment :
                         viewModel.initializeState()
                     }
                     ScreenState.Success -> {
+                        delay(1000)
+                        (activity as MainActivity).showBottomNavi()
                         delay(5000)
                         viewModel.initializeState()
                     }

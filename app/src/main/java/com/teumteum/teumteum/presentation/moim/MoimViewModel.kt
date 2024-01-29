@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.net.URL
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -223,8 +224,6 @@ class MoimViewModel @Inject constructor(
         _imageUri.value = currentList
     }
 
-
-
     fun formatTime(input: String): String {
         return try {
             val parsedTime = LocalTime.parse(input, DateTimeFormatter.ofPattern("HHmm"))
@@ -250,7 +249,15 @@ class MoimViewModel @Inject constructor(
         return try {
             val currentYear = Year.now().value
             val dateInput = "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
-            val timeInput = _time.value.replace("오후", "PM").replace("오전", "AM")
+            var timeInput = _time.value.replace("오후", "PM").replace("오전", "AM")
+
+            val timeParts = timeInput.split(" ")
+            if (timeParts.size == 2) {
+                val hourMinuteParts = timeParts[1].split(":")
+                if (hourMinuteParts[0].length == 1) {
+                    timeInput = "${timeParts[0]} 0${hourMinuteParts[0]}:${hourMinuteParts[1]}"
+                }
+            }
 
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN)
             val timeFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.ENGLISH)
@@ -267,13 +274,17 @@ class MoimViewModel @Inject constructor(
 
     private fun convertUrisToFile(uris: List<Uri>): List<File> {
         return uris.mapNotNull { uri ->
-            context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                val fileName = getFileName(uri, context)
-                val file = File(context.cacheDir, fileName ?: "tempFile-${System.currentTimeMillis()}")
-                FileOutputStream(file).use { outputStream ->
-                    inputStream.copyTo(outputStream)
+            if(uri.scheme?.startsWith("content")==true) {
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val fileName = getFileName(uri, context)
+                    val file = File(context.cacheDir, fileName ?: "tempFile-${System.currentTimeMillis()}")
+                    FileOutputStream(file).use { outputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
+                    file
                 }
-                file
+            } else {
+                null
             }
         }
     }

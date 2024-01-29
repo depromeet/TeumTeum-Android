@@ -446,6 +446,7 @@ fun ModifyBtn(
         enabled = isAllValid,
         onClick = {
             if(isAllValid) { viewModel.modifyMoim(meetingId) }
+                  Log.d("uriValue", uri.toString())
         },
         colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
         shape = RoundedCornerShape(size = 4.dp)

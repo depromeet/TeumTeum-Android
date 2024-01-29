@@ -13,7 +13,7 @@ interface SettingService {
     suspend fun logOut(): Response<Unit>
 
 
-    @POST("users/withdraw")
+    @POST("users/withdraws")
     suspend fun signOut(@Body request: RequestSignOut): Response<Unit>
 
     @GET("meetings")
