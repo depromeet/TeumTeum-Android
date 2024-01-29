@@ -78,13 +78,14 @@ class MoimFragment :
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
                         viewModel.getUserId()
-                        MoimConfirm(viewModel, requireActivity(), false) { goFrontScreen() }
+                        MoimConfirm(viewModel, navController, requireActivity(), false) { goFrontScreen() }
                     }
 
                     ScreenState.CancelInit, ScreenState.Cancel -> {
                         binding.progressBar.visibility = View.GONE
                         MoimConfirm(
                             viewModel,
+                            navController,
                             requireActivity(),
                             true,
                             meetingId
@@ -95,6 +96,7 @@ class MoimFragment :
                         binding.progressBar.visibility = View.GONE
                         MoimConfirm(
                             viewModel,
+                            navController,
                             requireActivity(),
                             true,
                             meetingId
@@ -108,7 +110,7 @@ class MoimFragment :
 
                     else -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(), false)
+                        MoimConfirm(viewModel, navController, requireActivity(), false)
                     }
                 }
             }

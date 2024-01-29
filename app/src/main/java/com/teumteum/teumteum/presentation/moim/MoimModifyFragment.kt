@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.moim
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -18,11 +19,18 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentModifyMoimBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.moim.compose.MoimModify
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
+import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
+import com.teumteum.teumteum.util.SignupUtils.PEOPLE_LIST
+import com.teumteum.teumteum.util.SignupUtils.TOPIC_LIST
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.ArrayList
 
 class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fragment_modify_moim){
     private val viewModel: MoimViewModel by activityViewModels()
+    private var topicBottomSheet: SingleModalBottomSheet? = null
+    private var peopleBottomSheet: SingleModalBottomSheet? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,6 +39,7 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
         (activity as MainActivity).hideBottomNavi()
 
         observe()
+        observeBottomSheet()
 
         binding.composeModifyMoim.setContent {
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
@@ -51,4 +60,54 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
             }
             .launchIn(lifecycleScope)
     }
+
+    private fun observeBottomSheet() {
+        viewModel.bottomSheet.flowWithLifecycle(lifecycle)
+            .onEach {
+                when(it) {
+                    BottomSheet.Default -> {}
+                    BottomSheet.Topic -> showTopicSheet()
+                    BottomSheet.People -> showPeopleSheet()
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun showTopicSheet() {
+        val topicClassListener: (String) -> Unit = { item ->
+            TopicType.fromTitle(item)?.let {
+                viewModel.updateTopic(it)
+            }
+            topicBottomSheet?.dismiss()
+            viewModel.updateBottomSheet(BottomSheet.Default)
+        }
+
+        val topicTitles = TopicType.values().map { it.title }
+        topicBottomSheet = SingleModalBottomSheet.newInstance(
+            "모임 주제", topicTitles as ArrayList, topicClassListener
+        )
+        topicBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
+    }
+
+    private fun extractNumberFromString(text: String): Int? {
+        return text.filter { it.isDigit() }.toIntOrNull()
+    }
+
+    private fun showPeopleSheet() {
+        val peopleClassListener: (String) -> Unit = { item ->
+            extractNumberFromString(item)?.let {
+                viewModel.updatePeople(it)
+            }
+            peopleBottomSheet?.dismiss()
+            viewModel.updateBottomSheet(BottomSheet.Default)
+        }
+
+        peopleBottomSheet = SingleModalBottomSheet.newInstance(
+            "참여 인원 선택", PEOPLE_LIST, peopleClassListener
+        )
+        peopleBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
+    }
+
+
+
 }

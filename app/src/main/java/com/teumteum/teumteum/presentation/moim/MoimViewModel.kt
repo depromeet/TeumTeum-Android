@@ -181,6 +181,12 @@ class MoimViewModel @Inject constructor(
     fun downPeople() {
         if(_people.value > 1) { _people.value -=1 }
     }
+
+    fun updatePeople(int: Int) {
+        _people.value = int
+    }
+
+
     fun resetSnackbarEvent() {
         viewModelScope.launch {
             _snackbarEvent.emit(SnackbarEvent.DEFAULT)
@@ -534,7 +540,13 @@ enum class TopicType(val value: String, val title: String ,val subTitle: String)
     SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
     STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
     GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
-    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
+    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요");
+
+    companion object {
+        fun fromTitle(title: String): TopicType? {
+            return values().find { it.title == title }
+        }
+    }
 
 }
 

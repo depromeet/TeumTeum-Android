@@ -8,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.compose.theme.ColorPalette_Dark
 import com.teumteum.base.component.compose.theme.ColorPalette_Light
@@ -32,6 +33,8 @@ class GroupDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         binding.composeGroup.setContent {
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
                 MoimConfirm(viewModel = viewModel, activity = this, isJoinView = true, meetingId = meetingId)

@@ -72,6 +72,7 @@ import kotlinx.serialization.json.Json
 @Composable
 fun MoimConfirm(
     viewModel: MoimViewModel,
+    navController: NavController? = null,
     activity: Activity,
     isJoinView: Boolean,
     meetingId: Long? = null,
@@ -126,9 +127,11 @@ fun MoimConfirm(
                     },
                     onCancel = {
                         showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.DeleteInit)
                     },
                     onDismiss = {
                         showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.DeleteInit)
                     }
                 )
             }
@@ -194,7 +197,8 @@ fun MoimConfirm(
                             } else {
                                 TeumDivider()
                                 MoimHostBtn(
-                                    viewModel = viewModel
+                                    viewModel = viewModel,
+                                    navController = navController
                                 ) {
                                     if(meetingId != null) {viewModel.deleteMeeting(it)}
                                 }
@@ -203,7 +207,8 @@ fun MoimConfirm(
                         else if(isHost) {
                             TeumDivider()
                             MoimHostBtn(
-                                viewModel = viewModel
+                                viewModel = viewModel,
+                                navController = navController
                             ) {
                                 if(meetingId != null) {viewModel.deleteMeeting(it)}
                             }
@@ -530,6 +535,7 @@ fun MoimJoinListItem(index: Int, item: Friend, characterList: HashMap<Int, Int>)
 @Composable
 fun MoimHostBtn(
     viewModel: MoimViewModel,
+    navController: NavController?,
     onJoinGroupClick: (Long) -> Unit
 ) {
     Row(
@@ -561,7 +567,9 @@ fun MoimHostBtn(
                 .weight(1f)
                 .height(56.dp),
             onClick = {
-                viewModel.updateSheetEvent(ScreenState.Modify)
+                if (navController != null) {
+                    navController.navigate(R.id.fragment_modify_moim)
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
             shape = RoundedCornerShape(size = 4.dp)

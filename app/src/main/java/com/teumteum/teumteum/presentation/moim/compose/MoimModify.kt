@@ -90,6 +90,8 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
     val title by viewModel.title.collectAsState()
     val introduction by viewModel.introduction.collectAsState()
     val address by viewModel.address.collectAsState()
+    val topic by viewModel.topic.collectAsState()
+    val people by viewModel.people.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -99,11 +101,13 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
         //모임 주제
         EditCardLabel(string = stringResource(id = R.string.modify_title1))
         TmMarginVerticalSpacer(size = 8)
-        EditMeetingBottomBox(
-            text = stringResource(R.string.modify_placeholder1),
-            viewModel = viewModel,
-            bottomSheet = BottomSheet.Topic
-        )
+        topic?.let {
+            EditMeetingBottomBox(
+                text = it.title,
+                viewModel = viewModel,
+                bottomSheet = BottomSheet.Topic
+            )
+        }
 
         //모임 이름
         EditCardLabel(string = stringResource(R.string.modify_title2))
@@ -199,7 +203,7 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
         EditCardLabel(string = stringResource(R.string.modify_title9))
         TmMarginVerticalSpacer(size = 8)
         EditMeetingBottomBox(
-            text = stringResource(R.string.modify_placeholder9),
+            text = "${people}명",
             viewModel = viewModel,
             bottomSheet = BottomSheet.People
         )
@@ -320,7 +324,6 @@ fun ModifyPhotoInput(
     }
 
 }
-
 
 @Composable
 fun EditMeetingBottomBox(
