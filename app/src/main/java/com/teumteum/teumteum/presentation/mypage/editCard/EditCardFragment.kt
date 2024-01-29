@@ -131,6 +131,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                             putExtra("interests", ArrayList(interests))
                             putExtra("isFromMainActivity", true)
                             putExtra("navigateTo", "fragment_get_interest")
+                            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
                         }
                         resultLauncher.launch(intent)
                     }

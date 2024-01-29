@@ -207,6 +207,13 @@ class MoimViewModel @Inject constructor(
         _imageUri.value = currentList.take(5)
     }
 
+    fun removeImage(uri: Uri) {
+        val currentList = _imageUri.value.toMutableList()
+        currentList.remove(uri)
+        _imageUri.value = currentList
+    }
+
+
 
     fun formatTime(input: String): String {
         return try {

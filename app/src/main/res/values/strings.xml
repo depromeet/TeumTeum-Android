@@ -120,6 +120,7 @@
     <string name="moim_introduce_title1_photo">사진 등록</string>
     <string name="moim_introduce_title2_photo">최대 5장</string>
     <string name="moim_introduce_system_photo">1장 이상의 사진을 필수로 등록해주세요.</string>
+    <string name="moim_introduce_system_photo2">10mb 이하의 이미지(1장 이상 5개 이하)를 필수로 등록해 주세요.</string>
     <string name="moim_introduce_snackbar">파일 크기가 10MB를 초과합니다.</string>
 
 
