@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.moim.compose
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -40,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
 import com.teumteum.base.component.compose.TeumDivider
@@ -56,14 +59,12 @@ import com.teumteum.teumteum.presentation.mypage.editCard.EditCardLabel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 
-@Preview
-@Composable
-fun MoimModify() {
-    val moimViewModel: MoimViewModel = hiltViewModel()
 
+@Composable
+fun MoimModify(viewModel: MoimViewModel, navController: NavController) {
     TmScaffold(
         topbarText = stringResource(id = R.string.modify_topbar),
-        onClick = {}
+        onClick = { navController.popBackStack() }
     ) {
         val scrollState = rememberScrollState()
         Column(modifier = Modifier
@@ -75,7 +76,7 @@ fun MoimModify() {
             horizontalAlignment = Alignment.Start
         ) {
             TmMarginVerticalSpacer(size = 80)
-            MoimModifyColumn(moimViewModel)
+            MoimModifyColumn(viewModel, navController)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
             TmMarginVerticalSpacer(size = 24)
@@ -85,9 +86,10 @@ fun MoimModify() {
 }
 
 @Composable
-fun MoimModifyColumn(viewModel: MoimViewModel) {
+fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
     val title by viewModel.title.collectAsState()
     val introduction by viewModel.introduction.collectAsState()
+    val address by viewModel.address.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -127,35 +129,71 @@ fun MoimModifyColumn(viewModel: MoimViewModel) {
                 viewModel.updateIntroduce(newText)
             },
             modifier = Modifier
-                .height(272.dp)
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .height(272.dp),
             isError = introduction.isBlank(),
         )
-        TmMarginVerticalSpacer(size = 8)
-        MoimSystemText(text = R.string.setting_edit_card_error10)
+        ModifySystemText(text = R.string.setting_edit_card_error10)
+        TmMarginVerticalSpacer(size = 20)
 
         //모임 사진
         EditCardLabel(string = stringResource(R.string.modify_title4))
         TmMarginVerticalSpacer(size = 8)
         ModifyPhotoColumn(viewModel = viewModel)
         TmMarginVerticalSpacer(size = 8)
-        MoimSystemText(text = R.string.moim_introduce_system_photo2)
+        ModifySystemText(text = R.string.moim_introduce_system_photo2)
+        TmMarginVerticalSpacer(size = 20)
+
 
         //모임 날짜
         EditCardLabel(string = stringResource(R.string.modify_title5))
         TmMarginVerticalSpacer(size = 8)
+        MoimDateInputField(placeHolder = stringResource(R.string.modify_title5), viewModel = viewModel)
+        TmMarginVerticalSpacer(size = 20)
+
 
         //모임 시간
         EditCardLabel(string = stringResource(R.string.modify_title6))
         TmMarginVerticalSpacer(size = 8)
+        MoimDateInputField(
+            placeHolder = stringResource(id = R.string.modify_placeholder6),
+            viewModel = viewModel,
+            isTimeField = true
+        )
+        TmMarginVerticalSpacer(size = 20)
+
 
         //모임 도로명 주소
         EditCardLabel(string = stringResource(R.string.modify_title7))
         TmMarginVerticalSpacer(size = 8)
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .background(
+                color = TmtmColorPalette.current.elevation_color_elevation_level01,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .clickable {
+                navController.navigate(R.id.action_fragment_modify_moim_to_fragment_web_view)
+            }
+        ) {
+            Text(
+                text = address ?: stringResource(id = R.string.moim_address_placeholdler1),
+                color = TmtmColorPalette.current.color_text_body_quinary,
+                style = TmTypo.current.Body1,
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp)
+            )
+        }
+        TmMarginVerticalSpacer(size = 20)
+
 
         //모임 상세 주소
         EditCardLabel(string = stringResource(R.string.modify_title8))
         TmMarginVerticalSpacer(size = 8)
+        MoimAddressInputField(viewModel = viewModel, placeHolder = stringResource(id = R.string.moim_address_placeholder2))
+        TmMarginVerticalSpacer(size = 20)
+
 
         //모임 참여 인원
         EditCardLabel(string = stringResource(R.string.modify_title9))
@@ -165,7 +203,34 @@ fun MoimModifyColumn(viewModel: MoimViewModel) {
             viewModel = viewModel,
             bottomSheet = BottomSheet.People
         )
+        TmMarginVerticalSpacer(size = 20)
 
+
+    }
+}
+
+@Composable
+fun ModifySystemText(@StringRes text: Int) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .background(color = TmtmColorPalette.current.color_background)
+        .wrapContentHeight(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Top
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_system),
+            contentDescription =null,
+            modifier = Modifier.padding(vertical =0.dp)
+        )
+        TmMarginHorizontalSpacer(size = 6)
+        Text(
+            text = stringResource(id = text),
+            style= TmTypo.current.Body3,
+            color = TmtmColorPalette.current.color_text_caption_teritary_default,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
 
     }
 }
@@ -192,21 +257,8 @@ fun ModifyPhotoColumn(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top,
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .wrapContentHeight(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = stringResource(id = R.string.moim_introduce_title1_photo), style= TmTypo.current.SubTitle1, color = TmtmColorPalette.current.color_text_body_primary)
-            TmMarginHorizontalSpacer(size = 6)
-            Text(text = stringResource(id = R.string.moim_introduce_title2_photo), style= TmTypo.current.Body2, color= TmtmColorPalette.current.color_text_headline_teritary)
-        }
         TmMarginVerticalSpacer(size = 8)
         ModifyPhotoInput(imageUri, {launcher.launch("image/*")}, viewModel::removeImage)
-        TmMarginVerticalSpacer(size = 8)
-        MoimSystemText(text = R.string.moim_introduce_system_photo)
     }
 }
 
@@ -216,9 +268,7 @@ fun ModifyPhotoInput(
     onAddImage: () -> Unit,
     onRemoveImage : (Uri)-> Unit = {}
 ) {
-    LazyRow(
-        modifier = Modifier.padding(horizontal = 20.dp)
-    ) {
+    LazyRow() {
         items(attachedImages) { imageUri ->
             Box(
                 modifier = Modifier
