@@ -186,6 +186,10 @@ class MoimViewModel @Inject constructor(
         _people.value = int
     }
 
+    fun setMeetingId(meetingId: Long) {
+        _meetingsId.value = meetingId
+    }
+
 
     fun resetSnackbarEvent() {
         viewModelScope.launch {
@@ -280,6 +284,19 @@ class MoimViewModel @Inject constructor(
                 .onSuccess {
                     _screenState.value = ScreenState.CancelSuccess
                     Log.d("cancel success", screenState.value.toString())
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
+        }
+    }
+
+    fun reportMeeting(meetingId: Long) {
+        viewModelScope.launch {
+            repository.reportMeeting(meetingId)
+                .onSuccess {
+                    _screenState.value = ScreenState.ReportSuccess
                 }
                 .onFailure {
                     Timber.e(it)
@@ -498,8 +515,6 @@ class MoimViewModel @Inject constructor(
             return userRepository.getUserInfo()?.id ?: -1L
     }
 
-
-
     fun getUser(userId: Long) {
         viewModelScope.launch {
             userRepository.getUser(userId)
@@ -528,7 +543,7 @@ class MoimViewModel @Inject constructor(
 
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
-    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess, Modify
+    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess, Modify, ReportInit, Report, ReportSuccess
 }
 
 enum class BottomSheet {

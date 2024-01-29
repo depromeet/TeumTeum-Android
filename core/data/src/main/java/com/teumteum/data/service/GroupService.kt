@@ -65,4 +65,9 @@ interface GroupService {
         @Part images: List<MultipartBody.Part>,
         @Body meetingRequest: RequestBody
     ): ResponseMeeting
+
+    @POST("meeting/{meetingId}/reports")
+    suspend fun reportMeeting(
+        @Path("meetingId") meetingId:Long
+    ): Response<Void>
 }

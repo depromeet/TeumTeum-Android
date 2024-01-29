@@ -38,6 +38,13 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
 
+        val meetingId = arguments?.getLong("meetingId")
+
+        // viewModel에 meetingId 설정
+        meetingId?.let {
+            viewModel.setMeetingId(it)
+        }
+
         observe()
         observeBottomSheet()
 
@@ -55,6 +62,7 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
                     ScreenState.Failure -> { context?.defaultToast(getString(R.string.setting_dialog_moim_delete_failure)) }
                     ScreenState.Server -> { context?.defaultToast(getString(R.string.moim_alert_message_server)) }
                     ScreenState.DeleteSuccess -> {context?.defaultToast(getString(R.string.setting_dialog_moim_delete_success))}
+                    ScreenState.Success -> {context?.defaultToast(getString(R.string.moim_alert_message_modify_success))}
                     else -> {}
                 }
             }
@@ -107,7 +115,5 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
         )
         peopleBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
-
-
 
 }

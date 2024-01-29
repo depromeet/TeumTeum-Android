@@ -49,6 +49,12 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun reportMeeting(meetingId: Long): Result<Boolean> {
+        return runCatching {
+            dataSource.reportMeeting(meetingId)
+        }
+    }
+
     override suspend fun getSearchGroup(page: Int, keyword: String?, location: String?, topic: String?): Result<Pair<Boolean,List<Meeting>>> {
         val groupData = dataSource.getGroups(
         size = 20,

@@ -91,6 +91,16 @@ class MoimFragment :
                             meetingId
                         ) { navController.popBackStack() }
                     }
+                    ScreenState.ReportInit,ScreenState.Report -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(
+                            viewModel,
+                            navController,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
+                    }
 
                     ScreenState.DeleteInit, ScreenState.Delete -> {
                         binding.progressBar.visibility = View.GONE
@@ -174,6 +184,9 @@ class MoimFragment :
                     ScreenState.Modify -> {
                         val navController = findNavController()
                         navController.navigate(R.id.action_fragment_moim_to_fragment_modify_moim)
+                    }
+                    ScreenState.ReportSuccess -> {
+                        context?.defaultToast("모임 신고를 완료했습니다")
                     }
                     else -> {}
                 }

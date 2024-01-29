@@ -27,7 +27,9 @@ import com.teumteum.base.R
 fun TmScaffold(
     topbarText: String = "",
     onClick: (() -> Unit)? = null,
+    onConfirmClick: (() -> Unit)? = null,
     isSetting: Boolean = false,
+    isConfirm: Boolean = false,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val TmtmColorPalette = TmtmColorPalette
@@ -71,12 +73,20 @@ fun TmScaffold(
                 },
                 actions = {
                         IconButton(
-                            onClick = { if (onClick != null) { onClick() } },
+                            onClick = {
+                                if(isConfirm) {
+                                    if (onConfirmClick != null) {
+                                        onConfirmClick()
+                                    }
+                                }
+                                else if(!isConfirm) {
+                                    if (onClick != null) { onClick() } }
+                                },
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_setting),
+                                painter = if(isSetting)painterResource(R.drawable.ic_setting) else if(isConfirm) painterResource(R.drawable.ic_system_line) else painterResource(R.drawable.ic_setting),
                                 contentDescription = "Localized description",
-                                tint = if (isSetting) Color.Unspecified else Color.Transparent
+                                tint = if (isSetting) Color.Unspecified else if (isConfirm) TmtmColorPalette.current.color_icon_level01 else Color.Transparent
                             )
                         }
                 }

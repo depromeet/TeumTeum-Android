@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim.compose
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -23,7 +24,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -31,6 +36,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +47,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
+import com.skydoves.balloon.textForm
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
@@ -61,7 +71,10 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 
 
 @Composable
-fun MoimModify(viewModel: MoimViewModel, navController: NavController) {
+fun MoimModify(
+    viewModel: MoimViewModel,
+    navController: NavController,
+) {
     TmScaffold(
         topbarText = stringResource(id = R.string.modify_topbar),
         onClick = { navController.popBackStack() }
@@ -79,6 +92,7 @@ fun MoimModify(viewModel: MoimViewModel, navController: NavController) {
             MoimModifyColumn(viewModel, navController)
             Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
+            ModifyBtn(text = stringResource(id = R.string.modify_btn), viewModel = viewModel)
             TmMarginVerticalSpacer(size = 24)
         }
 
@@ -92,6 +106,23 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
     val address by viewModel.address.collectAsState()
     val topic by viewModel.topic.collectAsState()
     val people by viewModel.people.collectAsState()
+    val date by viewModel.date.collectAsState()
+    var localDate by remember { mutableStateOf("") }
+    var localTime by remember { mutableStateOf("") }
+
+
+    LaunchedEffect(date) {
+        val dateTimeParts = date.split("오후", "오전")
+        if (dateTimeParts.size == 2) {
+            val amPmPart = if (date.contains("오후")) "오후" else "오전"
+            localDate = dateTimeParts[0].trim()
+            localDate = localDate.replace("[^0-9]".toRegex(), "")
+            viewModel.updateDate(localDate)
+            localTime = "$amPmPart ${dateTimeParts[1].trim()}"
+            viewModel.updateTime(localTime)
+        }
+    }
+
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -151,18 +182,14 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
         //모임 날짜
         EditCardLabel(string = stringResource(R.string.modify_title5))
         TmMarginVerticalSpacer(size = 8)
-        MoimDateInputField(placeHolder = stringResource(R.string.modify_title5), viewModel = viewModel)
+        MoimDateInputField(placeHolder = stringResource(id = R.string.modify_placeholder5), viewModel = viewModel)
         TmMarginVerticalSpacer(size = 20)
 
 
         //모임 시간
         EditCardLabel(string = stringResource(R.string.modify_title6))
         TmMarginVerticalSpacer(size = 8)
-        MoimDateInputField(
-            placeHolder = stringResource(id = R.string.modify_placeholder6),
-            viewModel = viewModel,
-            isTimeField = true
-        )
+        MoimDateInputField(placeHolder = stringResource(id = R.string.modify_placeholder6), viewModel = viewModel, isTimeField = true)
         TmMarginVerticalSpacer(size = 20)
 
 
@@ -195,7 +222,10 @@ fun MoimModifyColumn(viewModel: MoimViewModel, navController: NavController) {
         //모임 상세 주소
         EditCardLabel(string = stringResource(R.string.modify_title8))
         TmMarginVerticalSpacer(size = 8)
-        MoimAddressInputField(viewModel = viewModel, placeHolder = stringResource(id = R.string.moim_address_placeholder2))
+        MoimAddressInputField(
+            viewModel = viewModel,
+            placeHolder = stringResource(id = R.string.moim_address_placeholder2)
+        )
         TmMarginVerticalSpacer(size = 20)
 
 
@@ -365,4 +395,48 @@ fun EditMeetingBottomBox(
         }
     }
     TmMarginVerticalSpacer(size = 20)
+}
+
+@Composable
+fun ModifyBtn(
+    text: String,
+    viewModel: MoimViewModel,
+) {
+    // 각 필드의 현재 상태를 수집
+    val title by viewModel.title.collectAsState()
+    val topic by viewModel.topic.collectAsState()
+    val introduction by viewModel.introduction.collectAsState()
+    val uri by viewModel.imageUri.collectAsState()
+    val date by viewModel.date.collectAsState()
+    val address by viewModel.address.collectAsState()
+    val detailAddress by viewModel.detailAddress.collectAsState()
+    val people by viewModel.people.collectAsState()
+    val meetingId by viewModel.meetingsId.collectAsState()
+
+
+    // 모든 필드가 유효한지 검사
+    val isAllValid = title.isNotEmpty() && introduction.isNotEmpty() && introduction.length >= 10 && !topic?.value.isNullOrEmpty() && uri.isNotEmpty() && date.isNotEmpty() && address?.isNotEmpty() == true && detailAddress.isNotEmpty() && people in 3..6
+
+    val buttonColors =
+        if (isAllValid) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
+    val textColors =
+        if (isAllValid) TmtmColorPalette.current.color_text_button_primary_default else TmtmColorPalette.current.color_text_button_primary_disabled
+    androidx.compose.material3.Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(76.dp)
+            .padding(vertical = 10.dp),
+        enabled = isAllValid,
+        onClick = {
+            if(isAllValid) { viewModel.modifyMoim(meetingId) }
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = buttonColors),
+        shape = RoundedCornerShape(size = 4.dp)
+    ) {
+        Text(
+            text = text,
+            style = TmTypo.current.HeadLine6,
+            color = textColors
+        )
+    }
 }

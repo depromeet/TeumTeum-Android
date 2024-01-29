@@ -184,6 +184,13 @@
     <string name="setting_dialog_cancel">참여를 정말 취소하시겠어요?</string>
     <string name="setting_dialog_delete">모임을 정말 삭제하시겠어요?</string>
 
+
+    <string name="setting_dialog_report_title">신고하기</string>
+    <string name="setting_dialog_report">해당 게시글을 신고할까요?</string>
+
+    <string name="setting_dialog_report_btn1">취소하기</string>
+    <string name="setting_dialog_report_btn2">신고하기</string>
+
     <string name="setting_dialog_default" />
     <string name="setting_dialog_cancel_btn1">돌아가기</string>
     <string name="setting_dialog_cancel_btn2">취소할래요</string>
@@ -219,6 +226,8 @@
     <string name="moim_alert_message_failure">모임 신청에 오류가 발생했습니다</string>
     <string name="moim_alert_message_server">서버 통신에 실패했습니다</string>
     <string name="moim_alert_message_success">모임 취소를 성공했습니다</string>
+    <string name="moim_alert_message_modify_success">모임 수정을 성공했습니다</string>
+
 
     <string name="setting_edit_card_topbar">소개서 수정하기</string>
     <string name="setting_edit_card_placeholder1">실명을 입력해주세요</string>

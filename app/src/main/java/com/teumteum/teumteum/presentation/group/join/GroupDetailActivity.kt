@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -20,6 +22,7 @@ import com.teumteum.teumteum.databinding.ActivityGroupDetailBinding
 import com.teumteum.teumteum.presentation.moim.compose.MoimConfirm
 import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.moim.ScreenState
+import com.teumteum.teumteum.presentation.moim.compose.MoimModify
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

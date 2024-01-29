@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim.compose
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,6 +63,8 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.group.join.JoinFriendListActivity
 import com.teumteum.teumteum.presentation.group.join.check.GroupMeetCheckActivity
+import com.teumteum.teumteum.presentation.moim.MoimFragmentDirections
+import com.teumteum.teumteum.presentation.moim.MoimModifyFragmentDirections
 import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.moim.ScreenState
 import kotlinx.serialization.encodeToString
@@ -82,13 +85,18 @@ fun MoimConfirm(
     },
 
     ) {
+    Log.d("meetingId from confirm", meetingId.toString())
+    meetingId?.let {
+        viewModel.setMeetingId(it)
+    }
+
     val showDialog = remember { mutableStateOf(false) }
     val screenState by viewModel.screenState.collectAsState()
     val isJoined by viewModel.isUserJoined.collectAsState()
     val isHost by viewModel.isUserHost.collectAsState()
 
     LaunchedEffect(key1 = screenState) {
-        showDialog.value = screenState == ScreenState.Cancel || screenState == ScreenState.Delete
+        showDialog.value = screenState == ScreenState.Cancel || screenState == ScreenState.Delete || screenState==ScreenState.Report
     }
 
     if (showDialog.value) {
@@ -111,6 +119,27 @@ fun MoimConfirm(
                     onDismiss = {
                         showDialog.value = false
                         viewModel.updateSheetEvent(ScreenState.CancelInit)
+                    }
+                )
+            }
+            ScreenState.Report -> {
+                TmDialog(
+                    title = stringResource(id = R.string.setting_dialog_report),
+                    okText = stringResource(id = R.string.setting_dialog_report_btn2),
+                    cancelText = stringResource(id = R.string.setting_dialog_report_btn1),
+                    onOk = {
+                        if (meetingId != null) {
+                            viewModel.reportMeeting(meetingId)
+                        }
+                        showDialog.value = false
+                    },
+                    onCancel = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.ReportInit)
+                    },
+                    onDismiss = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.ReportInit)
                     }
                 )
             }
@@ -147,7 +176,11 @@ fun MoimConfirm(
         onClick = {
             if(isJoinView) { onClick() }
             else { viewModel.goPreviousScreen() }
-            }
+            },
+        onConfirmClick = {
+            Log.d("screenState", screenState.toString())
+            viewModel.updateSheetEvent(ScreenState.Report) },
+        isConfirm = true
     ) {
         Column(
             modifier = Modifier
@@ -538,6 +571,7 @@ fun MoimHostBtn(
     navController: NavController?,
     onJoinGroupClick: (Long) -> Unit
 ) {
+    val meetingId by viewModel.meetingsId.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -568,7 +602,8 @@ fun MoimHostBtn(
                 .height(56.dp),
             onClick = {
                 if (navController != null) {
-                    navController.navigate(R.id.fragment_modify_moim)
+                    val action = meetingId?.let { MoimFragmentDirections.actionFragmentMoimToFragmentModifyMoim(meetingId) }
+                    if (action != null) { navController.navigate(action) }
                 }
             },
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
@@ -580,11 +615,7 @@ fun MoimHostBtn(
                 color = TmtmColorPalette.current.color_text_button_alternative
             )
         }
-
-
-
     }
-
 }
 
 @Composable

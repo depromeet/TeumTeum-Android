@@ -297,7 +297,7 @@ fun EditCardBtn(
     val buttonColors =
         if (isAllValid) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
     val textColors =
-        if (isAllValid) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.color_text_button_primary_disabled
+        if (isAllValid) TmtmColorPalette.current.color_text_button_primary_default else TmtmColorPalette.current.color_text_button_primary_disabled
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()

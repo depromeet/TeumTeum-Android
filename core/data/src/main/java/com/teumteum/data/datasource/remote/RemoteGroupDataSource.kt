@@ -62,4 +62,10 @@ class RemoteGroupDataSource @Inject constructor(
     ): ResponseMeeting {
         return service.modifyMeeting(meetingId, files, moimRequestBody)
     }
+
+    suspend fun reportMeeting(
+        meetingId: Long
+    ): Boolean {
+        return service.reportMeeting(meetingId).isSuccessful
+    }
 }

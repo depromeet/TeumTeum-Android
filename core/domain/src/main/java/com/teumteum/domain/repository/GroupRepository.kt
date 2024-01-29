@@ -12,4 +12,5 @@ interface GroupRepository {
     suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean>
     suspend fun deleteMeeting(meetingId: Long): Result<Boolean>
     suspend fun modifyMeeting(meetingId: Long, moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting>
+    suspend fun reportMeeting(meetingId: Long): Result<Boolean>
 }
