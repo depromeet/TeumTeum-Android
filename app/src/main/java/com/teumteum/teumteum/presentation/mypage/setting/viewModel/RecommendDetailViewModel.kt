@@ -145,7 +145,7 @@ class RecommendDetailViewModel @Inject constructor(
                 name = userInfo.name,
                 company = "@${userInfo.job.name}",
                 job = userInfo.job.detailClass,
-                level = "lv.0층",
+                level = "lv.1층",
                 characterResId = characterResId,
                 area = userInfo.activityArea,
                 mbti = userInfo.mbti,

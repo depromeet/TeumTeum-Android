@@ -6,8 +6,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.compose.theme.ColorPalette_Dark
 import com.teumteum.base.component.compose.theme.ColorPalette_Light
@@ -16,9 +19,10 @@ import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.base.util.extension.longExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityGroupDetailBinding
-import com.teumteum.teumteum.presentation.moim.MoimConfirm
+import com.teumteum.teumteum.presentation.moim.compose.MoimConfirm
 import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.moim.ScreenState
+import com.teumteum.teumteum.presentation.moim.compose.MoimModify
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,9 +36,16 @@ class GroupDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.updateSheetEvent(ScreenState.DeleteInit)
+
         binding.composeGroup.setContent {
+            val screenState by viewModel.screenState.collectAsState()
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
-                MoimConfirm(viewModel = viewModel, activity = this, isJoinView = true, meetingId = meetingId)
+                if(screenState == ScreenState.Modify) MoimModify(viewModel = viewModel, activity = this)
+                else {
+                    MoimConfirm(viewModel = viewModel, activity = this, isJoinView = true, meetingId = meetingId)
+                }
             }
         }
         observe()
@@ -50,6 +61,10 @@ class GroupDetailActivity :
                     ScreenState.CancelSuccess -> {
                         this@GroupDetailActivity?.defaultToast(getString(R.string.moim_alert_message_success))
                         initView()
+                    }
+                    ScreenState.DeleteSuccess -> {
+                        finish()
+
                     }
                     else -> {}
                 }

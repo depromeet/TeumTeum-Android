@@ -53,6 +53,7 @@ class EditCardViewModel @Inject constructor(
                 _preferredCity.value = it.activityArea.substring(0, 2)
                 _preferredStreet.value = it.activityArea.substring(2)
             }
+            _goalText.value = it.goal
             _community.value = it.status
             _interestField.value = it.interests as ArrayList<String>
         }

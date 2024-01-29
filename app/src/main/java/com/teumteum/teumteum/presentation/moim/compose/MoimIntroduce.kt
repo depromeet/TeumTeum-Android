@@ -1,7 +1,6 @@
-package com.teumteum.teumteum.presentation.moim
+package com.teumteum.teumteum.presentation.moim.compose
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
@@ -9,7 +8,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +26,6 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,6 +50,7 @@ import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.TmSnackBar
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import kotlinx.coroutines.delay
 
 @Composable

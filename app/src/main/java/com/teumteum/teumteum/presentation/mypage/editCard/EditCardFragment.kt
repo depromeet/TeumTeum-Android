@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.mypage.editCard
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -42,7 +43,6 @@ import kotlinx.coroutines.launch
 
 class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragment_edit_card) {
     private val viewModel: EditCardViewModel by activityViewModels()
-    private val myPageViewModel: MyPageViewModel by activityViewModels()
     private var mbtiBottomSheet: MbtiModalBottomSheet? = null
     private var jobClassBottomSheet: SingleModalBottomSheet? = null
     private var jobDetailClassBottomSheet: SingleModalBottomSheet? = null
@@ -58,23 +58,30 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
 
-        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-
-                val interests = result.data?.getStringArrayListExtra("selectedInterests2")
-                interests?.let {
-                    viewModel.setInterestField(it)
-                }
-                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
-            }
-        }
 
         setupEventObserver()
         initBottomSheet()
 
         binding.composeEditCard.setContent {
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
-            EditCardScreen(myPageViewModel, viewModel, navController)
+            EditCardScreen(viewModel, navController)
+            }
+        }
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                val interests = result.data?.getStringArrayListExtra("changedInterests")
+                Log.d("resultInterest_editCard", interests.toString())
+                interests?.let {
+                    viewModel.setInterestField(it)
+                }
+                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
             }
         }
 
@@ -124,6 +131,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                             putExtra("interests", ArrayList(interests))
                             putExtra("isFromMainActivity", true)
                             putExtra("navigateTo", "fragment_get_interest")
+                            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
                         }
                         resultLauncher.launch(intent)
                     }

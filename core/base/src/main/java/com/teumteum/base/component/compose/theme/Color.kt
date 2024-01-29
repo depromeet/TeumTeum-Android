@@ -134,7 +134,7 @@ val ColorPalette_Dark = ColorPalette(
     ColorDivider = Color(color = 0xFF212121),
 
     elevation_color_elevation_level01 = Color(color = 0xFF212121),
-    elevation_color_elevation_level02 = Color(color = 0xFFE9E9E9),
+    elevation_color_elevation_level02 = Color(color = 0xFF333333),
 
     color_background = Color(color = 0xFF111111),
 
@@ -202,8 +202,10 @@ val ColorPalette_Light = ColorPalette(
 
     GreyWhite = Color(color = 0xFFFFFFFF), // grey white
     ColorDivider = Color(color = 0xFFF0F0F0), // color divider
+
     elevation_color_elevation_level01 = Color(color = 0xFFF5F5F5), // elevation level 1
     elevation_color_elevation_level02 = Color(color = 0xFFE9E9E9), // elevation level 2
+
     color_background = Color(color = 0xFFFFFFFF), // background color
     color_outline_level04_disabled = Color(color = 0xFFE9E9E9), // outline level 4 disabled
     color_outline_level01_error = Color(color = 0xFFFC4E6D), // outline level 1 error

@@ -9,6 +9,7 @@ import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,12 +30,22 @@ class MyPageViewModel @Inject constructor(
     private val _frontCardState = MutableStateFlow(FrontCard())
     val frontCardState: StateFlow<FrontCard> = _frontCardState
 
+    private val _backCardState = MutableStateFlow(BackCard())
+    val backCardState: StateFlow<BackCard> = _backCardState
+
     private val _friendsList = MutableStateFlow<List<FriendMyPage>>(emptyList())
     val friendsList : StateFlow<List<FriendMyPage>> = _friendsList
+
+    private val _isFrontCardShown = MutableStateFlow(true)
+    val isFrontCardShown: StateFlow<Boolean> = _isFrontCardShown
 
     init {
         loadUserInfo()
         loadFriends()
+    }
+
+    fun toggleCardState() {
+        _isFrontCardShown.value = !_isFrontCardShown.value
     }
 
     fun loadFriends() {
@@ -60,8 +71,10 @@ class MyPageViewModel @Inject constructor(
                     _userInfoState.value = UserInfoUiState.Success(it)
                     // 카드 - userInfo 매칭
                     val frontCardData = userInfoToFrontCard(it, characterList)
+                    val backCardData = userInfoToBackCard(it, characterListBack)
                     _userInfoState.value = UserInfoUiState.Success(it)
                     _frontCardState.value = frontCardData
+                    _backCardState.value = backCardData
                 }
                 .onFailure {
                     _userInfoState.value = UserInfoUiState.Failure("정보 불러오기 실패")
@@ -81,6 +94,21 @@ class MyPageViewModel @Inject constructor(
         9 to R.drawable.ic_card_front_dog,
         10 to R.drawable.ic_card_front_mouse,
         11 to R.drawable.ic_card_front_panda
+    )
+
+    val characterListBack: HashMap<Int, Int> = hashMapOf(
+        0 to R.drawable.ic_card_back_ghost,
+        1 to R.drawable.ic_card_back_star,
+        2 to R.drawable.ic_card_back_bear,
+        3 to R.drawable.ic_card_back_raccon,
+        4 to R.drawable.ic_card_back_cat,
+        5 to R.drawable.ic_card_back_rabbit,
+        6 to R.drawable.ic_card_back_fox,
+        7 to R.drawable.ic_card_back_water,
+        8 to R.drawable.ic_card_back_penguin,
+        9 to R.drawable.ic_card_back_dog,
+        10 to R.drawable.ic_card_back_mouse,
+        11 to R.drawable.ic_card_back_panda
     )
 
     val friendCharacterList: HashMap<Int, Int> = hashMapOf(
@@ -106,6 +134,15 @@ class MyPageViewModel @Inject constructor(
             level = "lv.${userInfo.mannerTemperature}층",
             area = "${userInfo.activityArea}에 사는",
             mbti = userInfo.mbti,
+            characterResId = characterList[userInfo.characterId.toInt()] ?: 1,
+        )
+    }
+
+    fun userInfoToBackCard(userInfo: UserInfo, characterList: HashMap<Int, Int>): BackCard {
+        return BackCard(
+            goalTitle = "GOAL",
+            goalContent = userInfo.goal,
+            interests = userInfo.interests.toMutableList(),
             characterResId = characterList[userInfo.characterId.toInt()] ?: 1,
         )
     }
