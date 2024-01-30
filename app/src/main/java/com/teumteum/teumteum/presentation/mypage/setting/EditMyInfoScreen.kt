@@ -139,6 +139,7 @@ fun EditBirthField(viewModel: SettingViewModel) {
         value = userBirth,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 20.dp)
             .wrapContentHeight(),
         placeholder = { Text(text = stringResource(id = R.string.setting_my_info_edit_placeholder1), style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary) },
         onValueChange = { newText ->

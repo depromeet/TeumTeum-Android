@@ -60,7 +60,10 @@ fun MyPagePager1Content(
                 }
             }
             userHostOpen.forEach { meeting ->  
-                MyMoimItems(meeting = meeting)
+                MyMoimItems(meeting) {id->
+                    val action = MyPageFragmentDirections.actionFragmentMyPageToFragmentMoim(id)
+                    navController.navigate(action)
+                }
             }
         }
         TmMarginVerticalSpacer(size = 9)
@@ -82,7 +85,8 @@ fun MyPagePager1Content(
                 }
             }
             userHostClosed.forEach { 
-                MyMoimItems(meeting = it)
+                MyMoimItemClosed(meeting = it) {
+                }
             }
         }
         

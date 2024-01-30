@@ -109,10 +109,6 @@ class SignUpActivity
                         putBoolean("isFromSpecialPath", true)
                         val interests = intent.getStringArrayListExtra("interests")
                         putStringArrayList("selectedInterests", interests)
-                        val combinedInterests = ArrayList<String>()
-                        combinedInterests.addAll(viewModel.interestSelf.value)
-                        combinedInterests.addAll(viewModel.interestField.value)
-                        putStringArrayList("selectedInterests2", combinedInterests)
                     }
                     binding.btnNextSignup.visibility = View.GONE
                 }

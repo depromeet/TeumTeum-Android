@@ -100,7 +100,7 @@ class SettingViewModel @Inject constructor(
 //        val userId = 16.toLong()
         if (userId != -1L) {
             viewModelScope.launch {
-                settingRepository.getMyPageOpenMeeting(userId)
+                settingRepository.getMyPageClosedMeeting(userId)
                     .onSuccess { meetings ->
                         val closedMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()
                         val hostMeetings = mutableListOf<com.teumteum.domain.entity.Meeting>()

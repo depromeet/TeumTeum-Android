@@ -36,6 +36,12 @@ class RemoteGroupDataSource @Inject constructor(
         return service.deleteGroupJoin(meetingId).isSuccessful
     }
 
+    suspend fun deleteMeeting(
+        meetingId: Long
+    ): Boolean {
+        return service.deleteMeeting(meetingId).isSuccessful
+    }
+
     suspend fun postMeeting(
         moimRequestBody: RequestBody,
         files: List<MultipartBody.Part>
@@ -47,5 +53,19 @@ class RemoteGroupDataSource @Inject constructor(
         meetingId: Long
     ): ResponseMeeting {
         return service.getGroup(meetingId)
+    }
+
+    suspend fun modifyMeeting(
+        meetingId: Long,
+        moimRequestBody: RequestBody,
+        files: List<MultipartBody.Part>
+    ): ResponseMeeting {
+        return service.modifyMeeting(meetingId, files, moimRequestBody)
+    }
+
+    suspend fun reportMeeting(
+        meetingId: Long
+    ): Boolean {
+        return service.reportMeeting(meetingId).isSuccessful
     }
 }
