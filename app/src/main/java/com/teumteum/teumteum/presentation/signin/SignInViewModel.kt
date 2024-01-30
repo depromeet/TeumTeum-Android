@@ -1,14 +1,11 @@
 package com.teumteum.teumteum.presentation.signin
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.SocialLoginResult
 import com.teumteum.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +25,6 @@ class SignInViewModel @Inject constructor(
                 repository.setAutoLogin(
                     socialLoginResult.accessToken!!,
                     socialLoginResult.refreshToken!!)
-                postDeviceTokens()
                 _memberState.value = SignInUiState.Success
             }
             else {
@@ -40,15 +36,6 @@ class SignInViewModel @Inject constructor(
         else {
             // 통신 실패
             _memberState.value = SignInUiState.Failure(socialLoginResult.messages!!)
-        }
-    }
-
-    private fun postDeviceTokens() {
-        val deviceToken = repository.getDeviceToken()
-        if (deviceToken.isNotBlank()) {
-            viewModelScope.launch {
-                repository.postDeviceToken(deviceToken)
-            }
         }
     }
 }

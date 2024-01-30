@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.teumteum.data.model.request.toDeviceToken
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.teumteum.R
@@ -33,13 +34,17 @@ class TeumMessagingService : FirebaseMessagingService() {
         dataStore.deviceToken = token
 
         if (dataStore.userToken != "") {
+            Timber.tag("teum-http").d("teumMessagingService")
             GlobalScope.launch {
                 kotlin.runCatching {
-                    userService.postDeviceToken(
-                        token
+                    userService.patchDeviceToken(
+                        token.toDeviceToken()
                     )
                 }.onFailure {
                     Timber.e(it.message)
+                    userService.postDeviceToken(
+                        token.toDeviceToken()
+                    )
                 }
             }
         }

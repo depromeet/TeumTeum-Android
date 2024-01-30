@@ -43,7 +43,7 @@ class SplashViewModel @Inject constructor(
             repository.getMyInfoFromServer()
                 .onSuccess {
                     saveUserInfo(userInfo = it)
-                    postDeviceTokens()
+                    patchDeviceToken()
                     _myInfo.value = it
                     _myInfoState.value = MyInfoUiState.Success
                 }
@@ -62,11 +62,21 @@ class SplashViewModel @Inject constructor(
 
     fun getIsFirstAfterInstall(): Boolean = authRepository.getIsFirstAfterInstall()
 
-    private fun postDeviceTokens() {
+    private fun postDeviceToken() {
         val deviceToken = authRepository.getDeviceToken()
         if (deviceToken.isNotBlank()) {
             viewModelScope.launch {
                 authRepository.postDeviceToken(deviceToken)
+            }
+        }
+    }
+
+    private fun patchDeviceToken() {
+        val deviceToken = authRepository.getDeviceToken()
+        if (deviceToken.isNotBlank()) {
+            viewModelScope.launch {
+                val result = authRepository.patchDeviceToken(deviceToken)
+                if (!result) postDeviceToken()
             }
         }
     }

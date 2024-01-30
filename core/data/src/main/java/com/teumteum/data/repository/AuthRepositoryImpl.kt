@@ -2,7 +2,7 @@ package com.teumteum.data.repository
 
 import com.google.gson.Gson
 import com.teumteum.data.datasource.remote.RemoteUserDataSource
-import com.teumteum.data.service.UserService
+import com.teumteum.data.model.request.toDeviceToken
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.AuthRepository
@@ -51,6 +51,10 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postDeviceToken(token: String): Boolean {
-        return userDataSource.postDeviceToken(token)
+        return userDataSource.postDeviceToken(token.toDeviceToken())
+    }
+
+    override suspend fun patchDeviceToken(token: String): Boolean {
+        return userDataSource.patchDeviceToken(token.toDeviceToken())
     }
 }

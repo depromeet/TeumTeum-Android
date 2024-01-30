@@ -10,4 +10,5 @@ interface AuthRepository {
     fun setDeviceToken(deviceToken: String)
     fun getDeviceToken(): String
     suspend fun postDeviceToken(token: String): Boolean
+    suspend fun patchDeviceToken(token: String): Boolean
 }
