@@ -34,7 +34,6 @@ class TeumMessagingService : FirebaseMessagingService() {
         dataStore.deviceToken = token
 
         if (dataStore.userToken != "") {
-            Timber.tag("teum-http").d("teumMessagingService")
             GlobalScope.launch {
                 kotlin.runCatching {
                     userService.patchDeviceToken(
@@ -54,7 +53,7 @@ class TeumMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         if (dataStore.isLogin) {
-            if (message.data.isNotEmpty()) {
+            if (message.data.isNotEmpty() && message.data["title"].toString() != EMPTY) {
                 sendNotificationAlarm(
                     Message(message.data["title"].toString(), message.data["content"].toString())
                 )
@@ -93,5 +92,9 @@ class TeumMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private data class Message(val title: String, val body: String)
+    companion object {
+        const val EMPTY = "null"
+    }
+
+    private data class Message(var title: String, var body: String)
 }
