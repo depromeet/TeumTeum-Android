@@ -274,4 +274,6 @@
     <string name="introduce_more_familiar">더 가까워지기</string>
     <string name="introduce_title">소개서를 살펴보며 서로를\n소개해 보세요</string>
 
+    <string name="teum_notification_channel_id">teum_notification_channel</string>
+
 </resources>
