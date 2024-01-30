@@ -38,6 +38,11 @@ jobs:
       - name: Create Local Properties
         run: touch local.properties
 
+      - name: Create Google Services JSON File
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON | base64 -di > app/google-services.json
+
       - name: Access Local Properties
         env:
           base_url: ${{ secrets.BASE_URL }}
