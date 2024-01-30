@@ -7,6 +7,7 @@ interface TeumTeumDataStore {
     var isFirstAfterInstall: Boolean
 
     var userInfo: String
+    var deviceToken: String
 
     fun clearLocalPref()
 }
