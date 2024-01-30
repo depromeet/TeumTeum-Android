@@ -51,4 +51,8 @@ class RemoteUserDataSource @Inject constructor(
     ): Boolean {
         return service.postFriend(userId).isSuccessful
     }
+
+    suspend fun postDeviceToken(token: String): Boolean {
+        return service.postDeviceToken(token).isSuccessful
+    }
 }

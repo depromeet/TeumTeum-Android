@@ -55,5 +55,9 @@ interface UserService {
         @Path("userId") userId: Long
     ): Response<Unit>
 
+    @POST("alerts")
+    suspend fun postDeviceToken(
+        @Body token: String
+    ): Response<Unit>
 }
 

@@ -7,4 +7,7 @@ interface AuthRepository {
     fun setIsFirstAfterInstall(isFirst: Boolean)
     fun getIsFirstAfterInstall(): Boolean
     fun getUserId(): Long
+    fun setDeviceToken(deviceToken: String)
+    fun getDeviceToken(): String
+    suspend fun postDeviceToken(token: String): Boolean
 }
