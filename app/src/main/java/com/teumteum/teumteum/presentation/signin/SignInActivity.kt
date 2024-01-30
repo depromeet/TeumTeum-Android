@@ -1,8 +1,12 @@
 package com.teumteum.teumteum.presentation.signin
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R

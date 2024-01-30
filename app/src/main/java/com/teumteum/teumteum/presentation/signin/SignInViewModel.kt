@@ -6,7 +6,6 @@ import com.teumteum.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,6 +37,12 @@ class SignInViewModel @Inject constructor(
             // 통신 실패
             _memberState.value = SignInUiState.Failure(socialLoginResult.messages!!)
         }
+    }
+
+    fun getAskedNotification(): Boolean = repository.getAskedNotification()
+
+    fun setAskedkNotification(didAsk: Boolean) {
+        repository.setAskedNotification(didAsk)
     }
 }
 

@@ -1,10 +1,10 @@
 package com.teumteum.data.datasource.remote
 
+import com.teumteum.data.model.request.RequestDeviceToken
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendRecommend
-import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.entity.Users
@@ -50,5 +50,13 @@ class RemoteUserDataSource @Inject constructor(
         userId: Long
     ): Boolean {
         return service.postFriend(userId).isSuccessful
+    }
+
+    suspend fun postDeviceToken(token: RequestDeviceToken): Boolean {
+        return service.postDeviceToken(token).isSuccessful
+    }
+
+    suspend fun patchDeviceToken(token: RequestDeviceToken): Boolean {
+        return service.patchDeviceToken(token).isSuccessful
     }
 }

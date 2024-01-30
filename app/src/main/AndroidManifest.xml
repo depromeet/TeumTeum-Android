@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"
+        android:minSdkVersion="33" />
 
     <application
         android:name=".MyApp"
@@ -24,6 +26,14 @@
         android:theme="@style/Theme.TeumTeum"
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
+        <service
+            android:name=".config.TeumMessagingService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity
             android:name=".presentation.familiar.topic.TopicActivity"
             android:exported="false" />
@@ -95,6 +105,10 @@
         <activity
             android:name=".presentation.group.join.JoinFriendListActivity"
             android:exported="false" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/teum_notification_channel_id" />
     </application>
 
 </manifest>
