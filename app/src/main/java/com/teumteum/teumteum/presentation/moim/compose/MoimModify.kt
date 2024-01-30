@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.moim.compose
 
 import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -48,10 +49,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import coil.size.Scale
@@ -65,12 +63,11 @@ import com.teumteum.base.component.compose.theme.TmInputField
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.moim.BottomSheet
 import com.teumteum.teumteum.presentation.moim.MoimViewModel
+import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.mypage.editCard.EditCardLabel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
-
 
 @Composable
 fun MoimModify(
@@ -122,6 +119,7 @@ fun MoimModifyColumn(
     val date by viewModel.date.collectAsState()
     var localDate by remember { mutableStateOf("") }
     var localTime by remember { mutableStateOf("") }
+    val currentActivity = LocalContext.current as? Activity
 
 
     LaunchedEffect(date) {
@@ -220,7 +218,7 @@ fun MoimModifyColumn(
                 if (navController != null) {
                     navController.navigate(R.id.action_fragment_modify_moim_to_fragment_web_view)
                 } else {
-
+                    viewModel.updateSheetEvent(ScreenState.Webview)
                 }
             }
         ) {
@@ -430,6 +428,8 @@ fun ModifyBtn(
     val people by viewModel.people.collectAsState()
     val meetingId by viewModel.meetingsId.collectAsState()
 
+    val screen by viewModel.screenState.collectAsState()
+
 
     // 모든 필드가 유효한지 검사
     val isAllValid = title.isNotEmpty() && introduction.isNotEmpty() && introduction.length >= 10 && !topic?.value.isNullOrEmpty() && uri.isNotEmpty() && date.isNotEmpty() && address?.isNotEmpty() == true && detailAddress.isNotEmpty() && people in 3..6
@@ -442,9 +442,10 @@ fun ModifyBtn(
         modifier = Modifier
             .fillMaxWidth()
             .height(76.dp)
-            .padding(vertical = 10.dp),
+            .padding(horizontal = 20.dp, vertical = 10.dp),
         enabled = isAllValid,
         onClick = {
+            Log.d("screenState", screen.toString())
             if(isAllValid) { viewModel.modifyMoim(meetingId) }
                   Log.d("uriValue", uri.toString())
         },

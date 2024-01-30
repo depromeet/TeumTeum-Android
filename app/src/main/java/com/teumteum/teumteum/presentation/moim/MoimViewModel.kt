@@ -19,6 +19,7 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,9 +27,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.net.URL
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -124,7 +127,7 @@ class MoimViewModel @Inject constructor(
         _imageUri.value = emptyList()
         _date.value = ""
         _time.value = ""
-        _people.value = 2
+        _people.value = 3
         _address.value = null
         _detailAddress.value = ""
         _moinCreateUserCharacterId.value = R.drawable.ic_penguin
@@ -222,6 +225,7 @@ class MoimViewModel @Inject constructor(
         val currentList = _imageUri.value.toMutableList()
         currentList.remove(uri)
         _imageUri.value = currentList
+        Log.d("image_uri", imageUri.value.toString())
     }
 
     fun formatTime(input: String): String {
@@ -272,18 +276,48 @@ class MoimViewModel @Inject constructor(
         }
     }
 
-    private fun convertUrisToFile(uris: List<Uri>): List<File> {
+    private suspend fun convertUrisToFile(uris: List<Uri>): List<File> {
         return uris.mapNotNull { uri ->
-            if(uri.scheme?.startsWith("content")==true) {
-                context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                    val fileName = getFileName(uri, context)
-                    val file = File(context.cacheDir, fileName ?: "tempFile-${System.currentTimeMillis()}")
-                    FileOutputStream(file).use { outputStream ->
-                        inputStream.copyTo(outputStream)
+            when {
+                uri.scheme?.startsWith("content") == true -> {
+                    context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                        val fileName = getFileName(uri, context)
+                        val file = File(
+                            context.cacheDir,
+                            fileName ?: "tempFile-${System.currentTimeMillis()}"
+                        )
+                        FileOutputStream(file).use { outputStream ->
+                            inputStream.copyTo(outputStream)
+                        }
+                        Log.d("file", file.toString())
+                        file
                     }
-                    file
                 }
-            } else {
+                uri.scheme?.startsWith("http") == true ||uri.scheme?.startsWith("https") == true -> {
+                    downloadFileFromUrl(uri)
+                }
+                else -> null
+            }
+        }
+    }
+
+    private suspend fun downloadFileFromUrl(uri: Uri): File? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val url = URL(uri.toString())
+                val connection = url.openConnection()
+                connection.connect()
+
+                val inputStream: InputStream = url.openStream()
+                val file = File(context.cacheDir, "downloadedFile-${System.currentTimeMillis()}.jpg")
+
+                FileOutputStream(file).use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+                Log.d("file", file.toString())
+                file
+            } catch (e: Exception) {
+                Log.e("DownloadError", "Error downloading file from $uri", e)
                 null
             }
         }
@@ -554,7 +588,8 @@ class MoimViewModel @Inject constructor(
 
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
-    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess, Modify, ReportInit, Report, ReportSuccess
+    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess,
+    Modify, Webview, ReportInit, Report, ReportSuccess
 }
 
 enum class BottomSheet {

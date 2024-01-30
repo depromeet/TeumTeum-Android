@@ -14,7 +14,9 @@
 
         <action
             android:id="@+id/action_homeFragment_to_moimFragment"
-            app:destination="@id/fragment_moim" />
+            app:destination="@id/fragment_moim"
+            app:enterAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_in_right"/>
 
         <action
             android:id="@+id/action_homeFragment_to_fragment_my_page"
@@ -23,6 +25,14 @@
         <action
             android:id="@+id/action_homeFragment_to_fragment_teum_teum"
             app:destination="@id/fragment_teum_teum" />
+
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_web_view"
+            app:destination="@id/fragment_web_view">
+            <argument
+                android:name="FromGroup"
+                app:argType="boolean"/>
+        </action>
 
         <action
             android:id="@+id/action_fragment_home_to_fragment_recommend_detail"
@@ -59,7 +69,9 @@
 
         <action
             android:id="@+id/action_fragment_moim_to_fragment_modify_moim"
-            app:destination="@id/fragment_modify_moim">
+            app:destination="@id/fragment_modify_moim"
+            app:enterAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_in_right">
             <argument
                 android:name="meetingId"
                 app:argType="long" />
@@ -105,7 +117,9 @@
 
         <action
             android:id="@+id/action_fragment_my_page_to_fragment_moim"
-            app:destination="@id/fragment_moim">
+            app:destination="@id/fragment_moim"
+            app:enterAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_in_right">
             <argument
                 android:name="meetingId"
                 app:argType="long"/>

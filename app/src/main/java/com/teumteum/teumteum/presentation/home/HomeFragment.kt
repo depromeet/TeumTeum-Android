@@ -18,6 +18,7 @@ import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.enumSet.EnumTopic
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentHomeBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.group.GroupListActivity
 import com.teumteum.teumteum.presentation.group.GroupListAdapter
 import com.teumteum.teumteum.presentation.group.GroupListUiState
@@ -51,6 +52,7 @@ class HomeFragment :
 
     override fun initAppBarLayout() {
         setAppBarHeight(48)
+        (activity as MainActivity).showBottomNavi()
         setAppBarBackgroundColor(com.teumteum.base.R.color.background)
         addMenuToLeft(
             AppBarMenu.IconStyle(
