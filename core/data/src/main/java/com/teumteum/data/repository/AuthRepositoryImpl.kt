@@ -57,4 +57,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun patchDeviceToken(token: String): Boolean {
         return userDataSource.patchDeviceToken(token.toDeviceToken())
     }
+
+    override fun setAskedNotification(didAsk: Boolean) {
+        dataStore.askedNotification = didAsk
+    }
+
+    override fun getAskedNotification(): Boolean {
+        return dataStore.askedNotification
+    }
 }

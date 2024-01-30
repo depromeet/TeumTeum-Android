@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -16,6 +17,8 @@ import com.teumteum.base.util.extension.intExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
 import com.teumteum.teumteum.presentation.home.HomeFragmentDirections
+import com.teumteum.teumteum.presentation.signin.SignInViewModel
+import com.teumteum.teumteum.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,10 +26,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val id by intExtra()
     private val isFromAlarm by boolExtra()
 
+    private val viewModel by viewModels<SignInViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestNotificationPermission()
+        checkAskedNotification()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -60,18 +65,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         navHostFragment.navController.navigate(action)
     }
 
+    private fun checkAskedNotification() {
+        if (!viewModel.getAskedNotification()) {
+            requestNotificationPermission()
+            viewModel.setAskedkNotification(true)
+        }
+    }
+
     private val requestNotificationPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
-        ) { ok ->
-            if (ok) {
-                // 알림권한 허용 o
-            } else {
-                // 알림권한 허용 x. 자유롭게 대응..
-            }
+        ) { _ ->
         }
 
-    fun requestNotificationPermission() {
+    private fun requestNotificationPermission() {
         if (
             ContextCompat.checkSelfPermission(
                 this,
@@ -79,14 +86,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                // 다른 런타임 퍼미션이랑 비슷한 과정
                 if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
-                    // 왜 알림을 허용해야하는지 유저에게 알려주기를 권장
                 } else {
                     requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                 }
-            } else {
-                // 안드로이드 12 이하는 알림에 런타임 퍼미션 없으니, 설정가서 켜보라고 권해볼 수 있겠다.
             }
         }
     }

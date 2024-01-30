@@ -38,6 +38,12 @@ class SignInViewModel @Inject constructor(
             _memberState.value = SignInUiState.Failure(socialLoginResult.messages!!)
         }
     }
+
+    fun getAskedNotification(): Boolean = repository.getAskedNotification()
+
+    fun setAskedkNotification(didAsk: Boolean) {
+        repository.setAskedNotification(didAsk)
+    }
 }
 
 sealed interface SignInUiState {
