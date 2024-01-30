@@ -12,7 +12,8 @@ data class Friend(
     val mbti: String,
     val activityArea: String,
     val mannerTemperature: Int,
-    val interests: List<String>
+    val interests: List<String>,
+    val goal: String
 ) : java.io.Serializable
 
 @Serializable

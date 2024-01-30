@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.moim
+package com.teumteum.teumteum.presentation.moim.compose
 
 import android.app.Activity
 import android.util.Log
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,10 +25,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +43,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -65,6 +63,10 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.group.join.JoinFriendListActivity
 import com.teumteum.teumteum.presentation.group.join.check.GroupMeetCheckActivity
+import com.teumteum.teumteum.presentation.moim.MoimFragmentDirections
+import com.teumteum.teumteum.presentation.moim.MoimModifyFragmentDirections
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
+import com.teumteum.teumteum.presentation.moim.ScreenState
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -73,6 +75,7 @@ import kotlinx.serialization.json.Json
 @Composable
 fun MoimConfirm(
     viewModel: MoimViewModel,
+    navController: NavController? = null,
     activity: Activity,
     isJoinView: Boolean,
     meetingId: Long? = null,
@@ -81,37 +84,88 @@ fun MoimConfirm(
         (activity as? BindingActivity<*>)?.closeActivitySlideAnimation()
     },
 
-) {
+    ) {
+    Log.d("meetingId from confirm", meetingId.toString())
+    meetingId?.let {
+        viewModel.setMeetingId(it)
+    }
+
     val showDialog = remember { mutableStateOf(false) }
     val screenState by viewModel.screenState.collectAsState()
     val isJoined by viewModel.isUserJoined.collectAsState()
+    val isHost by viewModel.isUserHost.collectAsState()
 
     LaunchedEffect(key1 = screenState) {
-        if (screenState == ScreenState.Cancel) {
-            showDialog.value = true
-        }
+        showDialog.value = screenState == ScreenState.Cancel || screenState == ScreenState.Delete || screenState==ScreenState.Report
     }
 
     if (showDialog.value) {
-        TmDialog(
-            title = stringResource(id = R.string.setting_dialog_cancel),
-            okText = stringResource(id = R.string.setting_dialog_cancel_btn2),
-            cancelText = stringResource(id = R.string.setting_dialog_cancel_btn1),
-            onOk = {
-                if (meetingId != null) {
-                    viewModel.cancelMeeting(meetingId)
-                }
-                showDialog.value = false
-            },
-            onCancel = {
-                showDialog.value = false
-                viewModel.updateSheetEvent(ScreenState.CancelInit)
-            },
-            onDismiss = {
-                showDialog.value = false
-                viewModel.updateSheetEvent(ScreenState.CancelInit)
+        when (screenState) {
+            ScreenState.Cancel -> {
+                TmDialog(
+                    title = stringResource(id = R.string.setting_dialog_cancel),
+                    okText = stringResource(id = R.string.setting_dialog_cancel_btn2),
+                    cancelText = stringResource(id = R.string.setting_dialog_cancel_btn1),
+                    onOk = {
+                        if (meetingId != null) {
+                            viewModel.cancelMeeting(meetingId)
+                        }
+                        showDialog.value = false
+                    },
+                    onCancel = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.CancelInit)
+                    },
+                    onDismiss = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.CancelInit)
+                    }
+                )
             }
-        )
+            ScreenState.Report -> {
+                TmDialog(
+                    title = stringResource(id = R.string.setting_dialog_report),
+                    okText = stringResource(id = R.string.setting_dialog_report_btn2),
+                    cancelText = stringResource(id = R.string.setting_dialog_report_btn1),
+                    onOk = {
+                        if (meetingId != null) {
+                            viewModel.reportMeeting(meetingId)
+                        }
+                        showDialog.value = false
+                    },
+                    onCancel = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.ReportInit)
+                    },
+                    onDismiss = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.ReportInit)
+                    }
+                )
+            }
+            ScreenState.Delete -> {
+                TmDialog(
+                    title = stringResource(id = R.string.setting_dialog_delete),
+                    okText = stringResource(id = R.string.setting_dialog_delete_btn2),
+                    cancelText = stringResource(id = R.string.setting_dialog_delete_btn1),
+                    onOk = {
+                        if (meetingId != null) {
+                            viewModel.deleteMeeting(meetingId)
+                        }
+                        showDialog.value = false
+                    },
+                    onCancel = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.DeleteInit)
+                    },
+                    onDismiss = {
+                        showDialog.value = false
+                        viewModel.updateSheetEvent(ScreenState.DeleteInit)
+                    }
+                )
+            }
+            else -> {}
+        }
     }
 
     TmScaffold(
@@ -122,7 +176,11 @@ fun MoimConfirm(
         onClick = {
             if(isJoinView) { onClick() }
             else { viewModel.goPreviousScreen() }
-            }
+            },
+        onConfirmClick = {
+            Log.d("screenState", screenState.toString())
+            viewModel.updateSheetEvent(ScreenState.Report) },
+        isConfirm = true
     ) {
         Column(
             modifier = Modifier
@@ -160,14 +218,33 @@ fun MoimConfirm(
                     if (meetingId != null && meetingId > 0) {
                         //meeting Id가 argument로 있는데, 참여중인 경우
                         if(isJoined) {
-                            TeumDivider()
-                            MoimCancelBtn(
-                                viewModel = viewModel
-                            ) {
-                                if (meetingId != null) { viewModel.cancelMeeting(it) }
-                                else { viewModel.updateSheetEvent(ScreenState.Failure) }
+                            if(!isHost) {
+                                TeumDivider()
+                                MoimCancelBtn(
+                                    viewModel = viewModel
+                                ) {
+                                    if (meetingId != null) { viewModel.cancelMeeting(it) }
+                                    else { viewModel.updateSheetEvent(ScreenState.Failure) }
+                                }
+                                TmMarginVerticalSpacer(size = 24)
+                            } else {
+                                TeumDivider()
+                                MoimHostBtn(
+                                    viewModel = viewModel,
+                                    navController = navController
+                                ) {
+                                    if(meetingId != null) {viewModel.deleteMeeting(it)}
+                                }
                             }
-                            TmMarginVerticalSpacer(size = 24)
+                        }
+                        else if(isHost) {
+                            TeumDivider()
+                            MoimHostBtn(
+                                viewModel = viewModel,
+                                navController = navController
+                            ) {
+                                if(meetingId != null) {viewModel.deleteMeeting(it)}
+                            }
                         }
                         //meeting Id가 argument로 있는데, 참여 중이지 않은 경우
                         else {
@@ -485,6 +562,62 @@ fun MoimJoinListItem(index: Int, item: Friend, characterList: HashMap<Int, Int>)
                 .padding(8.dp),
             contentScale = ContentScale.Crop
         )
+    }
+}
+
+@Composable
+fun MoimHostBtn(
+    viewModel: MoimViewModel,
+    navController: NavController?,
+    onJoinGroupClick: (Long) -> Unit
+) {
+    val meetingId by viewModel.meetingsId.collectAsState()
+    val screenState by viewModel.screenState.collectAsState()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .padding(horizontal = 20.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        androidx.compose.material3.Button(
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp),
+            onClick = {
+                viewModel.updateSheetEvent(ScreenState.Delete)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.setting_dialog_delete_row1),
+                style = TmTypo.current.HeadLine6,
+                color = TmtmColorPalette.current.color_text_button_alternative
+            )
+        }
+
+        androidx.compose.material3.Button(
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp),
+            onClick = {
+                if (navController != null) {
+                    val action = meetingId?.let { MoimFragmentDirections.actionFragmentMoimToFragmentModifyMoim(meetingId) }
+                    if (action != null) { navController.navigate(action) }
+                } else {
+                    viewModel.updateSheetEvent(ScreenState.Modify)
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.setting_dialog_delete_row2),
+                style = TmTypo.current.HeadLine6,
+                color = TmtmColorPalette.current.color_text_button_alternative
+            )
+        }
     }
 }
 

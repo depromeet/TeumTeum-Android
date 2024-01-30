@@ -42,7 +42,6 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 
 @Composable
 fun EditCardScreen(
-    MyPageViewModel: MyPageViewModel,
     viewModel: EditCardViewModel,
     navController: NavController
 ) {
@@ -173,10 +172,12 @@ fun EditCardScreen(
 
                 //자기 개발
                 EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
-                TmMarginVerticalSpacer(size = 8)
+                TmMarginVerticalSpacer(size = 4)
                 InterestsChips(
                     interests = interests,
-                    onClick = { viewModel.triggerSheetEvent(SheetEvent.SignUp) },
+                    onClick = {
+                        viewModel.triggerSheetEvent(SheetEvent.SignUp)
+                              },
                     viewModel = viewModel
                 )
                 TmMarginVerticalSpacer(size = 20)
@@ -189,6 +190,7 @@ fun EditCardScreen(
                         .fillMaxWidth()
                         .height(134.dp),
                     value = goal,
+                    text_error = R.string.setting_edit_card_error10,
                     onValueChange = {
                         if (it.length <= 50) { // 입력 길이가 50자 이하인 경우에만 업데이트
                             viewModel.updateGoalText(it)
@@ -196,7 +198,9 @@ fun EditCardScreen(
                             val truncatedText = it.take(50)
                             viewModel.updateGoalText(truncatedText)
                         }
-                    }
+                    },
+                    isError = goal.length < 10
+
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 TeumDivider()
@@ -209,13 +213,6 @@ fun EditCardScreen(
             }
         }
     }
-}
-
-@Composable
-fun EditInterestChip(
-
-) {
-
 }
 
 @Composable
@@ -245,7 +242,7 @@ fun EditCardBottomBox(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            androidx.compose.material3.Text(
+            Text(
                 text = displayText,
                 color = if(text.isNotBlank()) TmtmColorPalette.current.color_text_body_primary else TmtmColorPalette.current.color_text_body_quinary,
                 style = TmTypo.current.Body1,
@@ -262,11 +259,10 @@ fun EditCardBottomBox(
 
 @Composable
 fun EditCardLabel(string: String) {
-    androidx.compose.material3.Text(
+    Text(
         text = string,
         style = TmTypo.current.Body2,
         color = TmtmColorPalette.current.color_text_body_quaternary,
-        modifier = Modifier.clickable {  }
     )
 }
 
@@ -290,7 +286,7 @@ fun EditCardBtn(
     val interests = viewModel.interestField.collectAsState().value
 
     // 모든 필드가 유효한지 검사
-    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.isNotEmpty() && goal.length <=50 &&
+    val isAllValid = name.isNotEmpty() && companyName.isNotEmpty() && goal.isNotEmpty() && goal.length >= 10 && goal.length <=50 &&
             jobClass.isNotEmpty() && community.isNotEmpty() && jobDetailClass.isNotEmpty() &&
             mbti.isNotEmpty() && date.isNotEmpty() && area.isNotEmpty() &&
             interests.isNotEmpty() && viewModel.isNameValid.collectAsState().value &&
@@ -301,7 +297,7 @@ fun EditCardBtn(
     val buttonColors =
         if (isAllValid) TmtmColorPalette.current.color_button_active else TmtmColorPalette.current.color_button_disabled
     val textColors =
-        if (isAllValid) TmtmColorPalette.current.GreyWhite else TmtmColorPalette.current.color_text_button_primary_disabled
+        if (isAllValid) TmtmColorPalette.current.color_text_button_primary_default else TmtmColorPalette.current.color_text_button_primary_disabled
     androidx.compose.material3.Button(
         modifier = Modifier
             .fillMaxWidth()

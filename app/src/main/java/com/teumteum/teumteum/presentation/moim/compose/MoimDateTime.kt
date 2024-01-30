@@ -1,22 +1,19 @@
-package com.teumteum.teumteum.presentation.moim
+package com.teumteum.teumteum.presentation.moim.compose
 
-import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,23 +21,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.teumteum.base.component.compose.TeumDivider
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.TmScaffold
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.moim.MoimViewModel
+
 
 @Composable
-fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick: () -> Unit) {
-    val address by viewModel.address.collectAsState()
-    val detailAddress by viewModel.detailAddress.collectAsState()
-
+fun MoimDateTime(viewModel: MoimViewModel, onClick: ()->Unit) {
+    val time by viewModel.time.collectAsState()
+    val date by viewModel.date.collectAsState()
     TmScaffold(onClick = {onClick()}) {
         Column(
             modifier = Modifier
@@ -50,90 +46,92 @@ fun MoimAddress(viewModel: MoimViewModel, navController: NavController, onClick:
             verticalArrangement = Arrangement.Top,
         ) {
             TmMarginVerticalSpacer(size = 48)
-            CreateMoimTitle(string = stringResource(id = R.string.moim_address_title))
+            CreateMoimTitle(string = stringResource(id = R.string.moim_datetime_title))
             TmMarginVerticalSpacer(size = 28)
-            MoimAddress1Column(viewModel, navController)
+            MoimDateColumn(viewModel)
             TmMarginVerticalSpacer(size = 20)
-            MoimAddress2Column(viewModel)
-            Spacer(Modifier.weight(1f))
-
+            MoimTimeColumn(viewModel)
+            Spacer(modifier = Modifier.weight(1f))
             TeumDivider()
-            MoimCreateBtn(text = stringResource(id = R.string.moim_next_btn), isEnabled = !address.isNullOrEmpty() && detailAddress.isNotEmpty(), viewModel = viewModel)
+            MoimCreateBtn(
+                text = stringResource(id = R.string.moim_next_btn),
+                viewModel = viewModel,
+                isEnabled = time.isNotEmpty() && date.isNotEmpty())
             TmMarginVerticalSpacer(size = 24)
         }
     }
-
 }
 
 @Composable
-fun MoimAddress1Column(viewModel: MoimViewModel, navController: NavController) {
-    val address by viewModel.address.collectAsState()
+fun MoimDateColumn(viewModel: MoimViewModel) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(horizontal = 20.dp)
+    ) {
+        Text(text = stringResource(id = R.string.moim_datetime_label1), style= TmTypo.current.Body2, color= TmtmColorPalette.current.color_text_body_quaternary)
+        TmMarginVerticalSpacer(size = 8)
+        MoimDateInputField(
+            placeHolder = stringResource(id = R.string.moim_datetime_placeholder1),
+            viewModel = viewModel
+        )
+
+    }
+}
+
+@Composable
+fun MoimTimeColumn(viewModel: MoimViewModel) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
         .padding(horizontal = 20.dp)
     ) {
         Text(
-            text = stringResource(id = R.string.moim_address_label1),
+            text = stringResource(id = R.string.moim_datetime_label2),
             style = TmTypo.current.Body2,
             color = TmtmColorPalette.current.color_text_body_quaternary
         )
         TmMarginVerticalSpacer(size = 8)
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .background(
-                color = TmtmColorPalette.current.elevation_color_elevation_level01,
-                shape = RoundedCornerShape(4.dp)
-            )
-            .clickable {
-                navController.navigate(R.id.action_moimFragment_to_fragment_web_view)
-            }
-        ) {
-            Text(
-                text = address ?: stringResource(id = R.string.moim_address_placeholdler1),
-                color = TmtmColorPalette.current.color_text_body_quinary,
-                style = TmTypo.current.Body1,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 16.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun MoimAddress2Column(viewModel: MoimViewModel) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .padding(horizontal = 20.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.moim_address_label2),
-            style = TmTypo.current.Body2,
-            color = TmtmColorPalette.current.color_text_body_quaternary
+        MoimDateInputField(
+            placeHolder = stringResource(id = R.string.moim_datetime_placeholder2),
+            viewModel = viewModel,
+            isTimeField = true
         )
-        TmMarginVerticalSpacer(size = 8)
-        MoimAddressInputField(viewModel = viewModel, placeHolder = stringResource(id = R.string.moim_address_placeholder2))
     }
 }
 
 @Composable
-fun MoimAddressInputField(
+fun MoimDateInputField(
     placeHolder:String,
-    viewModel: MoimViewModel
-    ) {
-    val text by viewModel.detailAddress.collectAsState()
+    viewModel: MoimViewModel,
+    isTimeField: Boolean = false
+) {
+    var text by remember { mutableStateOf("") }
+    val time by viewModel.time.collectAsState()
+    val date by viewModel.date.collectAsState()
+
+    LaunchedEffect(isTimeField, time, date) {
+        text = if (isTimeField) time else date
+    }
 
     OutlinedTextField(
         value = text,
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),
         placeholder = { Text(text =placeHolder, style= TmTypo.current.Body1, color = TmtmColorPalette.current.color_text_body_quinary)},
         onValueChange = { newText ->
-            viewModel.updateDetailAddress(newText)
+            text = newText
+            if (newText.length == 4) {
+                if (isTimeField) {
+                    viewModel.updateTime(newText)
+                } else {
+                    viewModel.updateDate(newText)
+                }
+            }
         },
         singleLine = true,
         colors = TextFieldDefaults.outlinedTextFieldColors(

@@ -1,5 +1,8 @@
 package com.teumteum.teumteum.presentation.familiar.introduce
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -32,10 +35,58 @@ class IntroduceAdapter() :
 
     class ItemViewHolder(private val binding: ItemIntroduceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Friend) {
-            val imageRes = IdMapper.getCardCharacterDrawableById(characterId = item.characterId)
+        private lateinit var frontAnimation: AnimatorSet
+        private lateinit var backAnimation: AnimatorSet
+        private var isFront = true
 
-            with(binding.cvCharacter) {
+        init {
+            initCardAnim()
+        }
+
+        @SuppressLint("ResourceType")
+        private fun initCardAnim() {
+            val scale = itemView.resources.displayMetrics.density
+            binding.cardviewFront.cameraDistance = 8000 * scale
+            binding.cardviewBack.cameraDistance = 8000 * scale
+
+            frontAnimation = AnimatorInflater.loadAnimator(
+                itemView.context,
+                com.teumteum.base.R.anim.card_reverse_front
+            ) as AnimatorSet
+            backAnimation = AnimatorInflater.loadAnimator(
+                itemView.context,
+                com.teumteum.base.R.anim.card_reverse_back
+            ) as AnimatorSet
+
+            binding.cardviewFront.setOnClickListener {
+                startAnim()
+            }
+            binding.cardviewBack.setOnClickListener {
+                startAnim()
+            }
+        }
+
+        private fun startAnim() {
+            if (isFront) {
+                frontAnimation.setTarget(binding.cardviewFront)
+                backAnimation.setTarget(binding.cardviewBack)
+                frontAnimation.start()
+                backAnimation.start()
+                isFront = false
+            } else {
+                frontAnimation.setTarget(binding.cardviewBack)
+                backAnimation.setTarget(binding.cardviewFront)
+                backAnimation.start()
+                frontAnimation.start()
+                isFront = true
+            }
+        }
+
+        fun bind(item: Friend) {
+            val frontImageRes = IdMapper.getFrontCardCharacterDrawableById(characterId = item.characterId)
+            val backImageRes = IdMapper.getBackCardCharacterDrawableById(characterId = item.characterId)
+
+            with(binding.cardviewFront) {
                 tvName.text = item.name
                 tvCompany.text = item.job.name
                 tvJob.text = item.job.detailClass
@@ -44,9 +95,22 @@ class IntroduceAdapter() :
                 tvMbti.text = item.mbti
 
                 Glide.with(itemView.context)
-                    .load(imageRes)
+                    .load(frontImageRes)
                     .apply(RequestOptions.centerInsideTransform())
                     .into(ivCharacter)
+            }
+
+            with(binding.cardviewBack) {
+                tvGoalTitle.text = "GOAL"
+                tvGoalContent.text = item.goal
+
+                Glide.with(itemView.context)
+                    .load(backImageRes)
+                    .apply(RequestOptions.centerInsideTransform())
+                    .into(ivCharacter)
+
+                isModify = false
+                isModifyDetail = false
             }
         }
     }

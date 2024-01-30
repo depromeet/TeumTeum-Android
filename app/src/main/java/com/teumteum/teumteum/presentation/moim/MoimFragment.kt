@@ -9,7 +9,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +21,14 @@ import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMoimBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.moim.compose.MoimAddress
+import com.teumteum.teumteum.presentation.moim.compose.MoimConfirm
+import com.teumteum.teumteum.presentation.moim.compose.MoimCreateName
+import com.teumteum.teumteum.presentation.moim.compose.MoimCreateTopic
+import com.teumteum.teumteum.presentation.moim.compose.MoimDateTime
+import com.teumteum.teumteum.presentation.moim.compose.MoimFinish
+import com.teumteum.teumteum.presentation.moim.compose.MoimIntroduce
+import com.teumteum.teumteum.presentation.moim.compose.MoimPeople
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -71,13 +78,35 @@ class MoimFragment :
                     ScreenState.Create -> {
                         binding.progressBar.visibility = View.GONE
                         viewModel.getUserId()
-                        MoimConfirm(viewModel, requireActivity(), false) { goFrontScreen() }
+                        MoimConfirm(viewModel, navController, requireActivity(), false) { goFrontScreen() }
                     }
 
                     ScreenState.CancelInit, ScreenState.Cancel -> {
                         binding.progressBar.visibility = View.GONE
                         MoimConfirm(
                             viewModel,
+                            navController,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
+                    }
+                    ScreenState.ReportInit,ScreenState.Report -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(
+                            viewModel,
+                            navController,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
+                    }
+
+                    ScreenState.DeleteInit, ScreenState.Delete -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(
+                            viewModel,
+                            navController,
                             requireActivity(),
                             true,
                             meetingId
@@ -91,7 +120,7 @@ class MoimFragment :
 
                     else -> {
                         binding.progressBar.visibility = View.GONE
-                        MoimConfirm(viewModel, requireActivity(), false)
+                        MoimConfirm(viewModel, navController, requireActivity(), false)
                     }
                 }
             }
@@ -144,6 +173,20 @@ class MoimFragment :
                     ScreenState.Success -> {
                         delay(5000)
                         viewModel.initializeState()
+                    }
+                    ScreenState.DeleteSuccess -> {
+                        context?.defaultToast("모임 삭제를 성공했습니다")
+                        val navController = findNavController()
+                        navController.popBackStack()
+                        delay(2000)
+                        viewModel.initializeState()
+                    }
+                    ScreenState.Modify -> {
+                        val navController = findNavController()
+                        navController.navigate(R.id.action_fragment_moim_to_fragment_modify_moim)
+                    }
+                    ScreenState.ReportSuccess -> {
+                        context?.defaultToast("모임 신고를 완료했습니다")
                     }
                     else -> {}
                 }

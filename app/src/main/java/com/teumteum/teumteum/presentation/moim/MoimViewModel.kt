@@ -48,6 +48,9 @@ class MoimViewModel @Inject constructor(
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Topic)
     val screenState: StateFlow<ScreenState> = _screenState.asStateFlow()
 
+    private val _bottomSheet = MutableStateFlow<BottomSheet>(BottomSheet.Default)
+    val bottomSheet: StateFlow<BottomSheet> = _bottomSheet.asStateFlow()
+
     private val _currentStep = MutableStateFlow<Int>(0)
     val currentStep: StateFlow<Int> = _currentStep.asStateFlow()
 
@@ -128,6 +131,7 @@ class MoimViewModel @Inject constructor(
         _moinCreateUserJob.value = ""
         _moinJoinUsers.value = listOf()
         _meetingsId.value = 0L
+        _isUserHost.value = false
     }
 
     fun getUserId() {
@@ -177,6 +181,16 @@ class MoimViewModel @Inject constructor(
     fun downPeople() {
         if(_people.value > 1) { _people.value -=1 }
     }
+
+    fun updatePeople(int: Int) {
+        _people.value = int
+    }
+
+    fun setMeetingId(meetingId: Long) {
+        _meetingsId.value = meetingId
+    }
+
+
     fun resetSnackbarEvent() {
         viewModelScope.launch {
             _snackbarEvent.emit(SnackbarEvent.DEFAULT)
@@ -202,6 +216,13 @@ class MoimViewModel @Inject constructor(
         }
         _imageUri.value = currentList.take(5)
     }
+
+    fun removeImage(uri: Uri) {
+        val currentList = _imageUri.value.toMutableList()
+        currentList.remove(uri)
+        _imageUri.value = currentList
+    }
+
 
 
     fun formatTime(input: String): String {
@@ -262,8 +283,34 @@ class MoimViewModel @Inject constructor(
             repository.deleteGroupJoin(meetingId)
                 .onSuccess {
                     _screenState.value = ScreenState.CancelSuccess
-                    _isUserJoined.value = false
                     Log.d("cancel success", screenState.value.toString())
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
+        }
+    }
+
+    fun reportMeeting(meetingId: Long) {
+        viewModelScope.launch {
+            repository.reportMeeting(meetingId)
+                .onSuccess {
+                    _screenState.value = ScreenState.ReportSuccess
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
+        }
+    }
+
+    fun deleteMeeting(meetingId: Long) {
+        viewModelScope.launch {
+            repository.deleteMeeting(meetingId)
+                .onSuccess {
+                    _isUserHost.value = false
+                    _screenState.value = ScreenState.DeleteSuccess
                 }
                 .onFailure {
                     Timber.e(it)
@@ -284,6 +331,45 @@ class MoimViewModel @Inject constructor(
             }
         }
         return name
+    }
+
+    fun modifyMoim(meetingId: Long) {
+        viewModelScope.launch {
+            val dateTime = combineDateAndTime()
+            val imageFiles = convertUrisToFile(imageUri.value)
+            if(dateTime != null) {
+                val meetingArea = address.value?.let {
+                    MeetingArea(
+                        address = it,
+                        addressDetail = detailAddress.value
+                    )
+                }
+                val requestModel = topic.value?.let {
+                    if (meetingArea != null) {
+                        MoimEntity(
+                            topic = it.value,
+                            title = title.value,
+                            introduction = introduction.value,
+                            promiseDateTime = dateTime,
+                            numberOfRecruits = people.value,
+                            meetingArea = meetingArea
+                        )
+                    } else { null }
+                }
+                if (requestModel != null) {
+                    repository.modifyMeeting(meetingId, requestModel, imageFiles)
+                        .onSuccess {
+                            _screenState.value = ScreenState.Success
+                        }
+                        .onFailure { throwable ->
+                            Timber.e(throwable)
+                            _screenState.value = ScreenState.Server
+                        }
+                }
+            } else {
+                _screenState.value = ScreenState.Failure
+            }
+        }
     }
 
     fun createMoim() {
@@ -396,6 +482,9 @@ class MoimViewModel @Inject constructor(
     private val _isUserJoined = MutableStateFlow(false)
     val isUserJoined: StateFlow<Boolean> = _isUserJoined
 
+    private val _isUserHost = MutableStateFlow(false)
+    val isUserHost: StateFlow<Boolean> = _isUserHost
+
     fun getGroup(meetingId: Long) {
         viewModelScope.launch {
             repository.getGroup(meetingId)
@@ -403,11 +492,14 @@ class MoimViewModel @Inject constructor(
                     Log.d("load", "load get Group")
                     getUser(it.hostId)
                     getJoinUserList(it.participantIds.joinToString { id -> id.toString() }.replace(" ", ""))
-                    _isUserJoined.value = (it.hostId == getMyId()) || it.participantIds.contains(getMyId().toInt())
-                    Log.d("userJoined", isUserJoined.value.toString())
+
+                    _isUserJoined.value = it.participantIds.contains(getMyId().toInt())
+                    _isUserHost.value = it.hostId.toInt() == (getMyId().toInt())
+
                     _topic.value = TopicType.values().find { type ->
                         type.value == it.topic
                     }
+                    _title.value = it.name
                     _introduction.value = it.introduction
                     _people.value = it.numberOfRecruits
                     _address.value = it.address
@@ -422,8 +514,6 @@ class MoimViewModel @Inject constructor(
     fun getMyId(): Long {
             return userRepository.getUserInfo()?.id ?: -1L
     }
-
-
 
     fun getUser(userId: Long) {
         viewModelScope.launch {
@@ -445,16 +535,33 @@ class MoimViewModel @Inject constructor(
         }
     }
 
+    fun updateBottomSheet(bottomSheet: BottomSheet) {
+        _bottomSheet.value = bottomSheet
+    }
+
 }
 
 enum class ScreenState {
-    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server, CancelInit, Cancel, CancelSuccess, Finish
+    Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
+    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess, Modify, ReportInit, Report, ReportSuccess
 }
+
+enum class BottomSheet {
+    Topic, People, Default
+}
+
+
 enum class TopicType(val value: String, val title: String ,val subTitle: String) {
     SHARING_WORRIES("고민_나누기", "고민 나누기", "직무,커리어 고민을 나눠보세요"),
     STUDY("스터디", "스터디", "관심 분야 스터디로 목표를 달성해요"),
     GROUP_WORK("모여서_작업", "모여서 작업", "다같이 모여서 작업해요(모각코,모각일)"),
-    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요")
+    SIDE_PROJECT("사이드_프로젝트", "사이드 프로젝트","사이드 프로젝트로 팀을 꾸리고 성장하세요");
+
+    companion object {
+        fun fromTitle(title: String): TopicType? {
+            return values().find { it.title == title }
+        }
+    }
 
 }
 
