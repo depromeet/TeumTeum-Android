@@ -57,8 +57,8 @@ class GetInterestFragment:
             setChipBackgroundColorResource(R.color.color_chip_interest_fill)
             setChipStrokeColorResource(R.color.color_chip_interest_stroke)
             strokeWidth = 1.dpToPx(requireContext()).toFloat()
-            textStartPadding = 16.dpToPx(requireContext()).toFloat()
-            textEndPadding = 16.dpToPx(requireContext()).toFloat()
+            textStartPadding = 13.dpToPx(requireContext()).toFloat()
+            textEndPadding = 13.dpToPx(requireContext()).toFloat()
             chipMinHeight = 40.dpToPx(requireContext()).toFloat()
             text = interest
         }
@@ -68,7 +68,8 @@ class GetInterestFragment:
             setChipDrawable(chipDrawable)
             text = interest
             setTextColor(resources.getColorStateList(R.color.color_text_chip))
-            chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            setEnsureMinTouchTargetSize(false)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
             setTextAppearanceResource(com.teumteum.base.R.style.ta_body_1)
         }
 

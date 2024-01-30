@@ -181,24 +181,12 @@ class SignUpActivity
         binding.btnNextSignup.visibility = View.VISIBLE
     }
 
-    fun activateFixFinishButton() {
-        binding.btnFinishSignup.isEnabled = true
-    }
-
-    fun disableFixFinishButton() {
-        binding.btnFinishSignup.isEnabled = false
-    }
-
     private fun setUpListenersOnCardComplete() {
         binding.btnFix.setOnSingleClickListener {
-            savePresentUserInfo()
             viewModel.goToNextScreen()
             moveToCurrentProgress()
         }
         binding.btnKeep.setOnSingleClickListener {
-            registerUserInfo()
-        }
-        binding.btnFinishSignup.setOnSingleClickListener {
             registerUserInfo()
         }
         getLeftMenuChildAt(0).setOnSingleClickListener {
@@ -211,8 +199,12 @@ class SignUpActivity
             viewModel.goToPreviousScreen()
             moveToCurrentProgress()
         }
-        binding.btnNextSignup.setOnSingleClickListener {
-            fixCard()
+//        binding.btnNextSignup.setOnSingleClickListener {
+//            fixCard()
+//        }
+        binding.btnFinishSignup.setOnSingleClickListener {
+            viewModel.goToPreviousScreen()
+            moveToCurrentProgress()
         }
     }
 
@@ -255,10 +247,6 @@ class SignUpActivity
                 }
             }
         }
-    }
-
-    private fun savePresentUserInfo() {
-        viewModel.savePresentUserInfo(provider)
     }
 
     private fun registerUserInfo() {

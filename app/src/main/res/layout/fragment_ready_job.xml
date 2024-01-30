@@ -65,6 +65,8 @@
                 android:textColor="?attr/color_text_body_primary"
                 android:hint="@string/signup_tv_job_who_hint"
                 android:text="@{vm.readyJobClass}"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textColorHint="?attr/color_text_body_quinary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

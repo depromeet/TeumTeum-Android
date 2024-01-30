@@ -10,10 +10,10 @@
             android:strokeWidth="1"
             android:pathData="M12,12m-11.5,0a11.5,11.5 0,1 1,23 0a11.5,11.5 0,1 1,-23 0"
             android:fillColor="#00000000"
-            android:strokeColor="#292929"/>
+            android:strokeColor="@color/outline_level02"/>
         <path
             android:pathData="M17.71,8.895L16.529,7.768L10.797,13.772L7.424,10.659L6.316,11.859L10.87,16.062L17.71,8.895Z"
-            android:fillColor="#333333"
+            android:fillColor="@color/icon_level02_disabled"
             android:fillType="evenOdd"/>
     </group>
 </vector>

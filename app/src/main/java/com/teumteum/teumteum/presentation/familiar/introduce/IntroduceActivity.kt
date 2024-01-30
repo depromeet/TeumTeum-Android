@@ -3,7 +3,6 @@ package com.teumteum.teumteum.presentation.familiar.introduce
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
@@ -17,9 +16,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityIntroduceBinding
 import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity.Companion.EXTRA_NEIGHBORS_IDS
 import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
-import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -29,7 +26,6 @@ class IntroduceActivity
     private val introduceAdapter = IntroduceAdapter()
     private val viewpagerList = ArrayList<Friend>()
     private val viewModel by viewModels<IntroduceViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getIntroduceUsers()
@@ -39,13 +35,12 @@ class IntroduceActivity
         initObserver()
     }
 
-    private fun getIntroduceUsers(){
+    private fun getIntroduceUsers() {
         val ids = intent.getStringExtra(EXTRA_NEIGHBORS_IDS) ?: ""
-        Timber.tag("테스따").d("$ids")
         viewModel.getIntroduceUser(id = ids)
     }
 
-    private fun initObserver(){
+    private fun initObserver() {
         viewModel.introduceUser.observe(this) { friends ->
             introduceAdapter.submitList(friends)
         }
@@ -77,7 +72,7 @@ class IntroduceActivity
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = ::finish
+                clickEvent = ::finish //todo - 커스텀 팝업 띄우고
             )
         )
     }

@@ -16,10 +16,10 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_teum_teum_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_teum_teum_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TeumTeum"
         android:usesCleartextTraffic="true"
@@ -32,8 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".presentation.onboarding.OnBoardingActivity"
             android:exported="false" />
@@ -70,24 +69,31 @@
         <activity
             android:name=".presentation.signup.finish.SignUpFinishActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.complete.GroupMeetCompleteActivity"
+        <activity
+            android:name=".presentation.group.join.complete.GroupMeetCompleteActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.GroupDetailActivity"
+        <activity
+            android:name=".presentation.group.join.GroupDetailActivity"
             android:exported="false" />
-        <activity android:name=".presentation.splash.SplashActivity"
+        <activity
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.signin.SocialWebViewActivity"
+        <activity
+            android:name=".presentation.signin.SocialWebViewActivity"
             android:exported="false" />
-        <activity android:name=".presentation.onboarding.AccessLocationActivity"
+        <activity
+            android:name=".presentation.onboarding.AccessLocationActivity"
             android:exported="false" />
-        <activity android:name=".presentation.signup.terms.TermsWebViewActivity"
+        <activity
+            android:name=".presentation.signup.terms.TermsWebViewActivity"
             android:exported="false" />
-        <activity android:name=".presentation.group.join.JoinFriendListActivity"
+        <activity
+            android:name=".presentation.group.join.JoinFriendListActivity"
             android:exported="false" />
     </application>
 

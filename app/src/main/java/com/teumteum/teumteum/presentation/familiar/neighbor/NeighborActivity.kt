@@ -16,6 +16,7 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.setOnSingleClickListener
+import com.teumteum.domain.entity.NeighborEntity
 import com.teumteum.domain.repository.RequestPostNeighborUser
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
@@ -32,8 +33,6 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private val viewModel by viewModels<NeighborViewModel>()
-    private val selectedNeighborIds = mutableListOf<Long>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +54,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = {}
+                clickEvent = ::finish
             )
         )
     }
@@ -63,14 +62,17 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private fun initMyCharacter() {
         val myInfo = AuthUtils.getMyInfo(this)
         if (myInfo != null) {
-            val imageRes = IdMapper.getCharacterDrawableById(myInfo.characterId.toInt())
+            val view = binding.cvMe
             setCharacterView(
-                view = binding.cvMe,
-                imageRes = imageRes,
-                job = myInfo.job.jobClass,
-                name = myInfo.name
+                neighbor = NeighborEntity(
+                    id = myInfo.id,
+                    name = myInfo.name,
+                    jobDetailClass = myInfo.job.detailClass,
+                    characterId = myInfo.characterId
+                ),
+                view = view
             ).apply {
-                binding.cvMe.isEnabled = false //내 캐릭터 터치 시 체크박스 visible 방지
+                view.isEnabled = false //내 캐릭터 터치 시 체크박스 활성화 방지
             }
         }
     }
@@ -94,26 +96,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                     neighbors.forEachIndexed { index, neighbor ->
                         if (index < views.size) {
                             val view = views[index]
-
-                            view.setOnSingleClickListener {
-                                view.isCharacterSelected =
-                                    !view.isCharacterSelected //체크박스 visibility
-
-                                val id = neighbor.id
-                                if (selectedNeighborIds.contains(id)) {
-                                    selectedNeighborIds.remove(id)
-                                } else {
-                                    selectedNeighborIds.add(id)
-                                }
-                            }
-                            val imageRes =
-                                IdMapper.getCharacterDrawableById(neighbor.characterId.toInt())
-                            setCharacterView(
-                                view = view,
-                                imageRes = imageRes,
-                                job = neighbor.jobDetailClass,
-                                name = neighbor.name
-                            )
+                            setCharacterView(neighbor, view)
                         }
                     }
                 }
@@ -122,23 +105,41 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                 else -> {}
             }
         }
-    }
 
-    private fun setCharacterView(view: CharacterView, imageRes: Int, job: String, name: String) {
-        with(view) {
-            characterImage.setImageResource(imageRes)
-            characterJob.text = job
-            characterName.text = name
-            isVisible = true // todo - 제거 고민중
+        viewModel.selectedNeighborIds.observe(this) { selectedIds ->
+            binding.btnStart.isEnabled = selectedIds.isNotEmpty()
         }
     }
+
+    private fun setCharacterView(neighbor: NeighborEntity, view: CharacterView) {
+        view.isVisible = true
+        view.characterName.text = neighbor.name
+        view.characterJob.text = neighbor.jobDetailClass
+        view.characterImage.setImageResource(IdMapper.getCharacterDrawableById(neighbor.characterId.toInt()))
+
+        view.setOnSingleClickListener {
+            val isSelected = !view.isCharacterSelected
+            view.isCharacterSelected = isSelected
+
+            if (isSelected) {
+                viewModel.addSelectedNeighborId(neighbor.id)
+            } else {
+                viewModel.removeSelectedNeighborId(neighbor.id)
+            }
+        }
+    }
+
 
     private fun startIntroduceActivity() {
-        val idsString = selectedNeighborIds.joinToString(separator = ",")
-        val intent = Intent(this, IntroduceActivity::class.java).apply {
-            putExtra(EXTRA_NEIGHBORS_IDS, idsString)
+        val selectedNeighborIds = viewModel.selectedNeighborIds.value
+
+        if (!selectedNeighborIds.isNullOrEmpty()) { //null 시 함수 실행 제한
+            val idsString = selectedNeighborIds.joinToString(separator = ",")
+            val intent = Intent(this, IntroduceActivity::class.java).apply {
+                putExtra(EXTRA_NEIGHBORS_IDS, idsString)
+            }
+            startActivity(intent)
         }
-        startActivity(intent)
     }
 
 
@@ -160,7 +161,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                     postNeighborUser(
                         latitude = location.latitude,
                         longitude = location.longitude
-                    ) //todo - 테스트용 임시 좌표, 동적 좌표로 수정 필요
+                    )
                 }
             }
         }

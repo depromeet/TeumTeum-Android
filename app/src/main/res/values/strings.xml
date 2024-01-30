@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TeumTeum</string>
+    <string name="app_name">틈틈</string>
     <string name="bottom_menu_home">홈</string>
     <string name="bottom_menu_familar">친해지기</string>
     <string name="bottom_menu_mypage">마이페이지</string>
@@ -316,5 +316,13 @@
     <string name="home_recommend_meet_title">%1$s 추천 모임 🔥</string>
     <string name="introduce_more_familiar">더 가까워지기</string>
     <string name="introduce_title">소개서를 살펴보며 서로를\n소개해 보세요</string>
+
+    <string name="review_onboarding_title">%1$s\n모임이 종료 되었어요.</string>
+    <string name="review_select_title">특별히 인상적인\n틈틈 유저가 있었나요?</string>
+    <string name="review_select_sub_title">선택항목은 상대방에게 전달되지 않아요</string>
+    <string name="review_btn_text">리뷰 남기기</string>
+    <string name="review_select_friend_title">%1$s에 대해서 말해주세요</string>
+    <string name="review_finish_title">리뷰 남기기가\n완료되었습니다.</string>
+    <string name="review_go_home">홈으로 돌아가기</string>
 
 </resources>

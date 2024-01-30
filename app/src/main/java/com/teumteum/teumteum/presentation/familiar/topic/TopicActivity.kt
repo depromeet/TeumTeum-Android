@@ -43,7 +43,7 @@ class TopicActivity
         setAppBarBackgroundColor(color.background)
         addMenuToLeft(
             AppBarMenu.IconStyle(
-                resourceId = R.drawable.ic_arrow_left_l,
+                resourceId = R.drawable.ic_close,
                 useRippleEffect = false,
                 clickEvent = ::finish
             )
@@ -56,9 +56,13 @@ class TopicActivity
                 Topic(
                     topicNumber = "TOPIC.1",
                     topicTitle = "모여서 각자\n디자인",
-                    image = ContextCompat.getDrawable(
+                    frontImage = ContextCompat.getDrawable(
                         this@TopicActivity,
-                        R.drawable.ic_balance_background_1
+                        R.drawable.ic_front_balance_background_1
+                    ),
+                    backImage = ContextCompat.getDrawable(
+                        this@TopicActivity,
+                        R.drawable.ic_back_balance_background_1
                     )
                 )
             )
@@ -66,9 +70,13 @@ class TopicActivity
                 Topic(
                     topicNumber = "TOPIC.2",
                     topicTitle = "모여서 각자\n디자인",
-                    image = ContextCompat.getDrawable(
+                    frontImage = ContextCompat.getDrawable(
                         this@TopicActivity,
-                        R.drawable.ic_balance_background_2
+                        R.drawable.ic_front_balance_background_2
+                    ),
+                    backImage = ContextCompat.getDrawable(
+                        this@TopicActivity,
+                        R.drawable.ic_back_balance_background_2
                     )
                 )
             )
@@ -76,9 +84,13 @@ class TopicActivity
                 Topic(
                     topicNumber = "TOPIC.3",
                     topicTitle = "모여서 각자\n디자인",
-                    image = ContextCompat.getDrawable(
+                    frontImage = ContextCompat.getDrawable(
                         this@TopicActivity,
-                        R.drawable.ic_balance_background_3
+                        R.drawable.ic_front_balance_background_3
+                    ),
+                    backImage = ContextCompat.getDrawable(
+                        this@TopicActivity,
+                        R.drawable.ic_back_balance_background_3
                     )
                 )
             )
@@ -86,9 +98,13 @@ class TopicActivity
                 Topic(
                     topicNumber = "TOPIC.4",
                     topicTitle = "모여서 각자\n디자인",
-                    image = ContextCompat.getDrawable(
+                    frontImage = ContextCompat.getDrawable(
                         this@TopicActivity,
-                        R.drawable.ic_balance_background_4
+                        R.drawable.ic_front_balance_background_4
+                    ),
+                    backImage = ContextCompat.getDrawable(
+                        this@TopicActivity,
+                        R.drawable.ic_back_balance_background_4
                     )
                 )
             )
@@ -96,10 +112,15 @@ class TopicActivity
                 Topic(
                     topicNumber = "TOPIC.5",
                     topicTitle = "모여서 각자\n디자인",
-                    image = ContextCompat.getDrawable(
+                    frontImage = ContextCompat.getDrawable(
                         this@TopicActivity,
-                        R.drawable.ic_balance_background_5
+                        R.drawable.ic_front_balance_background_5
+                    ),
+                    backImage = ContextCompat.getDrawable(
+                        this@TopicActivity,
+                        R.drawable.ic_back_balance_background_5
                     )
+
                 )
             )
         }

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent"
+        android:layout_marginHorizontal="20dp"
         android:theme="@style/Theme.TeumTeum"
         >
 
@@ -20,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/onboarding_tv_namecard_title"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:textAppearance="@style/ta.headline.2"
             android:lineSpacingExtra="3sp"
