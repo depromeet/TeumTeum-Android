@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -173,13 +174,15 @@ fun EditCardScreen(
                 //자기 개발
                 EditCardLabel(string = stringResource(id = R.string.setting_edit_card_label9))
                 TmMarginVerticalSpacer(size = 4)
-                InterestsChips(
-                    interests = interests,
-                    onClick = {
-                        viewModel.triggerSheetEvent(SheetEvent.SignUp)
-                              },
-                    viewModel = viewModel
-                )
+                key(interests) {
+                    InterestsChips(
+                        interests = interests,
+                        onClick = {
+                            viewModel.triggerSheetEvent(SheetEvent.SignUp)
+                        },
+                        viewModel = viewModel
+                    )
+                }
                 TmMarginVerticalSpacer(size = 20)
 
                 //틈틈 목표

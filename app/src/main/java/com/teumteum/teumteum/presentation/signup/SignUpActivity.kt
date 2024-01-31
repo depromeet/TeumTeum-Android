@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
@@ -127,6 +128,7 @@ class SignUpActivity
         val returnIntent = Intent().apply {
             putExtra("updateInterest", interest)
         }
+        Log.d("interest return ", interest.toString())
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }

@@ -39,7 +39,6 @@ class GetInterestFragment:
         if (isFromSpecialPath) {
             val selectedInterests = arguments?.getStringArrayList("selectedInterests") ?: arrayListOf()
             initChipsWithValue(selectedInterests)
-            returnInterest()
         } else {
             initSelfChips()
             initFieldChips()
@@ -106,19 +105,6 @@ class GetInterestFragment:
             binding.cgInterest1.addView(chip)
         }
     }
-
-    private fun returnInterest() {
-        val interestList = ArrayList<String>().apply {
-            addAll(viewModel.interestSelf.value)
-            addAll(viewModel.interestField.value)
-        }
-        val data = Intent().apply {
-            putStringArrayListExtra("changedInterests", interestList)
-            Log.d("changedInterest", interestList.toString())
-        }
-        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
-    }
-
     private fun initChipsWithValue(selectedInterests: ArrayList<String>) {
         val interestArray = resources.getStringArray(R.array.interest_1)
         val fieldArray = resources.getStringArray(R.array.interest_2)
@@ -156,12 +142,8 @@ class GetInterestFragment:
                 if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
                     if (isSelf) {
                         viewModel.addInterestSelf(interest)
-                        Log.d("viewModel  field", viewModel.interestField.value.toString())
-                        Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                     } else {
                         viewModel.addInterestField(interest)
-                        Log.d("viewModel chip field", viewModel.interestField.value.toString())
-                        Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                     }
                     viewModel.updateInterestCount()
                 } else {
@@ -172,12 +154,8 @@ class GetInterestFragment:
             } else {
                 if (isSelf) {
                     viewModel.removeInterestSelf(interest)
-                    Log.d("viewModel chip field", viewModel.interestField.value.toString())
-                    Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                 } else {
                     viewModel.removeInterestField(interest)
-                    Log.d("viewModel chip field", viewModel.interestField.value.toString())
-                    Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                 }
                 viewModel.updateInterestCount()
             }

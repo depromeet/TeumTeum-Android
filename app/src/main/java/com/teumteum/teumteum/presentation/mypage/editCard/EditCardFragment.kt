@@ -10,6 +10,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -55,6 +57,7 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             val interest = result.data?.getStringArrayListExtra("updateInterest")
             if(interest != null) {
                 viewModel.setInterestField(interest)
+
             }
         }
     }
@@ -64,7 +67,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
-
 
         setupEventObserver()
         initBottomSheet()
@@ -83,13 +85,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             findNavController().popBackStack()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadUserInfo()
-    }
-
-
     private fun initBottomSheet() {
 
     }
@@ -115,8 +110,14 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                     SheetEvent.Area -> showAreaSheet()
                     SheetEvent.Status -> showStatusSheet()
                     SheetEvent.SignUp -> { launchToSignUp() }
-                    SheetEvent.Error -> { context?.defaultToast("서버 통신에 오류가 발생했습니다") }
-                    SheetEvent.Success -> {context?.defaultToast("정보 수정이 완료되었습니다")}
+                    SheetEvent.Error -> {
+                        context?.defaultToast("서버 통신에 오류가 발생했습니다")
+                        viewModel.triggerSheetEvent(SheetEvent.None)
+                    }
+                    SheetEvent.Success -> {
+                        context?.defaultToast("정보 수정이 완료되었습니다")
+                        viewModel.triggerSheetEvent(SheetEvent.None)
+                    }
                     else -> {}
                 }
             }
