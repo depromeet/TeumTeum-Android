@@ -48,11 +48,6 @@ class GetInterestFragment:
         checkValidInput()
     }
 
-    val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            handleBackPress()
-        }
-    }
     private fun makeChip(interest: String): Chip {
         val chipDrawable = ChipDrawable.createFromAttributes(
             requireContext(),

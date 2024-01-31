@@ -70,6 +70,9 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
             SettingStatus.ERROR -> {
                 requireActivity().defaultToast("서버 통신 에러")
             }
+            SettingStatus.OPENSOURCE -> {
+
+            }
             else -> {}
         }
     }

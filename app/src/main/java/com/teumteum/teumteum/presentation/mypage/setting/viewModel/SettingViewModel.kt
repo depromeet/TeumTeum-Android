@@ -265,7 +265,8 @@ fun getMemberSetting(viewModel: SettingViewModel, navController: NavController):
     return listOf(
         SettingUiItem(title = "약관 및 개인정보 처리 동의", onClick = { navController.navigate(R.id.fragment_service) }),
         SettingUiItem(title = "탈퇴하기", onClick = { navController.navigate(R.id.fragment_signout) }),
-        SettingUiItem(title = "로그아웃", onClick = { viewModel.updateSettingStatus(SettingStatus.LOGOUT) })
+        SettingUiItem(title = "로그아웃", onClick = { viewModel.updateSettingStatus(SettingStatus.LOGOUT) }),
+        SettingUiItem(title = "오픈소스", onClick = {viewModel.updateSettingStatus(SettingStatus.OPENSOURCE)})
     )
 }
 
@@ -279,8 +280,7 @@ fun getServiceGuide(): List<SettingUiItem> {
 
 enum class SettingStatus {
     LOGOUT, LOGOUT_CONFIRM, SIGNOUT,
-    DEFAULT, NOTION, ERROR, SETTING,
-    CANCEL, RECOMMEND, RECOMMEND_DETAIL
+    DEFAULT, NOTION, ERROR, OPENSOURCE
 }
 
 

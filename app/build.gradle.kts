@@ -12,5 +12,6 @@ dependencies {
     implementation(libs.androidx.appCompat)
     implementation(libs.materialDesign)
     implementation(libs.androidx.constraintLayout)
+    implementation(libs.google.oss.plugin)
     implementation(libs.play.services.location)
 }
