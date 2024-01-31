@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "138097419934",
+    "project_id": "teum-teum-12611",
+    "storage_bucket": "teum-teum-12611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138097419934:android:4293a2ee8816a4850c3d8f",
+        "android_client_info": {
+          "package_name": "com.teumteum.teumteum"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyO3fj48Y0joIpYvusx9xGRli27ZcLUHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
