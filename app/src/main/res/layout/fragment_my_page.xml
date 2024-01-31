@@ -10,37 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.teumteum.teumteum.util.custom.view.BackCardView
-            android:id="@+id/cardview_back"
-            android:layout_width="280dp"
-            android:layout_height="400dp"
-            app:goalTitle="@string/back_card_goal_title"
-            app:isModifyDetail="true"
-            app:goalContent="@string/back_card_goal_content"
-            app:characterImage="@drawable/ic_card_back_penguin"
-            app:layout_constraintStart_toStartOf="@id/cardview_front"
-            app:layout_constraintTop_toTopOf="@id/cardview_front"
-            />
-
-        <com.teumteum.teumteum.util.custom.view.FrontCardView
-            android:id="@+id/cardview_front"
-            android:layout_width="280dp"
-            android:layout_height="400dp"
-            app:name="@string/front_card_name"
-            app:company="@string/front_card_company"
-            app:job="안드로이드 개발"
-            app:level="@string/front_card_level"
-            app:area="@string/front_card_area"
-            app:mbti="@string/front_card_mbti"
-            app:characterImage="@drawable/ic_card_front_penguin"
-            app:isModifyDetail="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="108dp"
-            />
-
-
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/compose_mypage"
             android:layout_width="match_parent"
@@ -48,6 +17,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 
 enum class SheetEvent {
-    None, JobDetail, JobClass, Mbti, Area, Interest, Status, Dismiss, SignUp, Error, Success
+    None, JobDetail, JobClass, Mbti, Area, Status, Dismiss, SignUp, Error, Success
 }
 @HiltViewModel
 class EditCardViewModel @Inject constructor(
@@ -133,10 +133,6 @@ class EditCardViewModel @Inject constructor(
         val isValidLength = nameWithoutSpaces.length in 2..10
         val containsNoAlphabet = name.none { it in 'a'..'z' || it in 'A'..'Z' } // 알파벳이 없어야 함
         return isValidLength && containsNoAlphabet && !invalidPattern.matches(name)
-    }
-
-    fun validateUserName() {
-        _isNameValid.value = isValidName(_userName.value)
     }
 
     fun updateUserName(name: String) {

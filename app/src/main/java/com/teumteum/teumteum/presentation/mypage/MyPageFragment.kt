@@ -32,76 +32,16 @@ class MyPageFragment :
     private val viewModel: SettingViewModel by activityViewModels()
     private val myPageViewModel: MyPageViewModel by activityViewModels()
 
-    private lateinit var frontAnimation: AnimatorSet
-    private lateinit var backAnimation: AnimatorSet
-    private var isFront = true
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
         (activity as MainActivity).showBottomNavi()
 
-        initCard()
-        initCardAnim()
-
         binding.composeMypage.setContent {
             CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
                 MyPageScreen(navController = navController, viewModel = viewModel, myPageViewModel = myPageViewModel)
             }
-        }
-    }
-
-    private fun initCard() {
-        with(myPageViewModel) {
-            val fc = CHARACTER_CARD_LIST[frontCardState.value.characterResId]?.let {
-               FrontCard(frontCardState.value.name, "@${frontCardState.value.company}", frontCardState.value.job,"lv.1층", "${frontCardState.value.area}에 사는", frontCardState.value.mbti, it)
-            }
-            if(fc != null) binding.cardviewFront.getInstance(fc)
-
-            val interests = mutableListOf<Interest>()
-            for (i in backCardState.value.interests) {
-                interests.add(Interest("#$i"))
-            }
-            binding.cardviewBack.apply {
-                tvGoalContent.text = backCardState.value.goalContent
-                CHARACTER_CARD_LIST_BACK[backCardState.value.characterResId]?.let {
-                    ivCharacter.setImageResource(it)
-                }
-            }
-        }
-    }
-
-    @SuppressLint("ResourceType")
-    private fun initCardAnim() {
-        val scale = resources.displayMetrics.density
-        binding.cardviewFront.cameraDistance = 8000 * scale
-        binding.cardviewBack.cameraDistance = 8000 * scale
-
-        frontAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_front) as AnimatorSet
-        backAnimation = AnimatorInflater.loadAnimator(requireContext(), com.teumteum.base.R.anim.card_reverse_back) as AnimatorSet
-
-        binding.cardviewFront.setOnSingleClickListener {
-            startAnim()
-        }
-        binding.cardviewBack.setOnSingleClickListener {
-            startAnim()
-        }
-    }
-
-    private fun startAnim() {
-        isFront = if (isFront) {
-            frontAnimation.setTarget(binding.cardviewFront)
-            backAnimation.setTarget(binding.cardviewBack)
-            frontAnimation.start()
-            backAnimation.start()
-            false
-        } else {
-            frontAnimation.setTarget(binding.cardviewBack)
-            backAnimation.setTarget(binding.cardviewFront)
-            backAnimation.start()
-            frontAnimation.start()
-            true
         }
     }
 

@@ -200,7 +200,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         statusBottomSheet!!.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
 
-
         private fun showAreaSheet() {
         val cityListener: (String) -> Unit = { city ->
             focusedCity = city
