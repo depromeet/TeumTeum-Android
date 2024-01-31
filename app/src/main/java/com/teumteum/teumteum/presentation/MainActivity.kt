@@ -8,10 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.ViewModelProvider
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -22,7 +19,6 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
 import com.teumteum.teumteum.presentation.home.HomeFragmentDirections
 import com.teumteum.teumteum.presentation.signin.SignInViewModel
-import com.teumteum.teumteum.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
