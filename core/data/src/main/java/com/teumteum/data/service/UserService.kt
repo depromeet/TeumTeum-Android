@@ -1,9 +1,9 @@
 package com.teumteum.data.service
 
+import com.teumteum.data.model.request.RequestDeviceToken
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendRecommend
-import com.teumteum.domain.entity.Friends
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.entity.Users
@@ -11,6 +11,7 @@ import com.teumteum.domain.entity.updatedUserInfo
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -55,5 +56,14 @@ interface UserService {
         @Path("userId") userId: Long
     ): Response<Unit>
 
+    @POST("alerts")
+    suspend fun postDeviceToken(
+        @Body token: RequestDeviceToken
+    ): Response<Unit>
+
+    @PATCH("alerts")
+    suspend fun patchDeviceToken(
+        @Body token: RequestDeviceToken
+    ): Response<Unit>
 }
 

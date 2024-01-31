@@ -306,6 +306,7 @@ class SignUpViewModel @Inject constructor(
                     .onSuccess {
                         // setAutoLogin에 회원가입 이후 유저토큰 전달
                         authRepository.setAutoLogin(it.accessToken, it.refreshToken)
+                        postDeviceTokens()
                         // userInfo에 임시로 넣어뒀던 아이디 -> 서버에서 받은 id 값으로 변경 -> 필요 시 사용
                         // it.id로 아이디 사용해서 내 정보 얻어오기
                         _userInfoState.value = UserInfoUiState.Success
@@ -313,6 +314,15 @@ class SignUpViewModel @Inject constructor(
                     .onFailure {
                         _userInfoState.value = UserInfoUiState.Failure("유저 정보 업로드 실패")
                     }
+            }
+        }
+    }
+
+    private fun postDeviceTokens() {
+        val deviceToken = authRepository.getDeviceToken()
+        if (deviceToken.isNotBlank()) {
+            viewModelScope.launch {
+                authRepository.postDeviceToken(deviceToken)
             }
         }
     }

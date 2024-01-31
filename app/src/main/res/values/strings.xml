@@ -325,4 +325,6 @@
     <string name="review_finish_title">리뷰 남기기가\n완료되었습니다.</string>
     <string name="review_go_home">홈으로 돌아가기</string>
 
+    <string name="teum_notification_channel_id">teum_notification_channel</string>
+
 </resources>

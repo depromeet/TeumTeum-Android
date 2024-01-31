@@ -24,9 +24,12 @@ class SplashActivity
     : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
 
     private val viewModel by viewModels<SplashViewModel>()
+    private var isFromAlarm = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        isFromAlarm = intent.getBooleanExtra(IS_FROM_ALARM, false)
         checkNetwork()
         setUpObserver()
     }
@@ -105,7 +108,7 @@ class SplashActivity
     }
 
     private fun startHomeScreen() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(MainActivity.getIntent(this, -1, isFromAlarm = isFromAlarm))
         finish()
     }
 
@@ -113,5 +116,7 @@ class SplashActivity
         const val IS_FIRST_AFTER_INSTALL = 0
         const val IS_AUTO_LOGIN = 1
         const val HAVE_TO_SIGN_IN = 2
+
+        const val IS_FROM_ALARM = "isFromAlarm"
     }
 }

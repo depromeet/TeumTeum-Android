@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/onboarding_tv_namecard_title"
             android:layout_marginTop="20dp"
-            android:textAppearance="@style/ta.headline.2"
+            android:textAppearance="@style/ta.headline.3"
             android:lineSpacingExtra="3sp"
             android:textColor="?attr/color_text_headline_primary"
             app:layout_constraintStart_toStartOf="parent"

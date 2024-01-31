@@ -3,27 +3,40 @@ package com.teumteum.teumteum.presentation
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModelProvider
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.teumteum.base.BindingActivity
+import com.teumteum.base.util.extension.boolExtra
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
 import com.teumteum.teumteum.presentation.home.HomeFragmentDirections
-import com.teumteum.teumteum.util.callback.CustomBackPressedCallback
+import com.teumteum.teumteum.presentation.signin.SignInViewModel
+import com.teumteum.teumteum.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val id by intExtra()
     private var isGroup: Boolean = false
+    private val isFromAlarm by boolExtra()
+
+    private val viewModel by viewModels<SignInViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        checkAskedNotification()
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -33,6 +46,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         if (id != -1) { moveRecommendDetail() }
         if(isGroup) { moveWebView() }
 
+
+        if (isFromAlarm) {
+            val action = HomeFragmentDirections.actionHomeFragmentToFragmentFamiliar()
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
+            navHostFragment.navController.navigate(action)
+        }
     }
 
     fun hideBottomNavi() {
@@ -65,6 +84,35 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             HomeFragmentDirections.actionFragmentHomeToFragmentWebView(isGroup)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         navHostFragment.navController.navigate(action)
+    }
+
+    private fun checkAskedNotification() {
+        if (!viewModel.getAskedNotification()) {
+            requestNotificationPermission()
+            viewModel.setAskedkNotification(true)
+        }
+    }
+
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { _ ->
+        }
+
+    private fun requestNotificationPermission() {
+        if (
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
+                } else {
+                    requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        }
     }
 
     override fun finish() {
