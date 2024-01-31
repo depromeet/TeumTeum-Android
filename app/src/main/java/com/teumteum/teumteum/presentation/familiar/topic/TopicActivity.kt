@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.familiar.topic
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,9 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityTopicBinding
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.EXTRA_SOURCE
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.SOURCE_TOPIC
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -110,9 +114,19 @@ class TopicActivity
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_close,
                 useRippleEffect = false,
-                clickEvent = ::finish
+                clickEvent = ::startFamiliarDialogActivity
+
             )
         )
+    }
+
+    private fun startFamiliarDialogActivity() {
+        val intent = Intent(this, FamiliarDialogActivity::class.java).apply {
+            putExtra(EXTRA_SOURCE, SOURCE_TOPIC)
+        }
+        startActivity(intent)
+        finish()
+
     }
 
     private fun initViewPager() {

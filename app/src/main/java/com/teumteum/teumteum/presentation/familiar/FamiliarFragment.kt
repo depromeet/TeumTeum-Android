@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentFamiliarBinding
+import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
 import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity
 import com.teumteum.teumteum.presentation.familiar.onboarding.FamiliarOnBoardingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,7 @@ class FamiliarFragment :
         if (!sharedPreferencesManager.isOnboardingCompleted()) {
             startActivity(Intent(requireContext(), FamiliarOnBoardingActivity::class.java))
         } else {
-            startActivity(Intent(requireContext(), NeighborActivity::class.java))
+            startActivity(Intent(requireContext(), IntroduceActivity::class.java)) //todo - 테스트용 임시 랜딩
         }
     }
 }
