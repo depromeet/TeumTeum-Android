@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -16,6 +17,7 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentGetInterestBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
 import com.teumteum.teumteum.util.extension.dpToPx
@@ -25,6 +27,7 @@ class GetInterestFragment:
     BindingFragment<FragmentGetInterestBinding>(R.layout.fragment_get_interest) {
 
     private val viewModel by activityViewModels<SignUpViewModel>()
+    private var isFromSpecialPath: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,7 +35,7 @@ class GetInterestFragment:
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
-        val isFromSpecialPath = arguments?.getBoolean("isFromSpecialPath", false) ?: false
+        isFromSpecialPath = arguments?.getBoolean("isFromSpecialPath", false) ?: false
         if (isFromSpecialPath) {
             val selectedInterests = arguments?.getStringArrayList("selectedInterests") ?: arrayListOf()
             initChipsWithValue(selectedInterests)
@@ -45,6 +48,11 @@ class GetInterestFragment:
         checkValidInput()
     }
 
+    val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            handleBackPress()
+        }
+    }
     private fun makeChip(interest: String): Chip {
         val chipDrawable = ChipDrawable.createFromAttributes(
             requireContext(),

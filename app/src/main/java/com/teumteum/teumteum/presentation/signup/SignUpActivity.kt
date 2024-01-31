@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.signup
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -122,10 +123,31 @@ class SignUpActivity
         }
     }
 
+    fun returnInterest(interest: ArrayList<String>) {
+        val returnIntent = Intent().apply {
+            putExtra("updateInterest", interest)
+        }
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
+    }
+
 
     private fun setStartingFragment() {
         navigateTo<CharacterFragment>()
     }
+
+    fun handleBackPress() {
+        val combinedInterests = combineInterests()
+        this@SignUpActivity.returnInterest(combinedInterests)
+    }
+
+    private fun combineInterests(): ArrayList<String> {
+        val combinedList = ArrayList<String>()
+        combinedList.addAll(viewModel.interestSelf.value)
+        combinedList.addAll(viewModel.interestField.value)
+        return combinedList.distinct() as ArrayList<String>
+    }
+
 
     fun activateNextButton() {
         binding.btnNextSignup.isEnabled = true
@@ -269,6 +291,9 @@ class SignUpActivity
             viewModel.currentStep.collect { currentStep ->
                 binding.seekBar.progress = currentStep * 10
                 if (currentStep == 0) {
+                    if (isFromMainActivity) {
+                        handleBackPress()
+                    }
                     finish()
                 }
             }

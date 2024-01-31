@@ -127,8 +127,6 @@ class EditCardViewModel @Inject constructor(
     private val _isNameValid = MutableStateFlow<Boolean>(true)
     val isNameValid: StateFlow<Boolean> = _isNameValid
 
-
-
     fun isValidName(name: String): Boolean {
         val nameWithoutSpaces = name.filter { !it.isWhitespace() }
         val invalidPattern = Regex("^[ㄱ-ㅎㅏ-ㅣ]+$")
