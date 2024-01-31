@@ -85,7 +85,7 @@ fun MyPageScreen(
                 TmMarginVerticalSpacer(size = 78)
                 if (isFrontCardShown) {
                     Box(modifier = Modifier.clickable { myPageViewModel.toggleCardState() }) {
-                        MyPageFrontCard(frontCard = frontCardState)
+//                        MyPageFrontCard(frontCard = frontCardState)
                         Image(
                             painter = painterResource(id = R.drawable.ic_floating_edit),
                             contentDescription = "Character Image",
@@ -97,7 +97,7 @@ fun MyPageScreen(
                     }
                 } else {
                     Box(modifier = Modifier.clickable { myPageViewModel.toggleCardState() }) {
-                        MyPageBackCard(backCard = backCard)
+//                        MyPageBackCard(backCard = backCard)
                     }
                 }
                 TmMarginVerticalSpacer(size = 22)

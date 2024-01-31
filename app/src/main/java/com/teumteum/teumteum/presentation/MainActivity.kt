@@ -120,5 +120,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         fun getIntent(context: Context, id: Int) = Intent(context, MainActivity::class.java).apply {
             putExtra("id", id)
         }
+        fun getIntent(context: Context, id: Int, isFromAlarm: Boolean = false) = Intent(context, MainActivity::class.java).apply {
+            putExtra("id", id)
+            putExtra("isFromAlarm", isFromAlarm)
+        }
     }
 }

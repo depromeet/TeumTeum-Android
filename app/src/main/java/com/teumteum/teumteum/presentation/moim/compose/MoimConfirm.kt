@@ -85,7 +85,6 @@ fun MoimConfirm(
     },
 
     ) {
-    Log.d("meetingId from confirm", meetingId.toString())
     meetingId?.let {
         viewModel.setMeetingId(it)
     }
