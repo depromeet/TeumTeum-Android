@@ -43,6 +43,11 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 configureAndroidCommonPlugin()
                 configureDefault()
 
+               packagingOptions {
+                    exclude("META-INF/DEPENDENCIES")
+                   exclude("migrateToAndroidx/migration.xml")
+                }
+
                 buildFeatures {
                     buildConfig = true
                     viewBinding = true
@@ -149,7 +154,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
 //                // google
 //                implementation(libs.getLibrary("inAppUpdate"))
-//                implementation(libs.getLibrary("ossLicense"))
+                implementation(libs.getLibrary("ossLicense"))
                 implementation(libs.getLibrary("gson"))
 
                 // okhttp

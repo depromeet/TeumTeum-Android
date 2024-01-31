@@ -139,10 +139,13 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun userInfoToBackCard(userInfo: UserInfo, characterList: HashMap<Int, Int>): BackCard {
+        val modifiedInterests = userInfo.interests.map { interest ->
+            "#$interest"
+        }.toMutableList()
         return BackCard(
             goalTitle = "GOAL",
             goalContent = userInfo.goal,
-            interests = userInfo.interests.toMutableList(),
+            interests = modifiedInterests,
             characterResId = characterList[userInfo.characterId.toInt()] ?: 1,
         )
     }

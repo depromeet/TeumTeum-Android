@@ -28,7 +28,6 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
         super.onViewCreated(view, savedInstanceState)
 
         userId = arguments?.getInt("id") ?: null
-        Log.d("my id", userId.toString())
 
         if(userId == 0)    myPageViewModel.loadFriends()
         else    userId?.let { viewModel.loadFriends(it.toLong()) }

@@ -1,13 +1,14 @@
 package com.teumteum.teumteum.presentation
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -18,12 +19,12 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
 import com.teumteum.teumteum.presentation.home.HomeFragmentDirections
 import com.teumteum.teumteum.presentation.signin.SignInViewModel
-import com.teumteum.teumteum.presentation.splash.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val id by intExtra()
+    private var isGroup: Boolean = false
     private val isFromAlarm by boolExtra()
 
     private val viewModel by viewModels<SignInViewModel>()
@@ -36,10 +37,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         val navController = navHostFragment.navController
         binding.btmNavi.setupWithNavController(navController)
+        isGroup = intent.getBooleanExtra("isGroup", false)
 
-        if (id != -1) {
-            moveRecommendDetail()
-        }
+        if (id != -1) { moveRecommendDetail() }
+        if(isGroup) { moveWebView() }
+
 
         if (isFromAlarm) {
             val action = HomeFragmentDirections.actionHomeFragmentToFragmentFamiliar()
@@ -61,6 +63,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             HomeFragmentDirections.actionFragmentHomeToFragmentRecommendDetail(
                 id, true
             )
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
+        navHostFragment.navController.navigate(action)
+    }
+
+    fun returnGroupDetail(fullAddress:String) {
+        val returnIntent = Intent().apply {
+            putExtra("address", fullAddress)
+        }
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
+    }
+
+    private fun moveWebView() {
+        val action =
+            HomeFragmentDirections.actionFragmentHomeToFragmentWebView(isGroup)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         navHostFragment.navController.navigate(action)
     }
@@ -100,6 +117,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     companion object {
+        fun getIntent(context: Context, id: Int) = Intent(context, MainActivity::class.java).apply {
+            putExtra("id", id)
+        }
         fun getIntent(context: Context, id: Int, isFromAlarm: Boolean = false) = Intent(context, MainActivity::class.java).apply {
             putExtra("id", id)
             putExtra("isFromAlarm", isFromAlarm)

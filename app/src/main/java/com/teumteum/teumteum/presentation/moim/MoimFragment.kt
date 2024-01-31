@@ -50,8 +50,7 @@ class MoimFragment :
         val navController = findNavController()
         val meetingId = arguments?.getLong("meetingId", -1L) ?: -1L
 
-        if (meetingId >= 0) {
-            Log.d("meetingId", meetingId.toString())
+        if (meetingId > 0) {
             viewModel.getGroup(meetingId)
             viewModel.updateSheetEvent(ScreenState.CancelInit)
         } else {
@@ -129,6 +128,7 @@ class MoimFragment :
     }
 
     private fun setupUI() {
+        viewModel.updateSheetEvent(ScreenState.Topic)
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
@@ -171,6 +171,8 @@ class MoimFragment :
                         viewModel.initializeState()
                     }
                     ScreenState.Success -> {
+                        delay(1000)
+                        (activity as MainActivity).showBottomNavi()
                         delay(5000)
                         viewModel.initializeState()
                     }

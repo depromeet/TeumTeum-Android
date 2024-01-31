@@ -1,5 +1,8 @@
 package com.teumteum.teumteum.presentation.mypage
 
+import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -58,11 +62,17 @@ fun MyPageScreen(
     val userName by viewModel.userName.collectAsState()
     val isFrontCardShown by myPageViewModel.isFrontCardShown.collectAsState()
     val backCard by myPageViewModel.backCardState.collectAsState()
+    Log.d("backCardState", backCard.toString())
 
     val friends = when (userInfoState) {
         is UserInfoUiState.Success -> "추천한 친구 ${(userInfoState as UserInfoUiState.Success).data.friends}명"
         else -> "로딩 중..."
     }
+
+    val rotation by animateFloatAsState(
+        targetValue = if (isFrontCardShown) 0f else 180f,
+        animationSpec = tween(durationMillis = 500), label = ""
+    )
 
     TmScaffold(
         isSetting = true,
@@ -83,23 +93,28 @@ fun MyPageScreen(
         ) {
             item {
                 TmMarginVerticalSpacer(size = 78)
-                if (isFrontCardShown) {
-                    Box(modifier = Modifier.clickable { myPageViewModel.toggleCardState() }) {
-                        MyPageFrontCard(frontCard = frontCardState)
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_floating_edit),
-                            contentDescription = "Character Image",
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .offset(x = (-24).dp, y = (-22).dp)
-                                .clickable { navController.navigate(R.id.fragment_edit_card) }
-                        )
+                    Box(modifier = Modifier
+                        .clickable { myPageViewModel.toggleCardState() }
+                        .graphicsLayer {
+                            rotationY = rotation
+                            cameraDistance = 12f * density
+                        }
+                    ) {
+                        if (isFrontCardShown) {
+                            MyPageFrontCard(frontCard = frontCardState)
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_floating_edit),
+                                contentDescription = "Character Image",
+                                modifier = Modifier
+                                    .align(Alignment.BottomEnd)
+                                    .offset(x = (-24).dp, y = (-22).dp)
+                                    .clickable { navController.navigate(R.id.fragment_edit_card) }
+                            )
+                        } else {
+                            MyPageBackCard(backCard = backCard)
+                        }
+                        
                     }
-                } else {
-                    Box(modifier = Modifier.clickable { myPageViewModel.toggleCardState() }) {
-                        MyPageBackCard(backCard = backCard)
-                    }
-                }
                 TmMarginVerticalSpacer(size = 22)
                 SettingBtn(friends, navController, myPageViewModel)
                 TmMarginVerticalSpacer(size = 10)
