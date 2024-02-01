@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.presentation.moim
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +14,12 @@ import android.webkit.WebView
 import android.webkit.WebView.setWebContentsDebuggingEnabled
 import android.webkit.WebViewClient
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.teumteum.base.BindingFragment
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentWebviewBinding
+import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 
 
 class WebviewFragment :
@@ -24,12 +28,16 @@ class WebviewFragment :
     private val webViewModel: WebViewModel by activityViewModels()
     private val moimViewModel: MoimViewModel by activityViewModels()
     private lateinit var handler: Handler
+    private var isGroup: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initWebView()
         handler = Handler()
+
+        Log.d("FromGroup", isGroup.toString())
+        isGroup = arguments?.getBoolean("FromGroup", false) ?: false
 
     }
 
@@ -68,7 +76,11 @@ class WebviewFragment :
                 webViewModel.setAddress(fullAddress)
                 moimViewModel.updateAddress(fullAddress)
                 activity?.runOnUiThread {
-                    parentFragmentManager.popBackStack()
+                    if(isGroup) {
+                        (activity as? MainActivity)?.returnGroupDetail(fullAddress)
+                    } else {
+                        parentFragmentManager.popBackStack()
+                    }
                 }
             }
         }

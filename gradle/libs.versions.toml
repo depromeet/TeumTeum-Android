@@ -86,10 +86,12 @@ android-build = { module = "com.android.tools.build:gradle", version.ref = "grad
 kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinVersion" }
 hilt-gradle = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hiltVersion" }
 google-oss-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "ossPlugin" }
-#google-services-plugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServicePlugin" }
+google-services-plugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServicePlugin" }
 #google-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "googleAppdistributionPlugin" }
 #google-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "googleCrashlyticsPlguin" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version = "21.0.1" }
+
+
 
 navigation-plugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationVersion" }
 
@@ -160,8 +162,8 @@ ossLicense = { group = "com.google.android.gms", name = "play-services-oss-licen
 
 inAppUpdate = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "inAppUpdateVersion" }
 
-#firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseVersion" }
-#firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx"}
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseVersion" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx"}
 #firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx"}
 #firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx"}
 #firebase-remoteConfig = { group = "com.google.firebase", name = "firebase-config-ktx"}
@@ -264,6 +266,7 @@ appModuleLibraryEtc = [
     "amplitude"
 ]
 okhttp = ["okhttp", "okhttp-logging-interceptor"]
+firebase = ["firebase-messaging"]
 #firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-messaging", "firebase-remoteConfig"]
 flipper = ["flipper", "soloader", "flipper-network", "flipper-leakcanary"]
 retrofit = ["retrofit", "retrofit-json-converter"]

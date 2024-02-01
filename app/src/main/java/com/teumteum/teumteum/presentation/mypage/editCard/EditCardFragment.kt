@@ -10,6 +10,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -49,15 +51,22 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
     private var areaBottomSheet: AreaModalBottomSheet? = null
     private var statusBottomSheet: SingleModalBottomSheet? = null
     private var focusedCity: String = "서울"
-    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     var jobDetailList = ArrayList<String>()
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result->
+        if(result.resultCode == Activity.RESULT_OK) {
+            val interest = result.data?.getStringArrayListExtra("updateInterest")
+            if(interest != null) {
+                viewModel.setInterestField(interest)
+
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
         (activity as MainActivity).hideBottomNavi()
-
 
         setupEventObserver()
         initBottomSheet()
@@ -70,38 +79,13 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-
-                val interests = result.data?.getStringArrayListExtra("changedInterests")
-                Log.d("resultInterest_editCard", interests.toString())
-                interests?.let {
-                    viewModel.setInterestField(it)
-                }
-                viewModel.triggerSheetEvent(SheetEvent.Dismiss)
-            }
-        }
-
-    }
-
     val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             (activity as MainActivity).showBottomNavi()
             findNavController().popBackStack()
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadUserInfo()
-    }
-
-
     private fun initBottomSheet() {
-
 
     }
 
@@ -125,22 +109,30 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                     SheetEvent.Mbti -> showMbtiSheet()
                     SheetEvent.Area -> showAreaSheet()
                     SheetEvent.Status -> showStatusSheet()
-                    SheetEvent.SignUp -> {
-                        val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
-                            val interests = viewModel.interestField.value
-                            putExtra("interests", ArrayList(interests))
-                            putExtra("isFromMainActivity", true)
-                            putExtra("navigateTo", "fragment_get_interest")
-                            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
-                        }
-                        resultLauncher.launch(intent)
+                    SheetEvent.SignUp -> { launchToSignUp() }
+                    SheetEvent.Error -> {
+                        context?.defaultToast("서버 통신에 오류가 발생했습니다")
+                        viewModel.triggerSheetEvent(SheetEvent.None)
                     }
-                    SheetEvent.Error -> { context?.defaultToast("서버 통신에 오류가 발생했습니다") }
-                    SheetEvent.Success -> {context?.defaultToast("정보 수정이 완료되었습니다")}
+                    SheetEvent.Success -> {
+                        context?.defaultToast("정보 수정이 완료되었습니다")
+                        viewModel.triggerSheetEvent(SheetEvent.None)
+                    }
                     else -> {}
                 }
             }
         }
+    }
+
+    private fun launchToSignUp() {
+        val intent = Intent(requireContext(), SignUpActivity::class.java).apply {
+            val interests = viewModel.interestField.value
+            putExtra("interests", ArrayList(interests))
+            putExtra("isFromMainActivity", true)
+            putExtra("navigateTo", "fragment_get_interest")
+            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+        }
+        startForResult.launch(intent)
     }
 
     private fun showMbtiSheet() {
@@ -207,7 +199,6 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         }
         statusBottomSheet!!.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
-
 
         private fun showAreaSheet() {
         val cityListener: (String) -> Unit = { city ->

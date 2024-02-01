@@ -1,21 +1,30 @@
 package com.teumteum.teumteum.presentation.mypage
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.compose.theme.ColorPalette_Dark
 import com.teumteum.base.component.compose.theme.ColorPalette_Light
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentMyPageBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.DialogEvent
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
+import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST
+import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST_BACK
+import com.teumteum.teumteum.util.custom.view.model.FrontCard
+import com.teumteum.teumteum.util.custom.view.model.Interest
 
 
 class MyPageFragment :
@@ -35,6 +44,7 @@ class MyPageFragment :
             }
         }
     }
+
 
     override fun onResume() {
         super.onResume()

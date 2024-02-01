@@ -60,9 +60,6 @@ object SignupUtils {
     const val AREA_CITY_INCHEON = "인천"
     const val AREA_CITY_GYEONGGI = "경기"
 
-    val TOPIC_LIST = arrayListOf(
-        "고민 나누기", "모여서 작업", "스터디", "사이드 프로젝트"
-    )
 
     val PEOPLE_LIST = arrayListOf(
         "3명", "4명", "5명", "6명"

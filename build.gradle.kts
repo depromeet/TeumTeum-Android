@@ -15,7 +15,7 @@ buildscript {
     dependencies {
         classpath(libs.android.build)
         classpath(libs.kotlin.gradle)
-//        classpath(libs.google.services.plugin)
+        classpath(libs.google.services.plugin)
 //        classpath(libs.google.appdistribution.gradle)
 //        classpath(libs.google.crashlytics.gradle)
         classpath(libs.navigation.plugin)

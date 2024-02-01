@@ -44,23 +44,16 @@
         app:layout_constraintTop_toBottomOf="@id/tv_group_name"
         tools:text="12월 10일 오후 7:00" />
 
-    <androidx.cardview.widget.CardView
+    <ImageView
+        android:id="@+id/iv_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="20dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6">
-
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintVertical_bias="0.6" />
 
     <View
         android:id="@+id/view_division_button"

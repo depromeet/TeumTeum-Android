@@ -59,11 +59,12 @@ interface GroupService {
         @Path("meetingsId") meetingsId: Long
     ): ResponseMeeting
 
+    @Multipart
     @PUT("meetings/{meetingId}")
     suspend fun modifyMeeting(
         @Path("meetingId") meetingId: Long,
         @Part images: List<MultipartBody.Part>,
-        @Body meetingRequest: RequestBody
+        @Part("request") meetingRequest: RequestBody
     ): ResponseMeeting
 
     @POST("meeting/{meetingId}/reports")

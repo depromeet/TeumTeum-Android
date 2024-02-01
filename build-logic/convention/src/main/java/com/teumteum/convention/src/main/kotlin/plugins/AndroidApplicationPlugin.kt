@@ -30,7 +30,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("androidx.navigation.safeargs")
                 apply("com.google.android.gms.oss-licenses-plugin")
-//                apply("com.google.gms.google-services")
+                apply("com.google.gms.google-services")
 //                apply("com.google.firebase.appdistribution")
 //                apply("com.google.firebase.crashlytics")
             }
@@ -42,6 +42,11 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
                 configureAndroidCommonPlugin()
                 configureDefault()
+
+               packagingOptions {
+                    exclude("META-INF/DEPENDENCIES")
+                   exclude("migrateToAndroidx/migration.xml")
+                }
 
                 buildFeatures {
                     buildConfig = true
@@ -132,8 +137,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 implementation(libs.getBundle("androidx"))
 
 //                // firebase
-//                implementation(platform(libs.getLibrary("firebase-bom")))
-//                implementation(libs.getBundle("firebase"))
+                implementation(platform(libs.getLibrary("firebase-bom")))
+                implementation(libs.getBundle("firebase"))
 
                 // flipper
                 implementation(libs.getBundle("flipper"))
@@ -149,7 +154,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
 
 //                // google
 //                implementation(libs.getLibrary("inAppUpdate"))
-//                implementation(libs.getLibrary("ossLicense"))
+                implementation(libs.getLibrary("ossLicense"))
                 implementation(libs.getLibrary("gson"))
 
                 // okhttp

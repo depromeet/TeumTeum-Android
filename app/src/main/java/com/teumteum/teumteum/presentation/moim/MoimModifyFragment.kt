@@ -22,7 +22,6 @@ import com.teumteum.teumteum.presentation.moim.compose.MoimModify
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
 import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
 import com.teumteum.teumteum.util.SignupUtils.PEOPLE_LIST
-import com.teumteum.teumteum.util.SignupUtils.TOPIC_LIST
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.ArrayList

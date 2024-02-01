@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
@@ -16,6 +17,7 @@ import com.teumteum.base.BindingFragment
 import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentGetInterestBinding
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.signup.SignUpActivity
 import com.teumteum.teumteum.presentation.signup.SignUpViewModel
 import com.teumteum.teumteum.util.extension.dpToPx
@@ -25,6 +27,7 @@ class GetInterestFragment:
     BindingFragment<FragmentGetInterestBinding>(R.layout.fragment_get_interest) {
 
     private val viewModel by activityViewModels<SignUpViewModel>()
+    private var isFromSpecialPath: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,11 +35,10 @@ class GetInterestFragment:
         binding.vm = viewModel
         binding.lifecycleOwner = this
 
-        val isFromSpecialPath = arguments?.getBoolean("isFromSpecialPath", false) ?: false
+        isFromSpecialPath = arguments?.getBoolean("isFromSpecialPath", false) ?: false
         if (isFromSpecialPath) {
             val selectedInterests = arguments?.getStringArrayList("selectedInterests") ?: arrayListOf()
             initChipsWithValue(selectedInterests)
-            returnInterest()
         } else {
             initSelfChips()
             initFieldChips()
@@ -103,19 +105,6 @@ class GetInterestFragment:
             binding.cgInterest1.addView(chip)
         }
     }
-
-    private fun returnInterest() {
-        val interestList = ArrayList<String>().apply {
-            addAll(viewModel.interestSelf.value)
-            addAll(viewModel.interestField.value)
-        }
-        val data = Intent().apply {
-            putStringArrayListExtra("changedInterests", interestList)
-            Log.d("changedInterest", interestList.toString())
-        }
-        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, data)
-    }
-
     private fun initChipsWithValue(selectedInterests: ArrayList<String>) {
         val interestArray = resources.getStringArray(R.array.interest_1)
         val fieldArray = resources.getStringArray(R.array.interest_2)
@@ -153,12 +142,8 @@ class GetInterestFragment:
                 if (viewModel.interestCount.value < MAXIMUM_CHIP_COUNT) {
                     if (isSelf) {
                         viewModel.addInterestSelf(interest)
-                        Log.d("viewModel  field", viewModel.interestField.value.toString())
-                        Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                     } else {
                         viewModel.addInterestField(interest)
-                        Log.d("viewModel chip field", viewModel.interestField.value.toString())
-                        Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                     }
                     viewModel.updateInterestCount()
                 } else {
@@ -169,12 +154,8 @@ class GetInterestFragment:
             } else {
                 if (isSelf) {
                     viewModel.removeInterestSelf(interest)
-                    Log.d("viewModel chip field", viewModel.interestField.value.toString())
-                    Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                 } else {
                     viewModel.removeInterestField(interest)
-                    Log.d("viewModel chip field", viewModel.interestField.value.toString())
-                    Log.d("viewModel chip self", viewModel.interestSelf.value.toString())
                 }
                 viewModel.updateInterestCount()
             }

@@ -29,6 +29,14 @@ class TeumTeumDataStoreImpl @Inject constructor(
         get() = userPref.getString(PREF_USER_INFO, "") ?: ""
         set(value) = userPref.edit { putString(PREF_USER_INFO, value) }
 
+    override var deviceToken: String
+        get() = userPref.getString(PREF_DEVICE_TOKEN, "") ?: ""
+        set(value) = userPref.edit { putString(PREF_DEVICE_TOKEN, value) }
+
+    override var askedNotification: Boolean
+        get() = userPref.getBoolean(PREF_ASKED_NOTIFICATION, false)
+        set(value) = userPref.edit { putBoolean(PREF_ASKED_NOTIFICATION, value)}
+
     override fun clearLocalPref() = userPref.edit { clear() }
 
     companion object {
@@ -37,5 +45,7 @@ class TeumTeumDataStoreImpl @Inject constructor(
         private const val PREF_IS_LOGIN = "IS_LOGIN"
         private const val PREF_USER_INFO = "USER_INFO"
         private const val PREF_IS_FIRST_AFTER_INSTALL = "IS_FIRST_AFTER_INSTALL"
+        private const val PREF_DEVICE_TOKEN = "DEVICE_TOKEN"
+        private const val PREF_ASKED_NOTIFICATION = "ASKED_NOTIFICATION"
     }
 }
