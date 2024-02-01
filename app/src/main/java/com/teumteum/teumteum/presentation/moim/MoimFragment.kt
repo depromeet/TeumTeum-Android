@@ -39,10 +39,7 @@ class MoimFragment :
 
     override fun onResume() {
         super.onResume()
-
         (activity as MainActivity).hideBottomNavi()
-        val currentScreenState = viewModel.screenState.value
-        Log.d("MoimFragment", "Current ScreenState: $currentScreenState")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
