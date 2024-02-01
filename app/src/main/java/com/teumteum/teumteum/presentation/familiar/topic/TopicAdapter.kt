@@ -5,14 +5,15 @@ import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teumteum.domain.entity.TopicResponse
-import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemTopicBinding
+import com.teumteum.teumteum.util.ResMapper
 
 class TopicAdapter :
     ListAdapter<TopicResponse, TopicAdapter.ItemViewHolder>(ItemListDiffCallback) {
@@ -30,7 +31,7 @@ class TopicAdapter :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),position)
     }
 
     inner class ItemViewHolder(private val binding: ItemTopicBinding) :
@@ -83,27 +84,31 @@ class TopicAdapter :
             }
         }
 
-        fun bind(item: TopicResponse) {
+        fun bind(item: TopicResponse, position: Int) {
             if (item is TopicResponse.Story) {
-                // Handle Story data
+
+                val frontImageResId = ResMapper.getFrontImageResId(position)
+                val backImageResId = ResMapper.getBackImageResId(position)
+                val pageNumber = position + 1
+
                 with(binding) {
-                    tvTopicNumber.text = "1"
+                    tvTopicNumber.text = "TOPIC.$pageNumber"
                     tvTopicTitle.text = item.topic
 
-                    Glide.with(itemView.context)
-                        .load(R.drawable.ic_front_balance_background_1)
-                        .apply(RequestOptions.centerInsideTransform())
-                        .into(binding.ivFrontBalanceBackground)
-
-                    Glide.with(itemView.context)
-                        .load(R.drawable.ic_back_balance_background_1)
-                        .apply(RequestOptions.centerInsideTransform())
-                        .into(binding.ivBackBalanceBackground)
+                    loadImage(binding.ivFrontBalanceBackground, frontImageResId)
+                    loadImage(binding.ivBackBalanceBackground, backImageResId)
                 }
             } else if (item is TopicResponse.Balance) {
                 // Handle Balance data
                 // You can similarly bind Balance data to your views here
             }
+        }
+
+        private fun loadImage(imageView: ImageView, imageResId: Int) {
+            Glide.with(itemView.context)
+                .load(imageResId)
+                .apply(RequestOptions.centerInsideTransform())
+                .into(imageView)
         }
     }
 

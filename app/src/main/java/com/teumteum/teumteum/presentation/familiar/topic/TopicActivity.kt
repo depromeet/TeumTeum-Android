@@ -19,88 +19,61 @@ import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Compan
 import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.SOURCE_TOPIC
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
 @AndroidEntryPoint
-class TopicActivity
-    : BindingActivity<ActivityTopicBinding>(R.layout.activity_topic), AppBarLayout {
+class TopicActivity : BindingActivity<ActivityTopicBinding>(R.layout.activity_topic), AppBarLayout {
 
     private val topicAdapter = TopicAdapter()
     private val viewModel by viewModels<TopicViewModel>()
     private val visitedPages = HashSet<Int>()
-    private var apiDataIndex = 0
-
-    private val dummyList = mutableListOf<TopicResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initAppBarLayout()
         initViewPager()
         setUpObserver()
-        initDummyViewPager() // Move this after setUpObserver
+        callGetTopicsAndMeasureTime()
     }
 
-    private fun initDummyViewPager() {
-        for (i in 1..5) {
-            // Create instances of Balance and Story as needed
-            val balance = TopicResponse.Balance(
-                topic = "생성중입니다.",
-                balanceQuestion = listOf("Question 1", "Question 2")
-            )
-            val story = TopicResponse.Story(
-                topic = "생성중입니다.",
-                story = "Lorem ipsum story $i"
-            )
-
-            // Add either Balance or Story to the list based on your logic
-            if (i % 2 == 0) { // Alternating between Balance and Story
-                dummyList.add(balance)
-            } else {
-                dummyList.add(story)
+    private fun callGetTopicsAndMeasureTime() {
+        val startTime = System.currentTimeMillis()
+        viewModel.getTopics(userIds = listOf("32", "38", "16"), type = "story")
+        viewModel.topicState.observe(this) { state ->
+            if (state is UiState.Success || state is UiState.Failure) {
+                val endTime = System.currentTimeMillis()
+                val totalTime = endTime - startTime
+                Timber.tag("총시간").d("$totalTime ms")
             }
         }
-
-        // Initially, combine dummyList and apiDataList to update the ViewPager
-        updateViewPagerWithCombinedData()
     }
 
-
     private fun setUpObserver() {
+        viewModel.topics.observe(this) { newApiData ->
+            updateViewPagerWithApiData(newApiData)
+        }
+
         viewModel.topicState.observe(this) { state ->
             when (state) {
                 is UiState.Loading -> {
                     // Handle loading state
                 }
-
                 is UiState.Success -> {
-                    viewModel.topics.value?.let { newApiData ->
-                        updateViewPagerWithApiData(newApiData)
+                    viewModel.topics.value?.let { newApiDataList ->
+                        updateViewPagerWithApiData(newApiDataList)
                     }
                 }
-
                 is UiState.Failure -> {
                     // Handle failure state
                 }
-
                 else -> {}
             }
         }
     }
 
-    private fun updateViewPagerWithApiData(newApiData: TopicResponse) {
-        if (dummyList.isNotEmpty()) {
-            dummyList[apiDataIndex % dummyList.size] = newApiData
-            apiDataIndex++
-            updateViewPagerWithCombinedData()
-        }
-    }
-
-    private fun updateViewPagerWithCombinedData() {
-        val currentItem = binding.vp.currentItem // 현재 페이지 위치 저장
-        topicAdapter.submitList(dummyList.toList()) // 리스트 업데이트
-        binding.vp.post {
-            binding.vp.setCurrentItem(currentItem, false) // 페이지 위치 복원
-        }
+    private fun updateViewPagerWithApiData(newApiDataList: List<TopicResponse>) {
+        topicAdapter.submitList(newApiDataList) // This is enough for ListAdapter
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -108,14 +81,12 @@ class TopicActivity
 
     override fun initAppBarLayout() {
         setAppBarHeight(48)
-
         setAppBarBackgroundColor(color.background)
         addMenuToLeft(
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_close,
                 useRippleEffect = false,
                 clickEvent = ::startFamiliarDialogActivity
-
             )
         )
     }
@@ -126,7 +97,6 @@ class TopicActivity
         }
         startActivity(intent)
         finish()
-
     }
 
     private fun initViewPager() {
@@ -137,7 +107,6 @@ class TopicActivity
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     if (!visitedPages.contains(position)) {
-                        getTopics()
                         visitedPages.add(position)
                     }
                 }
@@ -146,9 +115,5 @@ class TopicActivity
                 tab.view.isClickable = false
             }.attach()
         }
-    }
-
-    private fun getTopics() {
-        viewModel.getTopics(userIds = listOf("32", "38"), type = "story")
     }
 }

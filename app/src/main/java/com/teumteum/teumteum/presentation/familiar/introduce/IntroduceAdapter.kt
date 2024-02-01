@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.databinding.ItemIntroduceBinding
-import com.teumteum.teumteum.util.IdMapper
+import com.teumteum.teumteum.util.ResMapper
 
 class IntroduceAdapter() :
     ListAdapter<Friend, IntroduceAdapter.ItemViewHolder>(
@@ -83,8 +83,8 @@ class IntroduceAdapter() :
         }
 
         fun bind(item: Friend) {
-            val frontImageRes = IdMapper.getFrontCardCharacterDrawableById(characterId = item.characterId)
-            val backImageRes = IdMapper.getBackCardCharacterDrawableById(characterId = item.characterId)
+            val frontImageRes = ResMapper.getFrontCardCharacterDrawableById(characterId = item.characterId)
+            val backImageRes = ResMapper.getBackCardCharacterDrawableById(characterId = item.characterId)
 
             with(binding.cardviewFront) {
                 tvName.text = item.name

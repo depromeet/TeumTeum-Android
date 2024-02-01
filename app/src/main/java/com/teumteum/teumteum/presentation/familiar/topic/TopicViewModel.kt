@@ -8,7 +8,12 @@ import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.domain.repository.TopicRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Collections
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,25 +25,32 @@ class TopicViewModel @Inject constructor(
     val topicState: LiveData<UiState>
         get() = _topicState
 
-    private val _topics = MutableLiveData<TopicResponse>()
-    val topics: LiveData<TopicResponse>
+    private val _topics = MutableLiveData<List<TopicResponse>>()
+    val topics: LiveData<List<TopicResponse>>
         get() = _topics
 
     fun getTopics(userIds: List<String>, type: String) {
         viewModelScope.launch {
             _topicState.value = UiState.Loading
-            val result = topicRepository.getTopics(userIds, type)
-            if (result.isSuccess) {
-                result.getOrNull()?.let { topicsResponse ->
-                    _topics.value = topicsResponse
-                    _topicState.value = UiState.Success
-                } ?: run {
-                    _topicState.value = UiState.Failure
+
+            for (i in 1..5) {
+                launch {
+                    val response = topicRepository.getTopics(userIds, type).getOrNull()
+                    response?.let {
+                        withContext(Dispatchers.Main) {
+                            updateViewPagerWithApiData(it)
+                        }
+                    }
                 }
-            } else {
-                _topicState.value = UiState.Failure
             }
         }
+    }
+
+    private fun updateViewPagerWithApiData(newApiData: TopicResponse) {
+        val currentList = _topics.value.orEmpty().toMutableList()
+        currentList.add(newApiData)
+        _topics.value = currentList
+        // Any other UI update logic goes here
     }
 }
 

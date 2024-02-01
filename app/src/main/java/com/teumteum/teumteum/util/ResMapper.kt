@@ -2,9 +2,8 @@ package com.teumteum.teumteum.util
 
 import android.graphics.Color
 import com.teumteum.teumteum.R
-import timber.log.Timber
 
-object IdMapper {
+object ResMapper {
     fun getCharacterDrawableById(characterId: Int): Int {
         return when (characterId) {
             0 -> R.drawable.ic_ghost
@@ -75,6 +74,28 @@ object IdMapper {
             10 -> Color.parseColor("#9B6CFF") // For ic_card_mouse
             11 -> Color.parseColor("#AF9BFF") // For ic_card_panda
             else -> Color.parseColor("#90FFDE") // 기본값
+        }
+    }
+
+    fun getFrontImageResId(position: Int): Int {
+        return when (position % 5) {
+            0 -> R.drawable.ic_front_balance_background_1
+            1 -> R.drawable.ic_front_balance_background_2
+            2 -> R.drawable.ic_front_balance_background_3
+            3 -> R.drawable.ic_front_balance_background_4
+            4 -> R.drawable.ic_front_balance_background_5
+            else -> R.drawable.ic_front_balance_background_1 // 기본 값
+        }
+    }
+
+    fun getBackImageResId(position: Int): Int {
+        return when (position % 5) {
+            0 -> R.drawable.ic_back_balance_background_1
+            1 -> R.drawable.ic_back_balance_background_2
+            2 -> R.drawable.ic_back_balance_background_3
+            3 -> R.drawable.ic_back_balance_background_4
+            4 -> R.drawable.ic_back_balance_background_5
+            else -> R.drawable.ic_back_balance_background_1 // 기본 값
         }
     }
 }
