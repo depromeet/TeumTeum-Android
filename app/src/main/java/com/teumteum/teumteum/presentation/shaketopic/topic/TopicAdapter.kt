@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.familiar.topic
+package com.teumteum.teumteum.presentation.shaketopic.topic
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet

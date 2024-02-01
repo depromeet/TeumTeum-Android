@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.familiar.shake
+package com.teumteum.teumteum.presentation.shaketopic.shake
 
 import ShakeDetector
 import android.content.Context
@@ -11,62 +11,94 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.teumteum.base.BindingActivity
-import com.teumteum.base.R.color
+import androidx.fragment.app.viewModels
+import com.teumteum.base.BindingFragment
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
-import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.databinding.ActivityShakeBinding
-import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.Companion.EXTRA_FRIENDS
-import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
-import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewData
-import com.teumteum.teumteum.presentation.familiar.topic.TopicActivity
+import com.teumteum.teumteum.databinding.FragmentShakeBinding
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
+import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicActivity
+import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicViewModel
+import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewConfig
+import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewData
 import com.teumteum.teumteum.util.AuthUtils
 import com.teumteum.teumteum.util.ResMapper
+import com.teumteum.teumteum.util.custom.uistate.UiState
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_shake), AppBarLayout,
+class ShakeFragment :
+    BindingFragment<FragmentShakeBinding>(R.layout.fragment_shake), AppBarLayout,
     SensorEventListener {
 
     private lateinit var shakeDetector: ShakeDetector
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private val interestViews = mutableListOf<InterestView>()
+    private val viewModel by viewModels<ShakeTopicViewModel>({ requireActivity() })
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        initAppBarLayout()
         setupShakeDetector()
         setupSensorManager()
         processReceivedFriendList()
+        initAppBarLayout()
     }
 
     private fun setupShakeDetector() {
         shakeDetector =
-            ShakeDetector(this, ::triggerVibration, ::stopVibration, ::startTopicActivity)
+            ShakeDetector(
+                requireActivity(),
+                ::triggerVibration,
+                ::stopVibration,
+                ::onShakeStart, // 흔들기 시작 콜백
+                ::onShakeComplete
+            )
+    }
+
+    private fun onShakeStart() {
+        getTopics() // 흔들기 시작과 동시에 호출
+    }
+
+    private fun onShakeComplete() {
+        if (activity is ShakeTopicActivity) {
+            (activity as ShakeTopicActivity).onShakeCompleted()
+        }
+    }
+
+    private fun getTopics(){
+        val myId = AuthUtils.getMyInfo(requireContext())?.id.toString()
+        val userIds = viewModel.friends.value?.map { it.id.toString() }?.toMutableList()?.apply {
+            add(myId)
+        }
+        userIds?.let { viewModel.getTopics(userIds = it) }
     }
 
     private fun setupSensorManager() {
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
     }
 
     private fun processReceivedFriendList() {
-        val myInfo = AuthUtils.getMyInfo(this)
-        val friends = intent.getSerializableExtra(EXTRA_FRIENDS) as? List<Friend> ?: listOf()
+        val myInfo = AuthUtils.getMyInfo(requireActivity())
+        val friends = viewModel.friends.value ?: listOf()
 
         // myInfo의 관심사 추출
         val myInterests = myInfo?.interests?.map { interest ->
-            InterestViewData(interest, ResMapper.getColorByCharacterId(characterId = myInfo.characterId.toInt()))
+            InterestViewData(
+                interest,
+                ResMapper.getColorByCharacterId(characterId = myInfo.characterId.toInt())
+            )
         }
 
         // friends의 관심사 추출 및 결합
@@ -94,35 +126,22 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         binding.tvShakeTitle.text = titleText
     }
 
-    private fun startTopicActivity() {
-        val myInfo = AuthUtils.getMyInfo(this)
-        val friends = intent.getSerializableExtra(EXTRA_FRIENDS) as? List<Friend> ?: listOf()
-
-        // Extracting IDs
-        val userIds = mutableListOf<String>()
-        myInfo?.let { userIds.add(it.id.toString()) }
-        friends.forEach { friend ->
-            userIds.add(friend.id.toString())
-        }
-
-        // Creating Intent with user IDs
-        val intent = Intent(this, TopicActivity::class.java).apply {
-            putStringArrayListExtra("userIds", ArrayList(userIds)) //todo - 상수로 분리
-        }
-        startActivity(intent)
-    }
-
     override fun initAppBarLayout() {
         setAppBarHeight(48)
-        setAppBarBackgroundColor(color.background)
+        setAppBarBackgroundColor(com.teumteum.base.R.color.background)
 
         addMenuToLeft(
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = ::finish
+                clickEvent = ::startFamiliarDialogActivity
             )
         )
+    }
+
+    private fun startFamiliarDialogActivity() {
+        val intent = Intent(requireContext(), FamiliarDialogActivity::class.java)
+        startActivity(intent)
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -162,7 +181,7 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     }
 
     private fun stopVibration() {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.cancel()
     }
 
@@ -181,19 +200,19 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
     private fun addUserInterestView(userInterests: List<InterestViewData>) {
-        val interestView = InterestView(this)
+        val interestView = InterestView(requireActivity())
 
         // 지정된 수만큼 UserInterest 객체들을 생성하고 ShakeView에 추가
         userInterests.forEach { info ->
             val viewWidth = TransformUtils.dpToPx(80f)
             val viewHeight = TransformUtils.dpToPx(80f)
             val moveSensitivity = 60f +
-                Random.nextFloat() * 100f //애니메이션 duration과 moveSensitivity 밸런싱으로 부드러움 조절
+                    Random.nextFloat() * 100f //애니메이션 duration과 moveSensitivity 밸런싱으로 부드러움 조절
 
 
             val interestViewConfig = InterestViewConfig(
-                x = Random.nextFloat() * (getScreenWidth() - viewWidth),
-                y = Random.nextFloat() * (getScreenHeight() - viewHeight),
+                x = Random.nextFloat() * (requireActivity().getScreenWidth() - viewWidth),
+                y = Random.nextFloat() * (requireActivity().getScreenHeight() - viewHeight),
                 width = viewWidth,
                 height = viewHeight,
                 color = info.color, // 지정된 색상 사용,
