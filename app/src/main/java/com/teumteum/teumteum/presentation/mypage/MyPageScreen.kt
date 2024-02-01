@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -111,6 +112,11 @@ fun MyPageScreen(
                                     .clickable { navController.navigate(R.id.fragment_edit_card) }
                             )
                         } else {
+                            with(LocalDensity.current) {
+                                Modifier.graphicsLayer {
+                                    rotationY = if (rotation == 180f) -180f else 0f
+                                }
+                            }
                             MyPageBackCard(backCard = backCard)
                         }
                         
@@ -200,6 +206,7 @@ fun BackCardView(backCard: BackCard) {
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
+                rotationY = 180f
             }
         },
         update = { view ->
