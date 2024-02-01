@@ -3,18 +3,15 @@ package com.teumteum.teumteum.presentation.familiar.shake
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.teumteum.base.util.TransformUtils
-import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import java.lang.Float.max
 import java.lang.Float.min
-import kotlin.random.Random
 
 class InterestView(
     context: Context,
@@ -30,12 +27,22 @@ class InterestView(
             // 도형 그리기
             paint.color = view.color
             val radius = TransformUtils.dpToPx(4f).toFloat()
-            canvas.drawRoundRect(view.x, view.y, view.x + view.width, view.y + view.height, radius, radius, paint)
+            canvas.drawRoundRect(
+                view.x,
+                view.y,
+                view.x + view.width,
+                view.y + view.height,
+                radius,
+                radius,
+                paint
+            )
 
             // 텍스트 그리기
-            paint.color = ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01)
+            paint.color =
+                ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01)
             paint.textSize = TransformUtils.dpToPx(16f).toFloat()
-            paint.typeface = ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
+            paint.typeface =
+                ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
             paint.textAlign = Paint.Align.CENTER
             val textX = view.x + view.width / 2
             val textY = view.y + view.height / 2 - (paint.descent() + paint.ascent()) / 2
@@ -110,53 +117,48 @@ class InterestView(
     }
 
     private fun resolveCollision(view1: InterestViewConfig, view2: InterestViewConfig) {
-        val overlapX = calculateOverlap(view1.x, view1.width.toFloat(), view2.x, view2.width.toFloat())
-        val overlapY = calculateOverlap(view1.y, view1.height.toFloat(), view2.y, view2.height.toFloat())
+        val overlapX =
+            calculateOverlap(view1.x, view1.width.toFloat(), view2.x, view2.width.toFloat())
+        val overlapY =
+            calculateOverlap(view1.y, view1.height.toFloat(), view2.y, view2.height.toFloat())
+
+        // Increase the bounce distance (e.g., 1.5 times the overlap)
+        val bounceFactor = 1.5f
 
         if (overlapX < overlapY) {
-            repositionViewsHorizontally(view1, view2)
+            if (view1.x < view2.x) {
+                view1.x -= overlapX / 2 * bounceFactor
+                view2.x += overlapX / 2 * bounceFactor
+            } else {
+                view1.x += overlapX / 2 * bounceFactor
+                view2.x -= overlapX / 2 * bounceFactor
+            }
         } else {
-            repositionViewsVertically(view1, view2)
+            if (view1.y < view2.y) {
+                view1.y -= overlapY / 2 * bounceFactor
+                view2.y += overlapY / 2 * bounceFactor
+            } else {
+                view1.y += overlapY / 2 * bounceFactor
+                view2.y -= overlapY / 2 * bounceFactor
+            }
         }
+
+        // Ensure views stay within bounds after bouncing
+        constrainWithinBounds(view1)
+        constrainWithinBounds(view2)
     }
 
-    private fun repositionViewsHorizontally(view1: InterestViewConfig, view2: InterestViewConfig) {
-        view1.x = Random.nextFloat() * (width - view1.width)
-        view2.x = Random.nextFloat() * (width - view2.width)
+    private fun constrainWithinBounds(view: InterestViewConfig) {
+        view.x = max(0f, min(view.x, width.toFloat() - view.width))
+        view.y = max(0f, min(view.y, height.toFloat() - view.height))
     }
 
-    private fun repositionViewsVertically(view1: InterestViewConfig, view2: InterestViewConfig) {
-        view1.y = Random.nextFloat() * (height - view1.height)
-        view2.y = Random.nextFloat() * (height - view2.height)
-    }
-
-
-    private fun adjustHorizontalPosition(view1: InterestViewConfig, view2: InterestViewConfig, overlap: Float) {
-        if (view1.x < view2.x) {
-            view1.x -= overlap / 2
-            view2.x += overlap / 2
-        } else {
-            view1.x += overlap / 2
-            view2.x -= overlap / 2
-        }
-    }
-
-
-    private fun adjustVerticalPosition(view1: InterestViewConfig, view2: InterestViewConfig, overlap: Float) {
-        if (view1.y < view2.y) {
-            view1.y -= overlap / 2
-            view2.y += overlap / 2
-        } else {
-            view1.y += overlap / 2
-            view2.y -= overlap / 2
-        }
-    }
-
-    private fun calculateOverlap(start1: Float, length1: Float, start2: Float, length2: Float): Float {
+    private fun calculateOverlap(
+        start1: Float,
+        length1: Float,
+        start2: Float,
+        length2: Float
+    ): Float {
         return max(0f, min(start1 + length1, start2 + length2) - max(start1, start2))
-    }
-
-    companion object {
-        private const val EXTRA_SPACE = 200f // 겹치지 않도록 추가로 이동할 공간
     }
 }
