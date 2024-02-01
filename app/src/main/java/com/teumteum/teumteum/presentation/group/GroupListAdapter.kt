@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.teumteum.databinding.ItemGroupListBinding
@@ -47,7 +48,9 @@ class GroupListAdapter(private val itemClick: (Meeting) -> (Unit)) :
             binding.tvTitleBadge.text = item.topic.replace("_", " ")
             binding.tvDate.text = item.date
 
-            binding.ivImage.load(item.photoUrls.first())
+            binding.ivImage.load(item.photoUrls.first()) {
+                transformations(RoundedCornersTransformation(4f))
+            }
 
             binding.root.setOnSingleClickListener {
                 itemClick(item)
