@@ -29,11 +29,12 @@ class TopicViewModel @Inject constructor(
     val topics: LiveData<List<TopicResponse>>
         get() = _topics
 
-    fun getTopics(userIds: List<String>, type: String) {
+    fun getTopics(userIds: List<String>) {
         viewModelScope.launch {
             _topicState.value = UiState.Loading
 
             for (i in 1..5) {
+                val type = if (i % 2 == 0) "balance" else "story"
                 launch {
                     val response = topicRepository.getTopics(userIds, type).getOrNull()
                     response?.let {

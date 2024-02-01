@@ -155,7 +155,7 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         userInterests.forEach { info ->
             val viewWidth = TransformUtils.dpToPx(80f)
             val viewHeight = TransformUtils.dpToPx(80f)
-            val moveSensitivity =
+            val moveSensitivity = 60f +
                 Random.nextFloat() * 100f //애니메이션 duration과 moveSensitivity 밸런싱으로 부드러움 조절
 
 

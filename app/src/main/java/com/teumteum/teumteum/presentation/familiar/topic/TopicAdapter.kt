@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,7 @@ class TopicAdapter :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(getItem(position),position)
+        holder.bind(getItem(position), position)
     }
 
     inner class ItemViewHolder(private val binding: ItemTopicBinding) :
@@ -85,23 +86,36 @@ class TopicAdapter :
         }
 
         fun bind(item: TopicResponse, position: Int) {
-            if (item is TopicResponse.Story) {
+            val frontImageResId = ResMapper.getFrontImageResId(position)
+            val backImageResId = ResMapper.getBackImageResId(position)
+            val pageNumber = position + 1
 
-                val frontImageResId = ResMapper.getFrontImageResId(position)
-                val backImageResId = ResMapper.getBackImageResId(position)
-                val pageNumber = position + 1
+            if (item is TopicResponse.Story) {
 
                 with(binding) {
                     tvTopicNumber.text = "TOPIC.$pageNumber"
                     tvTopicTitle.text = item.topic
-                    tvBackStory.text = item.story
-
+                    tvStory.isVisible = true
+                    tvStory.text = item.story
+                    tvVersus.isVisible = false
+                    tvBalanceQuestionFirst.isVisible = false
+                    tvBalanceQuestionSecond.isVisible = false
                     loadImage(binding.ivFrontBalanceBackground, frontImageResId)
                     loadImage(binding.ivBackBalanceBackground, backImageResId)
                 }
             } else if (item is TopicResponse.Balance) {
-                // Handle Balance data
-                // You can similarly bind Balance data to your views here
+                with(binding) {
+                    tvTopicNumber.text = "TOPIC.$pageNumber"
+                    tvTopicTitle.text = item.topic
+                    tvVersus.isVisible = true //todo - 색상 맞추기
+                    tvBalanceQuestionFirst.isVisible = true
+                    tvBalanceQuestionSecond.isVisible = true
+                    tvBalanceQuestionFirst.text = item.balanceQuestion[0]
+                    tvBalanceQuestionSecond.text = item.balanceQuestion[1]
+
+                    loadImage(binding.ivFrontBalanceBackground, frontImageResId)
+                    loadImage(binding.ivBackBalanceBackground, backImageResId)
+                }
             }
         }
 
