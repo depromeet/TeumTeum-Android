@@ -141,7 +141,7 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int, na
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 40.dp),
+            .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Button(
