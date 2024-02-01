@@ -89,7 +89,7 @@ fun RecommendDetailScreen(
                 }
                 TmMarginVerticalSpacer(size = 22)
                 FriendBtn(
-                    text = "추천한 친구 ${friendsCount.size}명",
+                    text = "친구 ${friendsCount.size}명",
                     viewModel = viewModel,
                     userId= userId,
                     navController = navController
@@ -141,7 +141,7 @@ fun FriendBtn(text: String, viewModel: RecommendDetailViewModel, userId: Int, na
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 40.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Button(
