@@ -38,8 +38,9 @@ class TopicActivity : BindingActivity<ActivityTopicBinding>(R.layout.activity_to
     }
 
     private fun callGetTopicsAndMeasureTime() {
+        val userIds = intent.getStringArrayListExtra("userIds") ?: listOf()
         val startTime = System.currentTimeMillis()
-        viewModel.getTopics(userIds = listOf("32", "38", "16"))
+        viewModel.getTopics(userIds = userIds)
         viewModel.topicState.observe(this) { state ->
             if (state is UiState.Success || state is UiState.Failure) {
                 val endTime = System.currentTimeMillis()

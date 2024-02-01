@@ -25,6 +25,7 @@ import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.C
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewData
 import com.teumteum.teumteum.presentation.familiar.topic.TopicActivity
+import com.teumteum.teumteum.util.AuthUtils
 import com.teumteum.teumteum.util.ResMapper
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
@@ -60,8 +61,26 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     }
 
     private fun processReceivedFriendList() {
+        val myInfo = AuthUtils.getMyInfo(this)
         val friends = intent.getSerializableExtra(EXTRA_FRIENDS) as? List<Friend> ?: listOf()
-        val userInterests = extractInterests(friends)
+
+        // myInfo의 관심사 추출
+        val myInterests = myInfo?.interests?.map { interest ->
+            InterestViewData(interest, ResMapper.getColorByCharacterId(characterId = myInfo.characterId.toInt()))
+        }
+
+        // friends의 관심사 추출 및 결합
+        val userInterests = mutableListOf<InterestViewData>().apply {
+            addAll(myInterests ?: emptyList())
+
+            for (friend in friends) {
+                val color = ResMapper.getColorByCharacterId(characterId = friend.characterId)
+                friend.interests.forEach { interest ->
+                    add(InterestViewData(interest, color))
+                }
+            }
+        }
+
         addUserInterestView(userInterests)
 
         val totalPeople = friends.size + 1
@@ -75,19 +94,22 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         binding.tvShakeTitle.text = titleText
     }
 
-    private fun extractInterests(friends: List<Friend>): List<InterestViewData> {
-        val interestsData = mutableListOf<InterestViewData>()
-        for (friend in friends) {
-            val color = ResMapper.getColorByCharacterId(characterId = friend.characterId)
-            friend.interests.forEach { interest ->
-                interestsData.add(InterestViewData(interest, color))
-            }
-        }
-        return interestsData
-    }
-
     private fun startTopicActivity() {
-        startActivity(Intent(this, TopicActivity::class.java))
+        val myInfo = AuthUtils.getMyInfo(this)
+        val friends = intent.getSerializableExtra(EXTRA_FRIENDS) as? List<Friend> ?: listOf()
+
+        // Extracting IDs
+        val userIds = mutableListOf<String>()
+        myInfo?.let { userIds.add(it.id.toString()) }
+        friends.forEach { friend ->
+            userIds.add(friend.id.toString())
+        }
+
+        // Creating Intent with user IDs
+        val intent = Intent(this, TopicActivity::class.java).apply {
+            putStringArrayListExtra("userIds", ArrayList(userIds)) //todo - 상수로 분리
+        }
+        startActivity(intent)
     }
 
     override fun initAppBarLayout() {
