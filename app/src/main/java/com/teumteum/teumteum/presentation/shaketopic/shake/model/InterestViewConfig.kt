@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.familiar.shake.model
+package com.teumteum.teumteum.presentation.shaketopic.shake.model
 
 data class InterestViewConfig(
     var x: Float,

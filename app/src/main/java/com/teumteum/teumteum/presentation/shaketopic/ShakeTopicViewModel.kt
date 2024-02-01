@@ -1,9 +1,10 @@
-package com.teumteum.teumteum.presentation.familiar.topic
+package com.teumteum.teumteum.presentation.shaketopic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.domain.repository.TopicRepository
 import com.teumteum.teumteum.util.custom.uistate.UiState
@@ -13,42 +14,57 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.Collections
 import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltViewModel
-class TopicViewModel @Inject constructor(
+class ShakeTopicViewModel @Inject constructor(
     private val topicRepository: TopicRepository
 ) : ViewModel() {
 
-    private var _topicState = MutableLiveData<UiState>(UiState.Empty)
-    val topicState: LiveData<UiState>
-        get() = _topicState
+    private val _friends = MutableLiveData<List<Friend>>()
+    val friends: LiveData<List<Friend>>
+        get() = _friends
+
+    fun setFriendsData(friends: List<Friend>) {
+        _friends.value = friends
+    }
 
     private val _topics = MutableLiveData<List<TopicResponse>>()
     val topics: LiveData<List<TopicResponse>>
         get() = _topics
 
-    fun getTopics(userIds: List<String>) {
-        viewModelScope.launch {
-            _topicState.value = UiState.Loading
+    private var isFetching = false
 
+    fun getTopics(userIds: List<String>) {
+        if (isFetching || (_topics.value?.size ?: 0) >= 5) {
+            // 이미 API 호출 중이거나 필요한 데이터를 모두 받았다면 요청하지 않습니다.
+            return
+        }
+        isFetching = true
+
+        viewModelScope.launch {
             val responses = mutableListOf<Job>()
 
             for (i in 1..5) {
-                val type = if (i % 2 == 0) "balance" else "story"
-                responses.add(
-                    launch {
-                        retryFetch { topicRepository.getTopics(userIds, type) }
-                    }
-                )
+                val type = if (i % 2 == 0) "story" else "balance"
+                if ((_topics.value?.size ?: 0) < 5) { // 이미 5개의 데이터를 받았다면 추가 호출을 하지 않습니다.
+                    responses.add(
+                        launch {
+                            retryFetch { topicRepository.getTopics(userIds, type) }
+                        }
+                    )
+                }
             }
 
             responses.joinAll()
-            checkDataAndRetryIfNeeded(userIds)
+            isFetching = false
+            // 'checkDataAndRetryIfNeeded' 함수 호출 부분을 제거합니다.
         }
     }
+
     private suspend fun retryFetch(fetch: suspend () -> Result<TopicResponse>) {
         var retryCount = 0
         var success = false
@@ -58,22 +74,16 @@ class TopicViewModel @Inject constructor(
             if (response != null) {
                 withContext(Dispatchers.Main) {
                     updateViewPagerWithApiData(response)
+                    // 받은 데이터가 5개면 더 이상 재시도하지 않습니다.
+                    if (_topics.value?.size == 5) {
+                        Timber.d("data 5개 다 받아옴")
+                        return@withContext
+                    }
                 }
                 success = true
             } else {
                 retryCount++
             }
-        }
-    }
-
-
-    private suspend fun checkDataAndRetryIfNeeded(userIds: List<String>) {
-        val currentSize = _topics.value?.size ?: 0
-        val missingCount = 5 - currentSize
-
-        for (i in 1..missingCount) {
-            val type = if (Random.nextBoolean()) "balance" else "story"
-            retryFetch { topicRepository.getTopics(userIds, type) }
         }
     }
 

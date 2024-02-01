@@ -3,16 +3,13 @@ package com.teumteum.teumteum.presentation.familiar
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import com.teumteum.base.BindingActivity
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityFamiliarDialogBinding
 import com.teumteum.teumteum.presentation.MainActivity
-import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.Companion.EXTRA_FRIENDS
-import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborViewModel
-import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
+import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 
@@ -79,7 +76,7 @@ class FamiliarDialogActivity :
     private fun startActivity() {
         when (source) {
             SOURCE_INTRODUCE -> {
-                val intent = Intent(this, ShakeActivity::class.java).apply {
+                val intent = Intent(this, ShakeTopicActivity::class.java).apply {
                     putExtra(EXTRA_FRIENDS, friends as Serializable)
                 }
                 startActivity(intent)

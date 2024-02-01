@@ -18,7 +18,6 @@ import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
 import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.EXTRA_SOURCE
 import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.SOURCE_INTRODUCE
 import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity.Companion.EXTRA_NEIGHBORS_IDS
-import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 

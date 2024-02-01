@@ -10,8 +10,9 @@ class ShakeDetector(
     private val context: Context,
     private val onShake: (Context) -> Unit,
     private val onStop: () -> Unit,
-    private val onShakeDurationExceeded: () -> Unit
-) : SensorEventListener {
+    private val onShakeStart: () -> Unit, // 흔들기 시작 콜백 추가
+    private val onShakeComplete: () -> Unit
+    ) : SensorEventListener {
     private var sensorManager: SensorManager =
         context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
     private var accelerometer: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -32,6 +33,7 @@ class ShakeDetector(
     }
 
     private var cumulativeShakeTime: Long = 0 // 흔들림 누적 시간을 저장하는 변수
+
     override fun onSensorChanged(event: SensorEvent) {
         val curTime = System.currentTimeMillis()
 
@@ -47,6 +49,7 @@ class ShakeDetector(
 
             if (speed > SHAKE_THRESHOLD) {
                 onShake(context)
+                onShakeStart() // 흔들기 시작 콜백 호출
 
                 // Accumulate the shake duration
                 cumulativeShakeTime += diffTime
@@ -54,7 +57,7 @@ class ShakeDetector(
 
                 // Check if cumulative shake duration exceeds 3 seconds (3000 milliseconds)
                 if (cumulativeShakeTime >= 3000) {
-                    onShakeDurationExceeded() // Trigger the action when duration exceeds
+                    onShakeComplete() // 흔들림 완료 콜백 호출
                     cumulativeShakeTime = 0 // Reset the shake duration ONLY when the action is triggered
                 }
 
