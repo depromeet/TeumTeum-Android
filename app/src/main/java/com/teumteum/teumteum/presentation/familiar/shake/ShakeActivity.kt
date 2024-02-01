@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
@@ -26,7 +25,7 @@ import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.C
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewData
 import com.teumteum.teumteum.presentation.familiar.topic.TopicActivity
-import com.teumteum.teumteum.util.IdMapper
+import com.teumteum.teumteum.util.ResMapper
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +50,8 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     }
 
     private fun setupShakeDetector() {
-        shakeDetector = ShakeDetector(this, ::triggerVibration, ::stopVibration, ::startTopicActivity)
+        shakeDetector =
+            ShakeDetector(this, ::triggerVibration, ::stopVibration, ::startTopicActivity)
     }
 
     private fun setupSensorManager() {
@@ -68,7 +68,7 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
     private fun extractInterests(friends: List<Friend>): List<InterestViewData> {
         val interestsData = mutableListOf<InterestViewData>()
         for (friend in friends) {
-            val color = IdMapper.getColorByCharacterId(characterId = friend.characterId)
+            val color = ResMapper.getColorByCharacterId(characterId = friend.characterId)
             friend.interests.forEach { interest ->
                 interestsData.add(InterestViewData(interest, color))
             }

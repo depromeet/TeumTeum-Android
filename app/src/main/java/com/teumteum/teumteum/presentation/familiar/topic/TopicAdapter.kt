@@ -94,6 +94,7 @@ class TopicAdapter :
                 with(binding) {
                     tvTopicNumber.text = "TOPIC.$pageNumber"
                     tvTopicTitle.text = item.topic
+                    tvBackStory.text = item.story
 
                     loadImage(binding.ivFrontBalanceBackground, frontImageResId)
                     loadImage(binding.ivBackBalanceBackground, backImageResId)
