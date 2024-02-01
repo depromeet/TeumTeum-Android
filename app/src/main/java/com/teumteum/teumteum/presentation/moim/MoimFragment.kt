@@ -39,7 +39,10 @@ class MoimFragment :
 
     override fun onResume() {
         super.onResume()
+
         (activity as MainActivity).hideBottomNavi()
+        val currentScreenState = viewModel.screenState.value
+        Log.d("MoimFragment", "Current ScreenState: $currentScreenState")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +57,13 @@ class MoimFragment :
             viewModel.getGroup(meetingId)
             viewModel.updateSheetEvent(ScreenState.CancelInit)
         } else {
-            setupUI()
+            if(viewModel.screenState.value == ScreenState.Address) {
+                setupUI()
+            } else {
+                viewModel.updateSheetEvent(ScreenState.Topic)
+                setupUI()
+                viewModel.initializeState()
+            }
         }
 
         lifecycleScope.launchWhenStarted {
@@ -128,7 +137,6 @@ class MoimFragment :
     }
 
     private fun setupUI() {
-        viewModel.updateSheetEvent(ScreenState.Topic)
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
                 animateProgressBar(currentStep)
@@ -173,7 +181,7 @@ class MoimFragment :
                     ScreenState.Success -> {
                         delay(1000)
                         (activity as MainActivity).showBottomNavi()
-                        delay(5000)
+                        delay(2000)
                         viewModel.initializeState()
                     }
                     ScreenState.DeleteSuccess -> {
