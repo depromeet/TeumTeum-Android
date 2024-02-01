@@ -88,9 +88,9 @@ class IntroduceAdapter() :
 
             with(binding.cardviewFront) {
                 tvName.text = item.name
-                tvCompany.text = item.job.name
+                tvCompany.text = "@" + item.job.name
                 tvJob.text = item.job.detailClass
-                tvLevel.text = item.mannerTemperature.toString()
+                tvLevel.text = "lv." + item.mannerTemperature.toString()
                 tvArea.text = item.activityArea + "에 사는"
                 tvMbti.text = item.mbti
 

@@ -88,12 +88,13 @@ class TopicAdapter :
         fun bind(item: TopicResponse, position: Int) {
             val frontImageResId = ResMapper.getFrontImageResId(position)
             val backImageResId = ResMapper.getBackImageResId(position)
+            val versusColor = ResMapper.getVersusColor(itemView.context, position)
             val pageNumber = position + 1
 
             if (item is TopicResponse.Story) {
 
                 with(binding) {
-                    tvTopicNumber.text = "TOPIC.$pageNumber"
+                    tvTopicNumber.text = "TOPIC. $pageNumber"
                     tvTopicTitle.text = item.topic
                     tvStory.isVisible = true
                     tvStory.text = item.story
@@ -105,9 +106,10 @@ class TopicAdapter :
                 }
             } else if (item is TopicResponse.Balance) {
                 with(binding) {
-                    tvTopicNumber.text = "TOPIC.$pageNumber"
+                    tvTopicNumber.text = "TOPIC. $pageNumber"
                     tvTopicTitle.text = item.topic
-                    tvVersus.isVisible = true //todo - 색상 맞추기
+                    tvVersus.setTextColor(versusColor)
+                    tvVersus.isVisible = true
                     tvBalanceQuestionFirst.isVisible = true
                     tvBalanceQuestionSecond.isVisible = true
                     tvBalanceQuestionFirst.text = item.balanceQuestion[0]

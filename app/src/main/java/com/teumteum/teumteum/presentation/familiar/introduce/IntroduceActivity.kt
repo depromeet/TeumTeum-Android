@@ -41,7 +41,7 @@ class IntroduceActivity
 
     private fun getIntroduceUsers() {
         val ids = intent.getStringExtra(EXTRA_NEIGHBORS_IDS) ?: ""
-        viewModel.getIntroduceUser(id = "32,10,11,16")
+        viewModel.getIntroduceUser(id = ids)
     }
 
     private fun initObserver() {
