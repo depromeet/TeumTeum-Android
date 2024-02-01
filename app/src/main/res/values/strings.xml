@@ -23,7 +23,11 @@
     <string name="onboarding_tv_meet_subtitle">시간과 시간 사이\n여러분의 시간을 틈틈으로 채워보세요</string>
     <string name="onboarding_tv_networking_title">틈틈의 인증 시스템들로\n안전한 네트워킹을 즐겨보세요</string>
     <string name="onboarding_tv_networking_subtitle">회사/학교 인증, 지인 인증, 리뷰 등으로\n안전한 네트워킹을 즐겨보세요</string>
-    <string name="shake_title">세 분의 관심사의 틈을 채워\n대화 주제를 조합하는 중이에요</string>
+
+    <string name="shake_title_two">두 분의 관심사의 틈을 채워 대화주제를 조합하는 중이에요</string>
+    <string name="shake_title_three">세 분의 관심사의 틈을 채워 대화주제를 조합하는 중이에요</string>
+    <string name="shake_title_four">네 분의 관심사의 틈을 채워 대화주제를 조합하는 중이에요</string>
+    <string name="shake_title_five">다섯 분의 관심사의 틈을 채워 대화주제를 조합하는 중이에요</string>
 
     <string name="onboarding_tv_access_location_title">위치 권한을 허용해주세요</string>
     <string name="onboarding_tv_access_location_subtitle">지역 기반 기능 사용 시 위치 권한이 필요합니다.</string>

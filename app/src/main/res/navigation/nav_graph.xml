@@ -243,10 +243,11 @@
         <action
             android:id="@+id/action_fragment_modify_moim_to_fragment_web_view"
             app:destination="@id/fragment_web_view" />
-
-
-
     </fragment>
+
+    <!-- HomeFragment로 이동하는 전역 액션 -->
+    <action android:id="@+id/action_global_homeFragment"
+        app:destination="@id/fragment_home" />
 
 </navigation>
 

@@ -63,6 +63,16 @@ class ShakeActivity : BindingActivity<ActivityShakeBinding>(R.layout.activity_sh
         val friends = intent.getSerializableExtra(EXTRA_FRIENDS) as? List<Friend> ?: listOf()
         val userInterests = extractInterests(friends)
         addUserInterestView(userInterests)
+
+        val totalPeople = friends.size + 1
+        val titleText = when (totalPeople) {
+            2 -> resources.getString(R.string.shake_title_two)
+            3 -> resources.getString(R.string.shake_title_three)
+            4 -> resources.getString(R.string.shake_title_four)
+            5 -> resources.getString(R.string.shake_title_five)
+            else -> resources.getString(R.string.shake_title_two) //기본값
+        }
+        binding.tvShakeTitle.text = titleText
     }
 
     private fun extractInterests(friends: List<Friend>): List<InterestViewData> {
