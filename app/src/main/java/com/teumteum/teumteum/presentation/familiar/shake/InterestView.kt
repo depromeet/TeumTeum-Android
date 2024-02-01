@@ -14,6 +14,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import java.lang.Float.max
 import java.lang.Float.min
+import kotlin.random.Random
 
 class InterestView(
     context: Context,
@@ -109,17 +110,26 @@ class InterestView(
     }
 
     private fun resolveCollision(view1: InterestViewConfig, view2: InterestViewConfig) {
-        // 겹치는 부분 계산
         val overlapX = calculateOverlap(view1.x, view1.width.toFloat(), view2.x, view2.width.toFloat())
         val overlapY = calculateOverlap(view1.y, view1.height.toFloat(), view2.y, view2.height.toFloat())
 
-        // 겹치는 부분이 적은 방향으로 뷰들을 이동
         if (overlapX < overlapY) {
-            adjustHorizontalPosition(view1, view2, overlapX)
+            repositionViewsHorizontally(view1, view2)
         } else {
-            adjustVerticalPosition(view1, view2, overlapY)
+            repositionViewsVertically(view1, view2)
         }
     }
+
+    private fun repositionViewsHorizontally(view1: InterestViewConfig, view2: InterestViewConfig) {
+        view1.x = Random.nextFloat() * (width - view1.width)
+        view2.x = Random.nextFloat() * (width - view2.width)
+    }
+
+    private fun repositionViewsVertically(view1: InterestViewConfig, view2: InterestViewConfig) {
+        view1.y = Random.nextFloat() * (height - view1.height)
+        view2.y = Random.nextFloat() * (height - view2.height)
+    }
+
 
     private fun adjustHorizontalPosition(view1: InterestViewConfig, view2: InterestViewConfig, overlap: Float) {
         if (view1.x < view2.x) {
@@ -144,5 +154,9 @@ class InterestView(
 
     private fun calculateOverlap(start1: Float, length1: Float, start2: Float, length2: Float): Float {
         return max(0f, min(start1 + length1, start2 + length2) - max(start1, start2))
+    }
+
+    companion object {
+        private const val EXTRA_SPACE = 200f // 겹치지 않도록 추가로 이동할 공간
     }
 }
