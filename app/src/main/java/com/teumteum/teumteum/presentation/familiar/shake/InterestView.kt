@@ -30,12 +30,12 @@ class InterestView(
             paint.color = view.color
             val radius = TransformUtils.dpToPx(4f).toFloat()
             canvas.drawRoundRect(view.x, view.y, view.x + view.width, view.y + view.height, radius, radius, paint)
-            paint.typeface = ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
 
             // 텍스트 그리기
-            paint.color = ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01) // 텍스트 색상
-            paint.textSize = TransformUtils.dpToPx(16f).toFloat() // 텍스트 크기
-            paint.textAlign = Paint.Align.CENTER // 텍스트 정렬
+            paint.color = ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01)
+            paint.textSize = TransformUtils.dpToPx(16f).toFloat()
+            paint.typeface = ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
+            paint.textAlign = Paint.Align.CENTER
             val textX = view.x + view.width / 2
             val textY = view.y + view.height / 2 - (paint.descent() + paint.ascent()) / 2
             canvas.drawText(view.text, textX, textY, paint)
@@ -44,8 +44,10 @@ class InterestView(
 
     fun addUserInterest(interestViewConfig: InterestViewConfig) {
         views.add(interestViewConfig)
-        invalidate() // 새로운 뷰가 추가되었으니 화면을 다시 그립니다.
+        resolveCollisions()
+        invalidate()
     }
+
 
     fun updateViewPositions(x: Float, y: Float) {
         views.forEach { userInterest ->
@@ -57,27 +59,90 @@ class InterestView(
             targetX = max(0f, min(targetX, width.toFloat() - userInterest.width))
             targetY = max(0f, min(targetY, height.toFloat() - userInterest.height))
 
-            // X 좌표 애니메이션
-            ValueAnimator.ofFloat(userInterest.x, targetX).apply {
-                duration = 100 // 애니메이션 지속 시간
-                addUpdateListener { animation ->
-                    userInterest.x = animation.animatedValue as Float
-                    invalidate()
-                }
-                start()
-            }
+            // 위치 애니메이션 시작
+            startAnimation(userInterest, targetX, targetY)
+        }
+        resolveCollisions() // 위치 업데이트 후 충돌 해결
+        invalidate() // 위치 업데이트 및 충돌 해결 후 화면 갱신
+    }
 
-            // Y 좌표 애니메이션
-            ValueAnimator.ofFloat(userInterest.y, targetY).apply {
-                duration = 100 // 애니메이션 지속 시간
-                addUpdateListener { animation ->
-                    userInterest.y = animation.animatedValue as Float
-                    invalidate()
+    private fun startAnimation(userInterest: InterestViewConfig, targetX: Float, targetY: Float) {
+        // X 좌표 애니메이션
+        ValueAnimator.ofFloat(userInterest.x, targetX).apply {
+            duration = 100
+            addUpdateListener { animation ->
+                userInterest.x = animation.animatedValue as Float
+                invalidate()
+            }
+            start()
+        }
+
+        // Y 좌표 애니메이션
+        ValueAnimator.ofFloat(userInterest.y, targetY).apply {
+            duration = 100
+            addUpdateListener { animation ->
+                userInterest.y = animation.animatedValue as Float
+                invalidate()
+            }
+            start()
+        }
+    }
+
+    private fun resolveCollisions() {
+        for (i in views.indices) {
+            for (j in i + 1 until views.size) {
+                val view1 = views[i]
+                val view2 = views[j]
+
+                if (isColliding(view1, view2)) {
+                    resolveCollision(view1, view2)
                 }
-                start()
             }
         }
     }
 
-// Add collision detection and other necessary methods here
+    private fun isColliding(view1: InterestViewConfig, view2: InterestViewConfig): Boolean {
+        return view1.x < view2.x + view2.width &&
+                view1.x + view1.width > view2.x &&
+                view1.y < view2.y + view2.height &&
+                view1.y + view1.height > view2.y
+    }
+
+    private fun resolveCollision(view1: InterestViewConfig, view2: InterestViewConfig) {
+        // 겹치는 부분 계산
+        val overlapX = calculateOverlap(view1.x, view1.width.toFloat(), view2.x, view2.width.toFloat())
+        val overlapY = calculateOverlap(view1.y, view1.height.toFloat(), view2.y, view2.height.toFloat())
+
+        // 겹치는 부분이 적은 방향으로 뷰들을 이동
+        if (overlapX < overlapY) {
+            adjustHorizontalPosition(view1, view2, overlapX)
+        } else {
+            adjustVerticalPosition(view1, view2, overlapY)
+        }
+    }
+
+    private fun adjustHorizontalPosition(view1: InterestViewConfig, view2: InterestViewConfig, overlap: Float) {
+        if (view1.x < view2.x) {
+            view1.x -= overlap / 2
+            view2.x += overlap / 2
+        } else {
+            view1.x += overlap / 2
+            view2.x -= overlap / 2
+        }
+    }
+
+
+    private fun adjustVerticalPosition(view1: InterestViewConfig, view2: InterestViewConfig, overlap: Float) {
+        if (view1.y < view2.y) {
+            view1.y -= overlap / 2
+            view2.y += overlap / 2
+        } else {
+            view1.y += overlap / 2
+            view2.y -= overlap / 2
+        }
+    }
+
+    private fun calculateOverlap(start1: Float, length1: Float, start2: Float, length2: Float): Float {
+        return max(0f, min(start1 + length1, start2 + length2) - max(start1, start2))
+    }
 }
