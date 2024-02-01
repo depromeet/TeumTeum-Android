@@ -4,8 +4,9 @@ on:
     branches: [ release ]
 
 jobs:
-  android-cd:
+  build:
     runs-on: ubuntu-latest
+    environment: Android CI/CD
     steps:
     - name: get Release Branch
     - uses: actions/checkout@v3
