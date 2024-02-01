@@ -47,14 +47,6 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-
-    - name: Decode keystore
-      run: |
-        echo "$KEYSTORE" > KEYSTORE_NAME.b64
-        base64 -d -i KEYSTORE_NAME.b64 > KEYSTORE_NAME.jks
-      env:
-        KEYSTORE: ${{ secrets.ENCODED_KEYSTORE }}
-
                   
     - name: Generate Keystore file from Github Secrets
       run: |
