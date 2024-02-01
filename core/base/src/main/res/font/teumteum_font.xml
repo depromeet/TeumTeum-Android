@@ -46,5 +46,17 @@
         android:fontWeight="900"
         />
 
+    <font
+        android:font="@font/nexa_bold"
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        />
+
+    <font
+        android:font="@font/nexa_light"
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        />
+
 
 </font-family>

@@ -13,7 +13,6 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            tools:visibility="invisible"
             android:id="@+id/cl_front_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +21,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible">
 
             <ImageView
                 android:id="@+id/iv_front_balance_background"
@@ -36,12 +36,14 @@
 
             <TextView
                 android:id="@+id/tv_topic_number"
-                style="@style/ta.headline.6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="88dp"
+                android:fontFamily="@font/nexa_bold"
+                android:lineHeight="28dp"
                 android:textColor="@color/background"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/iv_front_balance_background"
                 app:layout_constraintTop_toTopOf="@id/iv_front_balance_background"
                 tools:text="TOPIC.1" />
@@ -118,12 +120,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
+                android:fontFamily="@font/nexa_bold"
                 android:gravity="center"
                 android:lineHeight="28dp"
                 android:text="VS"
                 android:textAlignment="center"
                 android:textColor="@color/graphic_pink"
-                android:textSize="20sp"
+                android:textFontWeight="900"
+                android:textSize="24sp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@id/tv_balance_question_second"
                 app:layout_constraintEnd_toEndOf="@id/iv_back_balance_background"
