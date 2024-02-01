@@ -89,7 +89,7 @@ fun RecommendDetailScreen(
                 }
                 TmMarginVerticalSpacer(size = 22)
                 FriendBtn(
-                    text = "추천한 친구 ${friendsCount.size}명",
+                    text = "친구 ${friendsCount.size}명",
                     viewModel = viewModel,
                     userId= userId,
                     navController = navController
