@@ -22,7 +22,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
 import com.teumteum.teumteum.util.AuthUtils
-import com.teumteum.teumteum.util.IdMapper
+import com.teumteum.teumteum.util.ResMapper
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -62,6 +62,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private fun initMyCharacter() {
         val myInfo = AuthUtils.getMyInfo(this)
         if (myInfo != null) {
+            Timber.tag("테스트").d("${myInfo.id}")
             val view = binding.cvMe
             setCharacterView(
                 neighbor = NeighborEntity(
@@ -115,7 +116,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
         view.isVisible = true
         view.characterName.text = neighbor.name
         view.characterJob.text = neighbor.jobDetailClass
-        view.characterImage.setImageResource(IdMapper.getCharacterDrawableById(neighbor.characterId.toInt()))
+        view.characterImage.setImageResource(ResMapper.getCharacterDrawableById(neighbor.characterId.toInt()))
 
         view.setOnSingleClickListener {
             val isSelected = !view.isCharacterSelected

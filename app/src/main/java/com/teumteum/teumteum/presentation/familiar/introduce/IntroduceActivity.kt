@@ -14,9 +14,13 @@ import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityIntroduceBinding
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.EXTRA_SOURCE
+import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.SOURCE_INTRODUCE
 import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity.Companion.EXTRA_NEIGHBORS_IDS
 import com.teumteum.teumteum.presentation.familiar.shake.ShakeActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.Serializable
 
 
 @AndroidEntryPoint
@@ -48,15 +52,15 @@ class IntroduceActivity
 
     private fun setUpListener() {
         binding.btnStart.setOnSingleClickListener {
-            startShakeActivity()
+            startFamiliarDialogActivity()
         }
     }
 
-    private fun startShakeActivity() {
+    private fun startFamiliarDialogActivity() {
         val friends = viewModel.introduceUser.value ?: listOf()
-
-        val intent = Intent(this, ShakeActivity::class.java).apply {
-            putExtra(EXTRA_FRIENDS, ArrayList(friends))
+        val intent = Intent(this, FamiliarDialogActivity::class.java).apply {
+            putExtra(EXTRA_FRIENDS, ArrayList(friends) as Serializable)
+            putExtra(EXTRA_SOURCE, SOURCE_INTRODUCE)
         }
         startActivity(intent)
     }
@@ -72,7 +76,7 @@ class IntroduceActivity
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = ::finish //todo - 커스텀 팝업 띄우고
+                clickEvent = ::finish
             )
         )
     }

@@ -7,7 +7,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.teumteum.base.util.TransformUtils
+import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.familiar.shake.model.InterestViewConfig
 import java.lang.Float.max
 import java.lang.Float.min
@@ -27,9 +30,10 @@ class InterestView(
             paint.color = view.color
             val radius = TransformUtils.dpToPx(4f).toFloat()
             canvas.drawRoundRect(view.x, view.y, view.x + view.width, view.y + view.height, radius, radius, paint)
+            paint.typeface = ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
 
             // 텍스트 그리기
-            paint.color = Color.BLACK // 텍스트 색상
+            paint.color = ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01) // 텍스트 색상
             paint.textSize = TransformUtils.dpToPx(16f).toFloat() // 텍스트 크기
             paint.textAlign = Paint.Align.CENTER // 텍스트 정렬
             val textX = view.x + view.width / 2

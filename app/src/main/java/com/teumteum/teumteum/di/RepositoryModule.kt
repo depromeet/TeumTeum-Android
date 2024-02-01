@@ -6,6 +6,7 @@ import com.teumteum.data.repository.HomeRepositoryImpl
 import com.teumteum.data.repository.NeighborRepositoryImpl
 import com.teumteum.data.repository.SampleRepositoryImpl
 import com.teumteum.data.repository.SettingRepositoryImpl
+import com.teumteum.data.repository.TopicRepositoryImpl
 import com.teumteum.data.repository.UserRepositoryImpl
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.GroupRepository
@@ -13,6 +14,7 @@ import com.teumteum.domain.repository.HomeRepository
 import com.teumteum.domain.repository.NeighborRepository
 import com.teumteum.domain.repository.SampleRepository
 import com.teumteum.domain.repository.SettingRepository
+import com.teumteum.domain.repository.TopicRepository
 import com.teumteum.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -35,6 +37,10 @@ interface RepositoryModule {
     @Singleton
     @Binds
     fun bindNeighborRepository(neighborRepositoryImpl: NeighborRepositoryImpl): NeighborRepository
+
+    @Singleton
+    @Binds
+    fun bindTopicRepository(topicRepositoryImpl: TopicRepositoryImpl): TopicRepository
 
     @Singleton
     @Binds

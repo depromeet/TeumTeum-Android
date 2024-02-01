@@ -21,7 +21,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="invisible">
 
             <ImageView
                 android:id="@+id/iv_front_balance_background"
@@ -35,12 +36,14 @@
 
             <TextView
                 android:id="@+id/tv_topic_number"
-                style="@style/ta.headline.6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="88dp"
+                android:fontFamily="@font/nexa_bold"
+                android:lineHeight="28dp"
                 android:textColor="@color/background"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/iv_front_balance_background"
                 app:layout_constraintTop_toTopOf="@id/iv_front_balance_background"
                 tools:text="TOPIC.1" />
@@ -48,11 +51,14 @@
             <TextView
                 android:id="@+id/tv_topic_title"
                 style="@style/ta.headline.1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="44dp"
                 android:textColor="@color/background"
-                app:layout_constraintStart_toStartOf="@id/tv_topic_number"
+                app:layout_constraintEnd_toEndOf="@id/iv_front_balance_background"
+                app:layout_constraintStart_toStartOf="@id/iv_front_balance_background"
                 app:layout_constraintTop_toBottomOf="@id/tv_topic_number"
                 tools:text="모여서 각자\n디자인" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,6 +81,75 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_back_balance_background_1" />
+
+            <TextView
+                android:id="@+id/tv_story"
+                style="@style/ta.headline.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
+                android:gravity="center"
+                android:maxLength="72"
+                android:textColor="@color/text_headline_primary"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/iv_back_balance_background"
+                app:layout_constraintEnd_toEndOf="@id/iv_back_balance_background"
+                app:layout_constraintStart_toStartOf="@id/iv_back_balance_background"
+                app:layout_constraintTop_toTopOf="@id/iv_back_balance_background"
+                tools:text="일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이" />
+
+            <TextView
+                android:id="@+id/tv_balance_question_first"
+                style="@style/ta.headline.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginTop="78dp"
+                android:gravity="center"
+                android:textColor="@color/text_headline_primary"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@id/tv_versus"
+                app:layout_constraintEnd_toEndOf="@id/iv_back_balance_background"
+                app:layout_constraintStart_toStartOf="@id/iv_back_balance_background"
+                app:layout_constraintTop_toTopOf="@id/iv_back_balance_background"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼" />
+
+            <TextView
+                android:id="@+id/tv_versus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:fontFamily="@font/nexa_bold"
+                android:gravity="center"
+                android:lineHeight="28dp"
+                android:text="VS"
+                android:textAlignment="center"
+                android:textColor="@color/graphic_pink"
+                android:textFontWeight="900"
+                android:textSize="24sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@id/tv_balance_question_second"
+                app:layout_constraintEnd_toEndOf="@id/iv_back_balance_background"
+                app:layout_constraintStart_toStartOf="@id/iv_back_balance_background"
+                app:layout_constraintTop_toBottomOf="@id/tv_balance_question_first" />
+
+            <TextView
+                android:id="@+id/tv_balance_question_second"
+                style="@style/ta.headline.4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginBottom="78dp"
+                android:gravity="center"
+                android:textColor="@color/text_headline_primary"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@id/iv_back_balance_background"
+                app:layout_constraintEnd_toEndOf="@id/iv_back_balance_background"
+                app:layout_constraintStart_toStartOf="@id/iv_back_balance_background"
+                app:layout_constraintTop_toBottomOf="@id/tv_versus"
+                tools:text="일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -116,6 +116,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         closeActivitySlideAnimation()
     }
 
+    override fun onResume() {
+        super.onResume()
+        navigateToHomeFragmentIfNeeded()
+    }
+
+    // 다른 Activity에서 FamiliarFragment로 되돌아올 때 HomeFragment로 이동하게 임시 조치 해놓음
+    private fun navigateToHomeFragmentIfNeeded() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as? NavHostFragment
+        val navController = navHostFragment?.navController
+
+        // 현재 활성화된 Fragment가 FamiliarFragment인지 확인
+        if (navController?.currentDestination?.id == R.id.fragment_familiar) {
+            navController.navigate(R.id.action_global_homeFragment)
+        }
+    }
+
     companion object {
         fun getIntent(context: Context, id: Int) = Intent(context, MainActivity::class.java).apply {
             putExtra("id", id)

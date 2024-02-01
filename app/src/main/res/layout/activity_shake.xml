@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -19,14 +20,14 @@
         <TextView
             android:id="@+id/tv_shake_title"
             style="@style/ta.headline.3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:text="@string/shake_title"
             android:textColor="@color/text_headline_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBar" />
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            tools:text="두 분의 관심사의 틈을 채워\n대화 주제를 조합하는 중이에요" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_child"

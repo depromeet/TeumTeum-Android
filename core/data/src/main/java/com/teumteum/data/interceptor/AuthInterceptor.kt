@@ -1,4 +1,4 @@
-package com.teumteum.data.remote
+package com.teumteum.data.interceptor
 
 import com.teumteum.data.BuildConfig.BASE_URL
 import com.teumteum.data.model.response.ResponseAuthToken
