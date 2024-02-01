@@ -354,7 +354,7 @@ class SignUpViewModel @Inject constructor(
                     readyJobDetailClass.value
                 )
                 STATUS_TRAINEE -> JobEntity(
-                    null,
+                    TRAINEE_NAME,
                     false,
                     readyJobClass.value,
                     readyJobDetailClass.value
@@ -387,6 +387,7 @@ class SignUpViewModel @Inject constructor(
 
     companion object {
         private const val REGEX_ID_PATTERN = "^([A-Za-z0-9_.]*)\$"
+        private const val TRAINEE_NAME = "준비중"
     }
 }
 

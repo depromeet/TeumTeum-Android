@@ -109,6 +109,7 @@
     <string name="signup_tv_finish_title">가입을 완료했어요</string>
     <string name="signup_tv_finish_subtitle">또래와 함께하는 맞춤형 모임을 추천해드려요</string>
     <string name="signup_tv_go_home">홈으로 가기</string>
+    <string name="signup_tv_card_trainee_job">준비중</string>
 
     <string name="alert_back_pressed_finish">\'뒤로\' 버튼을 두 번 누르면 종료됩니다</string>
     <string name="alert_back_pressed_signup">\'뒤로\' 버튼을 두 번 누르면 회원가입을 종료합니다</string>

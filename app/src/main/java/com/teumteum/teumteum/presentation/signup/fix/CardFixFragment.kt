@@ -56,7 +56,7 @@ class CardFixFragment
                         "lv.1층", "${preferredArea.value}에 사는", mbtiText.value.toUpperCase(Locale.ROOT), it)
                     STATUS_STUDENT -> FrontCard(userName.value, "@${schoolName.value}", readyJobDetailClass.value,
                         "lv.1층", "${preferredArea.value}에 사는", mbtiText.value.toUpperCase(Locale.ROOT), it)
-                    STATUS_TRAINEE -> FrontCard(userName.value, "@준비 중", readyJobDetailClass.value,
+                    STATUS_TRAINEE -> FrontCard(userName.value, "@${getText(R.string.signup_tv_card_trainee_job)}", readyJobDetailClass.value,
                         "lv.1층", "${preferredArea.value}에 사는", mbtiText.value.toUpperCase(Locale.ROOT), it)
                     else -> FrontCard()
                 }
