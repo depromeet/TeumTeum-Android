@@ -62,7 +62,6 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     private fun initMyCharacter() {
         val myInfo = AuthUtils.getMyInfo(this)
         if (myInfo != null) {
-            Timber.tag("테스트").d("${myInfo.id}")
             val view = binding.cvMe
             setCharacterView(
                 neighbor = NeighborEntity(

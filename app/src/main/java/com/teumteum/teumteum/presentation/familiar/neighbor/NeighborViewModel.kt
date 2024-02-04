@@ -48,12 +48,13 @@ class NeighborViewModel @Inject constructor(
             runCatching {
                 _neighborUserState.value = UiState.Loading
                 neighborRepository.postNeighborUser(requestPostNeighborUser = requestPostNeighborUser)
-            }.onSuccess { //todo - null 처리
+            }.onSuccess {
                 if (it.isEmpty()) {
                     _neighborUserState.value = UiState.Failure
                     return@onSuccess
                 } else {
-                    neighborUsers = it
+                    // id를 기준으로 중복 제거
+                    neighborUsers = it.distinctBy { neighborEntity -> neighborEntity.id }.toMutableList()
                     _neighborUserState.value = UiState.Success
                 }
             }.onFailure {
