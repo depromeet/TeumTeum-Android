@@ -1,70 +1,74 @@
-name: production
-
 on:
   push:
-    branches: [ "release" ]
+    branches: [ release ]
+  pull_request:
+    branches: [ release ]
 
 jobs:
-  build:
+  production-build:
     runs-on: ubuntu-latest
-    environment: Android CI/CD
     
     steps:
-    - name: get Release Branch
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+        with:
+          ref: release
+          
+      - name: Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.10
+          bundler-cache: true
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: 17
-        distribution: 'temurin'
-    
-    - name: Set up SDK
-      uses: android-actions/setup-android@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          check-latest: true
       
-    - name: Access Local Properties
-      env:
-        base_url: ${{ secrets.BASE_URL }}
-        image_url: ${{ secrets.IMAGE_URL }}
-        kakao_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
-        naver_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
-        kakao_api_key: ${{ secrets.KAKAO_API_KEY }}
-        naver_api_key: ${{ secrets.NAVER_API_KEY }}
-      run: |
-        echo base.url=\"$base_url\" >> local.properties
-        echo image.url=\"$image_url\" >> local.properties
-        echo kakao.redirect=\"$kakao_redirect_url\" >> local.properties
-        echo naver.redirect=\"$naver_redirect_url\" >> local.properties
-        echo kakao.key=\"$kakao_api_key\" >> local.properties
-        echo naver.key=\"$naver_api_key\" >> local.properties
+      - name: Access Local Properties
+        env:
+          base_url: ${{ secrets.BASE_URL }}
+          image_url: ${{ secrets.IMAGE_URL }}
+          kakao_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
+          naver_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
+          kakao_api_key: ${{ secrets.KAKAO_API_KEY }}
+          naver_api_key: ${{ secrets.NAVER_API_KEY }}
+        run: |
+          echo base.url=\"$base_url\" >> local.properties
+          echo image.url=\"$image_url\" >> local.properties
+          echo kakao.redirect=\"$kakao_redirect_url\" >> local.properties
+          echo naver.redirect=\"$naver_redirect_url\" >> local.properties
+          echo kakao.key=\"$kakao_api_key\" >> local.properties
+          echo naver.key=\"$naver_api_key\" >> local.properties
         
-    - name: Gradle cache
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+      - name: Gradle cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
                   
-    - name: Generate Keystore file from Github Secrets
-      run: |
-        mkdir ./app/keystore
-        echo "$KEYSTORE" > ./app/keystore/keystore.b64
-        base64 -d -i ./app/keystore/keystore.b64 > ./app/keystore/wwwKs.jks
-      env:
-        KEYSTORE: ${{ secrets.APP_KEYSTORE_BASE64 }}
+      - name: Generate Keystore file from Github Secrets
+        run: |
+          mkdir ./app/keystore
+          echo "$KEYSTORE" > ./app/keystore/keystore.b64
+          base64 -d -i ./app/keystore/keystore.b64 > ./app/keystore/wwwKs.jks
+        env:
+          KEYSTORE: ${{ secrets.APP_KEYSTORE_BASE64 }}
 
-    - name: build release aab
-      run: ./gradlew app:bundleRelease
+      - name: build release aab
+        run: ./gradlew app:bundleRelease
       
-    - name: upload artifact to Firebase App Distribution
-      uses: wzieba/Firebase-Distribution-Github-Action@v1
-      with:
-        appId: ${{secrets.FIREBASE_APP_ID}}
-        serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-        groups: testers
-        file: app/build/outputs/bundle/release/app-release.aab
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: app/build/outputs/bundle/release/app-release.aab
         
       
