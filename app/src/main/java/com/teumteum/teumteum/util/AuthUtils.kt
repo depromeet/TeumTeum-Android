@@ -21,4 +21,10 @@ object AuthUtils {
         val userInfoJson = prefs.getString(KEY_USER_INFO, null)
         return userInfoJson?.let { Gson().fromJson(it, UserInfo::class.java) }
     }
+
+    fun removeMyInfo(context: Context) {
+        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.remove(KEY_USER_INFO).apply()
+    }
 }

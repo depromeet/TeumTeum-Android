@@ -21,6 +21,8 @@ import com.teumteum.teumteum.presentation.mypage.setting.SettingScreen
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.util.AuthUtils
+import timber.log.Timber
 
 class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment_setting) {
     private val viewModel: SettingViewModel by activityViewModels()
@@ -64,6 +66,8 @@ class SettingFragment: BindingFragment<FragmentSettingBinding>(R.layout.fragment
             }
             SettingStatus.LOGOUT_CONFIRM -> {
                 (activity as MainActivity).hideBottomNavi()
+
+                AuthUtils.removeMyInfo(requireContext())
                 navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
             }

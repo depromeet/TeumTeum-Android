@@ -3,7 +3,6 @@ package com.teumteum.teumteum.presentation.mypage.setting.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.fragment.app.activityViewModels
@@ -21,8 +20,9 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewMod
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.util.AuthUtils
 
-class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.fragment_signout) {
+class SignOutConfirmFragment : BindingFragment<FragmentSignoutBinding>(R.layout.fragment_signout) {
     private val viewModel: SettingViewModel by activityViewModels()
     private val myPageViewModel: MyPageViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,8 +38,12 @@ class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.f
         val navController = findNavController()
 
         binding.composeSignout.setContent {
-            CompositionLocalProvider(TmtmColorPalette provides if(isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light ) {
-                SettingSignOutConfirm(viewModel = viewModel, myPageViewModel = myPageViewModel, navController = navController)
+            CompositionLocalProvider(TmtmColorPalette provides if (isSystemInDarkTheme()) ColorPalette_Dark else ColorPalette_Light) {
+                SettingSignOutConfirm(
+                    viewModel = viewModel,
+                    myPageViewModel = myPageViewModel,
+                    navController = navController
+                )
             }
         }
 
@@ -51,13 +55,17 @@ class SignOutConfirmFragment: BindingFragment<FragmentSignoutBinding>(R.layout.f
         startActivity(intent)
         activity?.finish()
     }
+
     private fun handleSettingStatus(status: SettingStatus) {
         when (status) {
             SettingStatus.SIGNOUT -> {
                 (activity as MainActivity).hideBottomNavi()
+
+                AuthUtils.removeMyInfo(requireContext())
                 navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
             }
+
             else -> {}
         }
     }
