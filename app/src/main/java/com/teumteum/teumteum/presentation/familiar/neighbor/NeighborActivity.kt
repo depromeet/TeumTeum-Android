@@ -16,12 +16,13 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.setOnSingleClickListener
+import com.teumteum.base.util.extension.toast
 import com.teumteum.domain.entity.NeighborEntity
+import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.RequestPostNeighborUser
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityNeighborBinding
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity
-import com.teumteum.teumteum.util.AuthUtils
 import com.teumteum.teumteum.util.ResMapper
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,19 +33,24 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     AppBarLayout {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+    private var isMyInfoInitialized = false
     private val viewModel by viewModels<NeighborViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
-        initMyCharacter()
+        getMyInfoFromServer()
         setUpListener()
         setUpObserver()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
         get() = binding.appBar
+
+    private fun getMyInfoFromServer() {
+        viewModel.getMyInfoFromServer()
+    }
 
     override fun initAppBarLayout() {
         setAppBarHeight(48)
@@ -58,25 +64,6 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
             )
         )
     }
-
-    private fun initMyCharacter() {
-        val myInfo = AuthUtils.getMyInfo(this)
-        if (myInfo != null) {
-            val view = binding.cvMe
-            setCharacterView(
-                neighbor = NeighborEntity(
-                    id = myInfo.id,
-                    name = myInfo.name,
-                    jobDetailClass = myInfo.job.detailClass,
-                    characterId = myInfo.characterId
-                ),
-                view = view
-            ).apply {
-                view.isEnabled = false //내 캐릭터 터치 시 체크박스 활성화 방지
-            }
-        }
-    }
-
 
     private fun setUpListener() {
         binding.btnStart.setOnSingleClickListener {
@@ -108,6 +95,31 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
 
         viewModel.selectedNeighborIds.observe(this) { selectedIds ->
             binding.btnStart.isEnabled = selectedIds.isNotEmpty()
+        }
+
+        viewModel.myInfo.observe(this) { myInfo ->
+            if (myInfo != null) {
+                isMyInfoInitialized = true
+                initMyCharacter(myInfo = myInfo)
+            } else {
+                toast("내 정보 조회 실패")
+            }
+        }
+    }
+
+    private fun initMyCharacter(myInfo: UserInfo) {
+        val view = binding.cvMe
+
+        setCharacterView(
+            neighbor = NeighborEntity(
+                id = myInfo.id,
+                name = myInfo.name,
+                jobDetailClass = myInfo.job.detailClass,
+                characterId = myInfo.characterId
+            ),
+            view = view
+        ).apply {
+            view.isEnabled = false //내 캐릭터 터치 시 체크박스 활성화 방지
         }
     }
 
@@ -158,10 +170,12 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
                 for (location in locationResult.locations) {
                     Timber.tag("Location")
                         .d("${location.latitude}, ${location.longitude}") //todo - post함수 추가
-                    postNeighborUser(
-                        latitude = location.latitude,
-                        longitude = location.longitude
-                    )
+                    if (isMyInfoInitialized) {
+                        postNeighborUser(
+                            latitude = location.latitude,
+                            longitude = location.longitude
+                        )
+                    }
                 }
             }
         }
@@ -174,8 +188,7 @@ class NeighborActivity : BindingActivity<ActivityNeighborBinding>(R.layout.activ
     }
 
     private fun postNeighborUser(latitude: Double, longitude: Double) { //todo - 함수명 수정
-        val myInfo = AuthUtils.getMyInfo(this)
-        Timber.tag("getMyInfo").d("$myInfo")
+        val myInfo = viewModel.getMyInfo()
 
         if (myInfo != null) {
             viewModel.postNeighborUser(

@@ -26,13 +26,10 @@ import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicActivity
 import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicViewModel
 import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewConfig
 import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewData
-import com.teumteum.teumteum.util.AuthUtils
 import com.teumteum.teumteum.util.ResMapper
-import com.teumteum.teumteum.util.custom.uistate.UiState
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -77,7 +74,7 @@ class ShakeFragment :
     }
 
     private fun getTopics(){
-        val myId = AuthUtils.getMyInfo(requireContext())?.id.toString()
+        val myId = viewModel.getUserInfo()?.id.toString()
         val userIds = viewModel.friends.value?.map { it.id.toString() }?.toMutableList()?.apply {
             add(myId)
         }
@@ -90,7 +87,7 @@ class ShakeFragment :
     }
 
     private fun processReceivedFriendList() {
-        val myInfo = AuthUtils.getMyInfo(requireActivity())
+        val myInfo = viewModel.getUserInfo()
         val friends = viewModel.friends.value ?: listOf()
 
         // myInfo의 관심사 추출

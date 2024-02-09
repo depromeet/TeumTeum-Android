@@ -20,7 +20,7 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewMod
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingStatus
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.signin.SignInActivity
-import com.teumteum.teumteum.util.AuthUtils
+import timber.log.Timber
 
 class SignOutConfirmFragment : BindingFragment<FragmentSignoutBinding>(R.layout.fragment_signout) {
     private val viewModel: SettingViewModel by activityViewModels()
@@ -60,8 +60,6 @@ class SignOutConfirmFragment : BindingFragment<FragmentSignoutBinding>(R.layout.
         when (status) {
             SettingStatus.SIGNOUT -> {
                 (activity as MainActivity).hideBottomNavi()
-
-                AuthUtils.removeMyInfo(requireContext())
                 navigateToSignInActivity()
                 viewModel.updateSettingStatus(SettingStatus.DEFAULT)
             }
