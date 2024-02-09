@@ -50,7 +50,7 @@ class SocialWebViewActivity
 
         provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
         initProvider(provider)
-        initCookieManager()
+//        initCookieManager()
         initAppBarLayout()
         initWebView()
         observer()
