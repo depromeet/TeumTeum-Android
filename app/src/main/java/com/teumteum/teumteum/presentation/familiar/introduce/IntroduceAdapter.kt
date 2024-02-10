@@ -102,6 +102,7 @@ class IntroduceAdapter() :
 
             with(binding.cardviewBack) {
                 tvGoalTitle.text = "GOAL"
+                tvGoalTitle.setTextColor(ResMapper.getColorByCharacterId(itemView.context, item.characterId))
                 tvGoalContent.text = item.goal
 
                 Glide.with(itemView.context)

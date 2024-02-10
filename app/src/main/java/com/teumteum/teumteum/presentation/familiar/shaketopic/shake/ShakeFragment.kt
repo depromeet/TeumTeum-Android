@@ -107,7 +107,7 @@ class ShakeFragment :
         val myInterests = myInfo?.interests?.map { interest ->
             InterestViewData(
                 interest,
-                ResMapper.getColorByCharacterId(characterId = myInfo.characterId.toInt())
+                ResMapper.getColorByCharacterId(requireActivity(), characterId = myInfo.characterId.toInt())
             )
         }
 
@@ -116,7 +116,7 @@ class ShakeFragment :
             addAll(myInterests ?: emptyList())
 
             for (friend in friends) {
-                val color = ResMapper.getColorByCharacterId(characterId = friend.characterId)
+                val color = ResMapper.getColorByCharacterId(requireActivity(), characterId = friend.characterId)
                 friend.interests.forEach { interest ->
                     add(InterestViewData(interest, color))
                 }
