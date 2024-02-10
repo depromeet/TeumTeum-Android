@@ -1,5 +1,6 @@
 package com.teumteum.teumteum.util.custom.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -45,6 +46,14 @@ class BackCardView : CardView {
             ivFloat.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
+    // isModifyDetail 값을 설정하고 어댑터에 UI 갱신을 알리는 함수
+    @SuppressLint("NotifyDataSetChanged")
+    fun setIsModifyDetail(isModifyDetail: Boolean) {
+        interestAdapter.isModifyDetail = isModifyDetail
+        // UI를 새로고침하도록 어댑터에 알림
+        interestAdapter.notifyDataSetChanged()
+    }
+
     // 공개 속성으로 RecyclerView와 Adapter 제공
     val interestAdapter = InterestAdapter()
     lateinit var rvInterests: RecyclerView
@@ -53,12 +62,6 @@ class BackCardView : CardView {
     fun submitInterestList(interests: List<Interest>) {
         interestAdapter.submitList(interests.reversed()) //flexboxLayout에서 item 쌓이는 순서 reverse 지원을 안 해서 직접 item 순서를 뒤집어서 submitList
     }
-
-    var isModifyDetail: Boolean = false
-        set(value) {
-            field = value
-            ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
-        }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs)
@@ -120,9 +123,8 @@ class BackCardView : CardView {
                         getString(com.teumteum.base.R.styleable.CardBackView_goalContent) ?: ""
                     characterResId =
                         getResourceId(com.teumteum.base.R.styleable.CardBackView_characterImage, 0)
-//                    isModify =
-//                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
-//                    isModifyDetail = getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModifyDetail, false)
+                    isModify =
+                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
                 }
             } finally {
                 recycle()
@@ -353,7 +355,7 @@ class BackCardView : CardView {
                 // 항목이 화면을 넘어갈 경우 다음 줄로 넘어가도록 설정
                 flexWrap = FlexWrap.WRAP
                 // 항목들 사이의 정렬 방식 설정 (옵션)
-                justifyContent = JustifyContent.FLEX_END
+                justifyContent = JustifyContent.FLEX_END //우측부터 쌓으려면 FLEX_START
             }
             adapter = interestAdapter // Use the existing adapter
 

@@ -213,6 +213,8 @@ fun BackCardView(backCard: BackCard) {
                         Interest("네트워킹")
                     )
                 )
+                setIsModifyDetail(isModifyDetail = true)
+                isModify = true
                 rotationY = 180f
             }
         },

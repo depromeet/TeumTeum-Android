@@ -111,7 +111,7 @@ class IntroduceAdapter() :
                     .into(ivCharacter)
 
                 isModify = false
-                isModifyDetail = false
+//                isModifyDetail = false
             }
         }
     }
