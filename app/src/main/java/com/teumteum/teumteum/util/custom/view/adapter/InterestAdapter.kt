@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemInterestBinding
 import com.teumteum.teumteum.util.custom.view.model.Interest
+import timber.log.Timber
 
 class InterestAdapter() : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
     ItemListDiffCallback
@@ -23,13 +24,22 @@ class InterestAdapter() : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.binding.root.setOnClickListener {
+            removeItem(position)
+        }
     }
 
-    class ItemViewHolder(private val binding: ItemInterestBinding) :
+    private fun removeItem(position: Int) {
+        val newList = currentList.toMutableList().apply {
+            removeAt(position)
+        }
+        submitList(newList)
+    }
+
+    class ItemViewHolder(val binding: ItemInterestBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Interest) {
             binding.tvInterest.text = itemView.context.getString(R.string.item_interest, item.interest)
-
         }
     }
 

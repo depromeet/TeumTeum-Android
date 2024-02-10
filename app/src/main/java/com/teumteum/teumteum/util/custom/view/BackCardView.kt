@@ -10,9 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -23,7 +21,6 @@ import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import com.teumteum.teumteum.util.extension.dpToPx
-import timber.log.Timber
 
 /**
  * 카드 후면 뷰
@@ -208,7 +205,7 @@ class BackCardView : CardView {
             marginStart = 32,
             marginEnd = 32,
             itemHorizontalSpaceDp = 8,
-            itemVerticalSpaceDp = 4
+            itemVerticalSpaceDp = 4,
         )
     }
 
@@ -236,7 +233,7 @@ class BackCardView : CardView {
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
-        background: Int? = null
+        background: Int? = null,
     ) {
         val textView = TextView(context).apply {
             this.id = id
@@ -293,7 +290,7 @@ class BackCardView : CardView {
         startToStartOf: Int? = null,
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
-        endToStartOf: Int? = null
+        endToStartOf: Int? = null,
     ) {
         val imageView = ImageView(context).apply {
             this.id = id
@@ -347,7 +344,7 @@ class BackCardView : CardView {
         background: Int? = null,
         itemHorizontalSpaceDp: Int,
         itemVerticalSpaceDp: Int,
-        ) {
+    ) {
         rvInterests = RecyclerView(context).apply {
             this.id = id
             layoutManager = FlexboxLayoutManager(context).apply {
@@ -360,7 +357,13 @@ class BackCardView : CardView {
             }
             adapter = interestAdapter // Use the existing adapter
 
-            addItemDecoration(FlexboxItemDecoration(context,itemHorizontalSpaceDp, itemVerticalSpaceDp))
+            addItemDecoration(
+                FlexboxItemDecoration(
+                    context,
+                    itemHorizontalSpaceDp,
+                    itemVerticalSpaceDp
+                )
+            )
             background?.let { setBackgroundResource(it) }
         }
         setPadding(
