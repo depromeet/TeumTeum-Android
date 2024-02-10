@@ -331,11 +331,12 @@
     <string name="review_finish_title">리뷰 남기기가\n완료되었습니다.</string>
     <string name="review_go_home">홈으로 돌아가기</string>
 
-    <string name="familiar_dialog_title_exit">정말 틈틈을 종료하시겠어요?</string>
-    <string name="familiar_dialog_subtitle_exit">틈틈을 종료하시면 지금까지 진행한\n틈틈의 내용이 사라져요.</string>
+    <string name="familiar_exit_dialog_title">정말 틈틈을 종료하시겠어요?</string>
+    <string name="familiar_exit_dialog_description">틈틈을 종료하시면 지금까지 진행한\n틈틈의 내용이 사라져요.</string>
+    <string name="familiar_shake_dialog_title">서로의 관심사 틈을 채우기</string>
+    <string name="familiar_shake_dialog_description">3초만 모바일 기기를 흔들어 보세요!\n관심사 기반 대화 주제를 받을 수 있어요.</string>
     <string name="exit">종료하기</string>
-    <string name="shake">흔들기</string>
-    <string name="familiar_dialog_title_shake">서로의 관심사 틈을 채우기</string>
+    <string name="start">시작하기</string>
 
     <string name="teum_notification_channel_id">teum_notification_channel</string>
 

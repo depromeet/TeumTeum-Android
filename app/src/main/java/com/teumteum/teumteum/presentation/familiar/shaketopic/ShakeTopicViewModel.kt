@@ -9,7 +9,6 @@ import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.TopicRepository
 import com.teumteum.domain.repository.UserRepository
-import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,9 +16,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.Collections
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class ShakeTopicViewModel @Inject constructor(

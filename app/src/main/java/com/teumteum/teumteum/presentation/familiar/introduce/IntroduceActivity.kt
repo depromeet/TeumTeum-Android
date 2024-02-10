@@ -10,14 +10,11 @@ import com.teumteum.base.R.color
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
-import com.teumteum.base.util.extension.setOnSingleClickListener
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityIntroduceBinding
-import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
-import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.EXTRA_SOURCE
-import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity.Companion.SOURCE_INTRODUCE
 import com.teumteum.teumteum.presentation.familiar.neighbor.NeighborActivity.Companion.EXTRA_NEIGHBORS_IDS
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 
@@ -50,16 +47,15 @@ class IntroduceActivity
     }
 
     private fun setUpListener() {
-        binding.btnStart.setOnSingleClickListener {
-            startFamiliarDialogActivity()
+        binding.btnStart.setOnClickListener {
+            startShakeTopicActivity()
         }
     }
 
-    private fun startFamiliarDialogActivity() {
+    private fun startShakeTopicActivity() {
         val friends = viewModel.introduceUser.value ?: listOf()
-        val intent = Intent(this, FamiliarDialogActivity::class.java).apply {
+        val intent = Intent(this, ShakeTopicActivity::class.java).apply {
             putExtra(EXTRA_FRIENDS, ArrayList(friends) as Serializable)
-            putExtra(EXTRA_SOURCE, SOURCE_INTRODUCE)
         }
         startActivity(intent)
     }

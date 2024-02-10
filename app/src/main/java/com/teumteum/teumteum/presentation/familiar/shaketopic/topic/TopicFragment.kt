@@ -14,11 +14,11 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentTopicBinding
-import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicViewModel
-import com.teumteum.teumteum.util.custom.uistate.UiState
+import com.teumteum.teumteum.util.custom.dialog.CommonDialogConfig
+import com.teumteum.teumteum.util.custom.dialog.CommonDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class TopicFragment :
@@ -28,7 +28,10 @@ class TopicFragment :
     private val viewModel by viewModels<ShakeTopicViewModel>({ requireActivity() }) //requireParentFragment
     private val visitedPages = HashSet<Int>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { //바인딩 객체 초기화 에러 onCreated -> onViewCreated로 바꾸니까 해결됨
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) { //바인딩 객체 초기화 에러 onCreated -> onViewCreated로 바꾸니까 해결됨
         super.onViewCreated(view, savedInstanceState)
         initViewPager()
         setUpObserver()
@@ -57,17 +60,27 @@ class TopicFragment :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_close,
                 useRippleEffect = false,
-                clickEvent = ::startFamiliarDialogActivity
+                clickEvent = ::initDialog
             )
         )
     }
 
-    private fun startFamiliarDialogActivity() {
-        val intent = Intent(requireContext(), FamiliarDialogActivity::class.java).apply {
-            putExtra(FamiliarDialogActivity.EXTRA_SOURCE, FamiliarDialogActivity.SOURCE_TOPIC)
+    private fun initDialog() {
+        CommonDialogFragment.newInstance(
+            commonDialogConfig = CommonDialogConfig(
+                title = getString(R.string.familiar_exit_dialog_title),
+                description = getString(R.string.familiar_exit_dialog_description),
+                positiveButtonText = getString(R.string.exit)
+            ),
+            onPositiveButtonClicked = ::startMainActivity
+        ).show(childFragmentManager, "CommonDialogFragmentTag")
+    }
+
+    private fun startMainActivity() {
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
-        requireActivity().finish()
     }
 
     private fun initViewPager() {

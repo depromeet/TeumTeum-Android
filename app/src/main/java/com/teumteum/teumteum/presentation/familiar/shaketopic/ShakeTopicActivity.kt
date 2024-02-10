@@ -43,6 +43,7 @@ class ShakeTopicActivity :
             }
         }
     }
+
     fun onShakeCompleted() {
         Timber.d("흔들기 3초 완료")
         isShakeCompleted = true
