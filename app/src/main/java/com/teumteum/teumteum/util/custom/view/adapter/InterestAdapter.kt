@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemInterestBinding
 import com.teumteum.teumteum.util.custom.view.model.Interest
 
@@ -27,7 +28,7 @@ class InterestAdapter() : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
     class ItemViewHolder(private val binding: ItemInterestBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Interest) {
-            binding.tvInterest.text = item.interest
+            binding.tvInterest.text = itemView.context.getString(R.string.item_interest, item.interest)
 
         }
     }

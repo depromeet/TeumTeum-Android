@@ -13,11 +13,17 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.custom.itemdecoration.FlexboxItemDecoration
 import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import com.teumteum.teumteum.util.extension.dpToPx
+import timber.log.Timber
 
 /**
  * 카드 후면 뷰
@@ -48,7 +54,7 @@ class BackCardView : CardView {
         private set
 
     fun submitInterestList(interests: List<Interest>) {
-        interestAdapter.submitList(interests)
+        interestAdapter.submitList(interests.reversed()) //flexboxLayout에서 item 쌓이는 순서 reverse 지원을 안 해서 직접 item 순서를 뒤집어서 submitList
     }
 
     var isModifyDetail: Boolean = false
@@ -196,12 +202,13 @@ class BackCardView : CardView {
         addRecyclerView(
             context,
             id = R.id.rvInterest,
-            spanCount = 2,
             bottomToBottomOf = layoutParent,
             startToStartOf = layoutParent,
             marginBottom = 32,
             marginStart = 32,
-            marginEnd = 32
+            marginEnd = 32,
+            itemHorizontalSpaceDp = 8,
+            itemVerticalSpaceDp = 4
         )
     }
 
@@ -320,7 +327,6 @@ class BackCardView : CardView {
 
     private fun ConstraintLayout.addRecyclerView(
         context: Context,
-        spanCount: Int = 2, // Assuming you want to keep using a 2-column layout
         id: Int = R.id.rvInterest,
         marginTop: Int = 0,
         marginBottom: Int = 0,
@@ -338,15 +344,23 @@ class BackCardView : CardView {
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
-        background: Int? = null
-    ) {
+        background: Int? = null,
+        itemHorizontalSpaceDp: Int,
+        itemVerticalSpaceDp: Int,
+        ) {
         rvInterests = RecyclerView(context).apply {
             this.id = id
-            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL).apply {
-                reverseLayout = true // Set items to stack from bottom up
-
+            layoutManager = FlexboxLayoutManager(context).apply {
+                // 항목을 수평 방향으로 배치
+                flexDirection = FlexDirection.ROW_REVERSE
+                // 항목이 화면을 넘어갈 경우 다음 줄로 넘어가도록 설정
+                flexWrap = FlexWrap.WRAP
+                // 항목들 사이의 정렬 방식 설정 (옵션)
+                justifyContent = JustifyContent.FLEX_END
             }
             adapter = interestAdapter // Use the existing adapter
+
+            addItemDecoration(FlexboxItemDecoration(context,itemHorizontalSpaceDp, itemVerticalSpaceDp))
             background?.let { setBackgroundResource(it) }
         }
         setPadding(

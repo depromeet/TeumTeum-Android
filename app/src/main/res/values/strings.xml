@@ -339,5 +339,6 @@
     <string name="start">시작하기</string>
 
     <string name="teum_notification_channel_id">teum_notification_channel</string>
+    <string name="item_interest">#%1$s</string>
 
 </resources>
