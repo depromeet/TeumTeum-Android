@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.shaketopic
+package com.teumteum.teumteum.presentation.familiar.shaketopic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

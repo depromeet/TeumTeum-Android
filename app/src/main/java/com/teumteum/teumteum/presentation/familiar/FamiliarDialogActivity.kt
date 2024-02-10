@@ -9,7 +9,7 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityFamiliarDialogBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.Companion.EXTRA_FRIENDS
-import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicActivity
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 

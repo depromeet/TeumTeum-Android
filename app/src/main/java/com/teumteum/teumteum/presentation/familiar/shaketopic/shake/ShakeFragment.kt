@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.shaketopic.shake
+package com.teumteum.teumteum.presentation.familiar.shaketopic.shake
 
 import ShakeDetector
 import android.content.Context
@@ -22,10 +22,10 @@ import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentShakeBinding
 import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
-import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicActivity
-import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicViewModel
-import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewConfig
-import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewData
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicActivity
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicViewModel
+import com.teumteum.teumteum.presentation.familiar.shaketopic.shake.model.InterestViewConfig
+import com.teumteum.teumteum.presentation.familiar.shaketopic.shake.model.InterestViewData
 import com.teumteum.teumteum.util.ResMapper
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth

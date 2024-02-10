@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.shaketopic.topic
+package com.teumteum.teumteum.presentation.familiar.shaketopic.topic
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import com.teumteum.domain.entity.TopicResponse
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentTopicBinding
 import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
-import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicViewModel
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicViewModel
 import com.teumteum.teumteum.util.custom.uistate.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber

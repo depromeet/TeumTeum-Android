@@ -52,13 +52,15 @@ class AuthInterceptor @Inject constructor(
                         isLogin = false
                         userToken = ""
                         refreshToken = ""
+                        userInfo = ""
                     }
                 } catch (t: Throwable) {
                     Timber.e(t)
                     with(dataStore) {
                         isLogin = false
-                        dataStore.userToken = ""
-                        dataStore.refreshToken = ""
+                        userToken = ""
+                        refreshToken = ""
+                        userInfo = ""
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.shaketopic
+package com.teumteum.teumteum.presentation.familiar.shaketopic
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,8 +8,8 @@ import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityShakeTopicBinding
 import com.teumteum.teumteum.presentation.familiar.introduce.IntroduceActivity.Companion.EXTRA_FRIENDS
-import com.teumteum.teumteum.presentation.shaketopic.shake.ShakeFragment
-import com.teumteum.teumteum.presentation.shaketopic.topic.TopicFragment
+import com.teumteum.teumteum.presentation.familiar.shaketopic.shake.ShakeFragment
+import com.teumteum.teumteum.presentation.familiar.shaketopic.topic.TopicFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
