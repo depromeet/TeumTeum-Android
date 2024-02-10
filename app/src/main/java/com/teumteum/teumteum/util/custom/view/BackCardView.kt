@@ -131,7 +131,7 @@ class BackCardView : CardView {
     private fun setUpViews() {
         tvGoalTitle.text = backCard.goalTitle
         tvGoalContent.text = backCard.goalContent
-        ivCharacter.setImageResource(backCard.characterResId)
+        backCard.characterResId?.let { ivCharacter.setImageResource(it) }
         ivFloat.setImageResource(backCard.floatResId)
     }
 
@@ -173,7 +173,6 @@ class BackCardView : CardView {
         addImageView(
             context,
             id = R.id.ivCharacter,
-            drawableRes = R.drawable.ic_card_back_penguin,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent
         )
@@ -270,7 +269,8 @@ class BackCardView : CardView {
     }
 
     private fun ConstraintLayout.addImageView(
-        context: Context, id: Int, drawableRes: Int,
+        context: Context, id: Int,
+        drawableRes: Int? = null,
         marginTop: Int = 0,
         marginBottom: Int = 0,
         marginStart: Int = 0,
@@ -313,7 +313,7 @@ class BackCardView : CardView {
                 paddingEnd.dpToPx(context),
                 paddingBottom.dpToPx(context)
             )
-            setImageResource(drawableRes)
+            drawableRes?.let { setImageResource(it) }
         }
         addView(imageView)
     }
@@ -344,6 +344,7 @@ class BackCardView : CardView {
             this.id = id
             layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL).apply {
                 reverseLayout = true // Set items to stack from bottom up
+
             }
             adapter = interestAdapter // Use the existing adapter
             background?.let { setBackgroundResource(it) }

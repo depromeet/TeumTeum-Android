@@ -135,7 +135,7 @@ class FrontCardView : CardView {
         tvLevel.text = frontCard.level
         tvArea.text = frontCard.area
         tvMbti.text = frontCard.mbti
-        ivCharacter.setImageResource(frontCard.characterResId)
+        frontCard.characterResId?.let { ivCharacter.setImageResource(it) }
 
         ivFloat.setImageResource(frontCard.floatResId)
         ivEditName.setImageResource(frontCard.editNameResId)
@@ -234,7 +234,6 @@ class FrontCardView : CardView {
         addImageView(
             context,
             id = R.id.ivCharacter,
-            drawableRes = R.drawable.ic_card_front_penguin,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent,
             elevationDp = 0f,
@@ -352,7 +351,9 @@ class FrontCardView : CardView {
     }
 
     private fun ConstraintLayout.addImageView(
-        context: Context, id: Int, drawableRes: Int,
+        context: Context,
+        id: Int,
+        drawableRes: Int? = null,
         marginTop: Int = 0,
         marginBottom: Int = 0,
         marginStart: Int = 0,
@@ -398,7 +399,7 @@ class FrontCardView : CardView {
                 paddingEnd.dpToPx(context),
                 paddingBottom.dpToPx(context)
             )
-            setImageResource(drawableRes)
+            drawableRes?.let { setImageResource(it) }
         }
         addView(imageView)
     }
