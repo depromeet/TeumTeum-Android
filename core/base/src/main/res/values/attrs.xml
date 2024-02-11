@@ -86,7 +86,8 @@
 
     <!-- CardFront/Back -->
     <attr name="characterImage" format="integer" />
-
+    <attr name="isModify" format="boolean"/>
+    <attr name="isModifyDetail"  format="boolean"/>
     <!-- CardFront -->
     <declare-styleable name="CardFrontView">
         <attr name="name" format="string" />
@@ -96,8 +97,8 @@
         <attr name="area" format="string" />
         <attr name="mbti" format="string" />
         <attr name="characterImage" />
-        <attr name="isModify" format="boolean"/>
-        <attr name="isModifyDetail"  format="boolean"/>
+        <attr name="isModify"/>
+        <attr name="isModifyDetail"/>
     </declare-styleable>
 
     <!-- CardBack -->
@@ -105,6 +106,8 @@
         <attr name="goalTitle" format="string" />
         <attr name="goalContent" format="string" />
         <attr name="characterImage" />
+        <attr name="isModify"/>
+        <attr name="isModifyDetail"/>
     </declare-styleable>
 
 </resources>

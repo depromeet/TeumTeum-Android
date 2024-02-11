@@ -27,6 +27,7 @@ class AuthInterceptor @Inject constructor(
         when (response.code) {
             CODE_TOKEN_EXPIRED -> {
                 try {
+                    Timber.tag("만료된 토큰").d("accessToken: ${dataStore.userToken}, refreshToken: ${dataStore.refreshToken}")
                     val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
                         .url("$BASE_URL/auth/reissues")
                         .addHeader(HEADER_AUTHORIZATION, dataStore.userToken)
@@ -43,6 +44,8 @@ class AuthInterceptor @Inject constructor(
                             userToken = responseToken.accessToken ?: ""
                             refreshToken = responseToken.refreshToken ?: ""
                         }
+                        Timber.tag("갱신된 토큰").d("accessToken: ${dataStore.userToken}, refreshToken: ${dataStore.refreshToken}")
+
                         refreshTokenResponse.close()
                         val newRequest = originalRequest.newAuthBuilder().build()
                         return chain.proceed(newRequest)
@@ -52,13 +55,15 @@ class AuthInterceptor @Inject constructor(
                         isLogin = false
                         userToken = ""
                         refreshToken = ""
+                        userInfo = ""
                     }
                 } catch (t: Throwable) {
                     Timber.e(t)
                     with(dataStore) {
                         isLogin = false
-                        dataStore.userToken = ""
-                        dataStore.refreshToken = ""
+                        userToken = ""
+                        refreshToken = ""
+                        userInfo = ""
                     }
                 }
             }

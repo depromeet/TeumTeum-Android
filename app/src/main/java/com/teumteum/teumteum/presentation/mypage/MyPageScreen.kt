@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import com.teumteum.teumteum.R
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -40,7 +37,7 @@ import com.teumteum.base.component.compose.TmTabItem
 import com.teumteum.base.component.compose.TmTabRow
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
-import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
@@ -50,6 +47,7 @@ import com.teumteum.teumteum.util.custom.view.BackCardView
 import com.teumteum.teumteum.util.custom.view.FrontCardView
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
+import com.teumteum.teumteum.util.custom.view.model.Interest
 
 @Composable
 fun MyPageScreen(
@@ -79,7 +77,7 @@ fun MyPageScreen(
         isSetting = true,
         onClick = {
             navController.navigate(R.id.fragment_setting)
-                  },
+        },
         topbarText = "${userName}님의 소개서"
     ) {
         val list = listOf("내 모임", "받은 리뷰")
@@ -94,33 +92,33 @@ fun MyPageScreen(
         ) {
             item {
                 TmMarginVerticalSpacer(size = 78)
-                    Box(modifier = Modifier
-                        .clickable { myPageViewModel.toggleCardState() }
-                        .graphicsLayer {
-                            rotationY = rotation
-                            cameraDistance = 12f * density
-                        }
-                    ) {
-                        if (isFrontCardShown) {
-                            MyPageFrontCard(frontCard = frontCardState)
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_floating_edit),
-                                contentDescription = "Character Image",
-                                modifier = Modifier
-                                    .align(Alignment.BottomEnd)
-                                    .offset(x = (-24).dp, y = (-22).dp)
-                                    .clickable { navController.navigate(R.id.fragment_edit_card) }
-                            )
-                        } else {
-                            with(LocalDensity.current) {
-                                Modifier.graphicsLayer {
-                                    rotationY = if (rotation == 180f) -180f else 0f
-                                }
-                            }
-                            MyPageBackCard(backCard = backCard)
-                        }
-                        
+                Box(modifier = Modifier
+                    .clickable { myPageViewModel.toggleCardState() }
+                    .graphicsLayer {
+                        rotationY = rotation
+                        cameraDistance = 12f * density
                     }
+                ) {
+                    if (isFrontCardShown) {
+                        MyPageFrontCard(frontCard = frontCardState)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_floating_edit),
+                            contentDescription = "Character Image",
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .offset(x = (-24).dp, y = (-22).dp)
+                                .clickable { navController.navigate(R.id.fragment_edit_card) }
+                        )
+                    } else {
+                        with(LocalDensity.current) {
+                            Modifier.graphicsLayer {
+                                rotationY = if (rotation == 180f) -180f else 0f
+                            }
+                        }
+                        MyPageBackCard(backCard = backCard)
+                    }
+
+                }
                 TmMarginVerticalSpacer(size = 22)
                 SettingBtn(friends, navController, myPageViewModel)
                 TmMarginVerticalSpacer(size = 10)
@@ -143,7 +141,9 @@ fun MyPageScreen(
             }
             when (selectedTab.value) {
                 "내 모임" -> item {
-                    MyPagePager1Content(viewModel, navController) }
+                    MyPagePager1Content(viewModel, navController)
+                }
+
                 "받은 리뷰" -> item { MyPagePager2Content() }
 //                "북마크" -> item { MyPagePager3Content() }
             }
@@ -206,6 +206,15 @@ fun BackCardView(backCard: BackCard) {
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
+                submitInterestList( //todo - 더미
+                    listOf(
+                        Interest("모여서 각자 일하기"),
+                        Interest("사이드 프로젝트"),
+                        Interest("네트워킹")
+                    )
+                )
+                setIsModifyDetail(isModifyDetail = true)
+                isModify = true
                 rotationY = 180f
             }
         },
