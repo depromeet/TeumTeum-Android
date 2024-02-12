@@ -7,6 +7,7 @@ import com.teumteum.data.model.request.toBody
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.entity.MoimEntity
+import com.teumteum.domain.entity.ReviewFriend
 import com.teumteum.domain.repository.GroupRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -94,4 +95,9 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getReviewFriendList(meetingId: Long): Result<List<ReviewFriend>> {
+        return runCatching {
+            dataSource.getReviewFriendList(meetingId).participants.map { it.toReviewFriend() }
+        }
+    }
 }
