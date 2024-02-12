@@ -189,6 +189,11 @@ class CardFixFragment
                     navigateTo<GetInterestFragment>()
                 }
             }
+            currentList.observe(viewLifecycleOwner) { interests ->
+                val selfArray = resources.getStringArray(R.array.interest_1)
+                val fieldArray = resources.getStringArray(R.array.interest_2)
+                viewModel.setAllInterests(interests.map { it.toString() }, selfArray, fieldArray)
+            }
         }
     }
 
