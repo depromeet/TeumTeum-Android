@@ -338,5 +338,8 @@
     <string name="familiar_dialog_title_shake">서로의 관심사 틈을 채우기</string>
 
     <string name="teum_notification_channel_id">teum_notification_channel</string>
+    <string name="alerts_list_title">알림</string>
+    <string name="alerts_list_empty">알림이 아직 없어요</string>
+    <string name="alerts_while_month">최대 한 달 전까지의 알림을 확인할 수 있어요</string>
 
 </resources>
