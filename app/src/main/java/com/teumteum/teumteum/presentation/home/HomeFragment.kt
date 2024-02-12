@@ -25,6 +25,7 @@ import com.teumteum.teumteum.presentation.group.GroupListUiState
 import com.teumteum.teumteum.presentation.group.GroupListViewModel
 import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 import com.teumteum.teumteum.presentation.group.search.SearchActivity
+import com.teumteum.teumteum.presentation.notification.AlertsListActivity
 import com.teumteum.teumteum.util.callback.CustomBackPressedCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -83,7 +84,12 @@ class HomeFragment :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_bell,
                 useRippleEffect = false,
-                clickEvent = null
+                clickEvent = {
+                    Intent(requireActivity(), AlertsListActivity::class.java).apply {
+                        startActivity(this)
+                        (activity as? BindingActivity<*>)?.openActivitySlideAnimation()
+                    }
+                }
             )
         )
     }

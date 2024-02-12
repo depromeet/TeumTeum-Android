@@ -72,7 +72,7 @@
                 android:padding="12dp"
                 android:stateListAnimator="@null"
                 android:text="@{dialogConfig.negativeButtonText}"
-                android:textColor="@color/text_button_primary_default"
+                android:textColor="@color/text_button_alternative"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@id/btn_common_dialog_positive"
                 app:layout_constraintEnd_toStartOf="@id/btn_common_dialog_positive"

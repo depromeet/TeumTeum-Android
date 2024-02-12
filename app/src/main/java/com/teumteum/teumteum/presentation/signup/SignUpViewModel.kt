@@ -204,6 +204,15 @@ class SignUpViewModel @Inject constructor(
         _interestSelf.value = ArrayList(interests)
     }
 
+    fun setAllInterests(interests: List<String>, selfResource: Array<String>, fieldResource: Array<String>) {
+        interestSelf.value.clear()
+        interestField.value.clear()
+        for (i in interests) {
+            if (i in selfResource) addInterestSelf(i)
+            else if (i in fieldResource) addInterestField(i)
+        }
+    }
+
     private var _goalText = MutableStateFlow<String>("")
     val goalText: StateFlow<String> = _goalText.asStateFlow()
 

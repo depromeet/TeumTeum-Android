@@ -159,11 +159,12 @@ class SettingViewModel @Inject constructor(
         return false
     }
 
-    private val _alarmState = MutableStateFlow(false)
+    private val _alarmState = MutableStateFlow(settingRepository.getNotification())
     val alarmState: StateFlow<Boolean> = _alarmState.asStateFlow()
 
     fun onToggleChange(newToggleState: Boolean) {
-        _alarmState.value = newToggleState
+        settingRepository.setNotification(newToggleState)
+        _alarmState.value = settingRepository.getNotification()
     }
 
     private val _settingStatus = MutableStateFlow(SettingStatus.DEFAULT)

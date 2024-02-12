@@ -7,5 +7,5 @@ data class SocialLoginResult (
     val accessToken: String?,
     val refreshToken: String?,
     val oauthId: String?,
-    val messages: String?
+    val message: String?
 )

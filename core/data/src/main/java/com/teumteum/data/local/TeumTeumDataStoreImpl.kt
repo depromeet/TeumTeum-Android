@@ -37,6 +37,10 @@ class TeumTeumDataStoreImpl @Inject constructor(
         get() = userPref.getBoolean(PREF_ASKED_NOTIFICATION, false)
         set(value) = userPref.edit { putBoolean(PREF_ASKED_NOTIFICATION, value)}
 
+    override var onNotification: Boolean
+        get() = userPref.getBoolean(PREF_ON_NOTIFICATION, true)
+        set(value) = userPref.edit { putBoolean(PREF_ON_NOTIFICATION, value)}
+
     override fun clearLocalPref() = userPref.edit { clear() }
 
     companion object {
@@ -47,5 +51,6 @@ class TeumTeumDataStoreImpl @Inject constructor(
         private const val PREF_IS_FIRST_AFTER_INSTALL = "IS_FIRST_AFTER_INSTALL"
         private const val PREF_DEVICE_TOKEN = "DEVICE_TOKEN"
         private const val PREF_ASKED_NOTIFICATION = "ASKED_NOTIFICATION"
+        private const val PREF_ON_NOTIFICATION = "ON_NOTIFICATION"
     }
 }

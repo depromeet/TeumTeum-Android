@@ -9,4 +9,6 @@ interface SettingRepository {
     suspend fun getMyPageOpenMeeting(participantUserId: Long): Result<List<Meeting>>
     suspend fun getMyPageClosedMeeting(participantUserId: Long): Result<List<Meeting>>
     suspend fun getBookmarkMeeting(): Result<List<Meeting>>
+    fun setNotification(isActivated: Boolean)
+    fun getNotification(): Boolean
 }
