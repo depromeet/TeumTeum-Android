@@ -69,7 +69,6 @@ fun MyPageScreen(
     myPageViewModel: MyPageViewModel,
 ) {
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
-
     val frontCardState by myPageViewModel.frontCardState.collectAsState()
     val userName by viewModel.userName.collectAsState()
     val backCard by myPageViewModel.backCardState.collectAsState()
@@ -124,11 +123,17 @@ fun MyPageScreen(
                         }
                 ) {
                     if (state.progress.to == CardFace.Front) {
-                        // 앞면 카드 컨텐츠 표시
                         MyPageFrontCard(frontCard = frontCardState)
                     } else {
-                        // 뒷면 카드 컨텐츠 표시
-                        MyPageBackCard(backCard = backCard)
+                        MyPageBackCard(backCard = backCard, viewModel = myPageViewModel)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_floating_edit),
+                            contentDescription = "Character Image",
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .offset(x = (25).dp, y = (-30).dp)
+                                .clickable { navController.navigate(R.id.fragment_edit_card) }
+                        )
                     }
                 }
                 TmMarginVerticalSpacer(size = 22)
@@ -169,8 +174,8 @@ fun MyPageFrontCard(frontCard: FrontCard) {
 }
 
 @Composable
-fun MyPageBackCard(backCard: BackCard) {
-    BackCardView(backCard = backCard)
+fun MyPageBackCard(backCard: BackCard, viewModel:MyPageViewModel) {
+    BackCardView(backCard = backCard, viewModel)
 }
 
 @Composable
@@ -213,18 +218,13 @@ fun FrontCardView(frontCard: FrontCard) {
 }
 
 @Composable
-fun BackCardView(backCard: BackCard) {
+fun BackCardView(backCard: BackCard, viewModel:MyPageViewModel) {
+    val interests = viewModel.interests.collectAsState(initial = listOf()).value.map { Interest(it) }
     AndroidView(
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
-                submitInterestList( //todo - 더미
-                    listOf(
-                        Interest("모여서 각자 일하기"),
-                        Interest("사이드 프로젝트"),
-                        Interest("네트워킹")
-                    )
-                )
+                submitInterestList(interests)
                 setIsModifyDetail(isModifyDetail = true)
                 isModify = true
                 rotationY = 180f
@@ -232,6 +232,7 @@ fun BackCardView(backCard: BackCard) {
         },
         update = { view ->
             view.getInstance(backCard)
+            view.submitInterestList(interests)
         },
         modifier = Modifier
             .width(280.dp)
