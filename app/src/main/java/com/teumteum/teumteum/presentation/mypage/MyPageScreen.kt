@@ -48,6 +48,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
+import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager3Content
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
@@ -97,7 +98,7 @@ fun MyPageScreen(
         },
         topbarText = "${userName}님의 소개서"
     ) {
-        val list = listOf("내 모임", "받은 리뷰")
+        val list = listOf("내 모임", "받은 리뷰", "북마크")
         val selectedTab = remember { mutableStateOf(list[0]) }
 
         LazyColumn(
@@ -163,7 +164,9 @@ fun MyPageScreen(
                 }
 
                 "받은 리뷰" -> item { MyPagePager2Content() }
-//                "북마크" -> item { MyPagePager3Content() }
+                "북마크" -> item {
+                    MyPagePager3Content(viewModel, navController)
+                }
             }
         }
     }
@@ -220,12 +223,11 @@ fun FrontCardView(frontCard: FrontCard) {
 
 @Composable
 fun BackCardView(backCard: BackCard, viewModel:MyPageViewModel) {
-    val interests = viewModel.interests.collectAsState(initial = listOf()).value.map { Interest(it) }
+    val interests = viewModel.interests.collectAsState().value.map { Interest(it) }
     AndroidView(
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
-//                submitInterestList(interests)
                 setIsModifyDetail(isModifyDetail = false)
                 isModify = true
                 rotationY = 180f

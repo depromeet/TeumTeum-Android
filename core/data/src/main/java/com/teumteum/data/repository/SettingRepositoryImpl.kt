@@ -37,13 +37,26 @@ class SettingRepositoryImpl @Inject constructor(
 
     override suspend fun getMyPageClosedMeeting(participantUserId: Long): Result<List<Meeting>> {
         return runCatching {
-            dataSource.getMyPageOpenMeeting(
+            dataSource.getMyPageClosedMeeting(
                 size = 20,
                 page = 0,
                 sort = "promiseDateTime",
                 isOpen = false,
                 participantUserId = participantUserId
             ).data.meetings.map { it.toMeeting() }
+        }
+    }
+
+    override suspend fun getBookmarkMeeting(participantUserId: Long): Result<List<Meeting>> {
+        return runCatching {
+            dataSource.getBookmarkMeeting(
+                size = 20,
+                page = 0,
+                sort = "promiseDateTime",
+                isOpen = true,
+                participantUserId = participantUserId,
+                isBookmark = true
+            ).data.meetings.map { it.toMeeting()}
         }
     }
 

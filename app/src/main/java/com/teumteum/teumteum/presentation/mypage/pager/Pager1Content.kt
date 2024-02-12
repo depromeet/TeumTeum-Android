@@ -50,7 +50,6 @@ fun MyPagePager1Content(
         // open이 모두 비어있을때
         if(userOpen.isEmpty() && userHostOpen.isEmpty()) {
             NoMoimItems(true, navController)
-
         }
         else {
             userOpen.forEach { meeting ->

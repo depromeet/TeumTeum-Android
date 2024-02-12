@@ -93,6 +93,55 @@ fun MeetingItem(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Lo
     TmMarginVerticalSpacer(size = 14)
 }
 
+@Composable
+fun BookmarkItem(meeting: com.teumteum.domain.entity.Meeting, navigateToMoim: (Long)-> Unit?) {
+    val formattedTime = formatDateTime(meeting.date)
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(62.dp)
+        .clickable {
+            navigateToMoim(meeting.id)
+        }
+        .background(
+            color = TmtmColorPalette.current.elevation_color_elevation_level01,
+            shape = RoundedCornerShape(4.dp)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = meeting.name,
+                    style = TmTypo.current.HeadLine7,
+                    color = TmtmColorPalette.current.color_text_headline_primary
+                )
+                Text(
+                    text = formattedTime,
+                    style = TmTypo.current.Body3,
+                    color = TmtmColorPalette.current.color_text_body_quaternary
+                )
+            }
+            Image(
+                painter = painterResource(id = R.drawable.ic_heart_fill),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+    }
+    TmMarginVerticalSpacer(size = 14)
+}
+
 fun formatDateTime(dateTime: String): String {
     val outputFormat = SimpleDateFormat("M월 d일 aa h:mm", Locale.KOREAN)
     val inputFormat1 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.KOREAN)
