@@ -33,19 +33,11 @@ class SplashActivity
         isFromAlarm = intent.getBooleanExtra(IS_FROM_ALARM, false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) getMessage()
         checkNetwork()
-        setUpObserver()
     }
 
     private fun getMessage() {
         if (isFromAlarm) {
             message = intent.getSerializableExtra(MESSAGE) as Message
-        }
-    }
-
-    private fun setUpObserver() {
-        viewModel.myInfo.observe(this) {
-            AuthUtils.setMyInfo(context = this, myInfo = it)
-            Timber.tag("setMyInfo").d("$it")
         }
     }
 
