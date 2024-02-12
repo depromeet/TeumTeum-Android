@@ -33,11 +33,11 @@
                 tools:visibility="gone" />
 
             <TextView
-                android:text="@{dialogConfig.title}"
                 android:id="@+id/tv_common_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:text="@{dialogConfig.title}"
                 android:textAppearance="@style/ta.headline.6"
                 android:textColor="?attr/color_text_headline_primary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -47,12 +47,12 @@
                 tools:text="서로의 관심사 틈을 채우기" />
 
             <TextView
-                android:text="@{dialogConfig.description}"
                 android:id="@+id/tv_common_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
+                android:text="@{dialogConfig.description}"
                 android:textAppearance="@style/ta.body.2"
                 android:textColor="?attr/color_text_body_teritary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +65,9 @@
                 android:id="@+id/btn_common_dialog_negative"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_rect4_button_active"
+                android:background="@drawable/shape_rect4_button_alternative"
                 android:fontFamily="@font/pretendard_semibold"
                 android:padding="12dp"
                 android:stateListAnimator="@null"
@@ -77,7 +78,7 @@
                 app:layout_constraintEnd_toStartOf="@id/btn_common_dialog_positive"
                 app:layout_constraintStart_toStartOf="@id/cl_dialog"
                 tools:text="취소"
-                tools:visibility="gone" />
+                tools:visibility="gone"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_common_dialog_positive"
