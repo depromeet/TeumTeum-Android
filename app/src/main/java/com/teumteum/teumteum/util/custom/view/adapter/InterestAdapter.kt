@@ -11,18 +11,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemInterestBinding
-import com.teumteum.teumteum.util.callback.OnDeletedInterests
+import com.teumteum.teumteum.util.callback.OnCurrentListChangedListener
 import com.teumteum.teumteum.util.custom.view.model.Interest
-import timber.log.Timber
 
-class InterestAdapter(val context: Context, val onDeletedInterests: OnDeletedInterests) : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
+class InterestAdapter(
+    val context: Context,
+    var onCurrentListChangedListener: OnCurrentListChangedListener<Interest>,
+) : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
     ItemListDiffCallback
 ) {
     var isModifyDetail: Boolean = false
     var onAddItemClick: (() -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ItemInterestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemInterestBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding, isModifyDetail, onAddItemClick) { position ->
             if (currentList.size > 2) {
                 removeItem(position)
@@ -37,11 +40,18 @@ class InterestAdapter(val context: Context, val onDeletedInterests: OnDeletedInt
         holder.bind(item)
     }
 
+    override fun onCurrentListChanged(
+        previousList: MutableList<Interest>,
+        currentList: MutableList<Interest>,
+    ) {
+        super.onCurrentListChanged(previousList, currentList)
+        onCurrentListChangedListener?.onCurrentListChanged(previousList, currentList)
+    }
+
     private fun removeItem(position: Int) {
         val newList = currentList.toMutableList().apply {
             removeAt(position)
         }
-        onDeletedInterests.deletedInterests(newList)
         submitList(newList)
     }
 
@@ -49,19 +59,30 @@ class InterestAdapter(val context: Context, val onDeletedInterests: OnDeletedInt
         private val binding: ItemInterestBinding,
         private val isModifyDetail: Boolean,
         private val onAddItemClick: (() -> Unit)?,
-        private val onRemoveItem: (position: Int) -> Unit
+        private val onRemoveItem: (position: Int) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Interest) {
-            with(binding){
+            with(binding) {
                 if (item.interest == "추가하기") {
                     tvInterest.text = item.interest
-                    tvInterest.setTextColor(ContextCompat.getColor(itemView.context, com.teumteum.base.R.color.text_button_primary_default))
+                    tvInterest.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            com.teumteum.base.R.color.text_button_primary_default
+                        )
+                    )
                     clInterest.setBackgroundResource(R.drawable.shape_rect4_color_outline_level01_active)
-                    ivDelete.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.ic_plus_fill))
+                    ivDelete.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            itemView.context,
+                            R.drawable.ic_plus_fill
+                        )
+                    )
                     root.setOnClickListener { onAddItemClick?.invoke() }
                 } else {
-                    tvInterest.text = itemView.context.getString(R.string.item_interest, item.interest)
+                    tvInterest.text =
+                        itemView.context.getString(R.string.item_interest, item.interest)
                     clInterest.setBackgroundResource(R.drawable.shape_rect4_background)
                     root.setOnClickListener(null)
                     ivDelete.setOnClickListener { onRemoveItem(absoluteAdapterPosition) }

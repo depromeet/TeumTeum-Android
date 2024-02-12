@@ -12,13 +12,14 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.teumteum.teumteum.R
-import com.teumteum.teumteum.util.callback.OnDeletedInterests
+import com.teumteum.teumteum.util.callback.OnCurrentListChangedListener
 import com.teumteum.teumteum.util.custom.itemdecoration.FlexboxItemDecoration
 import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
@@ -31,7 +32,7 @@ import timber.log.Timber
  *
  * xml, compose 모든 환경에서 뷰를 재활용 할 수 있게 커스텀뷰로 제작
  */
-class BackCardView : CardView, OnDeletedInterests {
+class BackCardView : CardView, OnCurrentListChangedListener<Interest> {
     private val layoutParent = ConstraintLayout.LayoutParams.PARENT_ID
     private var backCard = BackCard()
 
@@ -55,7 +56,7 @@ class BackCardView : CardView, OnDeletedInterests {
             ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
-    var currentListAfterDelete = mutableListOf<Interest>()
+    var currentList = MutableLiveData<MutableList<Interest>>()
 
     // isModifyDetail 값을 설정하고 어댑터에 UI 갱신을 알리는 함수
     @SuppressLint("NotifyDataSetChanged")
@@ -422,8 +423,10 @@ class BackCardView : CardView, OnDeletedInterests {
         this.addView(rvInterests)
     }
 
-    override fun deletedInterests(deletedInterests: MutableList<Interest>) {
-        currentListAfterDelete = deletedInterests.filterNot { it.interest == "추가하기" }.toMutableList()
-        Timber.tag("삭제 후 관심사 리스트").d("${currentListAfterDelete}")
+    override fun onCurrentListChanged(previousList: List<Interest>, currentList: List<Interest>) {
+        Timber.tag("갱신 리스트 p").d("${previousList}")
+        Timber.tag("갱신 리스트 c").d("${currentList}")
+        this.currentList.value = currentList.filterNot { it.interest == "추가하기" }.toMutableList()
+        Timber.tag("currentList").d("${this.currentList.value}")
     }
 }
