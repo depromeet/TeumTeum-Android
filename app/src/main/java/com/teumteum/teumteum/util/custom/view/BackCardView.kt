@@ -18,18 +18,20 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.callback.OnDeletedInterests
 import com.teumteum.teumteum.util.custom.itemdecoration.FlexboxItemDecoration
 import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import com.teumteum.teumteum.util.extension.dpToPx
+import timber.log.Timber
 
 /**
  * 카드 후면 뷰
  *
  * xml, compose 모든 환경에서 뷰를 재활용 할 수 있게 커스텀뷰로 제작
  */
-class BackCardView : CardView {
+class BackCardView : CardView, OnDeletedInterests {
     private val layoutParent = ConstraintLayout.LayoutParams.PARENT_ID
     private var backCard = BackCard()
 
@@ -53,6 +55,8 @@ class BackCardView : CardView {
             ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
+    var currentListAfterDelete = mutableListOf<Interest>()
+
     // isModifyDetail 값을 설정하고 어댑터에 UI 갱신을 알리는 함수
     @SuppressLint("NotifyDataSetChanged")
     fun setIsModifyDetail(isModifyDetail: Boolean) {
@@ -62,7 +66,7 @@ class BackCardView : CardView {
     }
 
     // 공개 속성으로 RecyclerView와 Adapter 제공
-    val interestAdapter = InterestAdapter(context)
+    val interestAdapter = InterestAdapter(context, this)
     lateinit var rvInterests: RecyclerView
         private set
 
@@ -84,6 +88,7 @@ class BackCardView : CardView {
             interestAdapter.submitList(currentList.reversed())
         }
     }
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs)
     }
@@ -415,5 +420,10 @@ class BackCardView : CardView {
         }
         rvInterests.layoutParams = layoutParams
         this.addView(rvInterests)
+    }
+
+    override fun deletedInterests(deletedInterests: MutableList<Interest>) {
+        currentListAfterDelete = deletedInterests.filterNot { it.interest == "추가하기" }.toMutableList()
+        Timber.tag("삭제 후 관심사 리스트").d("${currentListAfterDelete}")
     }
 }

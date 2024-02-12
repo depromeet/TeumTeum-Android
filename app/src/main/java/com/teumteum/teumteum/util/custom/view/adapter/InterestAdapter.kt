@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ItemInterestBinding
+import com.teumteum.teumteum.util.callback.OnDeletedInterests
 import com.teumteum.teumteum.util.custom.view.model.Interest
+import timber.log.Timber
 
-class InterestAdapter(val context: Context) : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
+class InterestAdapter(val context: Context, val onDeletedInterests: OnDeletedInterests) : ListAdapter<Interest, InterestAdapter.ItemViewHolder>(
     ItemListDiffCallback
 ) {
     var isModifyDetail: Boolean = false
@@ -39,6 +41,7 @@ class InterestAdapter(val context: Context) : ListAdapter<Interest, InterestAdap
         val newList = currentList.toMutableList().apply {
             removeAt(position)
         }
+        onDeletedInterests.deletedInterests(newList)
         submitList(newList)
     }
 
