@@ -101,6 +101,16 @@ fun MoimTimeColumn(viewModel: MoimViewModel) {
 }
 
 @Composable
+fun MoimYearInputField(
+    placeHolder: String,
+    viewModel: MoimViewModel
+) {
+    val text by viewModel.date.collectAsState()
+
+
+}
+
+@Composable
 fun MoimDateInputField(
     placeHolder:String,
     viewModel: MoimViewModel,

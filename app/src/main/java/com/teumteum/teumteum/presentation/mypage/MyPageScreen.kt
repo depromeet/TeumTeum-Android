@@ -225,15 +225,18 @@ fun BackCardView(backCard: BackCard, viewModel:MyPageViewModel) {
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
-                submitInterestList(interests)
-                setIsModifyDetail(isModifyDetail = true)
+//                submitInterestList(interests)
+                setIsModifyDetail(isModifyDetail = false)
                 isModify = true
                 rotationY = 180f
             }
         },
         update = { view ->
-            view.getInstance(backCard)
-            view.submitInterestList(interests)
+            val currentInterestsSet = view.currentList.value.orEmpty().toSet()
+            val interestsSet = interests.toSet()
+            if (currentInterestsSet != interestsSet) {
+                view.submitInterestList(interests)
+            }
         },
         modifier = Modifier
             .width(280.dp)
