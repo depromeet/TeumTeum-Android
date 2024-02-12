@@ -9,6 +9,7 @@ interface TeumTeumDataStore {
     var userInfo: String
     var deviceToken: String
     var askedNotification: Boolean
+    var onNotification: Boolean
 
     fun clearLocalPref()
 }

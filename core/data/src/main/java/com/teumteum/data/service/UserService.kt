@@ -2,6 +2,7 @@ package com.teumteum.data.service
 
 import com.teumteum.data.model.request.RequestDeviceToken
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
+import com.teumteum.domain.entity.Alerts
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendRecommend
 import com.teumteum.domain.entity.SignUpResult
@@ -65,5 +66,8 @@ interface UserService {
     suspend fun patchDeviceToken(
         @Body token: RequestDeviceToken
     ): Response<Unit>
+
+    @GET("alerts")
+    suspend fun getAlerts(): Alerts
 }
 

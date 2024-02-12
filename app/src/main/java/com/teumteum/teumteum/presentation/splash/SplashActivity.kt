@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.splash
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.defaultSnackBar
+import com.teumteum.domain.entity.Message
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySplashBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -23,12 +25,20 @@ class SplashActivity
 
     private val viewModel by viewModels<SplashViewModel>()
     private var isFromAlarm = false
+    private var message = Message("", "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         isFromAlarm = intent.getBooleanExtra(IS_FROM_ALARM, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) getMessage()
         checkNetwork()
+    }
+
+    private fun getMessage() {
+        if (isFromAlarm) {
+            message = intent.getSerializableExtra(MESSAGE) as Message
+        }
     }
 
     private fun checkNetwork() {
@@ -98,7 +108,9 @@ class SplashActivity
     }
 
     private fun startHomeScreen() {
-        startActivity(MainActivity.getIntent(this, -1, isFromAlarm = isFromAlarm))
+        val intent = MainActivity.getIntent(this, -1, isFromAlarm = isFromAlarm)
+        if (isFromAlarm) intent.putExtra(MESSAGE, message)
+        startActivity(intent)
         finish()
     }
 
@@ -108,5 +120,6 @@ class SplashActivity
         const val HAVE_TO_SIGN_IN = 2
 
         const val IS_FROM_ALARM = "isFromAlarm"
+        const val MESSAGE = "message"
     }
 }

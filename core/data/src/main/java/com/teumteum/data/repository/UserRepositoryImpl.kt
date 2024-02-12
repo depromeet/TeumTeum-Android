@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.data.datasource.remote.RemoteUserDataSource
 import com.teumteum.data.model.request.RequestUserInfo
+import com.teumteum.domain.entity.Alerts
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendMyPage
 import com.teumteum.domain.entity.FriendRecommend
@@ -101,4 +102,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAlerts(): Result<Alerts> {
+        return runCatching {
+            dataSource.getAlerts()
+        }
+    }
 }

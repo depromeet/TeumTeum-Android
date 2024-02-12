@@ -105,6 +105,9 @@
         <activity
             android:name=".presentation.group.join.JoinFriendListActivity"
             android:exported="false" />
+        <activity
+            android:name=".presentation.notification.AlertsListActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
