@@ -75,6 +75,7 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
                     BottomSheet.Default -> {}
                     BottomSheet.Topic -> showTopicSheet()
                     BottomSheet.People -> showPeopleSheet()
+                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)

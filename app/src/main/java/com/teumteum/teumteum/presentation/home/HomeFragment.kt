@@ -36,7 +36,10 @@ class HomeFragment :
     private val viewModel by viewModels<GroupListViewModel>()
     private var adapter: GroupListAdapter? = null
 
-
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).showBottomNavi()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

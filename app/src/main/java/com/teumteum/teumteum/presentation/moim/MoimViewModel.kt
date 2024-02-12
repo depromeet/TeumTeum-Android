@@ -106,6 +106,9 @@ class MoimViewModel @Inject constructor(
     private val _isBookmark = MutableStateFlow(false)
     val isBookmark: StateFlow<Boolean> = _isBookmark.asStateFlow()
 
+    private val _isAfternoon = MutableStateFlow("오후")
+    val isAfternoon: StateFlow<String> = _isAfternoon.asStateFlow()
+
     val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_ghost,
         1 to R.drawable.ic_star,
@@ -185,6 +188,10 @@ class MoimViewModel @Inject constructor(
     fun updateTopic(topicType: TopicType) {
         _topic.value = topicType
     }
+
+    fun updateAfternoon(string: String) {
+        _isAfternoon.value = string
+    }
     fun updateTitle(title: String) {
         _title.value = title
     }
@@ -195,10 +202,8 @@ class MoimViewModel @Inject constructor(
         _date.value = input
     }
 
-    fun updateTime(input: String): String {
-        val formattedTime = formatTime(input)
-        _time.value = formattedTime
-        return formattedTime
+    fun updateTime(input: String) {
+        _time.value = input
     }
 
     fun updateAddress(address: String) {
@@ -280,20 +285,22 @@ class MoimViewModel @Inject constructor(
 
     private fun combineDateAndTime(): LocalDateTime? {
         return try {
-            val currentYear = Year.now().value
-            val dateInput = "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
-            var timeInput = _time.value.replace("오후", "PM").replace("오전", "AM")
+            val dateInput = _date.value
+            var timeInput = _time.value
 
-            val timeParts = timeInput.split(" ")
-            if (timeParts.size == 2) {
-                val hourMinuteParts = timeParts[1].split(":")
-                if (hourMinuteParts[0].length == 1) {
-                    timeInput = "${timeParts[0]} 0${hourMinuteParts[0]}:${hourMinuteParts[1]}"
-                }
+            val isAfternoon = _isAfternoon.value == "오후"
+            val (hourString, minute) = timeInput.split(":")
+            var hour = hourString.toInt()
+
+            if (isAfternoon && hour < 12) { hour += 12 }
+            else if (!isAfternoon && hour == 12) {
+                hour = 0
             }
 
-            val dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN)
-            val timeFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.ENGLISH)
+            timeInput = "$hour:$minute"
+
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val timeFormatter = DateTimeFormatter.ofPattern("H:mm")
 
             val parsedDate = LocalDate.parse(dateInput, dateFormatter)
             val parsedTime = LocalTime.parse(timeInput, timeFormatter)
@@ -624,7 +631,7 @@ enum class ScreenState {
 }
 
 enum class BottomSheet {
-    Topic, People, Default
+    Topic, People, Default, Time
 }
 
 
