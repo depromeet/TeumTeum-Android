@@ -2,6 +2,7 @@ package com.teumteum.data.service
 
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
+import com.teumteum.data.model.response.ResponseReviewFriends
 import com.teumteum.domain.entity.Meeting
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -17,8 +18,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GroupService {
-
-
     @Multipart
     @POST("meetings")
     suspend fun postMoim(
@@ -71,4 +70,9 @@ interface GroupService {
     suspend fun reportMeeting(
         @Path("meetingId") meetingId:Long
     ): Response<Void>
+
+    @GET("meetings/{meetingId}/participants")
+    suspend fun getReviewFriendList(
+        @Path("meetingId") meetingId: Long
+    ): ResponseReviewFriends
 }
