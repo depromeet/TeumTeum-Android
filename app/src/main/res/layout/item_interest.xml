@@ -24,6 +24,7 @@
             app:layout_constraintEnd_toStartOf="@id/iv_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="8dp"
             tools:text="#사이드 프로젝트" />
 
         <ImageView
