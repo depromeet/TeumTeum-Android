@@ -28,7 +28,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".presentation.shaketopic.ShakeTopicActivity"
+            android:name=".presentation.familiar.shaketopic.ShakeTopicActivity"
             android:exported="false" />
         <service
             android:name=".config.TeumMessagingService"

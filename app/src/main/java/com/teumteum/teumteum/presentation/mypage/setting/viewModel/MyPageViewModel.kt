@@ -36,16 +36,9 @@ class MyPageViewModel @Inject constructor(
     private val _friendsList = MutableStateFlow<List<FriendMyPage>>(emptyList())
     val friendsList : StateFlow<List<FriendMyPage>> = _friendsList
 
-    private val _isFrontCardShown = MutableStateFlow(true)
-    val isFrontCardShown: StateFlow<Boolean> = _isFrontCardShown
-
     init {
         loadUserInfo()
         loadFriends()
-    }
-
-    fun toggleCardState() {
-        _isFrontCardShown.value = !_isFrontCardShown.value
     }
 
     fun loadFriends() {

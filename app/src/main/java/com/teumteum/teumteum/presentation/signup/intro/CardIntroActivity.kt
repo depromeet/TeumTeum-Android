@@ -76,7 +76,7 @@ class CardIntroActivity
             )
             binding.cardviewBack.submitInterestList(interests)
             binding.cardviewBack.isModify = false
-            binding.cardviewBack.isModifyDetail = false
+//            binding.cardviewBack.isModifyDetail = false
         }
     }
 

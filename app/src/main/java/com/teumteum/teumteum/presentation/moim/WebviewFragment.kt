@@ -21,7 +21,6 @@ import com.teumteum.teumteum.databinding.FragmentWebviewBinding
 import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.group.join.GroupDetailActivity
 
-
 class WebviewFragment :
     BindingFragment<FragmentWebviewBinding>(R.layout.fragment_webview){
 
@@ -35,8 +34,6 @@ class WebviewFragment :
 
         initWebView()
         handler = Handler()
-
-        Log.d("FromGroup", isGroup.toString())
         isGroup = arguments?.getBoolean("FromGroup", false) ?: false
 
     }

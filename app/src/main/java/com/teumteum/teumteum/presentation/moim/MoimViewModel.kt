@@ -103,6 +103,9 @@ class MoimViewModel @Inject constructor(
     private val _meetingsId = MutableStateFlow<Long>(0L)
     val meetingsId : StateFlow<Long> = _meetingsId.asStateFlow()
 
+    private val _isBookmark = MutableStateFlow(false)
+    val isBookmark: StateFlow<Boolean> = _isBookmark.asStateFlow()
+
     val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_ghost,
         1 to R.drawable.ic_star,
@@ -127,6 +130,7 @@ class MoimViewModel @Inject constructor(
         _imageUri.value = emptyList()
         _date.value = ""
         _time.value = ""
+        _isBookmark.value = false
         _people.value = 3
         _address.value = null
         _detailAddress.value = ""
@@ -147,6 +151,33 @@ class MoimViewModel @Inject constructor(
                 _moinCreateUserCharacterId.value = characterList[result.characterId?.toInt() ?: 0] ?: R.drawable.ic_ghost
             }
 
+        }
+    }
+
+    fun saveBookmark(meetingId: Long) {
+        viewModelScope.launch {
+            repository.saveBookmark(meetingId)
+                .onSuccess {
+                    _isBookmark.value = !(_isBookmark.value)
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
+        }
+    }
+
+    fun deleteBookmark(meetingId: Long) {
+        _isBookmark.value = !(_isBookmark.value)
+        viewModelScope.launch {
+            repository.deleteBookmark(meetingId)
+                .onSuccess {
+                    _isBookmark.value = !(_isBookmark.value)
+                }
+                .onFailure {
+                    Timber.e(it)
+                    _screenState.value = ScreenState.Server
+                }
         }
     }
 
@@ -552,6 +583,8 @@ class MoimViewModel @Inject constructor(
                     _date.value = it.date
                     _imageUri.value = it.photoUrls.map { photos -> Uri.parse(photos) }
                     _meetingsId.value = it.id
+                    _isBookmark.value = it.isBookmarked == true
+                    Log.d("bookmark", it.isBookmarked.toString())
                 }
         }
     }

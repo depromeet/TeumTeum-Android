@@ -65,7 +65,7 @@ class CardCompleteFragment
                 CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
                 isModify = false
-                isModifyDetail = false
+//                isModifyDetail = false
             }
         }
     }

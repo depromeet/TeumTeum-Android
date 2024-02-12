@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.shaketopic.shake
+package com.teumteum.teumteum.presentation.familiar.shaketopic.shake
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -9,7 +9,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.teumteum.base.util.TransformUtils
-import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewConfig
+import com.teumteum.teumteum.presentation.familiar.shaketopic.shake.model.InterestViewConfig
 import java.lang.Float.max
 import java.lang.Float.min
 

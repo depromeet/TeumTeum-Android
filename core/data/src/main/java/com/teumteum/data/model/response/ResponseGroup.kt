@@ -40,7 +40,8 @@ data class ResponseMeeting(
     val photoUrls: List<String>,
     val promiseDateTime: String,
     val title: String,
-    val topic: String
+    val topic: String,
+    val isBookmarked: Boolean? = null
 ) {
     fun toMeeting(): Meeting {
         val photoUrlList = photoUrls.map {
@@ -48,7 +49,7 @@ data class ResponseMeeting(
         }
 
         val date = promiseDateTime.convertDateString()
-        return Meeting(id, hostId, topic, title, introduction, photoUrlList, numberOfRecruits, date, participantIds, meetingArea.address, meetingArea.addressDetail)
+        return Meeting(id, hostId, topic, title, introduction, photoUrlList, numberOfRecruits, date, participantIds, meetingArea.address, meetingArea.addressDetail, isBookmarked?:false)
     }
 }
 

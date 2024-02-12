@@ -1,30 +1,38 @@
 package com.teumteum.teumteum.util.custom.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.callback.OnCurrentListChangedListener
+import com.teumteum.teumteum.util.custom.itemdecoration.FlexboxItemDecoration
 import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import com.teumteum.teumteum.util.extension.dpToPx
+import timber.log.Timber
 
 /**
  * 카드 후면 뷰
  *
  * xml, compose 모든 환경에서 뷰를 재활용 할 수 있게 커스텀뷰로 제작
  */
-class BackCardView : CardView {
+class BackCardView : CardView, OnCurrentListChangedListener<Interest> {
     private val layoutParent = ConstraintLayout.LayoutParams.PARENT_ID
     private var backCard = BackCard()
 
@@ -42,20 +50,45 @@ class BackCardView : CardView {
             ivFloat.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
-    // 공개 속성으로 RecyclerView와 Adapter 제공
-    val interestAdapter = InterestAdapter()
-    lateinit var rvInterests: RecyclerView
-        private set
-
-    fun submitInterestList(interests: List<Interest>) {
-        interestAdapter.submitList(interests)
-    }
-
     var isModifyDetail: Boolean = false
         set(value) {
             field = value
             ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
+
+    var currentList = MutableLiveData<MutableList<Interest>>()
+
+    // isModifyDetail 값을 설정하고 어댑터에 UI 갱신을 알리는 함수
+    @SuppressLint("NotifyDataSetChanged")
+    fun setIsModifyDetail(isModifyDetail: Boolean) {
+        this.isModifyDetail = isModifyDetail //todo - 하나의 변수를 어댑터 안팎으로 2개씩 나눠 다루고 있는데 추후 하나로 통일
+        interestAdapter.isModifyDetail = isModifyDetail
+        interestAdapter.notifyDataSetChanged()
+    }
+
+    // 공개 속성으로 RecyclerView와 Adapter 제공
+    val interestAdapter = InterestAdapter(context, this)
+    lateinit var rvInterests: RecyclerView
+        private set
+
+    fun submitInterestList(interests: List<Interest>) {
+        val currentList = interestAdapter.currentList.toMutableList()
+
+        if (!currentList.any { it.interest == "추가하기" } && isModifyDetail) {
+            currentList.add(Interest("추가하기"))
+        }
+
+        val availableSlots = 4 - currentList.size
+
+        if (interests.size > availableSlots) {
+            Toast.makeText(context, "최대 3개까지 선택할 수 있어요", Toast.LENGTH_SHORT).show()
+        } else {
+            val interestsToAdd = interests.take(availableSlots)
+            currentList.addAll(0, interestsToAdd)
+
+            interestAdapter.submitList(currentList.reversed())
+        }
+    }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs)
@@ -117,9 +150,8 @@ class BackCardView : CardView {
                         getString(com.teumteum.base.R.styleable.CardBackView_goalContent) ?: ""
                     characterResId =
                         getResourceId(com.teumteum.base.R.styleable.CardBackView_characterImage, 0)
-//                    isModify =
-//                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
-//                    isModifyDetail = getBoolean(com.teumteum.base.R.styleable.CardFrontView_isModifyDetail, false)
+                    isModify =
+                        getBoolean(com.teumteum.base.R.styleable.CardBackView_isModify, false)
                 }
             } finally {
                 recycle()
@@ -131,7 +163,7 @@ class BackCardView : CardView {
     private fun setUpViews() {
         tvGoalTitle.text = backCard.goalTitle
         tvGoalContent.text = backCard.goalContent
-        ivCharacter.setImageResource(backCard.characterResId)
+        backCard.characterResId?.let { ivCharacter.setImageResource(it) }
         ivFloat.setImageResource(backCard.floatResId)
     }
 
@@ -173,7 +205,6 @@ class BackCardView : CardView {
         addImageView(
             context,
             id = R.id.ivCharacter,
-            drawableRes = R.drawable.ic_card_back_penguin,
             bottomToBottomOf = layoutParent,
             endToEndOf = layoutParent
         )
@@ -197,12 +228,13 @@ class BackCardView : CardView {
         addRecyclerView(
             context,
             id = R.id.rvInterest,
-            spanCount = 2,
             bottomToBottomOf = layoutParent,
             startToStartOf = layoutParent,
             marginBottom = 32,
             marginStart = 32,
-            marginEnd = 32
+            marginEnd = 32,
+            itemLeftSpaceDp = 8,
+            itemTopSpaceDp = 8,
         )
     }
 
@@ -230,7 +262,7 @@ class BackCardView : CardView {
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
-        background: Int? = null
+        background: Int? = null,
     ) {
         val textView = TextView(context).apply {
             this.id = id
@@ -270,7 +302,8 @@ class BackCardView : CardView {
     }
 
     private fun ConstraintLayout.addImageView(
-        context: Context, id: Int, drawableRes: Int,
+        context: Context, id: Int,
+        drawableRes: Int? = null,
         marginTop: Int = 0,
         marginBottom: Int = 0,
         marginStart: Int = 0,
@@ -286,7 +319,7 @@ class BackCardView : CardView {
         startToStartOf: Int? = null,
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
-        endToStartOf: Int? = null
+        endToStartOf: Int? = null,
     ) {
         val imageView = ImageView(context).apply {
             this.id = id
@@ -313,14 +346,13 @@ class BackCardView : CardView {
                 paddingEnd.dpToPx(context),
                 paddingBottom.dpToPx(context)
             )
-            setImageResource(drawableRes)
+            drawableRes?.let { setImageResource(it) }
         }
         addView(imageView)
     }
 
     private fun ConstraintLayout.addRecyclerView(
         context: Context,
-        spanCount: Int = 2, // Assuming you want to keep using a 2-column layout
         id: Int = R.id.rvInterest,
         marginTop: Int = 0,
         marginBottom: Int = 0,
@@ -338,14 +370,29 @@ class BackCardView : CardView {
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
-        background: Int? = null
+        background: Int? = null,
+        itemLeftSpaceDp: Int,
+        itemTopSpaceDp: Int,
     ) {
         rvInterests = RecyclerView(context).apply {
             this.id = id
-            layoutManager = StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL).apply {
-                reverseLayout = true // Set items to stack from bottom up
+            layoutManager = FlexboxLayoutManager(context).apply {
+                // 항목을 수평 방향으로 배치
+                flexDirection = FlexDirection.ROW_REVERSE
+                // 항목이 화면을 넘어갈 경우 다음 줄로 넘어가도록 설정
+                flexWrap = FlexWrap.WRAP
+                // 항목들 사이의 정렬 방식 설정 (옵션)
+                justifyContent = JustifyContent.FLEX_END //우측부터 쌓으려면 FLEX_START
             }
             adapter = interestAdapter // Use the existing adapter
+
+            addItemDecoration(
+                FlexboxItemDecoration(
+                    context,
+                    itemLeftSpaceDp,
+                    itemTopSpaceDp
+                )
+            )
             background?.let { setBackgroundResource(it) }
         }
         setPadding(
@@ -374,5 +421,12 @@ class BackCardView : CardView {
         }
         rvInterests.layoutParams = layoutParams
         this.addView(rvInterests)
+    }
+
+    override fun onCurrentListChanged(previousList: List<Interest>, currentList: List<Interest>) {
+        Timber.tag("갱신 리스트 p").d("${previousList}")
+        Timber.tag("갱신 리스트 c").d("${currentList}")
+        this.currentList.value = currentList.filterNot { it.interest == "추가하기" }.toMutableList()
+        Timber.tag("currentList").d("${this.currentList.value}")
     }
 }
