@@ -48,7 +48,6 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
-import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager3Content
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
@@ -229,6 +228,8 @@ fun BackCardView(backCard: BackCard, viewModel:MyPageViewModel) {
             BackCardView(context).apply {
                 getInstance(backCard)
                 setIsModifyDetail(isModifyDetail = false)
+                submitInterestList(interests)
+                setIsModifyDetail(isModifyDetail = true)
                 isModify = true
                 rotationY = 180f
             }
