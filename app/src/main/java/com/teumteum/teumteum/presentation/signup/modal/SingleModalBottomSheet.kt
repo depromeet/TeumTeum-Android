@@ -104,7 +104,6 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
     interface OnDismissListener {
         fun onDismiss()
     }
-
     var dismissListener: OnDismissListener? = null
 
 
