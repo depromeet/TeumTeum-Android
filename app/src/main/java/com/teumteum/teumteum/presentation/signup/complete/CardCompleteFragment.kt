@@ -55,16 +55,17 @@ class CardCompleteFragment
 
             val interests = mutableListOf<Interest>()
             for (i in interestField.value) {
-                interests.add(Interest("#$i"))
+                interests.add(Interest(i))
             }
             for (i in interestSelf.value) {
-                interests.add(Interest("#$i"))
+                interests.add(Interest(i))
             }
             binding.cardviewBack.apply {
                 tvGoalContent.text = goalText.value
                 CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
                 isModify = false
+                setIsModifyDetail(false)
 //                isModifyDetail = false
             }
         }
