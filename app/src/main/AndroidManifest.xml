@@ -108,7 +108,12 @@
         <activity
             android:name=".presentation.group.join.JoinFriendListActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".presentation.group.review.ReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.group.review.ReviewOnboardingActivity"
+            android:exported="false" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/teum_notification_channel_id" />
