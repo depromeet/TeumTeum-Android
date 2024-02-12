@@ -52,15 +52,17 @@ class TeumMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        if (dataStore.isLogin) {
-            if (message.data.isNotEmpty() && message.data["title"].toString() != EMPTY) {
-                sendNotificationAlarm(
-                    Message(message.data["title"].toString(), message.data["content"].toString())
-                )
-            }
-            else {
-                message.notification?.let {
-                    sendNotificationAlarm(Message(it.title.toString(), it.body.toString()))
+        if (dataStore.onNotification) {
+            if (dataStore.isLogin) {
+                if (message.data.isNotEmpty() && message.data["title"].toString() != EMPTY) {
+                    sendNotificationAlarm(
+                        Message(message.data["title"].toString(), message.data["content"].toString())
+                    )
+                }
+                else {
+                    message.notification?.let {
+                        sendNotificationAlarm(Message(it.title.toString(), it.body.toString()))
+                    }
                 }
             }
         }

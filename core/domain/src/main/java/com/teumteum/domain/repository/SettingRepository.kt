@@ -8,4 +8,6 @@ interface SettingRepository {
     suspend fun signOut(withDrawReasons: WithDrawReasons): Result<Unit>
     suspend fun getMyPageOpenMeeting(participantUserId: Long): Result<List<Meeting>>
     suspend fun getMyPageClosedMeeting(participantUserId: Long): Result<List<Meeting>>
+    fun setNotification(isActivated: Boolean)
+    fun getNotification(): Boolean
 }

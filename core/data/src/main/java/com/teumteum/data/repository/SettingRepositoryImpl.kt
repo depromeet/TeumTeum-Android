@@ -9,7 +9,8 @@ import com.teumteum.domain.repository.SettingRepository
 import javax.inject.Inject
 
 class SettingRepositoryImpl @Inject constructor(
-    private val dataSource: RemoteSettingDataSource
+    private val dataSource: RemoteSettingDataSource,
+    private val dataStore: TeumTeumDataStore
 ): SettingRepository {
     override suspend fun logOut(): Result<Unit> {
         return runCatching {
@@ -47,5 +48,10 @@ class SettingRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun setNotification(isActivated: Boolean) {
+        dataStore.onNotification = isActivated
+    }
+
+    override fun getNotification(): Boolean = dataStore.onNotification
 
 }
