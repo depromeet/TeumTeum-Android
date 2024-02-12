@@ -38,7 +38,7 @@ class SettingRepositoryImpl @Inject constructor(
 
     override suspend fun getMyPageClosedMeeting(participantUserId: Long): Result<List<Meeting>> {
         return runCatching {
-            dataSource.getMyPageOpenMeeting(
+            dataSource.getMyPageClosedMeeting(
                 size = 20,
                 page = 0,
                 sort = "promiseDateTime",
@@ -53,5 +53,18 @@ class SettingRepositoryImpl @Inject constructor(
     }
 
     override fun getNotification(): Boolean = dataStore.onNotification
+
+    override suspend fun getBookmarkMeeting(): Result<List<Meeting>> {
+        return runCatching {
+            dataSource.getBookmarkMeeting(
+                size = 20,
+                page = 0,
+                sort = "promiseDateTime",
+                isOpen = true,
+                isBookmark = true
+            ).data.meetings.map { it.toMeeting()}
+        }
+    }
+
 
 }

@@ -53,10 +53,14 @@ class SettingViewModel @Inject constructor(
     private val _userHostClosedMeetingList = MutableStateFlow<List<com.teumteum.domain.entity.Meeting>>(emptyList())
     val userHostClosedMeetingList: StateFlow<List<com.teumteum.domain.entity.Meeting>> = _userHostClosedMeetingList
 
+    private val _userBookmarkList = MutableStateFlow<List<com.teumteum.domain.entity.Meeting>>(emptyList())
+    val userBookmarkList: StateFlow<List<com.teumteum.domain.entity.Meeting>> = _userBookmarkList
+
     init {
         loadUserInfo()
         getUserClosedMeeting()
         getUserOpenMeeting()
+        getUserBookmark()
     }
 
     private fun loadUserInfo() = viewModelScope.launch {
@@ -70,7 +74,6 @@ class SettingViewModel @Inject constructor(
 
     fun getUserOpenMeeting() {
         val userId = authRepository.getUserId()
-//        val userId = 16.toLong()
         if (userId != -1L) {
             viewModelScope.launch {
                 settingRepository.getMyPageOpenMeeting(userId)
@@ -93,6 +96,20 @@ class SettingViewModel @Inject constructor(
                     }
             }
         }
+    }
+
+    fun getUserBookmark() {
+            viewModelScope.launch {
+                settingRepository.getBookmarkMeeting()
+                    .onSuccess { meetings ->
+                        _userBookmarkList.value = meetings
+                    }
+                    .onFailure {
+                        Timber.e(it)
+                        updateSettingStatus(SettingStatus.ERROR)
+                    }
+            }
+
     }
 
     fun getUserClosedMeeting() {

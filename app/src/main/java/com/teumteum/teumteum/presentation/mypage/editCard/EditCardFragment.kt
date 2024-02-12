@@ -23,6 +23,7 @@ import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentEditCardBinding
 import com.teumteum.teumteum.presentation.MainActivity
+import com.teumteum.teumteum.presentation.moim.BottomSheet
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.EditCardViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SheetEvent
@@ -154,7 +155,13 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
         }
         val jobClassBottomSheet = SingleModalBottomSheet.newInstance(
             ReadyJobFragment.BOTTOM_SHEET_TITLE,
-            JOB_SORT_LIST, jobClassListener)
+            JOB_SORT_LIST, jobClassListener).apply {
+            dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                override fun onDismiss() {
+                    viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+                }
+            }
+        }
         jobClassBottomSheet.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
 
@@ -176,7 +183,13 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
                     CurrentJobFragment.BOTTOM_SHEET_DETAIL_TITLE,
                     jobDetailList,
                     jobDetailClassListener
-                )
+                ).apply {
+                    dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                        override fun onDismiss() {
+                            viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+                        }
+                    }
+                }
                 jobDetailClassBottomSheet?.apply {
                     setSelectedItem(viewModel.jobDetailClass.value)
                 }
@@ -196,6 +209,11 @@ class EditCardFragment: BindingFragment<FragmentEditCardBinding>(R.layout.fragme
             CommunityFragment.communitySort, listener)
         statusBottomSheet?.apply {
             setSelectedItem(viewModel.community.value)
+            dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                override fun onDismiss() {
+                    viewModel.triggerSheetEvent(SheetEvent.Dismiss)
+                }
+            }
         }
         statusBottomSheet!!.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }

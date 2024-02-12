@@ -41,4 +41,14 @@ class RemoteSettingDataSource @Inject constructor(
         return settingService.getMyPageClosedMeeting(size, page, sort,isOpen, participantUserId)
     }
 
+    suspend fun getBookmarkMeeting(
+        size: Int,
+        page: Int,
+        sort: String,
+        isOpen: Boolean,
+        isBookmark : Boolean
+    ): ResponseMyMeeting {
+        return settingService.getBookmarkMeeting(size, page, sort, isOpen, isBookmark)
+    }
+
 }

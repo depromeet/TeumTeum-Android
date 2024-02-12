@@ -43,6 +43,7 @@ data class ColorPalette(
     val color_outline_level04_active: Color = Color.Unspecified,
     val color_outline_level03: Color = Color.Unspecified,
 
+    val color_icon_level03: Color = Color.Unspecified,
     val color_icon_level02_disabled: Color = Color.Unspecified,
     val color_icon_level02_active: Color = Color.Unspecified,
     val color_icon_level01: Color = Color.Unspecified,
@@ -106,6 +107,7 @@ val ColorPalette_Dark = ColorPalette(
     color_outline_level04_active = Color(color = 0xFFF5F5F5),
     color_outline_level03 = Color(color = 0xFF333333),
 
+    color_icon_level03 = Color(color = 0xFF828282),
     color_icon_level02_disabled = Color(color = 0xFF333333),
     color_icon_level02_active = Color(color = 0xFF36B2FF),
     color_icon_level01 = Color(color = 0xFFF5F5F5),
@@ -176,6 +178,7 @@ val ColorPalette_Light = ColorPalette(
     color_outline_level04_active = Color(color = 0xFF212121),
 
     //icon
+    color_icon_level03 = Color(color = 0xFFC9C9C9),
     color_icon_level02_disabled = Color(color = 0xFFDFDFDF),
     color_icon_level02_active = Color(color = 0xFF44AEFF),
     color_icon_level01 = Color(color = 0xFF212121),

@@ -75,6 +75,7 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
                     BottomSheet.Default -> {}
                     BottomSheet.Topic -> showTopicSheet()
                     BottomSheet.People -> showPeopleSheet()
+                    else -> {}
                 }
             }
             .launchIn(lifecycleScope)
@@ -90,9 +91,14 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
         }
 
         val topicTitles = TopicType.values().map { it.title }
-        topicBottomSheet = SingleModalBottomSheet.newInstance(
-            "모임 주제", topicTitles as ArrayList, topicClassListener
-        )
+        topicBottomSheet = SingleModalBottomSheet.newInstance("모임 주제", topicTitles as ArrayList, topicClassListener
+        ).apply {
+            dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                override fun onDismiss() {
+                    viewModel.updateBottomSheet(BottomSheet.Default)
+                }
+            }
+        }
         topicBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
 
@@ -111,7 +117,13 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
 
         peopleBottomSheet = SingleModalBottomSheet.newInstance(
             "참여 인원 선택", PEOPLE_LIST, peopleClassListener
-        )
+        ).apply {
+            dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                override fun onDismiss() {
+                    viewModel.updateBottomSheet(BottomSheet.Default)
+                }
+            }
+        }
         peopleBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
 

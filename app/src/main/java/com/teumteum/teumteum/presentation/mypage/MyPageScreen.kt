@@ -48,6 +48,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager1Content
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
+import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager3Content
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
@@ -69,7 +70,6 @@ fun MyPageScreen(
     myPageViewModel: MyPageViewModel,
 ) {
     val userInfoState by myPageViewModel.userInfoState.collectAsState()
-
     val frontCardState by myPageViewModel.frontCardState.collectAsState()
     val userName by viewModel.userName.collectAsState()
     val backCard by myPageViewModel.backCardState.collectAsState()
@@ -98,7 +98,7 @@ fun MyPageScreen(
         },
         topbarText = "${userName}님의 소개서"
     ) {
-        val list = listOf("내 모임", "받은 리뷰")
+        val list = listOf("내 모임", "받은 리뷰", "북마크")
         val selectedTab = remember { mutableStateOf(list[0]) }
 
         LazyColumn(
@@ -127,8 +127,15 @@ fun MyPageScreen(
                         // 앞면 카드 컨텐츠 표시
                         MyPageFrontCard(frontCard = frontCardState)
                     } else {
-                        // 뒷면 카드 컨텐츠 표시
-                        MyPageBackCard(backCard = backCard)
+                        MyPageBackCard(backCard = backCard, viewModel = myPageViewModel)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_floating_edit),
+                            contentDescription = "Character Image",
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .offset(x = (25).dp, y = (-30).dp)
+                                .clickable { navController.navigate(R.id.fragment_edit_card) }
+                        )
                     }
                 }
                 TmMarginVerticalSpacer(size = 22)
@@ -157,7 +164,9 @@ fun MyPageScreen(
                 }
 
                 "받은 리뷰" -> item { MyPagePager2Content() }
-//                "북마크" -> item { MyPagePager3Content() }
+                "북마크" -> item {
+                    MyPagePager3Content(viewModel, navController)
+                }
             }
         }
     }
@@ -169,8 +178,8 @@ fun MyPageFrontCard(frontCard: FrontCard) {
 }
 
 @Composable
-fun MyPageBackCard(backCard: BackCard) {
-    BackCardView(backCard = backCard)
+fun MyPageBackCard(backCard: BackCard, viewModel:MyPageViewModel) {
+    BackCardView(backCard = backCard, viewModel)
 }
 
 @Composable
@@ -213,16 +222,24 @@ fun FrontCardView(frontCard: FrontCard) {
 }
 
 @Composable
-fun BackCardView(backCard: BackCard) {
+fun BackCardView(backCard: BackCard, viewModel:MyPageViewModel) {
+    val interests = viewModel.interests.collectAsState().value.map { Interest(it) }
     AndroidView(
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
+                setIsModifyDetail(isModifyDetail = false)
+                submitInterestList(interests)
+                isModify = true
                 rotationY = 180f
             }
         },
         update = { view ->
-            view.getInstance(backCard)
+            val currentInterestsSet = view.currentList.value.orEmpty().toSet()
+            val interestsSet = interests.toSet()
+            if (currentInterestsSet != interestsSet) {
+                view.submitInterestList(interests)
+            }
         },
         modifier = Modifier
             .width(280.dp)

@@ -106,6 +106,9 @@ class MoimViewModel @Inject constructor(
     private val _isBookmark = MutableStateFlow(false)
     val isBookmark: StateFlow<Boolean> = _isBookmark.asStateFlow()
 
+    private val _isAfternoon = MutableStateFlow("오후")
+    val isAfternoon: StateFlow<String> = _isAfternoon.asStateFlow()
+
     val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_ghost,
         1 to R.drawable.ic_star,
@@ -185,6 +188,10 @@ class MoimViewModel @Inject constructor(
     fun updateTopic(topicType: TopicType) {
         _topic.value = topicType
     }
+
+    fun updateAfternoon(string: String) {
+        _isAfternoon.value = string
+    }
     fun updateTitle(title: String) {
         _title.value = title
     }
@@ -192,12 +199,20 @@ class MoimViewModel @Inject constructor(
         _introduction.value = introduce
     }
     fun updateDate(input: String) {
+        _date.value = input
+    }
+
+    fun updateTime(input: String) {
+        _time.value = input
+    }
+
+    fun updateDate2(input: String) {
         if (input.length == 4) {
             _date.value = formatDateAndDay(input)
         }
     }
 
-    fun updateTime(input: String): String {
+    fun updateTime2(input: String): String {
         val formattedTime = formatTime(input)
         _time.value = formattedTime
         return formattedTime
@@ -280,10 +295,14 @@ class MoimViewModel @Inject constructor(
         }
     }
 
-    private fun combineDateAndTime(): LocalDateTime? {
+    private fun combineDateAndTime2(): LocalDateTime? {
         return try {
             val currentYear = Year.now().value
-            val dateInput = "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
+            val dateInput = if(_date.value.length == 4) {
+                "${currentYear}${_date.value}"
+            } else {
+                "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
+            }
             var timeInput = _time.value.replace("오후", "PM").replace("오전", "AM")
 
             val timeParts = timeInput.split(" ")
@@ -296,6 +315,35 @@ class MoimViewModel @Inject constructor(
 
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN)
             val timeFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.ENGLISH)
+
+            val parsedDate = LocalDate.parse(dateInput, dateFormatter)
+            val parsedTime = LocalTime.parse(timeInput, timeFormatter)
+
+            LocalDateTime.of(parsedDate, parsedTime)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to combine date and time")
+            null
+        }
+    }
+
+    private fun combineDateAndTime(): LocalDateTime? {
+        return try {
+            val dateInput = _date.value
+            var timeInput = _time.value
+
+            val isAfternoon = _isAfternoon.value == "오후"
+            val (hourString, minute) = timeInput.split(":")
+            var hour = hourString.toInt()
+
+            if (isAfternoon && hour < 12) { hour += 12 }
+            else if (!isAfternoon && hour == 12) {
+                hour = 0
+            }
+
+            timeInput = "$hour:$minute"
+
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+            val timeFormatter = DateTimeFormatter.ofPattern("H:mm")
 
             val parsedDate = LocalDate.parse(dateInput, dateFormatter)
             val parsedTime = LocalTime.parse(timeInput, timeFormatter)
@@ -411,7 +459,7 @@ class MoimViewModel @Inject constructor(
 
     fun modifyMoim(meetingId: Long) {
         viewModelScope.launch {
-            val dateTime = combineDateAndTime()
+            val dateTime = combineDateAndTime2()
             val imageFiles = convertUrisToFile(imageUri.value)
             if(dateTime != null) {
                 val meetingArea = address.value?.let {
@@ -626,7 +674,7 @@ enum class ScreenState {
 }
 
 enum class BottomSheet {
-    Topic, People, Default
+    Topic, People, Default, Time
 }
 
 

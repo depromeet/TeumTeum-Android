@@ -191,7 +191,7 @@ fun MoimConfirm(
             LazyColumn(modifier = Modifier.weight(1f)) {
                     item {
                         MoimPhotoPager(viewModel)
-                        MoimConfirmInfo(viewModel)
+                        MoimConfirmInfo(viewModel, isJoinView =  isJoinView)
                         TmMarginVerticalSpacer(size = 32)
                         TeumDividerThick(int = 8)
                         TmMarginVerticalSpacer(size = 20)
@@ -324,53 +324,72 @@ fun MoimPhotoPager(viewModel : MoimViewModel) {
 }
 
 @Composable
-fun MoimConfirmInfo(viewModel: MoimViewModel) {
+fun MoimConfirmInfo(
+    viewModel: MoimViewModel,
+    isJoinView: Boolean
+) {
     val title by viewModel.title.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(color = TmtmColorPalette.current.color_background)
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        TmMarginVerticalSpacer(size = 32)
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(color = TmtmColorPalette.current.color_background)
+                .padding(horizontal = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
-            Text(
-                text = title,
-                style = TmTypo.current.HeadLine3,
-                modifier = Modifier
-                    .width(320.dp)
-                    .align(Alignment.Top),
-                color = TmtmColorPalette.current.color_text_headline_primary
-            )
-            TmMarginHorizontalSpacer(size = 8)
-            Image(
-                painterResource(id = R.drawable.icon_share),
-                contentDescription = null,
-                modifier= Modifier
-                    .size(24.dp)
-                    .offset(y = 5.dp)
-            )
+            TmMarginVerticalSpacer(size = 32)
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Text(
+                    text = title,
+                    style = TmTypo.current.HeadLine3,
+                    modifier = Modifier
+                        .width(320.dp)
+                        .align(Alignment.Top),
+                    color = TmtmColorPalette.current.color_text_headline_primary
+                )
+                TmMarginHorizontalSpacer(size = 8)
+                Image(
+                    painterResource(id = R.drawable.icon_share),
+                    contentDescription = null,
+                    modifier= Modifier
+                        .size(24.dp)
+                        .offset(y = 5.dp)
+                )
+            }
+            TmMarginVerticalSpacer(size = 16)
+            MoimInfoCard(viewModel, isJoinView = isJoinView)
         }
-        TmMarginVerticalSpacer(size = 16)
-        MoimInfoCard(viewModel)
-    }
+
 }
 
 @Composable
-fun MoimInfoCard(viewModel: MoimViewModel) {
+fun MoimInfoCard(viewModel: MoimViewModel,isJoinView: Boolean) {
     val topic by viewModel.topic.collectAsState()
     val people by viewModel.people.collectAsState()
     val date by viewModel.date.collectAsState()
     val time by viewModel.time.collectAsState()
+    val isAfternoon by viewModel.isAfternoon.collectAsState()
     val detailAddress by viewModel.detailAddress.collectAsState()
+
+    val dateString = if (isJoinView) {
+        if(date.length ==4) {
+            "${date.substring(0, 2)}월 ${date.substring(2, 4)}일 $time"
+        } else {
+            "$date $time"
+        }
+    } else {
+        if (date.length == 8) {
+            "${date.substring(0, 4)}년 ${date.substring(4, 6)}월 ${date.substring(6, 8)}일 $isAfternoon $time"
+        } else {
+            date
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -389,7 +408,7 @@ fun MoimInfoCard(viewModel: MoimViewModel) {
             verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title1), text = "$date $time")
+            MoimCardRow(title = stringResource(id = R.string.moim_confirm_title1), text = dateString)
             TmMarginVerticalSpacer(size = 4)
             MoimCardRow(title = stringResource(id = R.string.moim_confirm_title2), text = viewModel.getTopicTitle(topic))
             TmMarginVerticalSpacer(size = 4)
