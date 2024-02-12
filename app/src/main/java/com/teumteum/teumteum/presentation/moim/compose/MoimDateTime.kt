@@ -201,11 +201,6 @@ fun MoimTimeColumn(viewModel: MoimViewModel) {
         var timeBText by remember { mutableStateOf("") }
         val isAfternoon by viewModel.isAfternoon.collectAsState()
 
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal =0.dp)
-        ) {
             Text(
                 text = stringResource(id = R.string.moim_datetime_label2),
                 style = TmTypo.current.Body2,
@@ -223,7 +218,8 @@ fun MoimTimeColumn(viewModel: MoimViewModel) {
 
                 Box(modifier = Modifier
                     .width(88.dp)
-                    .background(color = TmtmColorPalette.current.elevation_color_elevation_level01, shape = RoundedCornerShape(4.dp))
+                    .height(55.dp)
+                    .background(color = TmtmColorPalette.current.elevation_color_elevation_level01)
                     .wrapContentHeight(),
                     contentAlignment = Alignment.Center
                 ) {
@@ -245,6 +241,7 @@ fun MoimTimeColumn(viewModel: MoimViewModel) {
                             .clickable { viewModel.updateBottomSheet(BottomSheet.Time) })
                     }
                 }
+                TmMarginHorizontalSpacer(size = 8)
 
                 OutlinedTextField(
                     value = timeAText,
@@ -308,7 +305,6 @@ fun MoimTimeColumn(viewModel: MoimViewModel) {
                         cursorColor = TmtmColorPalette.current.TMTMBlue500,
                     ),
                 )
-            }
         }
     }
 }
@@ -340,9 +336,9 @@ fun MoimDateInputField(
             text = newText
             if (newText.length == 4) {
                 if (isTimeField) {
-                    viewModel.updateTime(newText)
+                    viewModel.updateTime2(newText)
                 } else {
-                    viewModel.updateDate(newText)
+                    viewModel.updateDate2(newText)
                 }
             }
         },

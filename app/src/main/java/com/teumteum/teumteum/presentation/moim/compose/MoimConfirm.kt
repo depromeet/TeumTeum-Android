@@ -329,7 +329,6 @@ fun MoimConfirmInfo(
     isJoinView: Boolean
 ) {
     val title by viewModel.title.collectAsState()
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -379,12 +378,16 @@ fun MoimInfoCard(viewModel: MoimViewModel,isJoinView: Boolean) {
     val detailAddress by viewModel.detailAddress.collectAsState()
 
     val dateString = if (isJoinView) {
-        "$date $time"
+        if(date.length ==4) {
+            "${date.substring(0, 2)}월 ${date.substring(2, 4)}일 $time"
+        } else {
+            "$date $time"
+        }
     } else {
         if (date.length == 8) {
             "${date.substring(0, 4)}년 ${date.substring(4, 6)}월 ${date.substring(6, 8)}일 $isAfternoon $time"
         } else {
-            date // 예외 처리: 입력 형식이 예상과 다를 경우 원본 데이터 반환
+            date
         }
     }
 

@@ -206,6 +206,18 @@ class MoimViewModel @Inject constructor(
         _time.value = input
     }
 
+    fun updateDate2(input: String) {
+        if (input.length == 4) {
+            _date.value = formatDateAndDay(input)
+        }
+    }
+
+    fun updateTime2(input: String): String {
+        val formattedTime = formatTime(input)
+        _time.value = formattedTime
+        return formattedTime
+    }
+
     fun updateAddress(address: String) {
         _address.value = address
     }
@@ -280,6 +292,37 @@ class MoimViewModel @Inject constructor(
             "$formattedDate $dayOfWeek"
         } catch (e: Exception) {
             input // 실패시 원본 입력 반환
+        }
+    }
+
+    private fun combineDateAndTime2(): LocalDateTime? {
+        return try {
+            val currentYear = Year.now().value
+            val dateInput = if(_date.value.length == 4) {
+                "${currentYear}${_date.value}"
+            } else {
+                "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
+            }
+            var timeInput = _time.value.replace("오후", "PM").replace("오전", "AM")
+
+            val timeParts = timeInput.split(" ")
+            if (timeParts.size == 2) {
+                val hourMinuteParts = timeParts[1].split(":")
+                if (hourMinuteParts[0].length == 1) {
+                    timeInput = "${timeParts[0]} 0${hourMinuteParts[0]}:${hourMinuteParts[1]}"
+                }
+            }
+
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN)
+            val timeFormatter = DateTimeFormatter.ofPattern("a hh:mm", Locale.ENGLISH)
+
+            val parsedDate = LocalDate.parse(dateInput, dateFormatter)
+            val parsedTime = LocalTime.parse(timeInput, timeFormatter)
+
+            LocalDateTime.of(parsedDate, parsedTime)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to combine date and time")
+            null
         }
     }
 
@@ -416,7 +459,7 @@ class MoimViewModel @Inject constructor(
 
     fun modifyMoim(meetingId: Long) {
         viewModelScope.launch {
-            val dateTime = combineDateAndTime()
+            val dateTime = combineDateAndTime2()
             val imageFiles = convertUrisToFile(imageUri.value)
             if(dateTime != null) {
                 val meetingArea = address.value?.let {
