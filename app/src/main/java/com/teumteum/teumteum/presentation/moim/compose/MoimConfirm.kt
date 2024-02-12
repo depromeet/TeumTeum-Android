@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -571,7 +573,6 @@ fun MoimHostBtn(
     onJoinGroupClick: (Long) -> Unit
 ) {
     val meetingId by viewModel.meetingsId.collectAsState()
-    val screenState by viewModel.screenState.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -625,22 +626,45 @@ fun MoimCancelBtn(
     viewModel: MoimViewModel,
     onJoinGroupClick: (Long) -> Unit,
 ) {
-    androidx.compose.material3.Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(76.dp)
-            .padding(horizontal = 20.dp, vertical = 10.dp),
-        onClick = {
-            viewModel.updateSheetEvent(ScreenState.Cancel)
-        },
-        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
-        shape = RoundedCornerShape(size = 4.dp)
-    ) {
-        Text(
-            text = "참여 안할래요",
-            style = TmTypo.current.HeadLine6,
-            color = TmtmColorPalette.current.color_text_button_alternative
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(horizontal = 20.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
         )
+    {
+        val isBookMark by viewModel.isBookmark.collectAsState()
+        val bookMarkIcon = if(isBookMark) R.drawable.ic_heart_fill else R.drawable.ic_heart_default
+        val meetingId by viewModel.meetingsId.collectAsState()
+
+        Icon(
+            painterResource(id = bookMarkIcon),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.clickable {
+                if(isBookMark) viewModel.deleteBookmark(meetingId)
+                else viewModel.saveBookmark(meetingId)
+            }
+        )
+        androidx.compose.material3.Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(76.dp)
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            onClick = {
+                viewModel.updateSheetEvent(ScreenState.Cancel)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_alternative),
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            Text(
+                text = "참여 안할래요",
+                style = TmTypo.current.HeadLine6,
+                color = TmtmColorPalette.current.color_text_button_alternative
+            )
+        }
+
     }
 }
 
@@ -648,27 +672,48 @@ fun MoimCancelBtn(
 @Composable
 fun MoimJoinBtn(
     viewModel: MoimViewModel,
-    onJoinGroupClick: (Long) -> Unit
+    onJoinGroupClick: (Long) -> Unit,
 ) {
     val people by viewModel.people.collectAsState()
     val moimJoinUsers by viewModel.moimJoinUsers.collectAsState()
     val meetingsId by viewModel.meetingsId.collectAsState()
-    androidx.compose.material3.Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(76.dp)
-            .padding(horizontal = 20.dp, vertical = 10.dp),
-        onClick = {
-                  onJoinGroupClick(meetingsId)
-        },
-        colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
-        shape = RoundedCornerShape(size = 4.dp)
-    ) {
-        Text(
-            text = "참여할래요 (${moimJoinUsers.size}/${people})",
-            style = TmTypo.current.HeadLine6,
-            color = TmtmColorPalette.current.color_text_button_primary_default
+    val isBookMark by viewModel.isBookmark.collectAsState()
+    val bookMarkIcon = if(isBookMark) R.drawable.ic_heart_fill else R.drawable.ic_heart_default
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(horizontal = 20.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        Icon(
+            painterResource(id = bookMarkIcon),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.clickable {
+                if(isBookMark) viewModel.deleteBookmark(meetingsId)
+                else viewModel.saveBookmark(meetingsId)
+            }
         )
+        androidx.compose.material3.Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(76.dp)
+                .padding(horizontal = 20.dp, vertical = 10.dp),
+            onClick = {
+                onJoinGroupClick(meetingsId)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
+            shape = RoundedCornerShape(size = 4.dp)
+        ) {
+            Text(
+                text = "참여할래요 (${moimJoinUsers.size}/${people})",
+                style = TmTypo.current.HeadLine6,
+                color = TmtmColorPalette.current.color_text_button_primary_default
+            )
+        }
     }
 }
 

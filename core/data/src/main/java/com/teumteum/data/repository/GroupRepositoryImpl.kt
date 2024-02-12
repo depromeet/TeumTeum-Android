@@ -94,4 +94,16 @@ class GroupRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveBookmark(meetingId: Long): Result<Boolean> {
+        return runCatching {
+            dataSource.saveBookmark(meetingId)
+        }
+    }
+
+    override suspend fun deleteBookmark(meetingId: Long): Result<Boolean> {
+        return runCatching {
+            dataSource.deleteBookmark(meetingId)
+        }
+    }
+
 }

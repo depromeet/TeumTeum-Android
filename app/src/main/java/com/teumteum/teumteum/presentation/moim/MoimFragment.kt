@@ -32,6 +32,7 @@ import com.teumteum.teumteum.presentation.moim.compose.MoimPeople
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class MoimFragment :
     BindingFragment<FragmentMoimBinding>(R.layout.fragment_moim) {
@@ -156,6 +157,12 @@ class MoimFragment :
 
         } else {
             viewModel.goPreviousScreen()
+        }
+    }
+
+    private fun setUpBottomSheet() {
+        viewLifecycleOwner.lifecycleScope.launch {
+
         }
     }
 
