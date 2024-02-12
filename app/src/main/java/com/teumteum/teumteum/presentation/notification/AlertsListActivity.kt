@@ -1,24 +1,37 @@
 package com.teumteum.teumteum.presentation.notification
 
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.view.isVisible
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.domain.entity.TeumAlert
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityAlertsListBinding
+import com.teumteum.teumteum.presentation.group.GroupListUiState
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class AlertsListActivity
     : BindingActivity<ActivityAlertsListBinding>(R.layout.activity_alerts_list), AppBarLayout {
 
     private lateinit var adapter: AlertsListAdapter
+    private val viewModel by viewModels<AlertsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initAppBarLayout()
         initList()
+        viewModel.getAlerts()
+        observe()
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding
@@ -48,6 +61,24 @@ class AlertsListActivity
         ))
     }
 
+    private fun observe() {
+        viewModel.alertsData.flowWithLifecycle(lifecycle)
+            .onEach {
+                binding.clEmpty.isVisible = it is AlertsListUiState.Empty
+                binding.tvNoticeEmpty.isVisible = it !is AlertsListUiState.Empty
+                binding.rvAlertsList.isVisible = it !is AlertsListUiState.Empty
+                when (it) {
+                    is AlertsListUiState.SetAlerts -> {
+                        adapter.setItems(it.data)
+                    }
+                    is AlertsListUiState.Failure -> {
+                        defaultToast(it.msg)
+                    }
+                    else -> {}
+                }
+            }.launchIn(lifecycleScope)
+    }
+
     private fun initList() {
         adapter = AlertsListAdapter {
             when (it.type) {
@@ -66,7 +97,6 @@ class AlertsListActivity
                 }
             }
         }
-        initItems()
         binding.rvAlertsList.adapter = adapter
     }
 
