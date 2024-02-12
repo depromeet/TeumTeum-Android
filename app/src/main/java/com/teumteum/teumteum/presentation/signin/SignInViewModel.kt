@@ -6,6 +6,7 @@ import com.teumteum.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,23 +20,27 @@ class SignInViewModel @Inject constructor(
     var oauthId = ""
 
     fun updateMemberState(socialLoginResult: SocialLoginResult) {
-        if (socialLoginResult.messages == null) {
-            if (socialLoginResult.oauthId.isNullOrEmpty()) {
+        Timber.tag("teum-login").d("${socialLoginResult}")
+        if (socialLoginResult.message == null) {
+            if (!socialLoginResult.accessToken.isNullOrEmpty() && !socialLoginResult.refreshToken.isNullOrEmpty()) {
                 // 기존 회원일 때
                 repository.setAutoLogin(
                     socialLoginResult.accessToken!!,
                     socialLoginResult.refreshToken!!)
                 _memberState.value = SignInUiState.Success
             }
-            else {
+            else if (!socialLoginResult.oauthId.isNullOrEmpty()){
                 // 새로 가입해야 할 때
                 oauthId = socialLoginResult.oauthId!!
                 _memberState.value = SignInUiState.UserNotRegistered
             }
+            else {
+                _memberState.value = SignInUiState.Failure("소셜로그인 실패")
+            }
         }
         else {
             // 통신 실패
-            _memberState.value = SignInUiState.Failure(socialLoginResult.messages!!)
+            _memberState.value = SignInUiState.Failure(socialLoginResult.message!!)
         }
     }
 
