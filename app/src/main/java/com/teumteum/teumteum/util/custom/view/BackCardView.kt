@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -46,23 +47,43 @@ class BackCardView : CardView {
             ivFloat.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
+    var isModifyDetail: Boolean = false
+        set(value) {
+            field = value
+            ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
+        }
+
     // isModifyDetail 값을 설정하고 어댑터에 UI 갱신을 알리는 함수
     @SuppressLint("NotifyDataSetChanged")
     fun setIsModifyDetail(isModifyDetail: Boolean) {
+        this.isModifyDetail = isModifyDetail //todo - 하나의 변수를 어댑터 안팎으로 2개씩 나눠 다루고 있는데 추후 하나로 통일
         interestAdapter.isModifyDetail = isModifyDetail
-        // UI를 새로고침하도록 어댑터에 알림
         interestAdapter.notifyDataSetChanged()
     }
 
     // 공개 속성으로 RecyclerView와 Adapter 제공
-    val interestAdapter = InterestAdapter()
+    val interestAdapter = InterestAdapter(context)
     lateinit var rvInterests: RecyclerView
         private set
 
     fun submitInterestList(interests: List<Interest>) {
-        interestAdapter.submitList(interests.reversed()) //flexboxLayout에서 item 쌓이는 순서 reverse 지원을 안 해서 직접 item 순서를 뒤집어서 submitList
-    }
+        val currentList = interestAdapter.currentList.toMutableList()
 
+        if (!currentList.any { it.interest == "추가하기" }) {
+            currentList.add(Interest("추가하기"))
+        }
+
+        val availableSlots = 4 - currentList.size
+
+        if (interests.size > availableSlots) {
+            Toast.makeText(context, "최대 3개까지 선택할 수 있어요", Toast.LENGTH_SHORT).show()
+        } else {
+            val interestsToAdd = interests.take(availableSlots)
+            currentList.addAll(0, interestsToAdd)
+
+            interestAdapter.submitList(currentList.reversed())
+        }
+    }
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context, attrs)
     }
@@ -206,8 +227,8 @@ class BackCardView : CardView {
             marginBottom = 32,
             marginStart = 32,
             marginEnd = 32,
-            itemHorizontalSpaceDp = 8,
-            itemVerticalSpaceDp = 4,
+            itemLeftSpaceDp = 8,
+            itemTopSpaceDp = 8,
         )
     }
 
@@ -344,8 +365,8 @@ class BackCardView : CardView {
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
         background: Int? = null,
-        itemHorizontalSpaceDp: Int,
-        itemVerticalSpaceDp: Int,
+        itemLeftSpaceDp: Int,
+        itemTopSpaceDp: Int,
     ) {
         rvInterests = RecyclerView(context).apply {
             this.id = id
@@ -362,8 +383,8 @@ class BackCardView : CardView {
             addItemDecoration(
                 FlexboxItemDecoration(
                     context,
-                    itemHorizontalSpaceDp,
-                    itemVerticalSpaceDp
+                    itemLeftSpaceDp,
+                    itemTopSpaceDp
                 )
             )
             background?.let { setBackgroundResource(it) }

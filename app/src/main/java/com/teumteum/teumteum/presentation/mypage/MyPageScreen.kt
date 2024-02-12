@@ -206,15 +206,6 @@ fun BackCardView(backCard: BackCard) {
         factory = { context ->
             BackCardView(context).apply {
                 getInstance(backCard)
-                submitInterestList( //todo - 더미
-                    listOf(
-                        Interest("모여서 각자 일하기"),
-                        Interest("사이드 프로젝트"),
-                        Interest("네트워킹")
-                    )
-                )
-                setIsModifyDetail(isModifyDetail = true)
-                isModify = true
                 rotationY = 180f
             }
         },
