@@ -65,12 +65,13 @@ class CardFixFragment
 
             val interests = mutableListOf<Interest>()
             for (i in interestField.value) {
-                interests.add(Interest("#$i"))
+                interests.add(Interest(i))
             }
             for (i in interestSelf.value) {
-                interests.add(Interest("#$i"))
+                interests.add(Interest(i))
             }
             binding.cardviewBack.apply {
+                setIsModifyDetail(true)
                 tvGoalContent.text = goalText.value
                 SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
@@ -182,11 +183,16 @@ class CardFixFragment
                     navigateTo<GetGoalFragment>()
                 }
             }
-            rvInterests.setOnSingleClickListener {
+            interestAdapter.onAddItemClick = {
                 (activity as SignUpActivity).apply {
                     showNextButtonOnFixingField()
                     navigateTo<GetInterestFragment>()
                 }
+            }
+            currentList.observe(viewLifecycleOwner) { interests ->
+                val selfArray = resources.getStringArray(R.array.interest_1)
+                val fieldArray = resources.getStringArray(R.array.interest_2)
+                viewModel.setAllInterests(interests.map { it.toString() }, selfArray, fieldArray)
             }
         }
     }

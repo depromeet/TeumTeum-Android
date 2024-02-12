@@ -100,9 +100,6 @@
             android:name=".presentation.signin.SocialWebViewActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.onboarding.AccessLocationActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.signup.terms.TermsWebViewActivity"
             android:exported="false" />
         <activity

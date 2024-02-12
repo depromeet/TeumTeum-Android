@@ -18,6 +18,7 @@ import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
 import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.extension.defaultSnackBar
+import com.teumteum.base.util.extension.defaultToast
 import com.teumteum.data.BuildConfig
 import com.teumteum.domain.entity.SocialLoginResult
 import com.teumteum.teumteum.R
@@ -50,7 +51,7 @@ class SocialWebViewActivity
 
         provider = intent.getStringExtra(EXTRA_KEY_PROVIDER).toString()
         initProvider(provider)
-        initCookieManager()
+//        initCookieManager()
         initAppBarLayout()
         initWebView()
         observer()
@@ -175,7 +176,7 @@ class SocialWebViewActivity
                         goToTermsActivity()
                     }
                     is SignInUiState.Failure -> {
-                        defaultSnackBar(binding.root, it.msg)
+                        defaultToast(it.msg)
                         finish()
                     }
 
@@ -192,7 +193,7 @@ class SocialWebViewActivity
                         goToHomeScreen()
                     }
                     is MyInfoUiState.Failure -> {
-                        defaultSnackBar(binding.root, state.msg)
+                        defaultToast(state.msg)
                         goToTermsActivity()
                     }
                     else -> {}
