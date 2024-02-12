@@ -123,6 +123,7 @@ fun MyPageScreen(
                         }
                 ) {
                     if (state.progress.to == CardFace.Front) {
+                        // 앞면 카드 컨텐츠 표시
                         MyPageFrontCard(frontCard = frontCardState)
                     } else {
                         MyPageBackCard(backCard = backCard, viewModel = myPageViewModel)

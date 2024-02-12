@@ -7,28 +7,32 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.callback.OnCurrentListChangedListener
 import com.teumteum.teumteum.util.custom.itemdecoration.FlexboxItemDecoration
 import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import com.teumteum.teumteum.util.extension.dpToPx
+import timber.log.Timber
 
 /**
  * 카드 후면 뷰
  *
  * xml, compose 모든 환경에서 뷰를 재활용 할 수 있게 커스텀뷰로 제작
  */
-class BackCardView : CardView {
+class BackCardView : CardView, OnCurrentListChangedListener<Interest> {
     private val layoutParent = ConstraintLayout.LayoutParams.PARENT_ID
     private var backCard = BackCard()
 
@@ -46,21 +50,44 @@ class BackCardView : CardView {
             ivFloat.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
+    var isModifyDetail: Boolean = false
+        set(value) {
+            field = value
+            ivEditGoalContent.visibility = if (value) View.VISIBLE else View.INVISIBLE
+        }
+
+    var currentList = MutableLiveData<MutableList<Interest>>()
+
     // isModifyDetail 값을 설정하고 어댑터에 UI 갱신을 알리는 함수
     @SuppressLint("NotifyDataSetChanged")
     fun setIsModifyDetail(isModifyDetail: Boolean) {
+        this.isModifyDetail = isModifyDetail //todo - 하나의 변수를 어댑터 안팎으로 2개씩 나눠 다루고 있는데 추후 하나로 통일
         interestAdapter.isModifyDetail = isModifyDetail
-        // UI를 새로고침하도록 어댑터에 알림
         interestAdapter.notifyDataSetChanged()
     }
 
     // 공개 속성으로 RecyclerView와 Adapter 제공
-    val interestAdapter = InterestAdapter()
+    val interestAdapter = InterestAdapter(context, this)
     lateinit var rvInterests: RecyclerView
         private set
 
     fun submitInterestList(interests: List<Interest>) {
-        interestAdapter.submitList(interests.reversed()) //flexboxLayout에서 item 쌓이는 순서 reverse 지원을 안 해서 직접 item 순서를 뒤집어서 submitList
+        val currentList = interestAdapter.currentList.toMutableList()
+
+        if (!currentList.any { it.interest == "추가하기" } && isModifyDetail) {
+            currentList.add(Interest("추가하기"))
+        }
+
+        val availableSlots = 4 - currentList.size
+
+        if (interests.size > availableSlots) {
+            Toast.makeText(context, "최대 3개까지 선택할 수 있어요", Toast.LENGTH_SHORT).show()
+        } else {
+            val interestsToAdd = interests.take(availableSlots)
+            currentList.addAll(0, interestsToAdd)
+
+            interestAdapter.submitList(currentList.reversed())
+        }
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -206,8 +233,8 @@ class BackCardView : CardView {
             marginBottom = 32,
             marginStart = 32,
             marginEnd = 32,
-            itemHorizontalSpaceDp = 8,
-            itemVerticalSpaceDp = 4,
+            itemLeftSpaceDp = 8,
+            itemTopSpaceDp = 8,
         )
     }
 
@@ -344,8 +371,8 @@ class BackCardView : CardView {
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
         background: Int? = null,
-        itemHorizontalSpaceDp: Int,
-        itemVerticalSpaceDp: Int,
+        itemLeftSpaceDp: Int,
+        itemTopSpaceDp: Int,
     ) {
         rvInterests = RecyclerView(context).apply {
             this.id = id
@@ -362,8 +389,8 @@ class BackCardView : CardView {
             addItemDecoration(
                 FlexboxItemDecoration(
                     context,
-                    itemHorizontalSpaceDp,
-                    itemVerticalSpaceDp
+                    itemLeftSpaceDp,
+                    itemTopSpaceDp
                 )
             )
             background?.let { setBackgroundResource(it) }
@@ -394,5 +421,12 @@ class BackCardView : CardView {
         }
         rvInterests.layoutParams = layoutParams
         this.addView(rvInterests)
+    }
+
+    override fun onCurrentListChanged(previousList: List<Interest>, currentList: List<Interest>) {
+        Timber.tag("갱신 리스트 p").d("${previousList}")
+        Timber.tag("갱신 리스트 c").d("${currentList}")
+        this.currentList.value = currentList.filterNot { it.interest == "추가하기" }.toMutableList()
+        Timber.tag("currentList").d("${this.currentList.value}")
     }
 }
