@@ -11,6 +11,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.teumteum.data.model.request.toDeviceToken
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.TeumTeumDataStore
+import com.teumteum.domain.entity.Message
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,16 +55,17 @@ class TeumMessagingService : FirebaseMessagingService() {
 
         if (dataStore.onNotification) {
             if (dataStore.isLogin) {
-                if (message.data.isNotEmpty() && message.data["title"].toString() != EMPTY) {
-                    sendNotificationAlarm(
-                        Message(message.data["title"].toString(), message.data["content"].toString())
-                    )
+                val alertMessage = Message("", "", "")
+                if (message.data.isNotEmpty()) {
+                    alertMessage.title = message.notification?.title.toString()
+                    alertMessage.body = message.notification?.body.toString()
+                    alertMessage.type = message.data["type"].toString()
                 }
-                else {
-                    message.notification?.let {
-                        sendNotificationAlarm(Message(it.title.toString(), it.body.toString()))
-                    }
+                if (alertMessage.type == END_MEETING) {
+                    alertMessage.meetingId = message.data["meetingId"]?.toInt()
+                    alertMessage.participants = message.data["participants"]?.toList()?.map { it.digitToInt() }
                 }
+                if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
             }
         }
     }
@@ -72,6 +74,8 @@ class TeumMessagingService : FirebaseMessagingService() {
         val requestCode = (System.currentTimeMillis() % 10000).toInt()
         val intent = Intent(this, SplashActivity::class.java)
         intent.putExtra("isFromAlarm", true)
+        intent.putExtra("message", message)
+        Timber.tag("teum-alerts").d("message: ${message.title}, ${message.type}, ${message.body}, ${message.meetingId}, ${message.participants.toString()}")
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent =
             PendingIntent.getActivity(
@@ -96,7 +100,6 @@ class TeumMessagingService : FirebaseMessagingService() {
 
     companion object {
         const val EMPTY = "null"
+        private const val END_MEETING = "END_MEETING"
     }
-
-    private data class Message(var title: String, var body: String)
 }
