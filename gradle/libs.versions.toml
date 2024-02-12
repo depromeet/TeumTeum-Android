@@ -44,6 +44,7 @@ billingVersion = "6.0.1"
 firebaseVersion = "30.4.0"
 
 ## Third-party
+flexboxVersion = "3.0.0"
 coilVersion = "2.4.0"
 glideVersion = "4.12.0"
 retrofitVersion = "2.9.0"
@@ -90,8 +91,6 @@ google-services-plugin = { group = "com.google.gms", name = "google-services", v
 #google-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "googleAppdistributionPlugin" }
 #google-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "googleCrashlyticsPlguin" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version = "21.0.1" }
-
-
 
 navigation-plugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationVersion" }
 
@@ -159,6 +158,7 @@ shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shi
 amplitude = { group = "com.amplitude", name = "android-sdk", version.ref = "amplitudeVersion" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
 ossLicense = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "ossVersion" }
+flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexboxVersion" }
 
 inAppUpdate = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "inAppUpdateVersion" }
 
