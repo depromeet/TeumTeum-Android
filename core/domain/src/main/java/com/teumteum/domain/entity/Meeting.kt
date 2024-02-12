@@ -14,5 +14,6 @@ data class Meeting(
     val date: String,
     val participantIds: List<Int>,
     val address: String,
-    val addressDetail: String
+    val addressDetail: String,
+    val isBookmarked: Boolean? = null
 )

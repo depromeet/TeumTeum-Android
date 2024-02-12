@@ -59,6 +59,16 @@ interface GroupService {
         @Path("meetingsId") meetingsId: Long
     ): ResponseMeeting
 
+    @POST("meetings/{meetingsId}/bookmarks")
+    suspend fun saveBookmark(
+        @Path("meetingsId") meetingsId: Long
+    ): Response<Void>
+
+    @DELETE("meetings/{meetingsId}/bookmarks")
+    suspend fun deleteBookmark(
+        @Path("meetingsId") meetingsId: Long
+    ): Response<Void>
+
     @Multipart
     @PUT("meetings/{meetingId}")
     suspend fun modifyMeeting(
