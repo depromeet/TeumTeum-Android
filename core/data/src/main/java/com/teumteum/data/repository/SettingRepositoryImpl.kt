@@ -47,14 +47,14 @@ class SettingRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBookmarkMeeting(participantUserId: Long): Result<List<Meeting>> {
+
+    override suspend fun getBookmarkMeeting(): Result<List<Meeting>> {
         return runCatching {
             dataSource.getBookmarkMeeting(
                 size = 20,
                 page = 0,
                 sort = "promiseDateTime",
                 isOpen = true,
-                participantUserId = participantUserId,
                 isBookmark = true
             ).data.meetings.map { it.toMeeting()}
         }

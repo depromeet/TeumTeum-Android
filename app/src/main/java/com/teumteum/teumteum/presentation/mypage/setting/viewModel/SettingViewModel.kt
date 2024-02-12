@@ -60,7 +60,7 @@ class SettingViewModel @Inject constructor(
         loadUserInfo()
         getUserClosedMeeting()
         getUserOpenMeeting()
-//        getUserBookmark()
+        getUserBookmark()
     }
 
     private fun loadUserInfo() = viewModelScope.launch {
@@ -99,10 +99,8 @@ class SettingViewModel @Inject constructor(
     }
 
     fun getUserBookmark() {
-        val userId = authRepository.getUserId()
-        if(userId != -1L) {
             viewModelScope.launch {
-                settingRepository.getBookmarkMeeting(userId)
+                settingRepository.getBookmarkMeeting()
                     .onSuccess { meetings ->
                         _userBookmarkList.value = meetings
                     }
@@ -111,7 +109,7 @@ class SettingViewModel @Inject constructor(
                         updateSettingStatus(SettingStatus.ERROR)
                     }
             }
-        }
+
     }
 
     fun getUserClosedMeeting() {

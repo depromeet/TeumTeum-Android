@@ -18,7 +18,6 @@ interface SettingService {
         @Query("page") page: Int,
         @Query("sort") sort: String = "promiseDateTime",
         @Query("isOpen") isOpen: Boolean,
-        @Query("participantUserId") participantUserId: Long?,
         @Query("isBookmarked") isBookmarked: Boolean
     ): ResponseMyMeeting
 

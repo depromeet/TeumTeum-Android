@@ -192,9 +192,7 @@ class MoimViewModel @Inject constructor(
         _introduction.value = introduce
     }
     fun updateDate(input: String) {
-        if (input.length == 4) {
-            _date.value = formatDateAndDay(input)
-        }
+        _date.value = input
     }
 
     fun updateTime(input: String): String {

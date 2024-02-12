@@ -46,10 +46,9 @@ class RemoteSettingDataSource @Inject constructor(
         page: Int,
         sort: String,
         isOpen: Boolean,
-        participantUserId: Long? = null,
         isBookmark : Boolean
     ): ResponseMyMeeting {
-        return settingService.getBookmarkMeeting(size, page, sort, isOpen, participantUserId, isBookmark)
+        return settingService.getBookmarkMeeting(size, page, sort, isOpen, isBookmark)
     }
 
 }
