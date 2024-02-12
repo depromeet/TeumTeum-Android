@@ -76,6 +76,7 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
 
 
     override fun onDismiss(dialog: DialogInterface) {
+        dismissListener?.onDismiss()
         focusedShowImageView?.setImageResource(R.drawable.ic_arrow_down_l)
         super.onDismiss(dialog)
     }
@@ -99,4 +100,12 @@ class SingleModalBottomSheet : BottomSheetDialogFragment() {
             }
         }
     }
+
+    interface OnDismissListener {
+        fun onDismiss()
+    }
+
+    var dismissListener: OnDismissListener? = null
+
+
 }

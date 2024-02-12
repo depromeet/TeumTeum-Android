@@ -147,11 +147,19 @@ class MoimFragment :
             }
             timeBottomSheet?.dismiss()
             viewModel.updateBottomSheet(BottomSheet.Default)
+            Log.d("viewModel", viewModel.bottomSheet.value.toString())
         }
 
         timeBottomSheet = SingleModalBottomSheet.newInstance(
             "모임 시간", TIME_LIST, topicClassListener
-        )
+        ).apply {
+            dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                override fun onDismiss() {
+                    viewModel.updateBottomSheet(BottomSheet.Default)
+                }
+            }
+        }
+        Log.d("viewModel", viewModel.bottomSheet.value.toString())
         timeBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
     }
 
