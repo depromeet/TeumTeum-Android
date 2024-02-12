@@ -72,7 +72,6 @@ fun MyPageScreen(
 
     val frontCardState by myPageViewModel.frontCardState.collectAsState()
     val userName by viewModel.userName.collectAsState()
-    val isFrontCardShown by myPageViewModel.isFrontCardShown.collectAsState()
     val backCard by myPageViewModel.backCardState.collectAsState()
 
     val density = LocalDensity.current.density
@@ -91,11 +90,6 @@ fun MyPageScreen(
             animationSpec = tween(durationMillis = 500)
         )
     }
-
-    val rotation by animateFloatAsState(
-        targetValue = if (isFrontCardShown) 0f else 180f,
-        animationSpec = tween(durationMillis = 500), label = ""
-    )
 
     TmScaffold(
         isSetting = true,
