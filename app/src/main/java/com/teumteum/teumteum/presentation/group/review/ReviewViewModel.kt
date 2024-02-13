@@ -17,13 +17,22 @@ class ReviewViewModel @Inject constructor(
     private var _selectFriendList = listOf<ReviewFriend>()
     val selectFriendList get() = _selectFriendList
 
+    private var _selectDetailFriendList = mutableListOf<ReviewFriend>()
+    val selectDetailFriendList get() = _selectFriendList
+
     private val _moimFriendList = MutableStateFlow<List<ReviewFriend>>(listOf())
     val moimFriendList: StateFlow<List<ReviewFriend>> = _moimFriendList
 
     var meetingId: Long? = null
 
+    var currentFriendIndex = 0
+
     fun setSelectFriendList(selectFriendList: List<ReviewFriend>) {
         _selectFriendList = selectFriendList
+    }
+
+    fun addSelectDetailFriendList(selectFriendDetail: ReviewFriend) {
+        _selectDetailFriendList.add(selectFriendDetail)
     }
 
     fun getReviewFriendList() {
