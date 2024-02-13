@@ -8,5 +8,6 @@ data class ReviewFriend(
     val characterId: Long,
     val name: String,
     val job: String,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    var review: String = ""
 )
