@@ -331,6 +331,10 @@
     <string name="review_finish_title">리뷰 남기기가\n완료되었습니다.</string>
     <string name="review_go_home">홈으로 돌아가기</string>
 
+    <string name="review_info_title">리뷰 남기기를 종료하시겠어요?</string>
+    <string name="review_info_finish">종료할래요</string>
+    <string name="review_info_back">돌아가기</string>
+
     <string name="familiar_dialog_title_exit">정말 틈틈을 종료하시겠어요?</string>
     <string name="familiar_dialog_subtitle_exit">틈틈을 종료하시면 지금까지 진행한\n틈틈의 내용이 사라져요.</string>
     <string name="exit">종료하기</string>
