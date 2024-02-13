@@ -28,6 +28,7 @@ import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -39,6 +40,7 @@ class CardFixFragment
     private lateinit var frontAnimation: AnimatorSet
     private lateinit var backAnimation: AnimatorSet
     private var isFront = true
+    private var isFirstLoaded = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +52,7 @@ class CardFixFragment
 
     private fun initCard() {
         with(viewModel) {
+            Timber.tag("teum-fix").d("initCard called")
             val fc = CHARACTER_CARD_LIST[characterId.value]?.let {
                 when (community.value) {
                     STATUS_WORKER -> FrontCard(userName.value, "@${companyName.value}", jobDetailClass.value,
@@ -190,9 +193,12 @@ class CardFixFragment
                 }
             }
             currentList.observe(viewLifecycleOwner) { interests ->
-                val selfArray = resources.getStringArray(R.array.interest_1)
-                val fieldArray = resources.getStringArray(R.array.interest_2)
-                viewModel.setAllInterests(interests.map { it.toString() }, selfArray, fieldArray)
+                if (!isFirstLoaded) {
+                    val selfArray = resources.getStringArray(R.array.interest_1)
+                    val fieldArray = resources.getStringArray(R.array.interest_2)
+                    viewModel.setAllInterests(interests.map { it.toString() }, selfArray, fieldArray)
+                }
+                isFirstLoaded = false
             }
         }
     }

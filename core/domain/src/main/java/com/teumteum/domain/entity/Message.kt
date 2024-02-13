@@ -4,6 +4,6 @@ data class Message(
     var title: String,
     var body: String,
     var type: String,
-    var meetingId: Int? = -1,
-    var participants: List<Int>? = listOf()
+    var meetingId: Long? = null,
+    var participants: List<Int>? = null
 ): java.io.Serializable

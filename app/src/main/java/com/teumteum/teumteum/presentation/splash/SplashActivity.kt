@@ -108,8 +108,12 @@ class SplashActivity
     }
 
     private fun startHomeScreen() {
-        val intent = MainActivity.getIntent(this, -1, isFromAlarm = isFromAlarm)
-        if (isFromAlarm) intent.putExtra(MESSAGE, message)
+        var intent = MainActivity.getIntent(this, -1, isFromAlarm = isFromAlarm)
+        if (isFromAlarm) {
+            if (message.type == END_MEETING)
+                intent = MainActivity.getIntent(this, message.meetingId!!, message.title)
+            else intent.putExtra(MESSAGE, message)
+        }
         startActivity(intent)
         finish()
     }
@@ -121,5 +125,6 @@ class SplashActivity
 
         const val IS_FROM_ALARM = "isFromAlarm"
         const val MESSAGE = "message"
+        private const val END_MEETING = "END_MEETING"
     }
 }
