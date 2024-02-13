@@ -270,9 +270,19 @@ fun MoimConfirm(
                         }
                     }
                 } else {
-                    TeumDivider()
-                    MoimCreateBtn(text = stringResource(id = R.string.moim_confirm_btn), viewModel = viewModel)
-                    TmMarginVerticalSpacer(size = 24)
+                    if (meetingId != null && meetingId > 0) {
+                            TeumDivider()
+                            MoimJoinBtn(viewModel = viewModel) {
+                                activity.startActivity(
+                                    GroupMeetCheckActivity.getIntent(activity, it)
+                                )
+                            }
+                            TmMarginVerticalSpacer(size = 24)
+                    } else {
+                        TeumDivider()
+                        MoimCreateBtn(text = stringResource(id = R.string.moim_confirm_btn), viewModel = viewModel)
+                        TmMarginVerticalSpacer(size = 24)
+                    }
                 }
             }
         }

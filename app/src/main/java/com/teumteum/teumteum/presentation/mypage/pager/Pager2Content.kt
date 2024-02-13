@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,12 +25,14 @@ import com.teumteum.base.component.compose.TmMarginHorizontalSpacer
 import com.teumteum.base.component.compose.TmMarginVerticalSpacer
 import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserGrade
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserGradeDummy
 
-@Preview
 @Composable
-fun MyPagePager2Content() {
+fun MyPagePager2Content(
+    viewModel: MyPageViewModel
+) {
+    val reviews by viewModel.reviews.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,9 +42,9 @@ fun MyPagePager2Content() {
         verticalArrangement =  Arrangement.Top
     ) {
         TmMarginVerticalSpacer(size = 20)
-       MyPager2Item(userGrade = UserGradeDummy.get(0))
-        MyPager2Item(userGrade = UserGradeDummy.get(1))
-        MyPager2Item(userGrade = UserGradeDummy.get(2))
+       reviews.forEach {
+           MyPager2Item(userGrade = it)
+       }
         TmMarginVerticalSpacer(size = 20)
     }
 }

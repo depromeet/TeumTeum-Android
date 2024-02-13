@@ -51,6 +51,8 @@ class MyPageFragment :
         myPageViewModel.loadUserInfo()
         viewModel.getUserOpenMeeting()
         viewModel.getUserClosedMeeting()
+        viewModel.getUserBookmark()
+        myPageViewModel.getReview()
     }
 
     companion object {

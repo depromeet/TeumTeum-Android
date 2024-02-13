@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendMyPage
+import com.teumteum.domain.entity.Review
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.SettingRepository
 import com.teumteum.domain.repository.UserRepository
@@ -42,8 +43,48 @@ class RecommendDetailViewModel @Inject constructor(
     private val _friendsList = MutableStateFlow<List<FriendMyPage>>(emptyList())
     val friendsList : StateFlow<List<FriendMyPage>> = _friendsList
 
+    private val _reviews = MutableStateFlow<List<UserGrade>>(emptyList())
+    val reviews: StateFlow<List<UserGrade>> = _reviews
+
     fun checkIfUserIsFriend(friendsList: List<FriendMyPage>, userId: Long) {
         _isFriend.value = friendsList.any { friend -> friend.id.toLong() == userId }
+    }
+
+    fun reviewToUserGrade(reviews:List<Review>): List<UserGrade> {
+        return reviews.map {
+            UserGrade(
+                text = it.review,
+                count = it.count,
+                image = when (it.review) {
+                    "최고에요" -> R.drawable.ic_grade_exel
+                    "좋아요" -> R.drawable.ic_grade_good
+                    "별로에요" -> R.drawable.ic_grade_bad
+                    else -> R.drawable.ic_grade_bad
+                }
+            )
+        }
+    }
+
+    fun getReview(userId: Long) {
+        if(userId != -1L) {
+            viewModelScope.launch {
+                userRepository.getUserReview(userId)
+                    .onSuccess {
+                        val sortedUserGrades = reviewToUserGrade(it).sortedBy { userGrade ->
+                            when (userGrade.text) {
+                                "최고에요" -> 1
+                                "좋아요" -> 2
+                                "별로에요" -> 3
+                                else -> 4
+                            }
+                        }
+                        _reviews.value = sortedUserGrades
+                    }
+                    .onFailure {
+                        Timber.e(it)
+                    }
+            }
+        }
     }
 
     fun postFriend(userId: Long) {

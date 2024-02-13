@@ -1,7 +1,9 @@
 package com.teumteum.data.service
 
+import com.teumteum.data.R
 import com.teumteum.data.model.request.RequestDeviceToken
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
+import com.teumteum.data.model.response.ResponseReview
 import com.teumteum.domain.entity.Alerts
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendRecommend
@@ -69,5 +71,10 @@ interface UserService {
 
     @GET("alerts")
     suspend fun getAlerts(): Alerts
+
+    @GET("users/reviews")
+    suspend fun getUserReview(
+        @Path("userId") userId: Long
+    ): ResponseReview.ResponseReviewData
 }
 

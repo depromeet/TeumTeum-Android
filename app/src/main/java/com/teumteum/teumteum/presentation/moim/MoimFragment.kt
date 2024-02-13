@@ -124,6 +124,16 @@ class MoimFragment :
                             meetingId
                         ) { navController.popBackStack() }
                     }
+                    ScreenState.BookMarkSuccess, ScreenState.BookMarkDelete -> {
+                        binding.progressBar.visibility = View.GONE
+                        MoimConfirm(
+                            viewModel,
+                            navController,
+                            requireActivity(),
+                            true,
+                            meetingId
+                        ) { navController.popBackStack() }
+                    }
 
                     ScreenState.Success -> {
                         binding.progressBar.visibility = View.GONE
@@ -206,8 +216,17 @@ class MoimFragment :
                         viewModel.initializeState()
                     }
                     ScreenState.Success -> {
+                        context?.defaultToast("모임 생성이 완료되었습니다")
                         delay(2000)
                         viewModel.initializeState()
+                    }
+                    ScreenState.BookMarkSuccess -> {
+                        context?.defaultToast("모임 저장을 성공했습니다")
+                        delay(2000)
+                    }
+                    ScreenState.BookMarkDelete -> {
+                        context?.defaultToast("모임 저장을 취소했습니다")
+                        delay(2000)
                     }
                     ScreenState.DeleteSuccess -> {
                         context?.defaultToast("모임 삭제를 성공했습니다")

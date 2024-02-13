@@ -4,6 +4,7 @@ import com.teumteum.domain.entity.Alerts
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendRecommend
 import com.teumteum.domain.entity.Friends
+import com.teumteum.domain.entity.Review
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.entity.Users
@@ -27,4 +28,5 @@ interface UserRepository {
     suspend fun getFriendInfo(userId: Long): UserInfo?
     suspend fun postFriend(userId: Long): Result<Unit>
     suspend fun getAlerts(): Result<Alerts>
+    suspend fun getUserReview(userId: Long): Result<List<Review>>
 }

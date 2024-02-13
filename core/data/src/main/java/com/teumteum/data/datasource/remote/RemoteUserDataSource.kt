@@ -2,6 +2,7 @@ package com.teumteum.data.datasource.remote
 
 import com.teumteum.data.model.request.RequestDeviceToken
 import com.teumteum.data.model.request.RequestUserInfoWithOAuthId
+import com.teumteum.data.model.response.ResponseReview
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.entity.Alerts
 import com.teumteum.domain.entity.Friend
@@ -63,5 +64,9 @@ class RemoteUserDataSource @Inject constructor(
 
     suspend fun getAlerts(): Alerts {
         return service.getAlerts()
+    }
+
+    suspend fun getUserReview(userId: Long): ResponseReview.ResponseReviewData {
+        return service.getUserReview(userId)
     }
 }

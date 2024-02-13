@@ -28,6 +28,7 @@ import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.moim.compose.MoimModify
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.observeOn
 import kotlinx.coroutines.flow.onEach
@@ -87,6 +88,14 @@ class GroupDetailActivity :
                     ScreenState.Success -> {
                         viewModel.updateSheetEvent(ScreenState.Success)
                         this@GroupDetailActivity?.defaultToast(getString(R.string.moim_alert_message_modify_success))
+                    }
+                    ScreenState.BookMarkSuccess -> {
+                        this@GroupDetailActivity?.defaultToast("모임 저장을 성공했습니다")
+                        delay(2000)
+                    }
+                    ScreenState.BookMarkDelete -> {
+                        this@GroupDetailActivity?.defaultToast("모임 저장을 취소했습니다")
+                        delay(2000)
                     }
                     else -> {}
                 }

@@ -109,12 +109,10 @@ class SettingViewModel @Inject constructor(
                         updateSettingStatus(SettingStatus.ERROR)
                     }
             }
-
     }
 
     fun getUserClosedMeeting() {
-                val userId = authRepository.getUserId()
-//        val userId = 16.toLong()
+        val userId = authRepository.getUserId()
         if (userId != -1L) {
             viewModelScope.launch {
                 settingRepository.getMyPageClosedMeeting(userId)
@@ -263,16 +261,11 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun cancelMeeting() {
-
-    }
-
     fun confirmDialogEvent(event: DialogEvent) {
         when (event) {
             DialogEvent.LOGOUT -> {
                 logout()
             }
-
             else -> {}
         }
     }
