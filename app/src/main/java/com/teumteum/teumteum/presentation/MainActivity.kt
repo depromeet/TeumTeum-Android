@@ -54,18 +54,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         if (isFromAlarm) {
             val message = intent.getSerializableExtra(MESSAGE) as Message
             var action = HomeFragmentDirections.actionHomeFragmentToFragmentFamiliar()
-            when (message.type) {
-                BEFORE_MEETING -> {
-                }
-                END_MEETING -> {
-//                    val meetingId = message.meetingId
-//                    val participants = message.participants
-//                    action = HomeFragmentDirections.{홈 -> 유저리뷰로 이동하는 navi}
-                }
-                RECOMMEND_USER -> {
-                    action = HomeFragmentDirections.actionHomeFragmentToFragmentMyPage()
-                }
+            if (message.type == RECOMMEND_USER) {
+                action = HomeFragmentDirections.actionHomeFragmentToFragmentMyPage()
             }
+            // END_MEETING은 따로 처리
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
             navHostFragment.navController.navigate(action)
         }
