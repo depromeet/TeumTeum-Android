@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.teumteum.domain.entity.Friend
 import com.teumteum.teumteum.databinding.ItemIntroduceBinding
 import com.teumteum.teumteum.util.ResMapper
+import com.teumteum.teumteum.util.custom.view.model.Interest
 
 class IntroduceAdapter() :
     ListAdapter<Friend, IntroduceAdapter.ItemViewHolder>(
@@ -104,6 +105,7 @@ class IntroduceAdapter() :
                 tvGoalTitle.text = "GOAL"
                 tvGoalTitle.setTextColor(ResMapper.getColorByCharacterId(itemView.context, item.characterId))
                 tvGoalContent.text = item.goal
+                submitInterestList(interests = item.interests.map { Interest(it) })
 
                 Glide.with(itemView.context)
                     .load(backImageRes)
@@ -111,7 +113,7 @@ class IntroduceAdapter() :
                     .into(ivCharacter)
 
                 isModify = false
-//                isModifyDetail = false
+                isModifyDetail = false
             }
         }
     }
