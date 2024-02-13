@@ -15,7 +15,8 @@ import com.teumteum.teumteum.databinding.ActivityReviewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReviewActivity: BindingActivity<ActivityReviewBinding>(R.layout.activity_review), AppBarLayout {
+class ReviewActivity : BindingActivity<ActivityReviewBinding>(R.layout.activity_review),
+    AppBarLayout {
     private val viewModel by viewModels<ReviewViewModel>()
     private val meetingId by longExtra()
 
@@ -38,7 +39,7 @@ class ReviewActivity: BindingActivity<ActivityReviewBinding>(R.layout.activity_r
                 resourceId = R.drawable.ic_close,
                 useRippleEffect = false,
                 clickEvent = {
-                    finish()
+                    ReviewInfoDialog().show(supportFragmentManager, "dialog")
                 }
             )
         )
@@ -62,9 +63,10 @@ class ReviewActivity: BindingActivity<ActivityReviewBinding>(R.layout.activity_r
     }
 
     companion object {
-        fun getIntent(context: Context, meetingId: Long) = Intent(context, ReviewActivity::class.java).apply {
-            putExtra("meetingId", meetingId)
-        }
+        fun getIntent(context: Context, meetingId: Long) =
+            Intent(context, ReviewActivity::class.java).apply {
+                putExtra("meetingId", meetingId)
+            }
     }
 
 }
