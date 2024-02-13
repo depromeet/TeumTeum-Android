@@ -140,7 +140,6 @@ class EditCardViewModel @Inject constructor(
         _userName.value = name
     }
 
-
     private val _userBirth = MutableStateFlow<String>("")
     val userBirth: StateFlow<String> = _userBirth.asStateFlow()
     fun updateUserBirth(userBirth: String) {

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="dialogConfig"
+            type="com.teumteum.teumteum.util.custom.dialog.CommonDialogConfig" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="26dp"
+            android:background="@drawable/shape_rect8_elevation_level01">
+
+            <ImageView
+                android:id="@+id/iv_common"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_dialog_interest"
+                app:layout_constraintEnd_toEndOf="@id/cl_dialog"
+                app:layout_constraintStart_toStartOf="@id/cl_dialog"
+                app:layout_constraintTop_toTopOf="@id/cl_dialog"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_common_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@{dialogConfig.title}"
+                android:textAppearance="@style/ta.headline.6"
+                android:textColor="?attr/color_text_headline_primary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_common"
+                app:layout_goneMarginTop="40dp"
+                tools:text="서로의 관심사 틈을 채우기" />
+
+            <TextView
+                android:id="@+id/tv_common_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@{dialogConfig.description}"
+                android:textAppearance="@style/ta.body.2"
+                android:textColor="?attr/color_text_body_teritary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_common_title"
+                tools:text="3초만 모바일 기기를 흔들어 보세요!\n관심사 기반 대화 주제를 받을 수 있어요." />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_common_dialog_negative"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect4_button_alternative"
+                android:fontFamily="@font/pretendard_semibold"
+                android:padding="12dp"
+                android:stateListAnimator="@null"
+                android:text="@{dialogConfig.negativeButtonText}"
+                android:textColor="@color/text_button_alternative"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/btn_common_dialog_positive"
+                app:layout_constraintEnd_toStartOf="@id/btn_common_dialog_positive"
+                app:layout_constraintStart_toStartOf="@id/cl_dialog"
+                tools:text="취소"
+                tools:visibility="gone"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_common_dialog_positive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect4_button_active"
+                android:fontFamily="@font/pretendard_semibold"
+                android:padding="12dp"
+                android:stateListAnimator="@null"
+                android:text="@{dialogConfig.positiveButtonText}"
+                android:textColor="@color/text_button_primary_default"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@id/cl_dialog"
+                app:layout_constraintEnd_toEndOf="@id/cl_dialog"
+                app:layout_constraintStart_toEndOf="@id/btn_common_dialog_negative"
+                app:layout_constraintTop_toBottomOf="@id/tv_common_description"
+                app:layout_goneMarginStart="20dp"
+                tools:text="확인" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</layout>

@@ -1,8 +1,7 @@
-package com.teumteum.teumteum.presentation.shaketopic.shake
+package com.teumteum.teumteum.presentation.familiar.shaketopic.shake
 
 import ShakeDetector
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -21,18 +20,16 @@ import com.teumteum.base.databinding.LayoutCommonAppbarBinding
 import com.teumteum.base.util.TransformUtils
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentShakeBinding
-import com.teumteum.teumteum.presentation.familiar.FamiliarDialogActivity
-import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicActivity
-import com.teumteum.teumteum.presentation.shaketopic.ShakeTopicViewModel
-import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewConfig
-import com.teumteum.teumteum.presentation.shaketopic.shake.model.InterestViewData
-import com.teumteum.teumteum.util.AuthUtils
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicActivity
+import com.teumteum.teumteum.presentation.familiar.shaketopic.ShakeTopicViewModel
+import com.teumteum.teumteum.presentation.familiar.shaketopic.shake.model.InterestViewConfig
+import com.teumteum.teumteum.presentation.familiar.shaketopic.shake.model.InterestViewData
 import com.teumteum.teumteum.util.ResMapper
-import com.teumteum.teumteum.util.custom.uistate.UiState
+import com.teumteum.teumteum.util.custom.dialog.CommonDialogConfig
+import com.teumteum.teumteum.util.custom.dialog.CommonDialogFragment
 import com.teumteum.teumteum.util.extension.getScreenHeight
 import com.teumteum.teumteum.util.extension.getScreenWidth
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -49,10 +46,23 @@ class ShakeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initDialog()
         setupShakeDetector()
         setupSensorManager()
         processReceivedFriendList()
         initAppBarLayout()
+    }
+
+    private fun initDialog() {
+        CommonDialogFragment.newInstance(
+            commonDialogConfig = CommonDialogConfig(
+                image = R.drawable.ic_dialog_interest,
+                title = getString(R.string.familiar_shake_dialog_title),
+                description = getString(R.string.familiar_shake_dialog_description),
+                positiveButtonText = getString(R.string.start)
+            ),
+            onPositiveButtonClicked = {}
+        ).show(childFragmentManager, "CommonDialogFragmentTag")
     }
 
     private fun setupShakeDetector() {
@@ -76,8 +86,8 @@ class ShakeFragment :
         }
     }
 
-    private fun getTopics(){
-        val myId = AuthUtils.getMyInfo(requireContext())?.id.toString()
+    private fun getTopics() {
+        val myId = viewModel.getUserInfo()?.id.toString()
         val userIds = viewModel.friends.value?.map { it.id.toString() }?.toMutableList()?.apply {
             add(myId)
         }
@@ -90,14 +100,14 @@ class ShakeFragment :
     }
 
     private fun processReceivedFriendList() {
-        val myInfo = AuthUtils.getMyInfo(requireActivity())
+        val myInfo = viewModel.getUserInfo()
         val friends = viewModel.friends.value ?: listOf()
 
         // myInfo의 관심사 추출
         val myInterests = myInfo?.interests?.map { interest ->
             InterestViewData(
                 interest,
-                ResMapper.getColorByCharacterId(characterId = myInfo.characterId.toInt())
+                ResMapper.getColorByCharacterId(requireActivity(), characterId = myInfo.characterId.toInt())
             )
         }
 
@@ -106,7 +116,7 @@ class ShakeFragment :
             addAll(myInterests ?: emptyList())
 
             for (friend in friends) {
-                val color = ResMapper.getColorByCharacterId(characterId = friend.characterId)
+                val color = ResMapper.getColorByCharacterId(requireActivity(), characterId = friend.characterId)
                 friend.interests.forEach { interest ->
                     add(InterestViewData(interest, color))
                 }
@@ -134,14 +144,9 @@ class ShakeFragment :
             AppBarMenu.IconStyle(
                 resourceId = R.drawable.ic_arrow_left_l,
                 useRippleEffect = false,
-                clickEvent = ::startFamiliarDialogActivity
+                clickEvent = { requireActivity().finish() }
             )
         )
-    }
-
-    private fun startFamiliarDialogActivity() {
-        val intent = Intent(requireContext(), FamiliarDialogActivity::class.java)
-        startActivity(intent)
     }
 
     override val appBarBinding: LayoutCommonAppbarBinding

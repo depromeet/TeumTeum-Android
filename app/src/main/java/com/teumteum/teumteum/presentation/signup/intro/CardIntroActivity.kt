@@ -76,7 +76,8 @@ class CardIntroActivity
             )
             binding.cardviewBack.submitInterestList(interests)
             binding.cardviewBack.isModify = false
-            binding.cardviewBack.isModifyDetail = false
+            binding.cardviewBack.setIsModifyDetail(false)
+//            binding.cardviewBack.isModifyDetail = false
         }
     }
 
@@ -119,8 +120,8 @@ class CardIntroActivity
     }
 
     companion object {
-        const val INTEREST_EXAMPLE_1 = "#사이드 프로젝트"
-        const val INTEREST_EXAMPLE_2 = "#네트워킹"
-        const val INTEREST_EXAMPLE_3 = "#모여서 각자 일하기"
+        const val INTEREST_EXAMPLE_1 = "사이드 프로젝트"
+        const val INTEREST_EXAMPLE_2 = "네트워킹"
+        const val INTEREST_EXAMPLE_3 = "모여서 각자 일하기"
     }
 }

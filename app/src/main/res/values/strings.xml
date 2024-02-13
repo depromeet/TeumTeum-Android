@@ -337,10 +337,18 @@
 
     <string name="familiar_dialog_title_exit">정말 틈틈을 종료하시겠어요?</string>
     <string name="familiar_dialog_subtitle_exit">틈틈을 종료하시면 지금까지 진행한\n틈틈의 내용이 사라져요.</string>
+    <string name="familiar_exit_dialog_title">정말 틈틈을 종료하시겠어요?</string>
+    <string name="familiar_exit_dialog_description">틈틈을 종료하시면 지금까지 진행한\n틈틈의 내용이 사라져요.</string>
+    <string name="familiar_shake_dialog_title">서로의 관심사 틈을 채우기</string>
+    <string name="familiar_shake_dialog_description">3초만 모바일 기기를 흔들어 보세요!\n관심사 기반 대화 주제를 받을 수 있어요.</string>
+
     <string name="exit">종료하기</string>
-    <string name="shake">흔들기</string>
-    <string name="familiar_dialog_title_shake">서로의 관심사 틈을 채우기</string>
+    <string name="start">시작하기</string>
 
     <string name="teum_notification_channel_id">teum_notification_channel</string>
+    <string name="item_interest">#%1$s</string>
+    <string name="alerts_list_title">알림</string>
+    <string name="alerts_list_empty">알림이 아직 없어요</string>
+    <string name="alerts_while_month">최대 한 달 전까지의 알림을 확인할 수 있어요</string>
 
 </resources>

@@ -43,6 +43,19 @@ class RemoteGroupDataSource @Inject constructor(
         return service.deleteMeeting(meetingId).isSuccessful
     }
 
+    suspend fun saveBookmark(
+        meetingId: Long
+    ): Boolean {
+        return service.saveBookmark(meetingId).isSuccessful
+    }
+
+    suspend fun deleteBookmark(
+        meetingId: Long
+    ): Boolean {
+        return service.deleteBookmark(meetingId).isSuccessful
+    }
+
+
     suspend fun postMeeting(
         moimRequestBody: RequestBody,
         files: List<MultipartBody.Part>

@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.mypage.setting.viewModel
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
@@ -36,16 +37,12 @@ class MyPageViewModel @Inject constructor(
     private val _friendsList = MutableStateFlow<List<FriendMyPage>>(emptyList())
     val friendsList : StateFlow<List<FriendMyPage>> = _friendsList
 
-    private val _isFrontCardShown = MutableStateFlow(true)
-    val isFrontCardShown: StateFlow<Boolean> = _isFrontCardShown
+    private val _interests = MutableStateFlow<List<String>>(emptyList())
+    val interests: StateFlow<List<String>> = _interests.asStateFlow()
 
     init {
         loadUserInfo()
         loadFriends()
-    }
-
-    fun toggleCardState() {
-        _isFrontCardShown.value = !_isFrontCardShown.value
     }
 
     fun loadFriends() {
@@ -139,13 +136,11 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun userInfoToBackCard(userInfo: UserInfo, characterList: HashMap<Int, Int>): BackCard {
-        val modifiedInterests = userInfo.interests.map { interest ->
-            "#$interest"
-        }.toMutableList()
+        _interests.value = userInfo.interests.toMutableList()
         return BackCard(
             goalTitle = "GOAL",
             goalContent = userInfo.goal,
-            interests = modifiedInterests,
+            interests = interests.value.toMutableList(),
             characterResId = characterList[userInfo.characterId.toInt()] ?: 1,
         )
     }

@@ -12,6 +12,8 @@ interface GroupRepository {
     suspend fun getGroup(meetingId: Long): Result<Meeting>
     suspend fun deleteGroupJoin(meetingId: Long): Result<Boolean>
     suspend fun deleteMeeting(meetingId: Long): Result<Boolean>
+    suspend fun saveBookmark(meetingId:Long):Result<Boolean>
+    suspend fun deleteBookmark(meetingId: Long):Result<Boolean>
     suspend fun modifyMeeting(meetingId: Long, moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting>
     suspend fun reportMeeting(meetingId: Long): Result<Boolean>
     suspend fun getReviewFriendList(meetingId: Long): Result<List<ReviewFriend>>

@@ -17,6 +17,7 @@ import com.teumteum.base.util.extension.boolExtra
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.base.util.extension.longExtra
 import com.teumteum.base.util.extension.stringExtra
+import com.teumteum.domain.entity.Message
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
 import com.teumteum.teumteum.presentation.group.review.ReviewOnboardingActivity
@@ -51,7 +52,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
 
         if (isFromAlarm) {
-            val action = HomeFragmentDirections.actionHomeFragmentToFragmentFamiliar()
+            val message = intent.getSerializableExtra(MESSAGE) as Message
+            var action = HomeFragmentDirections.actionHomeFragmentToFragmentFamiliar()
+            when (message.type) {
+                BEFORE_MEETING -> {
+                }
+                END_MEETING -> {
+//                    val meetingId = message.meetingId
+//                    val participants = message.participants
+//                    action = HomeFragmentDirections.{홈 -> 유저리뷰로 이동하는 navi}
+                }
+                RECOMMEND_USER -> {
+                    action = HomeFragmentDirections.actionHomeFragmentToFragmentMyPage()
+                }
+            }
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
             navHostFragment.navController.navigate(action)
         }
@@ -149,11 +163,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
         fun getIntent(context: Context, id: Int, isFromAlarm: Boolean = false) = Intent(context, MainActivity::class.java).apply {
             putExtra("id", id)
-            putExtra("isFromAlarm", isFromAlarm)
+            putExtra(IS_FROM_ALARM, isFromAlarm)
         }
         fun getIntent(context: Context, meetingId: Long, title: String) = Intent(context, MainActivity::class.java).apply {
             putExtra("meetingId", meetingId)
             putExtra("title", title)
         }
+        private const val IS_FROM_ALARM = "isFromAlarm"
+        private const val MESSAGE = "message"
+
+        private const val BEFORE_MEETING = "BEFORE_MEETING"
+        private const val END_MEETING = "END_MEETING"
+        private const val RECOMMEND_USER = "RECOMMEND_USER"
     }
 }

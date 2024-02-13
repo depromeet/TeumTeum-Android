@@ -9,7 +9,8 @@ import com.teumteum.domain.repository.SettingRepository
 import javax.inject.Inject
 
 class SettingRepositoryImpl @Inject constructor(
-    private val dataSource: RemoteSettingDataSource
+    private val dataSource: RemoteSettingDataSource,
+    private val dataStore: TeumTeumDataStore
 ): SettingRepository {
     override suspend fun logOut(): Result<Unit> {
         return runCatching {
@@ -37,13 +38,31 @@ class SettingRepositoryImpl @Inject constructor(
 
     override suspend fun getMyPageClosedMeeting(participantUserId: Long): Result<List<Meeting>> {
         return runCatching {
-            dataSource.getMyPageOpenMeeting(
+            dataSource.getMyPageClosedMeeting(
                 size = 20,
                 page = 0,
                 sort = "promiseDateTime",
                 isOpen = false,
                 participantUserId = participantUserId
             ).data.meetings.map { it.toMeeting() }
+        }
+    }
+
+    override fun setNotification(isActivated: Boolean) {
+        dataStore.onNotification = isActivated
+    }
+
+    override fun getNotification(): Boolean = dataStore.onNotification
+
+    override suspend fun getBookmarkMeeting(): Result<List<Meeting>> {
+        return runCatching {
+            dataSource.getBookmarkMeeting(
+                size = 20,
+                page = 0,
+                sort = "promiseDateTime",
+                isOpen = true,
+                isBookmark = true
+            ).data.meetings.map { it.toMeeting()}
         }
     }
 

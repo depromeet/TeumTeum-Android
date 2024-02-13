@@ -28,7 +28,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".presentation.shaketopic.ShakeTopicActivity"
+            android:name=".presentation.familiar.shaketopic.ShakeTopicActivity"
             android:exported="false" />
         <service
             android:name=".config.TeumMessagingService"
@@ -39,9 +39,6 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".presentation.familiar.FamiliarDialogActivity"
-            android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true" />
@@ -100,9 +97,6 @@
             android:name=".presentation.signin.SocialWebViewActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.onboarding.AccessLocationActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.signup.terms.TermsWebViewActivity"
             android:exported="false" />
         <activity
@@ -116,6 +110,9 @@
             android:exported="false" />
         <activity
             android:name=".presentation.group.review.ReviewFinishActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.notification.AlertsListActivity"
             android:exported="false" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

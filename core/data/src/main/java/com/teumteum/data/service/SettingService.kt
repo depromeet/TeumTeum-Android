@@ -12,6 +12,15 @@ interface SettingService {
     @POST("users/logouts")
     suspend fun logOut(): Response<Unit>
 
+    @GET("meetings")
+    suspend fun getBookmarkMeeting(
+        @Query("size") size: Int = 20,
+        @Query("page") page: Int,
+        @Query("sort") sort: String = "promiseDateTime",
+        @Query("isOpen") isOpen: Boolean,
+        @Query("isBookmarked") isBookmarked: Boolean
+    ): ResponseMyMeeting
+
 
     @POST("users/withdraws")
     suspend fun signOut(@Body request: RequestSignOut): Response<Unit>

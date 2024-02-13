@@ -135,7 +135,7 @@ class FrontCardView : CardView {
         tvLevel.text = frontCard.level
         tvArea.text = frontCard.area
         tvMbti.text = frontCard.mbti
-        ivCharacter.setImageResource(frontCard.characterResId)
+        frontCard.characterResId?.let { ivCharacter.setImageResource(it) }
 
         ivFloat.setImageResource(frontCard.floatResId)
         ivEditName.setImageResource(frontCard.editNameResId)
@@ -216,7 +216,8 @@ class FrontCardView : CardView {
             lineHeightDp = 18,
             marginTop = 6,
             startToStartOf = R.id.tvName,
-            bottomToTopOf = R.id.tvMbti
+            bottomToTopOf = R.id.tvMbti,
+            elevationDp = 1f,
         )
         addTextView(
             context,
@@ -233,9 +234,9 @@ class FrontCardView : CardView {
         addImageView(
             context,
             id = R.id.ivCharacter,
-            drawableRes = R.drawable.ic_card_front_penguin,
             bottomToBottomOf = layoutParent,
-            endToEndOf = layoutParent
+            endToEndOf = layoutParent,
+            elevationDp = 0f,
         )
         addImageView(
             context,
@@ -308,10 +309,12 @@ class FrontCardView : CardView {
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
         endToStartOf: Int? = null,
-        background: Int? = null
+        background: Int? = null,
+        elevationDp: Float = 0f,
     ) {
         val textView = TextView(context).apply {
             this.id = id
+            this.elevation = elevationDp.dpToPx(context).toFloat()
             layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
@@ -348,7 +351,9 @@ class FrontCardView : CardView {
     }
 
     private fun ConstraintLayout.addImageView(
-        context: Context, id: Int, drawableRes: Int,
+        context: Context,
+        id: Int,
+        drawableRes: Int? = null,
         marginTop: Int = 0,
         marginBottom: Int = 0,
         marginStart: Int = 0,
@@ -364,10 +369,13 @@ class FrontCardView : CardView {
         startToStartOf: Int? = null,
         startToEndOf: Int? = null,
         endToEndOf: Int? = null,
-        endToStartOf: Int? = null
+        endToStartOf: Int? = null,
+        elevationDp: Float = 0f,
     ) {
         val imageView = ImageView(context).apply {
             this.id = id
+            this.elevation = elevationDp.dpToPx(context).toFloat()
+
             layoutParams =
                 ConstraintLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                     .apply {
@@ -391,7 +399,7 @@ class FrontCardView : CardView {
                 paddingEnd.dpToPx(context),
                 paddingBottom.dpToPx(context)
             )
-            setImageResource(drawableRes)
+            drawableRes?.let { setImageResource(it) }
         }
         addView(imageView)
     }

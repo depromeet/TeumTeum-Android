@@ -29,13 +29,19 @@ import com.teumteum.teumteum.presentation.moim.compose.MoimDateTime
 import com.teumteum.teumteum.presentation.moim.compose.MoimFinish
 import com.teumteum.teumteum.presentation.moim.compose.MoimIntroduce
 import com.teumteum.teumteum.presentation.moim.compose.MoimPeople
+import com.teumteum.teumteum.presentation.signup.modal.SingleModalBottomSheet
+import com.teumteum.teumteum.util.SignupUtils.TIME_LIST
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 class MoimFragment :
     BindingFragment<FragmentMoimBinding>(R.layout.fragment_moim) {
     private val viewModel: MoimViewModel by activityViewModels()
+    private var timeBottomSheet: SingleModalBottomSheet? = null
+
 
     override fun onResume() {
         super.onResume()
@@ -46,6 +52,7 @@ class MoimFragment :
         super.onViewCreated(view, savedInstanceState)
 
         observe()
+        observeBottomSheet()
 
         val navController = findNavController()
         val meetingId = arguments?.getLong("meetingId", -1L) ?: -1L
@@ -133,6 +140,29 @@ class MoimFragment :
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
+    private fun showTimeSheet() {
+        val topicClassListener: (String) -> Unit = { item ->
+            item?.let {
+                viewModel.updateAfternoon(it)
+            }
+            timeBottomSheet?.dismiss()
+            viewModel.updateBottomSheet(BottomSheet.Default)
+            Log.d("viewModel", viewModel.bottomSheet.value.toString())
+        }
+
+        timeBottomSheet = SingleModalBottomSheet.newInstance(
+            "모임 시간", TIME_LIST, topicClassListener
+        ).apply {
+            dismissListener = object: SingleModalBottomSheet.OnDismissListener {
+                override fun onDismiss() {
+                    viewModel.updateBottomSheet(BottomSheet.Default)
+                }
+            }
+        }
+        Log.d("viewModel", viewModel.bottomSheet.value.toString())
+        timeBottomSheet?.show(childFragmentManager, SingleModalBottomSheet.TAG)
+    }
+
     private fun setupUI() {
         lifecycleScope.launchWhenStarted {
             viewModel.currentStep.collect {currentStep ->
@@ -176,8 +206,6 @@ class MoimFragment :
                         viewModel.initializeState()
                     }
                     ScreenState.Success -> {
-                        delay(1000)
-                        (activity as MainActivity).showBottomNavi()
                         delay(2000)
                         viewModel.initializeState()
                     }
@@ -195,6 +223,18 @@ class MoimFragment :
                     ScreenState.ReportSuccess -> {
                         context?.defaultToast("모임 신고를 완료했습니다")
                     }
+                    else -> {}
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun observeBottomSheet() {
+        viewModel.bottomSheet.flowWithLifecycle(lifecycle)
+            .onEach {
+                when(it) {
+                    BottomSheet.Default -> {}
+                    BottomSheet.Time -> showTimeSheet()
                     else -> {}
                 }
             }

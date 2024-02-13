@@ -36,8 +36,7 @@ class FamiliarOnBoardingAdapter() :
     class ItemViewHolder(private val binding: ItemFamiliarOnboardingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FamiliarOnBoarding) {
-            with(binding) {
-                tvTitle.text = item.title
+            with(binding) { tvTitle.text = item.title
                 tvSubtitle.text = item.subtitle
 
                 Glide.with(itemView.context)

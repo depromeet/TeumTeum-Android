@@ -1,4 +1,4 @@
-package com.teumteum.teumteum.presentation.shaketopic
+package com.teumteum.teumteum.presentation.familiar.shaketopic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.TopicResponse
+import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.TopicRepository
-import com.teumteum.teumteum.util.custom.uistate.UiState
+import com.teumteum.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,18 +16,21 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.Collections
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class ShakeTopicViewModel @Inject constructor(
-    private val topicRepository: TopicRepository
+    private val topicRepository: TopicRepository,
+    private val userRepository: UserRepository,
 ) : ViewModel() {
 
     private val _friends = MutableLiveData<List<Friend>>()
     val friends: LiveData<List<Friend>>
         get() = _friends
+
+    fun getUserInfo(): UserInfo? {
+        return userRepository.getUserInfo() //todo - 예외 처리
+    }
 
     fun setFriendsData(friends: List<Friend>) {
         _friends.value = friends

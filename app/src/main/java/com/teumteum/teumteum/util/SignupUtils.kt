@@ -65,4 +65,9 @@ object SignupUtils {
         "3명", "4명", "5명", "6명"
     )
 
+    val TIME_LIST = arrayListOf(
+        "오전", "오후"
+    )
+
+
 }

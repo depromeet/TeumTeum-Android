@@ -14,4 +14,5 @@ dependencies {
     implementation(libs.androidx.constraintLayout)
     implementation(libs.google.oss.plugin)
     implementation(libs.play.services.location)
+    implementation(libs.flexbox)
 }

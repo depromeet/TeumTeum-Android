@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.teumteum.base.BindingActivity
@@ -12,6 +13,10 @@ import com.teumteum.domain.entity.CommonViewPagerEntity
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityOnboardingBinding
 import com.teumteum.teumteum.presentation.onboarding.adapter.OnBoardingViewPagerAdapter
+import com.teumteum.teumteum.presentation.signin.SignInActivity
+import com.teumteum.teumteum.util.PermissionUtils
+import com.teumteum.teumteum.util.custom.dialog.CommonDialogConfig
+import com.teumteum.teumteum.util.custom.dialog.CommonDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,11 +43,40 @@ class OnBoardingActivity
         setAppBarHeight(48)
     }
 
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {
+        startActivity(Intent(this@OnBoardingActivity, SignInActivity::class.java))
+        openActivitySlideAnimation()
+        finish()
+    }
+
+    private fun checkLocationPermission() {
+        locationPermissionRequest.launch(
+            arrayOf(
+                PermissionUtils.ACCESS_FINE_LOCATION, PermissionUtils.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+
     private fun setUpListener() {
         binding.btnStart.setOnSingleClickListener {
-            startActivity(Intent(this, AccessLocationActivity::class.java))
-            openActivitySlideAnimation()
+            initDialog()
         }
+    }
+
+    private fun initDialog() {
+        CommonDialogFragment.newInstance(
+            commonDialogConfig = CommonDialogConfig(
+                title = getString(R.string.onboarding_tv_access_location_title),
+                description = getString(R.string.onboarding_tv_access_location_subtitle),
+                positiveButtonText = getString(R.string.onboarding_tv_access_location_allow),
+                negativeButtonText = getString(R.string.onboarding_tv_access_location_decline)
+            ),
+            onPositiveButtonClicked = { checkLocationPermission() },
+            onNegativeButtonClicked = { startActivity(Intent(this@OnBoardingActivity, SignInActivity::class.java))
+             }
+        ).show(supportFragmentManager, "CommonDialogFragmentTag")
     }
 
     private fun initViewPagerItem() {
