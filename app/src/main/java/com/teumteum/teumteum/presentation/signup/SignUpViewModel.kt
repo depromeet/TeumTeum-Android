@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -205,12 +206,14 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun setAllInterests(interests: List<String>, selfResource: Array<String>, fieldResource: Array<String>) {
+        Timber.tag("teum-fix").d("setAllInterests called")
         interestSelf.value.clear()
         interestField.value.clear()
         for (i in interests) {
             if (i in selfResource) addInterestSelf(i)
             else if (i in fieldResource) addInterestField(i)
         }
+        updateInterestCount()
     }
 
     private var _goalText = MutableStateFlow<String>("")
