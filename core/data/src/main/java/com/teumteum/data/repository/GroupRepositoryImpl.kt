@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.teumteum.data.datasource.remote.RemoteGroupDataSource
 import com.teumteum.data.model.request.toBody
+import com.teumteum.data.model.request.toRequestReviewFriend
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.entity.MoimEntity
@@ -98,6 +99,15 @@ class GroupRepositoryImpl @Inject constructor(
     override suspend fun getReviewFriendList(meetingId: Long): Result<List<ReviewFriend>> {
         return runCatching {
             dataSource.getReviewFriendList(meetingId).participants.map { it.toReviewFriend() }
+        }
+    }
+
+    override suspend fun postRegisterReview(
+        meetingId: Long,
+        request: List<ReviewFriend>
+    ): Result<Boolean> {
+        return runCatching {
+            dataSource.postRegisterReview(meetingId, request.map { it.toRequestReviewFriend() })
         }
     }
 }

@@ -15,4 +15,5 @@ interface GroupRepository {
     suspend fun modifyMeeting(meetingId: Long, moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting>
     suspend fun reportMeeting(meetingId: Long): Result<Boolean>
     suspend fun getReviewFriendList(meetingId: Long): Result<List<ReviewFriend>>
+    suspend fun postRegisterReview(meetingId: Long, request: List<ReviewFriend>): Result<Boolean>
 }
