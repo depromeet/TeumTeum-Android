@@ -40,15 +40,13 @@
         app:layout_constraintStart_toStartOf="@id/tv_name"
         app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-    <CheckBox
+    <ImageView
+        android:id="@+id/iv_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/selector_check_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="20dp"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
-        android:button="@null"
-        android:background="@drawable/selector_check_box" />
+        android:layout_marginEnd="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

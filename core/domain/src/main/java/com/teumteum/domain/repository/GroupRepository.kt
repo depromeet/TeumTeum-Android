@@ -2,6 +2,7 @@ package com.teumteum.domain.repository
 
 import com.teumteum.domain.entity.Meeting
 import com.teumteum.domain.entity.MoimEntity
+import com.teumteum.domain.entity.ReviewFriend
 import java.io.File
 
 interface GroupRepository {
@@ -15,4 +16,6 @@ interface GroupRepository {
     suspend fun deleteBookmark(meetingId: Long):Result<Boolean>
     suspend fun modifyMeeting(meetingId: Long, moimEntity: MoimEntity, imageFiles: List<File>): Result<Meeting>
     suspend fun reportMeeting(meetingId: Long): Result<Boolean>
+    suspend fun getReviewFriendList(meetingId: Long): Result<List<ReviewFriend>>
+    suspend fun postRegisterReview(meetingId: Long, request: List<ReviewFriend>): Result<Boolean>
 }

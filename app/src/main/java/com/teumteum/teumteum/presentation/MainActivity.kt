@@ -15,9 +15,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.boolExtra
 import com.teumteum.base.util.extension.intExtra
+import com.teumteum.base.util.extension.longExtra
+import com.teumteum.base.util.extension.stringExtra
 import com.teumteum.domain.entity.Message
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityMainBinding
+import com.teumteum.teumteum.presentation.group.review.ReviewOnboardingActivity
 import com.teumteum.teumteum.presentation.home.HomeFragmentDirections
 import com.teumteum.teumteum.presentation.signin.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +30,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val id by intExtra()
     private var isGroup: Boolean = false
     private val isFromAlarm by boolExtra()
+    private val meetingId by longExtra()
+    private val title by stringExtra()
 
     private val viewModel by viewModels<SignInViewModel>()
 
@@ -42,7 +47,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         if (id != -1) { moveRecommendDetail() }
         if(isGroup) { moveWebView() }
-
+        if (meetingId != -1L && title != null) {
+            moveReviewOnboardingActivity()
+        }
 
         if (isFromAlarm) {
             val message = intent.getSerializableExtra(MESSAGE) as Message
@@ -79,6 +86,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             )
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
         navHostFragment.navController.navigate(action)
+    }
+
+    private fun moveReviewOnboardingActivity() {
+        startActivity(ReviewOnboardingActivity.getIntent(this, meetingId, title!!))
     }
 
     fun returnGroupDetail(fullAddress:String) {
@@ -154,7 +165,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             putExtra("id", id)
             putExtra(IS_FROM_ALARM, isFromAlarm)
         }
-
+        fun getIntent(context: Context, meetingId: Long, title: String) = Intent(context, MainActivity::class.java).apply {
+            putExtra("meetingId", meetingId)
+            putExtra("title", title)
+        }
         private const val IS_FROM_ALARM = "isFromAlarm"
         private const val MESSAGE = "message"
 
