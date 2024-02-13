@@ -62,7 +62,7 @@ class TeumMessagingService : FirebaseMessagingService() {
                     alertMessage.type = message.data["type"].toString()
                 }
                 if (alertMessage.type == END_MEETING) {
-                    alertMessage.meetingId = message.data["meetingId"]?.toInt()
+                    alertMessage.meetingId = message.data["meetingId"]?.toLong()
                     alertMessage.participants = message.data["participants"]?.toList()?.map { it.digitToInt() }
                 }
                 if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
