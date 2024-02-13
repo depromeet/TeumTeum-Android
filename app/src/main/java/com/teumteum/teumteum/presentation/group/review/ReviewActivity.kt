@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.commit
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.component.appbar.AppBarLayout
 import com.teumteum.base.component.appbar.AppBarMenu
@@ -15,8 +13,6 @@ import com.teumteum.base.util.extension.longExtra
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivityReviewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class ReviewActivity: BindingActivity<ActivityReviewBinding>(R.layout.activity_review), AppBarLayout {
@@ -50,7 +46,18 @@ class ReviewActivity: BindingActivity<ActivityReviewBinding>(R.layout.activity_r
 
     private fun initView() {
         supportFragmentManager.commit {
-            add(R.id.fragment_container,ReviewFriendSelectFragment())
+            replace(R.id.fragment_container, ReviewFriendSelectFragment())
+        }
+    }
+
+    fun nextFriendDetailFragment() {
+        if (viewModel.currentFriendIndex >= viewModel.selectFriendList.size) return
+        with(viewModel.selectFriendList[viewModel.currentFriendIndex++]) {
+            val fragment = ReviewFriendDetailFragment.newInstance(id, characterId, name, job)
+
+            supportFragmentManager.commit {
+                replace(R.id.fragment_container, fragment)
+            }
         }
     }
 

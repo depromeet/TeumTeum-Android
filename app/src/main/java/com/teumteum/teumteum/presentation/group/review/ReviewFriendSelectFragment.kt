@@ -1,7 +1,6 @@
 package com.teumteum.teumteum.presentation.group.review
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -9,17 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.teumteum.base.BindingFragment
-import com.teumteum.base.util.extension.deepCopyList
 import com.teumteum.base.util.extension.setOnSingleClickListener
-import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.ReviewFriend
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.FragmentReviewFriendSelectBinding
-import kotlin.reflect.typeOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 
 class ReviewFriendSelectFragment: BindingFragment<FragmentReviewFriendSelectBinding>(R.layout.fragment_review_friend_select) {
@@ -56,7 +50,14 @@ class ReviewFriendSelectFragment: BindingFragment<FragmentReviewFriendSelectBind
 
     private fun initEvent() {
         binding.btnReview.setOnSingleClickListener {
+            val selectFriendList = adapter?.currentList?.filter {
+                it.isSelected
+            }
+            selectFriendList?.let {
+                viewModel.setSelectFriendList(it)
+            }
 
+            (requireActivity() as? ReviewActivity)?.nextFriendDetailFragment()
         }
     }
 

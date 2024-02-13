@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="12dp"
-            android:background="#D6D6D6"
+            android:background="@color/divider_level02"
             app:layout_constraintBottom_toTopOf="@id/btn_review" />
 
         <androidx.appcompat.widget.AppCompatButton
