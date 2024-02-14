@@ -1,10 +1,11 @@
- # <b> 🤝 TEUM TEUM  </b>
+ # <b> 🤝 [TEUM TEUM](https://play.google.com/store/apps/details?id=com.teumteum.teumteum)  </b>
 
 ![tt1](https://github.com/depromeet/TeumTeum-Android/assets/100370200/5230940d-be49-46d0-a0ff-d88ecd4f9604)
 
 ```
 📌 IT 커리어 성장형 네트워킹 서비스, 틈틈
 ```
+
 <br>
 
 ## Contributors
