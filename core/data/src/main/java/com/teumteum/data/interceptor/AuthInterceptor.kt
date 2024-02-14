@@ -29,7 +29,7 @@ class AuthInterceptor @Inject constructor(
                 try {
                     Timber.tag("만료된 토큰").d("accessToken: ${dataStore.userToken}, refreshToken: ${dataStore.refreshToken}")
                     val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
-                        .url("$BASE_URL/auth/reissues")
+                        .url("${BASE_URL}auth/reissues")
                         .addHeader(HEADER_AUTHORIZATION, dataStore.userToken)
                         .addHeader(HEADER_REFRESH_TOKEN, dataStore.refreshToken)
                         .build()
