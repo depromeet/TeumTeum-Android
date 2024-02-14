@@ -38,10 +38,14 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.mypage.FrontCardView
 import com.teumteum.teumteum.presentation.mypage.pager.MeetingItem
 import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager2Content
+import com.teumteum.teumteum.presentation.mypage.pager.MyPagePager3Content
+import com.teumteum.teumteum.presentation.mypage.pager.MyPager2Item
 import com.teumteum.teumteum.presentation.mypage.pager.NoMoimItems
 import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDetailFragmentDirections
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.emptyUserGrade
 import timber.log.Timber
 
 @Composable
@@ -115,7 +119,7 @@ fun RecommendDetailScreen(
             when (selectedTab.value) {
                     "참여 모임" -> item {
                         FriendPager1Content(viewModel, navController) }
-                    "받은 리뷰" -> item { MyPagePager2Content() }
+                    "받은 리뷰" -> item { MyPagePager2Content(viewModel) }
 //                "북마크" -> item { MyPagePager3Content() }
             }
 
@@ -236,6 +240,33 @@ fun FriendPager1Content(
 //                    val action = RecommendDetailFragmentDirections.actionFragmentRecommendDetailToFragmentMoim(id)
 //                    navController.navigate(action)
                 }
+            }
+        }
+        TmMarginVerticalSpacer(size = 20)
+    }
+}
+
+@Composable
+fun MyPagePager2Content(
+    viewModel: RecommendDetailViewModel
+) {
+    val reviews by viewModel.reviews.collectAsState()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement =  Arrangement.Top
+    ) {
+        TmMarginVerticalSpacer(size = 20)
+        if(reviews.isNotEmpty()) {
+            reviews.forEach {
+                MyPager2Item(userGrade = it)
+            }
+        } else {
+            emptyUserGrade.forEach { 
+                MyPager2Item(userGrade = it)
             }
         }
         TmMarginVerticalSpacer(size = 20)

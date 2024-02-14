@@ -5,11 +5,11 @@ import com.google.gson.GsonBuilder
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.data.datasource.remote.RemoteUserDataSource
 import com.teumteum.data.model.request.RequestUserInfo
+import com.teumteum.data.model.response.responseToReview
 import com.teumteum.domain.entity.Alerts
 import com.teumteum.domain.entity.Friend
-import com.teumteum.domain.entity.FriendMyPage
 import com.teumteum.domain.entity.FriendRecommend
-import com.teumteum.domain.entity.Friends
+import com.teumteum.domain.entity.Review
 import com.teumteum.domain.entity.SignUpResult
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.entity.Users
@@ -105,6 +105,13 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getAlerts(): Result<Alerts> {
         return runCatching {
             dataSource.getAlerts()
+        }
+    }
+
+    override suspend fun getUserReview(userId: Long): Result<List<Review>> {
+        return runCatching {
+            val responseReviews = dataSource.getUserReview(userId)
+            responseToReview(responseReviews.reviews)
         }
     }
 }

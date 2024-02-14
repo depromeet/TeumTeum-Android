@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.Friend
 import com.teumteum.domain.entity.FriendMyPage
+import com.teumteum.domain.entity.Review
 import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
@@ -13,9 +14,11 @@ import com.teumteum.teumteum.R
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -40,9 +43,52 @@ class MyPageViewModel @Inject constructor(
     private val _interests = MutableStateFlow<List<String>>(emptyList())
     val interests: StateFlow<List<String>> = _interests.asStateFlow()
 
+    private val _reviews = MutableStateFlow<List<UserGrade>>(emptyList())
+    val reviews: StateFlow<List<UserGrade>> = _reviews
+
+
     init {
         loadUserInfo()
         loadFriends()
+        getReview()
+    }
+
+    fun reviewToUserGrade(reviews:List<Review>): List<UserGrade> {
+        return reviews.map {
+            UserGrade(
+                text = it.review,
+                count = it.count,
+                image = when (it.review) {
+                    "최고에요" -> R.drawable.ic_grade_exel
+                    "좋아요" -> R.drawable.ic_grade_good
+                    "별로에요" -> R.drawable.ic_grade_bad
+                    else -> R.drawable.ic_grade_bad
+                }
+            )
+        }
+    }
+
+    fun getReview() {
+        val userId =authRepository.getUserId()
+        if(userId != -1L) {
+            viewModelScope.launch {
+                userRepository.getUserReview(userId)
+                    .onSuccess {
+                        val sortedUserGrades = reviewToUserGrade(it).sortedBy { userGrade ->
+                            when (userGrade.text) {
+                                "최고에요" -> 1
+                                "좋아요" -> 2
+                                "별로에요" -> 3
+                                else -> 4
+                            }
+                        }
+                        _reviews.value = sortedUserGrades
+                    }
+                    .onFailure {
+                        Timber.e(it)
+                    }
+            }
+        }
     }
 
     fun loadFriends() {
@@ -66,7 +112,6 @@ class MyPageViewModel @Inject constructor(
             userRepository.getMyInfoFromServer()
                 .onSuccess {
                     _userInfoState.value = UserInfoUiState.Success(it)
-                    // 카드 - userInfo 매칭
                     val frontCardData = userInfoToFrontCard(it, characterList)
                     val backCardData = userInfoToBackCard(it, characterListBack)
                     _userInfoState.value = UserInfoUiState.Success(it)

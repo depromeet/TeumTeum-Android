@@ -162,6 +162,7 @@ class MoimViewModel @Inject constructor(
             repository.saveBookmark(meetingId)
                 .onSuccess {
                     _isBookmark.value = !(_isBookmark.value)
+                    _screenState.value = ScreenState.BookMarkSuccess
                 }
                 .onFailure {
                     Timber.e(it)
@@ -171,11 +172,11 @@ class MoimViewModel @Inject constructor(
     }
 
     fun deleteBookmark(meetingId: Long) {
-        _isBookmark.value = !(_isBookmark.value)
         viewModelScope.launch {
             repository.deleteBookmark(meetingId)
                 .onSuccess {
                     _isBookmark.value = !(_isBookmark.value)
+                    _screenState.value = ScreenState.BookMarkDelete
                 }
                 .onFailure {
                     Timber.e(it)
@@ -670,7 +671,7 @@ class MoimViewModel @Inject constructor(
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
     CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess,
-    Modify, Webview, ReportInit, Report, ReportSuccess
+    Modify, Webview, ReportInit, Report, ReportSuccess, BookMarkSuccess, BookMarkDelete,
 }
 
 enum class BottomSheet {

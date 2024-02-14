@@ -30,7 +30,12 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
         userId = arguments?.getInt("id") ?: null
 
         if(userId == 0)    myPageViewModel.loadFriends()
-        else    userId?.let { viewModel.loadFriends(it.toLong()) }
+        else    userId?.let {
+            viewModel.loadFriends(it.toLong())
+            viewModel.getReview(it.toLong())
+            viewModel.getUserClosedMeeting(it.toLong())
+            viewModel.getUserOpenMeeting(it.toLong())
+        }
 
 
         (activity as MainActivity).hideBottomNavi()
@@ -52,7 +57,12 @@ class RecommendFragment: BindingFragment<FragmentRecommendBinding>(R.layout.frag
 
     override fun onResume() {
         if(userId == 0)    myPageViewModel.loadFriends()
-        else    userId?.let { viewModel.loadFriends(it.toLong()) }
+        else    userId?.let {
+            viewModel.loadFriends(it.toLong())
+            viewModel.getReview(it.toLong())
+            viewModel.getUserClosedMeeting(it.toLong())
+            viewModel.getUserOpenMeeting(it.toLong())
+        }
         super.onResume()
     }
 
