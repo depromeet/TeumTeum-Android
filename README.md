@@ -40,7 +40,7 @@
 ![image](https://github.com/depromeet/TeumTeum-Android/assets/100370200/b914bf6d-d052-46be-ba05-a841673f38c0)
 
 
-### MOUDLE
+### MODULE
 ```
 🗃️app
  ┣ 📂di
