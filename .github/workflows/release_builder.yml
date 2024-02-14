@@ -65,7 +65,7 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_BOT_TOKEN}}
           channels: ${{ secrets.SLACK_CHANNEL_ID }}
-          file_path: 'app/build/outputs/apk/release/app-release.apk'
+          file_path: 'app/release/app-release.apk'
           file_name: 'TeumTeum.apk'
           file_type: 'apk'
           initial_comment: '🎉 TeumTeum이 슬랙으로 들어왔습니다.'
