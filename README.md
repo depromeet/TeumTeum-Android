@@ -1,10 +1,31 @@
- # <b> 🤝 [TEUM TEUM](https://play.google.com/store/apps/details?id=com.teumteum.teumteum)  </b>
+<img src="https://github.com/depromeet/teum-teum-server/assets/91249216/70e21198-48c2-4ea1-9d87-3e619c4c3217" width="120" height="120" align="left"/> 
 
-![tt1](https://github.com/depromeet/TeumTeum-Android/assets/100370200/5230940d-be49-46d0-a0ff-d88ecd4f9604)
+# Teum-Teum
 
-```
-📌 IT 커리어 성장형 네트워킹 서비스, 틈틈
-```
+> 사람 사이의 **틈**을 이어주는 IT 커리어 네트워킹 서비스 `repo:server`
+
+![Build](https://img.shields.io/github/actions/workflow/status/depromeet/teum-teum-server/integration-tester.yml?branch=develop&style=for-the-badge&logo=github&logoColor=white&color=36B2FF) ![](https://img.shields.io/sonar/test_success_density/depromeet_teum-teum-server?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonar&logoColor=white&color=36B2FF) ![](https://img.shields.io/sonar/quality_gate/depromeet_teum-teum-server/develop?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonar&logoColor=white&color=36B2FF) ![](https://img.shields.io/github/v/release/depromeet/teum-teum-server?include_prereleases&style=for-the-badge&color=36B2FF)
+
+[![download](https://img.shields.io/badge/playstore-download-brightgreen?style=social&logo=googleplay&color=36B2FF)](https://play.google.com/store/apps/details?id=com.teumteum.teumteum&pcampaignid=web_share) [![instagram](https://img.shields.io/badge/instagram-click-brightgreen?style=social&logo=instagram&color=36B2FF)](https://www.instagram.com/teumteum_official/) [![behance](https://img.shields.io/badge/behance-click-brightgreen?style=social&logo=behance&color=36B2FF)](https://www.behance.net/gallery/191510163/%08TEUMTEUM-IT-Career-Growth-Networking-Service)
+
+---
+
+<p align="center" width="100%">
+  <img width="49%" alt="MOBILE_1" src="https://github.com/depromeet/teum-teum-server/assets/91249216/c8c97700-b1a0-4393-ab14-edcf077627cb">
+  <img width="49%" alt="MOBILE_2" src="https://github.com/depromeet/teum-teum-server/assets/91249216/52a606d7-77dd-48fc-9f2f-3bb1a130ad75">
+</p>
+<p align="center" width="100%">
+  <img width="49%" alt="MOBILE_3" src="https://github.com/depromeet/teum-teum-server/assets/91249216/015f52bb-7e76-45f5-ba8f-aa9d92d133dd">
+  <img width="49%" alt="MOBILE_4" src="https://github.com/depromeet/teum-teum-server/assets/91249216/589184e0-bd3d-4583-9315-2b1ad3c624ad">
+</p>
+<p align="center" width="100%">
+  <img width="49%" alt="MOBILE_5" src="https://github.com/depromeet/teum-teum-server/assets/91249216/3dd859ef-ed72-45c7-8f82-6c5a92f33fa5">
+  <img width="49%" alt="MOBILE_6" src="https://github.com/depromeet/teum-teum-server/assets/91249216/642bff83-30ae-4ff6-aa01-53561ce00db3">
+</p>
+<p align="center" width="100%">
+  <img width="49%" alt="MOBILE_7" src="https://github.com/depromeet/teum-teum-server/assets/91249216/7d66866d-b07f-4ebf-8699-feffa8c6b8fd">
+  <img width="49%" alt="MOBILE_8" src="https://github.com/depromeet/teum-teum-server/assets/91249216/5aa5c9e9-6e02-43b0-a2e3-81f6aff298b5">
+</p>
 
 <br>
 
