@@ -64,7 +64,7 @@ jobs:
         uses: MeilCli/slack-upload-file@v1
         with:
           slack_token: ${{ secrets.SLACK_BOT_TOKEN}}
-          channels: ${{ secrets.SLACK_CHANNEL_ID }}
+          channels: ${{ secrets.SLACK_CHANNEL_ID}}
           file_path: 'app/build/outputs/apk/debug/app-debug.apk'
           file_name: 'TeumTeum.apk'
           file_type: 'apk'
@@ -81,3 +81,4 @@ jobs:
           MSG_MINIMAL: true
           SLACK_USERNAME: TEUMTEUM_ANDROID
           SLACK_MESSAGE: 'APK 생성 중 에러가 발생했습니다. 에러를 확인해주세요'
+          
