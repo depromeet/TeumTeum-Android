@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -40,8 +39,8 @@ import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewMod
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.Recommend
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
-import com.teumteum.teumteum.presentation.mypage.setting.viewModel.SettingViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.toRecommend
+import com.teumteum.teumteum.util.SignupUtils
 
 
 @Composable
@@ -125,7 +124,7 @@ fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel, navCon
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RecommendRow(recommend = recommend, list= myPageViewModel.friendCharacterList)
+            RecommendRow(recommend = recommend, list= SignupUtils.CHARACTER_FRIEND_LIST)
             recommend.jobName?.let {
                 Text(
                     text = it,

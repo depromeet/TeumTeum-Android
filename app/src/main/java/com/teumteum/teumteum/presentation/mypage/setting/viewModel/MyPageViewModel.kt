@@ -11,6 +11,8 @@ import com.teumteum.domain.entity.UserInfo
 import com.teumteum.domain.repository.AuthRepository
 import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST
+import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST_BACK
 import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -112,8 +114,8 @@ class MyPageViewModel @Inject constructor(
             userRepository.getMyInfoFromServer()
                 .onSuccess {
                     _userInfoState.value = UserInfoUiState.Success(it)
-                    val frontCardData = userInfoToFrontCard(it, characterList)
-                    val backCardData = userInfoToBackCard(it, characterListBack)
+                    val frontCardData = userInfoToFrontCard(it, CHARACTER_CARD_LIST)
+                    val backCardData = userInfoToBackCard(it, CHARACTER_CARD_LIST_BACK)
                     _userInfoState.value = UserInfoUiState.Success(it)
                     _frontCardState.value = frontCardData
                     _backCardState.value = backCardData
@@ -123,50 +125,6 @@ class MyPageViewModel @Inject constructor(
                 }
         }
     }
-    val characterList: HashMap<Int, Int> = hashMapOf(
-        0 to R.drawable.ic_card_front_ghost,
-        1 to R.drawable.ic_card_front_star,
-        2 to R.drawable.ic_card_front_bear,
-        3 to R.drawable.ic_card_front_raccon,
-        4 to R.drawable.ic_card_front_cat,
-        5 to R.drawable.ic_card_front_rabbit,
-        6 to R.drawable.ic_card_front_fox,
-        7 to R.drawable.ic_card_front_water,
-        8 to R.drawable.ic_card_front_penguin,
-        9 to R.drawable.ic_card_front_dog,
-        10 to R.drawable.ic_card_front_mouse,
-        11 to R.drawable.ic_card_front_panda
-    )
-
-    val characterListBack: HashMap<Int, Int> = hashMapOf(
-        0 to R.drawable.ic_card_back_ghost,
-        1 to R.drawable.ic_card_back_star,
-        2 to R.drawable.ic_card_back_bear,
-        3 to R.drawable.ic_card_back_raccon,
-        4 to R.drawable.ic_card_back_cat,
-        5 to R.drawable.ic_card_back_rabbit,
-        6 to R.drawable.ic_card_back_fox,
-        7 to R.drawable.ic_card_back_water,
-        8 to R.drawable.ic_card_back_penguin,
-        9 to R.drawable.ic_card_back_dog,
-        10 to R.drawable.ic_card_back_mouse,
-        11 to R.drawable.ic_card_back_panda
-    )
-
-    val friendCharacterList: HashMap<Int, Int> = hashMapOf(
-        0 to R.drawable.ic_ghost,
-        1 to R.drawable.ic_star_character,
-        2 to R.drawable.ic_bear,
-        3 to R.drawable.ic_raccoon,
-        4 to R.drawable.ic_cat,
-        5 to R.drawable.ic_rabbit,
-        6 to R.drawable.ic_fox,
-        7 to R.drawable.ic_water,
-        8 to R.drawable.ic_penguin,
-        9 to R.drawable.ic_dog,
-        10 to R.drawable.ic_mouse,
-        11 to R.drawable.ic_panda
-    )
 
     fun userInfoToFrontCard(userInfo: UserInfo, characterList: HashMap<Int, Int>): FrontCard {
         return FrontCard(
