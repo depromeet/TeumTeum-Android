@@ -45,6 +45,7 @@ import com.teumteum.teumteum.presentation.mypage.recommend.fragment.RecommendDet
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.RecommendDetailViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserInfoUiState
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.emptyUserGrade
 import timber.log.Timber
 
 @Composable
@@ -259,8 +260,14 @@ fun MyPagePager2Content(
         verticalArrangement =  Arrangement.Top
     ) {
         TmMarginVerticalSpacer(size = 20)
-        reviews.forEach {
-            MyPager2Item(userGrade = it)
+        if(reviews.isNotEmpty()) {
+            reviews.forEach {
+                MyPager2Item(userGrade = it)
+            }
+        } else {
+            emptyUserGrade.forEach { 
+                MyPager2Item(userGrade = it)
+            }
         }
         TmMarginVerticalSpacer(size = 20)
     }

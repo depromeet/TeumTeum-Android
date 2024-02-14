@@ -7,12 +7,12 @@ import kotlinx.serialization.Serializable
 data class ResponseReview(
     val review: String,
     val count: Int
-) {
-    @Serializable
-    data class ResponseReviewData(
-        val reviews: List<ResponseReview>
-    )
-}
+)
+
+@Serializable
+data class ResponseReviewData(
+    val reviews: List<ResponseReview>
+)
 
 fun responseToReview(responseReviews: List<ResponseReview>): List<Review> {
     return responseReviews.map { responseReview ->

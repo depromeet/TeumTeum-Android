@@ -27,6 +27,7 @@ import com.teumteum.base.component.compose.theme.TmTypo
 import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.MyPageViewModel
 import com.teumteum.teumteum.presentation.mypage.setting.viewModel.UserGrade
+import com.teumteum.teumteum.presentation.mypage.setting.viewModel.emptyUserGrade
 
 @Composable
 fun MyPagePager2Content(
@@ -42,9 +43,16 @@ fun MyPagePager2Content(
         verticalArrangement =  Arrangement.Top
     ) {
         TmMarginVerticalSpacer(size = 20)
-       reviews.forEach {
-           MyPager2Item(userGrade = it)
-       }
+        if (reviews.isNotEmpty()) {
+            reviews.forEach {
+                MyPager2Item(userGrade = it)
+            }
+        } else {
+            emptyUserGrade.forEach { 
+                MyPager2Item(userGrade = it)
+            }
+
+        }
         TmMarginVerticalSpacer(size = 20)
     }
 }

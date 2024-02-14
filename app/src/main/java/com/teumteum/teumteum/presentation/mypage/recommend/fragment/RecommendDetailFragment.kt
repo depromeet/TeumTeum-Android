@@ -1,6 +1,7 @@
 package com.teumteum.teumteum.presentation.mypage.recommend.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,14 +27,7 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
         userId = arguments?.getInt("id") ?: -1
         val isJoinView = arguments?.getBoolean("isJoinView") ?: false
         if (userId != -1) {
-
-            viewModel.loadFriendInfo(userId.toLong())
-            viewModel.getUserOpenMeeting(userId.toLong())
-            viewModel.getUserClosedMeeting(userId.toLong())
-            viewModel.loadFriends(userId.toLong())
-            mypageViewModel.friendsList.value.let { friendsList ->
-                viewModel.checkIfUserIsFriend(friendsList, userId.toLong())
-            }
+            recommendDetailData()
         }
 
         (activity as MainActivity).showBottomNavi()
@@ -55,9 +49,14 @@ class RecommendDetailFragment: BindingFragment<FragmentRecommendDetailBinding>(R
 
     override fun onResume() {
         super.onResume()
+        recommendDetailData()
+    }
+
+    fun recommendDetailData() {
         viewModel.loadFriendInfo(userId.toLong())
         viewModel.getUserOpenMeeting(userId.toLong())
         viewModel.getUserClosedMeeting(userId.toLong())
+        viewModel.getReview(userId.toLong())
         viewModel.loadFriends(userId.toLong())
         mypageViewModel.friendsList.value.let { friendsList ->
             viewModel.checkIfUserIsFriend(friendsList, userId.toLong())
