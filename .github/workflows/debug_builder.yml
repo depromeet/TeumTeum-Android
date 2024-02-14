@@ -81,4 +81,3 @@ jobs:
           MSG_MINIMAL: true
           SLACK_USERNAME: TEUMTEUM_ANDROID
           SLACK_MESSAGE: 'APK 생성 중 에러가 발생했습니다. 에러를 확인해주세요'
-          
