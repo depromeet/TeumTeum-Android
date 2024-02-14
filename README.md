@@ -1,7 +1,10 @@
- # <b> 🤝 IT 커리어 성장형 네트워킹 서비스, 틈틈  </b>
+ # <b> 🤝 TEUM TEUM  </b>
 
 ![tt1](https://github.com/depromeet/TeumTeum-Android/assets/100370200/5230940d-be49-46d0-a0ff-d88ecd4f9604)
 
+```
+📌 IT 커리어 성장형 네트워킹 서비스, 틈틈
+```
 <br>
 
 ## Contributors
@@ -23,6 +26,57 @@
 IT 직군의 다양한 개성을 지닌 사람들과 네트워킹하며 커리어를 성장시켜 보는 것은 어떨까요?
 
 <br>
+
+## Tech Stack ⚒️
+- Clean Architecture
+- Multi-Module
+
+- MVVM
+- Repository Pattern
+
+- Compose + XML
+- Hilt
+
+- Coroutine
+- Version Catalog
+
+- Kotlin - Flow
+- GitHub Action CI / CD
+
+<br>
+
+## System Architecture 💻
+
+### Architecture (with Data flow)
+![image](https://github.com/depromeet/TeumTeum-Android/assets/100370200/e1442bad-dd8a-464b-a1cb-d719253ab410)
+
+### MOUDLE
+```
+🗃️app
+ ┣ 📂di
+ ┣ 📂presentation
+ ┣ 📂util
+🗃️build-logic
+ ┣ 📂convention
+🗃️core
+ ┣ 📂base
+🗃️data
+ ┣ 📂datasource
+ ┣ 📂local
+ ┣ 📂model
+ ┃ ┣ 📂response
+ ┃ ┣ 📂request
+ ┣ 📂repository
+ ┣ 📂remote
+ ┃ ┣ 📂interceptor
+ ┃ ┣ 📂service
+ ┣ 📂util
+🗃️domain
+ ┣ 📂entity
+ ┣ 📂repository
+```
+<br>
+
 
 ## 틈틈을 처음 사용하시나요? 😎
 ![Untitled](https://github.com/depromeet/TeumTeum-Android/assets/100370200/7ce79833-06aa-40a3-afd1-18f0dc37601b)
