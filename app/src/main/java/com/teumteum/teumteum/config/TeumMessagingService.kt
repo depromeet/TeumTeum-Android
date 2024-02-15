@@ -12,6 +12,7 @@ import com.teumteum.data.model.request.toDeviceToken
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.Message
+import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,9 @@ class TeumMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var userService: UserService
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -63,9 +67,12 @@ class TeumMessagingService : FirebaseMessagingService() {
                 }
                 if (alertMessage.type == END_MEETING) {
                     alertMessage.meetingId = message.data["meetingId"]?.toLong()
-                    alertMessage.participants = message.data["participants"]?.toList()?.map { it.digitToInt() }
+                    alertMessage.participants = message.data["participants"]?.split(",")?.map { it.toInt() }
+                    val userId = userRepository.getUserInfo()?.id?.toInt()
+                    if (alertMessage.participants?.contains(userId) == true)
+                        sendNotificationAlarm(alertMessage)
                 }
-                if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
+                else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
             }
         }
     }
