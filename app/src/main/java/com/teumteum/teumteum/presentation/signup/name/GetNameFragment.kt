@@ -62,7 +62,8 @@ class GetNameFragment
                 }
                 else {
                     (activity as SignUpActivity).disableNextButton()
-                    binding.tvCaption.visibility = View.VISIBLE
+                    if (userName.isNotBlank()) binding.tvCaption.visibility = View.VISIBLE
+                    else binding.tvCaption.visibility = View.INVISIBLE
                 }
             }
         }
