@@ -98,7 +98,7 @@ class GroupRepositoryImpl @Inject constructor(
 
     override suspend fun getReviewFriendList(meetingId: Long): Result<List<ReviewFriend>> {
         return runCatching {
-            dataSource.getReviewFriendList(meetingId).participants.map { it.toReviewFriend() }
+            dataSource.getReviewFriendList(meetingId).map { it.toReviewFriend() }
         }
     }
 
