@@ -57,6 +57,7 @@
     <string name="signup_tv_name_subtitle">틈틈은 신뢰 기반 커뮤니티로 실명으로\n대화하고 있어요</string>
     <string name="signup_tv_name_input">이름</string>
     <string name="signup_tv_name_hint">실명을 입력해주세요</string>
+    <string name="signup_tv_name_caption">형식이 올바르지 않아요.</string>
     <string name="signup_tv_bday_title">생일이 언제인가요?</string>
     <string name="signup_tv_bday_subtitle">또래와 함께하는 맞춤형 모임을 추천해 드려요</string>
     <string name="signup_tv_bday_year">2000년</string>

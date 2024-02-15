@@ -2,6 +2,7 @@ package com.teumteum.teumteum.presentation.signup.name
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -26,6 +27,7 @@ class GetNameFragment
 
         binding.vm = viewModel
         binding.lifecycleOwner = this
+        binding.etName.filters = arrayOf(filterAlphaNumSpace)
         setTextChangedListener()
         checkValidinput()
     }
@@ -44,18 +46,30 @@ class GetNameFragment
         })
     }
 
+    private var filterAlphaNumSpace = InputFilter { source, _, _, _, _, _ ->
+        val ps = Pattern.compile(REGEX_NAME_PATTERN_WRITING)
+        if (!ps.matcher(source).matches()) {
+            ""
+        } else source
+    }
+
     private fun checkValidinput() {
         lifecycleScope.launch {
             viewModel.userName.collect { userName ->
-                if (Pattern.matches(REGEX_NAME_PATTERN, userName) && userName.trim().length >= 2)
+                if (Pattern.matches(REGEX_NAME_PATTERN_SUBMIT, userName) && userName.trim().length >= 2) {
                     (activity as SignUpActivity).activateNextButton()
-                else
+                    binding.tvCaption.visibility = View.INVISIBLE
+                }
+                else {
                     (activity as SignUpActivity).disableNextButton()
+                    binding.tvCaption.visibility = View.VISIBLE
+                }
             }
         }
     }
 
     companion object {
-        private const val REGEX_NAME_PATTERN = "^([가-힣]*)\$"
+        private const val REGEX_NAME_PATTERN_SUBMIT = "^([가-힣]*)\$"
+        private const val REGEX_NAME_PATTERN_WRITING = "^[ㄱ-ㅣ가-힣]+$"
     }
 }
