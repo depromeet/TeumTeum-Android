@@ -10,7 +10,6 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
@@ -21,7 +20,7 @@ class ReviewViewModel @Inject constructor(
     val selectFriendList get() = _selectFriendList
 
     private var _selectDetailFriendList = mutableListOf<ReviewFriend>()
-    val selectDetailFriendList get() = _selectFriendList
+    val selectDetailFriendList get() = _selectDetailFriendList
 
     var meetingId: Long? = null
 

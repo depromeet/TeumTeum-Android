@@ -48,8 +48,8 @@ class ReviewFriendDetailFragment :
     private fun initClick() {
         val friendDetail = ReviewFriend(id, characterId, name, job)
         binding.btnReview.setOnSingleClickListener {
+            viewModel.addSelectDetailFriendList(friendDetail)
             if (viewModel.currentFriendIndex < viewModel.selectFriendList.size) {
-                viewModel.addSelectDetailFriendList(friendDetail)
                 (requireActivity() as? ReviewActivity)?.nextFriendDetailFragment()
             } else {
                 viewModel.postRegisterReview()
