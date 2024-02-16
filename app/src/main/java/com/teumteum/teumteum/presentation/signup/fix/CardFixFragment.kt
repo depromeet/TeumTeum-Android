@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.core.animation.doOnEnd
 import androidx.fragment.app.activityViewModels
 import com.teumteum.base.BindingFragment
 import com.teumteum.base.util.extension.setOnSingleClickListener
@@ -226,12 +227,20 @@ class CardFixFragment
         isFront = if (isFront) {
             frontAnimation.setTarget(binding.cardviewFront)
             backAnimation.setTarget(binding.cardviewBack)
+            frontAnimation.doOnEnd {
+                binding.cardviewFront.visibility = View.INVISIBLE
+            }
             frontAnimation.start()
             backAnimation.start()
             false
+
         } else {
+            binding.cardviewFront.visibility = View.VISIBLE
             frontAnimation.setTarget(binding.cardviewBack)
             backAnimation.setTarget(binding.cardviewFront)
+            frontAnimation.doOnEnd {
+                binding.cardviewFront.visibility = View.VISIBLE
+            }
             backAnimation.start()
             frontAnimation.start()
             true
