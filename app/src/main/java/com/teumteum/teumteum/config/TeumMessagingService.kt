@@ -1,20 +1,21 @@
 package com.teumteum.teumteum.config
 
+import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 import com.teumteum.data.model.request.toDeviceToken
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.Message
 import com.teumteum.domain.repository.UserRepository
+import com.teumteum.teumteum.MyApp.Companion.isForeground
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.presentation.MainActivity
 import com.teumteum.teumteum.presentation.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -71,10 +72,26 @@ class TeumMessagingService : FirebaseMessagingService() {
                             intent.getStringExtra("participants")?.split(",")?.map { it.toInt() }
                         val userId = userRepository.getUserInfo()?.id?.toInt()
                         if (alertMessage.participants?.contains(userId) == true && alertMessage.participants?.size!! > 2)
-                            sendNotificationAlarm(alertMessage)
-                    } else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
+                            sendNotificationAlarm(alertMessage) else TODO()
+                    } else if (alertMessage.type == BEFORE_MEETING && isForeground && isMainActivityRunning()) {
+                        showSnackbarInMainActivity()
+                    }
+                    else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage) else TODO()
                 }
             }
+        }
+    }
+
+    private fun isMainActivityRunning(): Boolean {
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val taskInfo = activityManager.getRunningTasks(1)
+        return taskInfo.isNotEmpty() && taskInfo[0].topActivity?.className == "com.example.MainActivity"
+    }
+
+    private fun showSnackbarInMainActivity() {
+        val mainActivity = MainActivity.getInstance()
+        mainActivity?.runOnUiThread {
+            mainActivity.showTeumNotification()
         }
     }
 
@@ -109,5 +126,6 @@ class TeumMessagingService : FirebaseMessagingService() {
     companion object {
         const val EMPTY = "null"
         private const val END_MEETING = "END_MEETING"
+        private const val BEFORE_MEETING = "BEFORE_MEETING"
     }
 }
