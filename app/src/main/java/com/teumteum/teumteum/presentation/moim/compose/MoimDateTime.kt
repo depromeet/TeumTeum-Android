@@ -130,7 +130,7 @@ fun MoimDateColumn(viewModel: MoimViewModel) {
             OutlinedTextField(
                 value = monthText,
                 modifier = Modifier
-                    .width(60.dp)
+                    .width(70.dp)
                     .wrapContentHeight(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
@@ -156,7 +156,7 @@ fun MoimDateColumn(viewModel: MoimViewModel) {
             OutlinedTextField(
                 value = dayText,
                 modifier = Modifier
-                    .width(60.dp)
+                    .width(70.dp)
                     .wrapContentHeight(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number

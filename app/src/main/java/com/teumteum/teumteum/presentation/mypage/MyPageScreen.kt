@@ -126,6 +126,14 @@ fun MyPageScreen(
                     if (state.progress.to == CardFace.Front) {
                         // 앞면 카드 컨텐츠 표시
                         MyPageFrontCard(frontCard = frontCardState)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_floating_edit),
+                            contentDescription = "Character Image",
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .offset(x = (-24).dp, y = (-22).dp)
+                                .clickable { navController.navigate(R.id.fragment_edit_card) }
+                        )
                     } else {
                         MyPageBackCard(backCard = backCard, viewModel = myPageViewModel)
                         Image(
