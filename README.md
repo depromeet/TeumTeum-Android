@@ -2,7 +2,7 @@
 
 # Teum-Teum
 
-> 사람 사이의 **틈**을 이어주는 IT 커리어 네트워킹 서비스 `repo:server`
+> 사람 사이의 **틈**을 이어주는 IT 커리어 네트워킹 서비스 `repo:android`
 
 ![Build](https://img.shields.io/github/actions/workflow/status/depromeet/teum-teum-server/integration-tester.yml?branch=develop&style=for-the-badge&logo=github&logoColor=white&color=36B2FF) ![](https://img.shields.io/sonar/test_success_density/depromeet_teum-teum-server?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonar&logoColor=white&color=36B2FF) ![](https://img.shields.io/sonar/quality_gate/depromeet_teum-teum-server/develop?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonar&logoColor=white&color=36B2FF) ![](https://img.shields.io/github/v/release/depromeet/teum-teum-server?include_prereleases&style=for-the-badge&color=36B2FF)
 
