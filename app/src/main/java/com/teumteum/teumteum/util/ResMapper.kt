@@ -60,6 +60,23 @@ object ResMapper {
         }
     }
 
+    fun getColorByBackCardCharacterDrawble(context: Context, characterResId: Int): Int {
+        return when (characterResId) {
+            R.drawable.ic_card_back_ghost -> getColorByCharacterId(context, 0)
+            R.drawable.ic_card_back_star -> getColorByCharacterId(context, 1)
+            R.drawable.ic_card_back_bear -> getColorByCharacterId(context, 2)
+            R.drawable.ic_card_back_raccon -> getColorByCharacterId(context, 3)
+            R.drawable.ic_card_back_cat -> getColorByCharacterId(context, 4)
+            R.drawable.ic_card_back_rabbit -> getColorByCharacterId(context, 5)
+            R.drawable.ic_card_back_fox -> getColorByCharacterId(context, 6)
+            R.drawable.ic_card_back_water -> getColorByCharacterId(context, 7)
+            R.drawable.ic_card_back_penguin -> getColorByCharacterId(context, 8)
+            R.drawable.ic_card_back_dog -> getColorByCharacterId(context, 9)
+            R.drawable.ic_card_back_mouse -> getColorByCharacterId(context, 10)
+            R.drawable.ic_card_back_panda -> getColorByCharacterId(context, 11)
+            else -> getColorByCharacterId(context, 0)
+        }
+    }
 
     fun getColorByCharacterId(context: Context, characterId: Int): Int {
         return when (characterId) {

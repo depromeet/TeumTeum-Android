@@ -13,6 +13,7 @@ import com.teumteum.data.model.request.toDeviceToken
 import com.teumteum.data.service.UserService
 import com.teumteum.domain.TeumTeumDataStore
 import com.teumteum.domain.entity.Message
+import com.teumteum.domain.repository.UserRepository
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.presentation.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +30,9 @@ class TeumMessagingService : FirebaseMessagingService() {
 
     @Inject
     lateinit var userService: UserService
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -51,22 +55,25 @@ class TeumMessagingService : FirebaseMessagingService() {
         }
     }
 
-    override fun onMessageReceived(message: RemoteMessage) {
-        super.onMessageReceived(message)
+    override fun handleIntent(intent: Intent?) {
+        super.handleIntent(intent)
 
         if (dataStore.onNotification) {
             if (dataStore.isLogin) {
-                val alertMessage = Message("", "", "")
-                if (message.data.isNotEmpty()) {
-                    alertMessage.title = message.notification?.title.toString()
-                    alertMessage.body = message.notification?.body.toString()
-                    alertMessage.type = message.data["type"].toString()
+                intent?.let {
+                    val alertMessage = Message("", "", "")
+                    alertMessage.title = intent.getStringExtra("title").toString()
+                    alertMessage.body = intent.getStringExtra("body").toString()
+                    alertMessage.type = intent.getStringExtra("type").toString()
+                    if (alertMessage.type == END_MEETING) {
+                        alertMessage.meetingId = intent.getStringExtra("meetingId")?.toLong()
+                        alertMessage.participants =
+                            intent.getStringExtra("participants")?.split(",")?.map { it.toInt() }
+                        val userId = userRepository.getUserInfo()?.id?.toInt()
+                        if (alertMessage.participants?.contains(userId) == true && alertMessage.participants?.size!! > 2)
+                            sendNotificationAlarm(alertMessage)
+                    } else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
                 }
-                if (alertMessage.type == END_MEETING) {
-                    alertMessage.meetingId = message.data["meetingId"]?.toLong()
-                    alertMessage.participants = message.data["participants"]?.toList()?.map { it.digitToInt() }
-                }
-                if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
             }
         }
     }

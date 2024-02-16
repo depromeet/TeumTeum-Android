@@ -1,9 +1,9 @@
 package com.teumteum.data.datasource.remote
 
-import com.teumteum.data.model.request.RequestReviewFriend
+import com.teumteum.data.model.request.RequestReviewFriends
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
-import com.teumteum.data.model.response.ResponseReviewFriends
+import com.teumteum.data.model.response.ResponseReviewFriend
 import com.teumteum.data.service.GroupService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -85,13 +85,13 @@ class RemoteGroupDataSource @Inject constructor(
 
     suspend fun getReviewFriendList(
         meetingId: Long
-    ): ResponseReviewFriends {
+    ): List<ResponseReviewFriend> {
         return service.getReviewFriendList(meetingId)
     }
 
     suspend fun postRegisterReview(
         meetingId: Long,
-        requestReviewFriends: List<RequestReviewFriend>
+        requestReviewFriends: RequestReviewFriends
     ): Boolean {
         return service.postRegisterReview(meetingId, requestReviewFriends).isSuccessful
     }

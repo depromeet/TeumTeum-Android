@@ -19,6 +19,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.teumteum.teumteum.R
+import com.teumteum.teumteum.util.ResMapper
 import com.teumteum.teumteum.util.callback.OnCurrentListChangedListener
 import com.teumteum.teumteum.util.custom.itemdecoration.FlexboxItemDecoration
 import com.teumteum.teumteum.util.custom.view.adapter.InterestAdapter
@@ -163,7 +164,10 @@ class BackCardView : CardView, OnCurrentListChangedListener<Interest> {
     private fun setUpViews() {
         tvGoalTitle.text = backCard.goalTitle
         tvGoalContent.text = backCard.goalContent
-        backCard.characterResId?.let { ivCharacter.setImageResource(it) }
+        backCard.characterResId?.let {
+            ivCharacter.setImageResource(it)
+            tvGoalTitle.setTextColor(ResMapper.getColorByBackCardCharacterDrawble(context, it))
+        }
         ivFloat.setImageResource(backCard.floatResId)
     }
 

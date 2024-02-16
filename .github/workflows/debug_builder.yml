@@ -1,0 +1,84 @@
+#name: TeumTeum Push Builder
+#
+#on:
+#  push:
+#    branches: [ main ]
+#
+#defaults:
+#  run:
+#    shell: bash
+#    working-directory: .
+#
+#jobs:
+#  build:
+#    name: APK Builder When Push
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Gradle cache
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-
+#      - name: set up JDK 17
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 17
+#
+#      - name: Change gradlew permissions
+#        run: chmod +x ./gradlew
+#
+#      - name: Create Local Properties
+#        run: touch local.properties
+#
+#      - name: Access Local Properties
+#        env:
+#          base_url: ${{ secrets.BASE_URL }}
+#          image_url: ${{ secrets.IMAGE_URL }}
+#          kakao_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
+#          naver_redirect_url: ${{ secrets.KAKAO_REDIRECT_URL }}
+#          kakao_api_key: ${{ secrets.KAKAO_API_KEY }}
+#          naver_api_key: ${{ secrets.NAVER_API_KEY }}
+#        run: |
+#          echo base.url=\"$base_url\" >> local.properties
+#          echo image.url=\"$image_url\" >> local.properties
+#          echo kakao.redirect=\"$kakao_redirect_url\" >> local.properties
+#          echo naver.redirect=\"$naver_redirect_url\" >> local.properties
+#          echo kakao.key=\"$kakao_api_key\" >> local.properties
+#          echo naver.key=\"$naver_api_key\" >> local.properties
+#
+#      - name: Access Firebase Service
+#        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
+#
+#      - name: Build debug APK
+#        run: ./gradlew assembleDebug --stacktrace
+#
+#      - name: On Success
+#        if: ${{ success() }}
+#        uses: MeilCli/slack-upload-file@v1
+#        with:
+#          slack_token: ${{ secrets.SLACK_BOT_TOKEN}}
+#          channels: ${{ secrets.SLACK_CHANNEL_ID}}
+#          file_path: 'app/build/outputs/apk/debug/app-debug.apk'
+#          file_name: 'TeumTeum.apk'
+#          file_type: 'apk'
+#          initial_comment: '🎉 TeumTeum이 슬랙으로 들어왔습니다.'
+#
+#      - name: On Failed, Notify in Slack
+#        if: ${{ failure() }}
+#        uses: rtCamp/action-slack-notify@v2
+#        env:
+#          SLACK_COLOR: '#ff0000'
+#          SLACK_ICON: https://play-lh.googleusercontent.com/jUeDnP2wd29y48wolu5a8j08PX3Zt-wsftTVuSR8gYgHI00sq7Zsq2jWx1icTdsISw=w240-h480-rw
+#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+#          SLACK_TITLE: 'TEUMTEUM/Android debug build Fail❌'
+#          MSG_MINIMAL: true
+#          SLACK_USERNAME: TEUMTEUM_ANDROID
+#          SLACK_MESSAGE: 'APK 생성 중 에러가 발생했습니다. 에러를 확인해주세요'
+#          

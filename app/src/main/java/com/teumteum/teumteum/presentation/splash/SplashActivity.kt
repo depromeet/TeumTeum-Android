@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.defaultSnackBar
 import com.teumteum.domain.entity.Message
+import com.teumteum.teumteum.MyApp.Companion.isForeground
 import com.teumteum.teumteum.R
 import com.teumteum.teumteum.databinding.ActivitySplashBinding
 import com.teumteum.teumteum.presentation.MainActivity
@@ -32,6 +33,7 @@ class SplashActivity
 
         isFromAlarm = intent.getBooleanExtra(IS_FROM_ALARM, false)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) getMessage()
+        if (isForeground) startHomeScreen()
         checkNetwork()
     }
 

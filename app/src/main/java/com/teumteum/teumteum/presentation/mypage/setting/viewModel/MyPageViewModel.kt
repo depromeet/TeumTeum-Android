@@ -125,6 +125,7 @@ class MyPageViewModel @Inject constructor(
                 }
         }
     }
+
     fun userInfoToFrontCard(userInfo: UserInfo, characterList: HashMap<Int, Int>): FrontCard {
         return FrontCard(
             name = userInfo.name,
