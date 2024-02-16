@@ -68,7 +68,7 @@ class CardCompleteFragment
                 submitInterestList(interests)
                 isModify = false
                 setIsModifyDetail(false)
-//                isModifyDetail = false
+                isModifyDetail = false
             }
         }
     }

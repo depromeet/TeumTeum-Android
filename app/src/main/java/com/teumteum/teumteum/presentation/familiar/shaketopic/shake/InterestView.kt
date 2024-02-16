@@ -1,9 +1,13 @@
 package com.teumteum.teumteum.presentation.familiar.shaketopic.shake
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -21,6 +25,7 @@ class InterestView(
 
     private val views = mutableListOf<InterestViewConfig>()
 
+    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         views.forEach { view ->
@@ -37,19 +42,30 @@ class InterestView(
                 paint
             )
 
-            // 텍스트 그리기
-            paint.color =
-                ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01)
-            paint.textSize = TransformUtils.dpToPx(16f).toFloat()
-            paint.typeface =
-                ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
-            paint.textAlign = Paint.Align.CENTER
-            val textX = view.x + view.width / 2
-            val textY = view.y + view.height / 2 - (paint.descent() + paint.ascent()) / 2
-            canvas.drawText(view.text, textX, textY, paint)
+            // 텍스트 그리기 설정
+            val textPaint = TextPaint().apply {
+                color = ContextCompat.getColor(context, com.teumteum.base.R.color.elevation_level01)
+                textSize = TransformUtils.dpToPx(16f).toFloat()
+                typeface = ResourcesCompat.getFont(context, com.teumteum.base.R.font.pretendard_semibold)
+            }
+
+            // 텍스트 레이아웃 생성
+            val textWidth = view.width - (radius * 2) // 텍스트 영역 너비 조정
+            val staticLayout = StaticLayout.Builder.obtain(view.text, 0, view.text.length, textPaint, textWidth.toInt())
+                .setAlignment(Layout.Alignment.ALIGN_CENTER)
+                .setLineSpacing(1f, 1f) // 줄 간격 설정
+                .setIncludePad(false)
+                .build()
+
+            canvas.save()
+            // 텍스트를 그리기 위한 위치 조정
+            val textX = view.x + radius
+            val textY = view.y + (view.height - staticLayout.height) / 2f
+            canvas.translate(textX, textY)
+            staticLayout.draw(canvas)
+            canvas.restore()
         }
     }
-
     fun addUserInterest(interestViewConfig: InterestViewConfig) {
         views.add(interestViewConfig)
         resolveCollisions()
