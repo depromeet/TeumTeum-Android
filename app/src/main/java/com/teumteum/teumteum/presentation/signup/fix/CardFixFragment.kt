@@ -73,11 +73,13 @@ class CardFixFragment
             for (i in interestSelf.value) {
                 interests.add(Interest(i))
             }
+
+            val bc = BackCard(goalContent = goalText.value, characterResId = SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value])
+            binding.cardviewBack.getInstance(bc)
             binding.cardviewBack.apply {
-                setIsModifyDetail(true)
-                tvGoalContent.text = goalText.value
-                SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
+                isModify = false
+                setIsModifyDetail(true)
             }
         }
     }

@@ -3,8 +3,7 @@ package com.teumteum.data.service
 import com.teumteum.data.model.request.RequestReviewFriend
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
-import com.teumteum.data.model.response.ResponseReviewFriends
-import com.teumteum.domain.entity.Meeting
+import com.teumteum.data.model.response.ResponseReviewFriend
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -85,7 +84,7 @@ interface GroupService {
     @GET("meetings/{meetingId}/participants")
     suspend fun getReviewFriendList(
         @Path("meetingId") meetingId: Long
-    ): ResponseReviewFriends
+    ): List<ResponseReviewFriend>
 
     @POST("users/reviews")
     suspend fun postRegisterReview(

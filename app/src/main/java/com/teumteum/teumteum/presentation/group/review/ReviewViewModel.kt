@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.teumteum.domain.entity.ReviewFriend
 import com.teumteum.domain.repository.GroupRepository
+import com.teumteum.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,13 +13,14 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    private val repository: GroupRepository
+    private val repository: GroupRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private var _selectFriendList = listOf<ReviewFriend>()
     val selectFriendList get() = _selectFriendList
 
     private var _selectDetailFriendList = mutableListOf<ReviewFriend>()
-    val selectDetailFriendList get() = _selectFriendList
+    val selectDetailFriendList get() = _selectDetailFriendList
 
     var meetingId: Long? = null
 
@@ -37,12 +39,19 @@ class ReviewViewModel @Inject constructor(
         _selectDetailFriendList.add(selectFriendDetail)
     }
 
+    private fun filterReviewFriendList(list: List<ReviewFriend>): List<ReviewFriend> {
+        val friendList = list.toMutableList()
+        val myUserId = userRepository.getUserInfo()?.id
+        friendList.removeAll { it.id == myUserId }
+        return friendList
+    }
+
     fun getReviewFriendList() {
         meetingId?.let { id ->
             viewModelScope.launch {
                 repository.getReviewFriendList(id)
-                    .onSuccess {
-                        _moimFriendList.value = it
+                    .onSuccess { list ->
+                        _moimFriendList.value = filterReviewFriendList(list)
                     }
             }
         }

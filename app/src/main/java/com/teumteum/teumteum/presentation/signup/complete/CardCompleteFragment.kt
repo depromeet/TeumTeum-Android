@@ -16,6 +16,7 @@ import com.teumteum.teumteum.util.SignupUtils.CHARACTER_CARD_LIST_BACK
 import com.teumteum.teumteum.util.SignupUtils.STATUS_STUDENT
 import com.teumteum.teumteum.util.SignupUtils.STATUS_TRAINEE
 import com.teumteum.teumteum.util.SignupUtils.STATUS_WORKER
+import com.teumteum.teumteum.util.custom.view.model.BackCard
 import com.teumteum.teumteum.util.custom.view.model.FrontCard
 import com.teumteum.teumteum.util.custom.view.model.Interest
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,9 +61,10 @@ class CardCompleteFragment
             for (i in interestSelf.value) {
                 interests.add(Interest(i))
             }
+
+            val bc = BackCard(goalContent = goalText.value, characterResId = CHARACTER_CARD_LIST_BACK[characterId.value])
+            binding.cardviewBack.getInstance(bc)
             binding.cardviewBack.apply {
-                tvGoalContent.text = goalText.value
-                CHARACTER_CARD_LIST_BACK[characterId.value]?.let { ivCharacter.setImageResource(it) }
                 submitInterestList(interests)
                 isModify = false
                 setIsModifyDetail(false)
