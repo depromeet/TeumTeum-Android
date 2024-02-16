@@ -77,6 +77,16 @@
                 app:argType="long" />
         </action>
 
+        <action
+            android:id="@+id/action_fragment_moim_to_fragment_recommend_detail"
+            app:destination="@id/fragment_recommend_detail"
+            app:enterAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_in_right">
+            <argument
+                android:name="meetingId"
+                app:argType="long" />
+        </action>
+
     </fragment>
 
     <fragment

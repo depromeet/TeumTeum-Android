@@ -111,7 +111,7 @@ class MoimViewModel @Inject constructor(
 
     val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_ghost,
-        1 to R.drawable.ic_star,
+        1 to R.drawable.ic_star_character,
         2 to R.drawable.ic_bear,
         3 to R.drawable.ic_raccoon,
         4 to R.drawable.ic_cat,
@@ -262,7 +262,6 @@ class MoimViewModel @Inject constructor(
         if (isOverSizeImageFound) {
             viewModelScope.launch {
                 _snackbarEvent.emit(SnackbarEvent.FILE_OVER_10MB)
-                Log.d("snackbarEvent", _snackbarEvent.toString())
             }
         }
         _imageUri.value = currentList.take(5)
@@ -333,13 +332,12 @@ class MoimViewModel @Inject constructor(
             var timeInput = _time.value
 
             val isAfternoon = _isAfternoon.value == "오후"
-            val (hourString, minute) = timeInput.split(":")
+            val (hourString, minuteString) = timeInput.split(":")
             var hour = hourString.toInt()
+            val minute = if (minuteString.length == 1) "0$minuteString" else minuteString
 
             if (isAfternoon && hour < 12) { hour += 12 }
-            else if (!isAfternoon && hour == 12) {
-                hour = 0
-            }
+            else if (!isAfternoon && hour == 12) { hour = 0 }
 
             timeInput = "$hour:$minute"
 

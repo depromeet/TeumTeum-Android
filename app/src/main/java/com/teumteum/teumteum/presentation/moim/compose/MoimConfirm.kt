@@ -463,6 +463,7 @@ fun MoimHostRow(viewModel: MoimViewModel) {
         modifier = Modifier
             .width(147.dp)
             .height(40.dp)
+            .clickable { }
             .padding(start = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -606,7 +607,7 @@ fun MoimHostBtn(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .padding(horizontal = 20.dp, vertical = 12.dp),
+            .padding(horizontal = 20.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         androidx.compose.material3.Button(
@@ -679,8 +680,7 @@ fun MoimCancelBtn(
         androidx.compose.material3.Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(76.dp)
-                .padding(horizontal = 20.dp, vertical = 10.dp),
+                .height(76.dp),
             onClick = {
                 viewModel.updateSheetEvent(ScreenState.Cancel)
             },
@@ -729,11 +729,11 @@ fun MoimJoinBtn(
         androidx.compose.material3.Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(76.dp)
-                .padding(horizontal = 20.dp, vertical = 10.dp),
+                .height(76.dp),
             onClick = {
                 onJoinGroupClick(meetingsId)
             },
+            enabled = moimJoinUsers.size < people,
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
