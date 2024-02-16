@@ -127,7 +127,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/graphic_pink"
                 android:textFontWeight="900"
-                android:textSize="24sp"
+                android:textSize="17sp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@id/tv_balance_question_second"
                 app:layout_constraintEnd_toEndOf="@id/iv_back_balance_background"
