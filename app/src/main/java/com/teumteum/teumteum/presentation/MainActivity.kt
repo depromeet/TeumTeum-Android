@@ -103,6 +103,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         if (!viewModel.getAskedNotification()) {
             requestNotificationPermission()
             viewModel.setAskedkNotification(true)
+            viewModel.setOnNotification(true)
         }
     }
 
