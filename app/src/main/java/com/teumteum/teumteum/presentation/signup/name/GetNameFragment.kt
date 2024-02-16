@@ -71,6 +71,6 @@ class GetNameFragment
 
     companion object {
         private const val REGEX_NAME_PATTERN_SUBMIT = "^([가-힣]*)\$"
-        private const val REGEX_NAME_PATTERN_WRITING = "^[ㄱ-ㅣ가-힣]+$"
+        private const val REGEX_NAME_PATTERN_WRITING = "^[가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+\$"
     }
 }
