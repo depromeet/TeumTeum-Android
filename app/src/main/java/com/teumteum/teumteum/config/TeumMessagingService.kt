@@ -54,28 +54,25 @@ class TeumMessagingService : FirebaseMessagingService() {
         }
     }
 
-    override fun onMessageReceived(message: RemoteMessage) {
-        super.onMessageReceived(message)
+    override fun handleIntent(intent: Intent?) {
+        super.handleIntent(intent)
 
         if (dataStore.onNotification) {
             if (dataStore.isLogin) {
-                val alertMessage = Message("", "", "")
-                if (message.data.isNotEmpty()) {
-                    alertMessage.title = message.notification?.title.toString()
-                    alertMessage.body = message.notification?.body.toString()
-                    alertMessage.type = message.data["type"].toString()
+                intent?.let {
+                    val alertMessage = Message("", "", "")
+                    alertMessage.title = intent.getStringExtra("title").toString()
+                    alertMessage.body = intent.getStringExtra("body").toString()
+                    alertMessage.type = intent.getStringExtra("type").toString()
+                    if (alertMessage.type == END_MEETING) {
+                        alertMessage.meetingId = intent.getStringExtra("meetingId")?.toLong()
+                        alertMessage.participants =
+                            intent.getStringExtra("participants")?.split(",")?.map { it.toInt() }
+                        val userId = userRepository.getUserInfo()?.id?.toInt()
+                        if (alertMessage.participants?.contains(userId) == true && alertMessage.participants?.size!! > 2)
+                            sendNotificationAlarm(alertMessage)
+                    } else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
                 }
-                if (alertMessage.type == END_MEETING) {
-                    alertMessage.meetingId = message.data["meetingId"]?.toLong()
-//                    Timber.tag("teum-alerts").d("data: ${message.data}")
-//                    Timber.tag("teum-alerts").d("participants string: ${message.data["participants"]?.split(",").toString()}")
-//                    Timber.tag("teum-alerts").d("participants size: ${message.data["participants"]?.split(",")?.size}")
-                    alertMessage.participants = message.data["participants"]?.split(",")?.map { it.toInt() }
-                    val userId = userRepository.getUserInfo()?.id?.toInt()
-                    if (alertMessage.participants?.contains(userId) == true && alertMessage.participants?.size!! > 2)
-                        sendNotificationAlarm(alertMessage)
-                }
-                else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
             }
         }
     }
