@@ -64,7 +64,7 @@
             android:layout_height="400dp"
             app:name="@string/front_card_name"
             app:company="@string/front_card_company"
-            app:job="안드로이드 개발"
+            app:job="직무명"
             app:level="@string/front_card_level"
             app:area="@string/front_card_area"
             app:mbti="@string/front_card_mbti"
