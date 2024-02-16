@@ -36,6 +36,7 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun addSelectDetailFriendList(selectFriendDetail: ReviewFriend) {
+        _selectDetailFriendList.removeAll { it.id == selectFriendDetail.id }
         _selectDetailFriendList.add(selectFriendDetail)
     }
 
