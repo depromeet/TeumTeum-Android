@@ -299,7 +299,9 @@ class MoimViewModel @Inject constructor(
         return try {
             val currentYear = Year.now().value
             val dateInput = if(_date.value.length == 4) {
-                "${currentYear}${_date.value}"
+                val month = _date.value.substring(0, 2)
+                val day = _date.value.substring(2)
+                "${currentYear}년 ${month}월 ${day}일"
             } else {
                 "${currentYear}년 ${_date.value.substring(0, _date.value.lastIndexOf(" "))}"
             }
@@ -490,7 +492,7 @@ class MoimViewModel @Inject constructor(
                         }
                 }
             } else {
-                _screenState.value = ScreenState.Failure
+                _screenState.value = ScreenState.ModifyFailure
             }
         }
     }
@@ -668,7 +670,7 @@ class MoimViewModel @Inject constructor(
 
 enum class ScreenState {
     Topic, Name, Introduce, DateTime, Address, People, Create, Success, Failure, Server,
-    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess,
+    CancelInit, Cancel, CancelSuccess, Finish, DeleteInit, Delete, DeleteSuccess, ModifyFailure,
     Modify, Webview, ReportInit, Report, ReportSuccess, BookMarkSuccess, BookMarkDelete,
 }
 

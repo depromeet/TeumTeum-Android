@@ -62,6 +62,7 @@ class MoimModifyFragment: BindingFragment<FragmentModifyMoimBinding>(R.layout.fr
                     ScreenState.Server -> { context?.defaultToast(getString(R.string.moim_alert_message_server)) }
                     ScreenState.DeleteSuccess -> {context?.defaultToast(getString(R.string.setting_dialog_moim_delete_success))}
                     ScreenState.Success -> {context?.defaultToast(getString(R.string.moim_alert_message_modify_success))}
+                    ScreenState.ModifyFailure -> {context?.defaultToast(getString(R.string.setting_dialog_moim_modify_failure))}
                     else -> {}
                 }
             }

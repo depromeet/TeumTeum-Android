@@ -208,6 +208,7 @@
     <string name="setting_dialog_delete_row2">수정하기</string>
     <string name="setting_dialog_moim_delete_success">모임 삭제를 성공했습니다</string>
     <string name="setting_dialog_moim_delete_failure">모임 삭제에 오류가 발생했습니다</string>
+    <string name="setting_dialog_moim_modify_failure">모임 수정에 오류가 발생했습니다</string>
 
     <string name="setting_signout_title">탈퇴하는 이유가 무엇인가요?</string>
     <string name="setting_signout_btn1">선택 완료</string>
