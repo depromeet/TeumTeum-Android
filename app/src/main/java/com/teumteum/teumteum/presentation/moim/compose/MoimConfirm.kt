@@ -733,6 +733,7 @@ fun MoimJoinBtn(
             onClick = {
                 onJoinGroupClick(meetingsId)
             },
+            enabled = moimJoinUsers.size < people,
             colors = ButtonDefaults.buttonColors(containerColor = TmtmColorPalette.current.color_button_active),
             shape = RoundedCornerShape(size = 4.dp)
         ) {
