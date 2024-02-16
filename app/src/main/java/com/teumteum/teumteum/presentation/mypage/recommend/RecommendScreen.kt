@@ -125,7 +125,6 @@ fun RecommendItem(recommend: Recommend, myPageViewModel: MyPageViewModel, navCon
             verticalAlignment = Alignment.CenterVertically
         ) {
             RecommendRow(recommend = recommend, list= CHARACTER_CARD_FRIEND)
-            RecommendRow(recommend = recommend, list= SignupUtils.CHARACTER_FRIEND_LIST)
             recommend.jobName?.let {
                 Text(
                     text = it,

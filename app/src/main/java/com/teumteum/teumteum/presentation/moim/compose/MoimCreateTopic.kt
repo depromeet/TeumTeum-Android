@@ -93,6 +93,8 @@ fun MoimCreateBtn(
                     viewModel.createMoim()
                 } else if (screenState == ScreenState.Success) {
                     navController?.navigate(R.id.fragment_home)
+                    delay(2000)
+                    viewModel.initializeState()
                 }
                 else {
                     viewModel.goToNextScreen() }}
