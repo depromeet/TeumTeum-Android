@@ -37,6 +37,21 @@ object SignupUtils {
         11 to R.drawable.ic_card_back_panda
     )
 
+    val CHARACTER_CARD_FRIEND: HashMap<Int, Int> = hashMapOf(
+        0 to R.drawable.ic_ghost,
+        1 to R.drawable.ic_star_character,
+        2 to R.drawable.ic_bear,
+        3 to R.drawable.ic_raccoon,
+        4 to R.drawable.ic_cat,
+        5 to R.drawable.ic_rabbit,
+        6 to R.drawable.ic_fox,
+        7 to R.drawable.ic_water,
+        8 to R.drawable.ic_penguin,
+        9 to R.drawable.ic_dog,
+        10 to R.drawable.ic_mouse,
+        11 to R.drawable.ic_panda
+    )
+
     const val JOB_DESIGN = "디자인"
     const val JOB_DEVELOPMENT = "개발"
     const val JOB_PLANNING = "기획"

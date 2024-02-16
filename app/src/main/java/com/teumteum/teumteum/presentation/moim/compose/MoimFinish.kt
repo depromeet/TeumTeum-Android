@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.moim.compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,26 +28,35 @@ import com.teumteum.teumteum.presentation.moim.MoimViewModel
 
 @Composable
 fun MoimFinish(viewModel: MoimViewModel, navController: NavController) {
-    TmScaffold(onClick = { viewModel.goPreviousScreen()}) {
-        Column(
+    TmScaffold(onClick = { viewModel.goPreviousScreen() }) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = TmtmColorPalette.current.color_background),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
+                .background(color = TmtmColorPalette.current.color_background)
         ) {
-            TmMarginVerticalSpacer(size = 218)
-            MoimFinishColumn()
-            Spacer(modifier = Modifier.weight(1f))
-            TeumDivider()
-            MoimCreateBtn(
-                text = stringResource(id = R.string.moim_finish_btn),
-                viewModel = viewModel,
-                navController=  navController
-            )
+            Column(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MoimFinishColumn()
+            }
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+            ) {
+                TeumDivider()
+                MoimCreateBtn(
+                    text = stringResource(id = R.string.moim_finish_btn),
+                    viewModel = viewModel,
+                    navController = navController
+                )
+            }
         }
     }
-
 }
 
 @Composable

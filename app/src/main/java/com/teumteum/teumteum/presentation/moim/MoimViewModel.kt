@@ -111,7 +111,7 @@ class MoimViewModel @Inject constructor(
 
     val characterList: HashMap<Int, Int> = hashMapOf(
         0 to R.drawable.ic_ghost,
-        1 to R.drawable.ic_star,
+        1 to R.drawable.ic_star_character,
         2 to R.drawable.ic_bear,
         3 to R.drawable.ic_raccoon,
         4 to R.drawable.ic_cat,
