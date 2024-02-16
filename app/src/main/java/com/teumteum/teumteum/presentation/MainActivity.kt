@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.teumteum.base.BindingActivity
 import com.teumteum.base.util.extension.boolExtra
+import com.teumteum.base.util.extension.buttonSnackBar
 import com.teumteum.base.util.extension.intExtra
 import com.teumteum.base.util.extension.longExtra
 import com.teumteum.base.util.extension.stringExtra
@@ -37,6 +38,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instance = this
 
         checkAskedNotification()
 
@@ -58,6 +60,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 action = HomeFragmentDirections.actionHomeFragmentToFragmentMyPage()
             }
             // END_MEETING은 따로 처리
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
+            navHostFragment.navController.navigate(action)
+        }
+    }
+
+    fun showTeumNotification() {
+        this.buttonSnackBar(binding.root, "5분 뒤에 모임이 시작돼요", "시작하기", findViewById(R.id.btm_navi)) {
+            var action = HomeFragmentDirections.actionHomeFragmentToFragmentFamiliar()
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_main) as NavHostFragment
             navHostFragment.navController.navigate(action)
         }
@@ -129,6 +139,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
+    override fun onDestroy() {
+        instance = null
+        super.onDestroy()
+    }
+
     override fun finish() {
         super.finish()
         closeActivitySlideAnimation()
@@ -161,6 +176,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         fun getIntent(context: Context, meetingId: Long, title: String) = Intent(context, MainActivity::class.java).apply {
             putExtra("meetingId", meetingId)
             putExtra("title", title)
+        }
+        private var instance: MainActivity? = null
+
+        // MainActivity의 인스턴스를 가져오는 메서드
+        fun getInstance(): MainActivity? {
+            return instance
         }
         private const val IS_FROM_ALARM = "isFromAlarm"
         private const val MESSAGE = "message"
