@@ -218,7 +218,6 @@ class MoimFragment :
                     ScreenState.Success -> {
                         context?.defaultToast("모임 생성이 완료되었습니다")
                         delay(2000)
-                        viewModel.initializeState()
                     }
                     ScreenState.BookMarkSuccess -> {
                         context?.defaultToast("모임 저장을 성공했습니다")

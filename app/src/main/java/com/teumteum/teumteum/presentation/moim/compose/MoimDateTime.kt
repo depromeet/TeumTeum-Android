@@ -53,7 +53,7 @@ fun MoimDateTime(viewModel: MoimViewModel, onClick: ()->Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = TmtmColorPalette.current.GreyWhite),
+                .background(color = TmtmColorPalette.current.color_background),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
         ) {
@@ -185,7 +185,10 @@ fun MoimDateColumn(viewModel: MoimViewModel) {
 
 private fun updateTimeIfComplete(hour: String, minute: String, viewModel: MoimViewModel) {
     if (hour.isNotEmpty() && minute.isNotEmpty()) {
-        val time = "$hour:$minute"
+        val formattedHour = if (hour.length == 1) "0$hour" else hour
+        val formattedMinute = if (minute.length == 1) "0$minute" else minute
+
+        val time = "$formattedHour:$formattedMinute"
         viewModel.updateTime(time)
     }
 }
@@ -259,7 +262,7 @@ fun MoimTimeColumn(viewModel: MoimViewModel) {
                         )
                     },
                     onValueChange = { newText ->
-                        timeAText = newText.take(1)
+                        timeAText = newText.take(2)
                         updateTimeIfComplete(timeAText, timeBText, viewModel)
                     },
                     singleLine = true,

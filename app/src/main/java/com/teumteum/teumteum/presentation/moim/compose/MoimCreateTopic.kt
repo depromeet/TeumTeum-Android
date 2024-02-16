@@ -42,6 +42,7 @@ import com.teumteum.base.component.compose.theme.TmtmColorPalette
 import com.teumteum.teumteum.presentation.moim.MoimViewModel
 import com.teumteum.teumteum.presentation.moim.ScreenState
 import com.teumteum.teumteum.presentation.moim.TopicType
+import kotlinx.coroutines.delay
 
 @Composable
 fun MoimCreateTopic(viewModel: MoimViewModel, onClick: ()->Unit) {
@@ -93,6 +94,7 @@ fun MoimCreateBtn(
                     viewModel.createMoim()
                 } else if (screenState == ScreenState.Success) {
                     navController?.navigate(R.id.fragment_home)
+                    viewModel.initializeState()
                 }
                 else {
                     viewModel.goToNextScreen() }}
@@ -141,7 +143,6 @@ fun CreateTopicContent(viewModel: MoimViewModel, topicIndex: MutableState<Int>) 
                 onItemSelected = {
                     topicIndex.value = index
                     viewModel.updateTopic(topicType)
-                    Log.d("moim_topic", topicType.toString())
                 }
             )
             TmMarginVerticalSpacer(size = 12)
