@@ -42,7 +42,7 @@ class ButtonSnackBar(view: View, private val message: String,
         with(snackBarBinding) {
             tvSnackbar.text = message
             tvSnackbarButton.text = buttonText
-            tvSnackbarButton.setOnSingleClickListener{ onClickListener }
+            tvSnackbarButton.setOnSingleClickListener{ onClickListener(it) }
         }
     }
 
@@ -56,44 +56,3 @@ class ButtonSnackBar(view: View, private val message: String,
         snackBar.show()
     }
 }
-
-/**
-
- *     private val context = view.context
- *     private val snackBar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
- *     private val snackBarLayout = snackBar.view as Snackbar.SnackbarLayout
- *
- *     private val inflater = LayoutInflater.from(context)
- *     private val snackBarBinding: SnackbarDefaultBinding = DataBindingUtil.inflate(inflater, R.layout.snackbar_default, null, false)
- *
- *     init {
- *         initView()
- *         initData()
- *     }
- *
- *     private fun initView() {
- *         with(snackBarLayout) {
- *             removeAllViews()
- *             setPadding(0, 0, 0, 0)
- *             setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
- *             addView(snackBarBinding.root, 0)
- *         }
- *     }
- *
- *     private fun initData() {
- *         with(snackBarBinding) {
- *             tvSnackbarDefault.text = message
- *         }
- *     }
- *
- *     fun setAnchorView(view: View?) {
- *         snackBar.apply {
- *             anchorView = view
- *         }
- *     }
- *
- *     fun show() {
- *         snackBar.show()
- *     }
- * }
- */
