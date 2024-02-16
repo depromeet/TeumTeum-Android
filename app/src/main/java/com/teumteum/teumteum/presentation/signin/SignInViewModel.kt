@@ -3,6 +3,7 @@ package com.teumteum.teumteum.presentation.signin
 import androidx.lifecycle.ViewModel
 import com.teumteum.domain.entity.SocialLoginResult
 import com.teumteum.domain.repository.AuthRepository
+import com.teumteum.domain.repository.SettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val repository: AuthRepository
+    private val repository: AuthRepository,
+    private val settingRepository: SettingRepository
 ): ViewModel() {
 
     private val _memberState = MutableStateFlow<SignInUiState>(SignInUiState.Init)
@@ -46,6 +48,10 @@ class SignInViewModel @Inject constructor(
 
     fun setAskedkNotification(didAsk: Boolean) {
         repository.setAskedNotification(didAsk)
+    }
+
+    fun setOnNotification(isOn: Boolean) {
+        settingRepository.setNotification(isOn)
     }
 }
 
