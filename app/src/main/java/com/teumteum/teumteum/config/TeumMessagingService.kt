@@ -72,7 +72,7 @@ class TeumMessagingService : FirebaseMessagingService() {
 //                    Timber.tag("teum-alerts").d("participants size: ${message.data["participants"]?.split(",")?.size}")
                     alertMessage.participants = message.data["participants"]?.split(",")?.map { it.toInt() }
                     val userId = userRepository.getUserInfo()?.id?.toInt()
-                    if (alertMessage.participants?.contains(userId) == true && alertMessage.participants?.size!! > 1)
+                    if (alertMessage.participants?.contains(userId) == true && alertMessage.participants?.size!! > 2)
                         sendNotificationAlarm(alertMessage)
                 }
                 else if (alertMessage.title.isNotEmpty()) sendNotificationAlarm(alertMessage)
