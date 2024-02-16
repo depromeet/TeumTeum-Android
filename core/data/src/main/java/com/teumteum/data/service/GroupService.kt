@@ -1,6 +1,6 @@
 package com.teumteum.data.service
 
-import com.teumteum.data.model.request.RequestReviewFriend
+import com.teumteum.data.model.request.RequestReviewFriends
 import com.teumteum.data.model.response.ResponseGroup
 import com.teumteum.data.model.response.ResponseMeeting
 import com.teumteum.data.model.response.ResponseReviewFriend
@@ -89,6 +89,6 @@ interface GroupService {
     @POST("users/reviews")
     suspend fun postRegisterReview(
         @Query("meetingId") meetingsId: Long,
-        @Body request: List<RequestReviewFriend>
+        @Body request: RequestReviewFriends
     ):Response<Void>
 }
