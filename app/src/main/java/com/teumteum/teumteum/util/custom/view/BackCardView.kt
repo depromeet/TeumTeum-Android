@@ -75,7 +75,8 @@ class BackCardView : CardView, OnCurrentListChangedListener<Interest> {
     fun submitInterestList(interests: List<Interest>) {
         val currentList = interestAdapter.currentList.toMutableList()
 
-        if (!currentList.any { it.interest == "추가하기" } && isModifyDetail) {
+        if (isModifyDetail) {
+            currentList.removeAll { it.interest == "추가하기" }
             currentList.add(Interest("추가하기"))
         }
 

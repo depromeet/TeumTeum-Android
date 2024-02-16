@@ -78,9 +78,9 @@ class CardFixFragment
             val bc = BackCard(goalContent = goalText.value, characterResId = SignupUtils.CHARACTER_CARD_LIST_BACK[characterId.value])
             binding.cardviewBack.getInstance(bc)
             binding.cardviewBack.apply {
-                submitInterestList(interests)
                 isModify = false
                 setIsModifyDetail(true)
+                submitInterestList(interests)
             }
         }
     }
@@ -199,7 +199,7 @@ class CardFixFragment
                 if (!isFirstLoaded) {
                     val selfArray = resources.getStringArray(R.array.interest_1)
                     val fieldArray = resources.getStringArray(R.array.interest_2)
-                    viewModel.setAllInterests(interests.map { it.toString() }, selfArray, fieldArray)
+                    viewModel.setAllInterests(interests.map { it.interest.toString() }, selfArray, fieldArray)
                 }
                 isFirstLoaded = false
             }
