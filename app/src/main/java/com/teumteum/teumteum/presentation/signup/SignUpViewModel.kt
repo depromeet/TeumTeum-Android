@@ -156,7 +156,7 @@ class SignUpViewModel @Inject constructor(
         preferredStreet
     ) { preferredCity, preferredStreet ->
         if (preferredStreet.isNotBlank() && preferredCity.isNotBlank())
-            "$preferredCity $preferredStreet"
+            "${preferredCity.trim()} ${preferredStreet.trim()}"
         else ""
     }.stateIn(scope = viewModelScope, SharingStarted.Eagerly, "")
 
