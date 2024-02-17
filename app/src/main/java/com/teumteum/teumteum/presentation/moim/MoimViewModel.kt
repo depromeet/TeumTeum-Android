@@ -647,7 +647,7 @@ class MoimViewModel @Inject constructor(
             userRepository.getUser(userId)
                 .onSuccess {
                     _moinCreateUserName.value = it.name
-                    _moinCreateUserJob.value = "${it.job.detailClass} ${it.job.jobClass}"
+                    _moinCreateUserJob.value = "${it.job.detailClass}"
                     _moinCreateUserCharacterId.value = characterList[it.characterId] ?: R.drawable.ic_penguin
                 }
         }
